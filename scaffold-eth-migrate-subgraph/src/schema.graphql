@@ -1,0 +1,53 @@
+type ERC721 @entity {
+  # ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
+  "<token-id>-<contractAddress>"
+  id: ID!
+
+  "The transaction hash the ERC-721 was created at"
+  transactionHash: String!
+
+  "The creator of the ERC-721"
+  creator: OurProxy!
+}
+
+type OurProxy @entity {
+  "The address of the Proxy"
+  id: ID!
+
+  "The transaction hash the Proxy was created at"
+  transactionHash: String!
+
+  "The timestamp of the block the Ask was created in"
+  createdAtTimestamp: BigInt!
+
+  "The number of the block the Ask created in"
+  createdAtBlockNumber: BigInt!
+
+  "The current owner of the Proxy"
+  owner: User!
+
+  "The original owner of the Proxy"
+  creator: User!
+
+  "The Split Recipients and their allocations; JSON.stringify()'d"
+  splitRecipients: String!
+
+  "The amount of ETH available to claim by Split Recipients"
+  ETH: BigInt!
+
+  "The ERC721(s) the Proxy created"
+  creations: [ERC721!]! @derivedFrom(field: "creator")
+}
+
+type User @entity {
+  "Ethereum Address"
+  id: ID!
+
+  "Proxies that this address owns"
+  ownedProxies: [OurProxy!]! @derivedFrom(field: "owner")
+
+  "Proxies that this address created"
+  createdProxies: [OurProxy!]! @derivedFrom(field: "creator")
+
+  ethClaimed: BigInt
+}

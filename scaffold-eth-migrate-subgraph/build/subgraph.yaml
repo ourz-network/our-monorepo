@@ -1,0 +1,49 @@
+specVersion: 0.0.2
+description: Ourz
+repository: null
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: OurFactory
+    network: rinkeby
+    source:
+      address: "0xC1d5bD4210ECFb1A7C5D073c56Ac6c4470601C81"
+      abi: OurFactory
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: OurFactory\OurFactory.wasm
+      entities:
+        - OurFactory
+      abis:
+        - name: OurFactory
+          file: OurFactory\abis\OurFactory.json
+      eventHandlers:
+        - event: ProxyCreated(address,address,string)
+          handler: handleProxyCreated
+templates:
+  - name: OurProxy
+    kind: ethereum/contract
+    network: rinkeby
+    source:
+      abi: OurProxy
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: templates\OurProxy\OurProxy.wasm
+      entities:
+        - OurProxy
+      abis:
+        - name: OurProxy
+          file: OurProxy\abis\OurProxy.json
+        - name: OurSplitter
+          file: OurProxy\abis\OurSplitter.json
+        - name: OurMinter
+          file: OurProxy\abis\OurMinter.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
