@@ -1,4 +1,4 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts"
+import { BigInt, json, Address } from "@graphprotocol/graph-ts"
 import { ProxyCreated } from "../../generated/OurFactory/OurFactory"
 import { OurProxy, User } from "../../generated/schema"
 
@@ -20,7 +20,7 @@ function findOrCreateUser(id: string): User {
 export function handleProxyCreated(event: ProxyCreated): void {
   let proxyAddress = event.params.ourProxy.toHexString()
   let owner = findOrCreateUser(event.params.proxyManager.toHexString())
-  let splitRecipients = event.params.splitRecipients
+  let splitRecipientsJSON = json.fromBytes(event.params.splitRecipients)
 
 
   let ourProxy = new OurProxy(proxyAddress)
@@ -32,7 +32,6 @@ export function handleProxyCreated(event: ProxyCreated): void {
   ourProxy.creator = owner.id
   ourProxy.splitRecipients = splitRecipients
   ourProxy.ETH = BigInt.fromI32(0)
-  ourProxy.WETH = BigInt.fromI32(0)
 
 
   ourProxy.save()
