@@ -1,9 +1,11 @@
 type NFTContract @entity {
   "The Contract Address"
   id: ID!
+
+  splitNFTs: [SplitNFT!]! @derivedFrom(field: "contract")
 }
 
-type ERC721 @entity {
+type SplitNFT @entity {
   # ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
   "<tokenId>-<contractAddress>"
   id: ID!
@@ -12,12 +14,12 @@ type ERC721 @entity {
   tokenId: String!
 
   "The ERC-721 contract's address"
-  nftContract: NFTContract!
+  contract: NFTContract!
 
   "The creator of the ERC-721"
   creator: OurProxy!
 
-  "The transaction hash the ERC-721 was created at"
+  "The transaction hash the ERC-721 was originally logged in this subgraph"
   transactionHash: String!
 }
 
@@ -35,19 +37,22 @@ type OurProxy @entity {
   createdAtBlockNumber: BigInt!
 
   "The current owner of the Proxy"
-  owner: User!
+  proxyOwner: User!
 
   "The original owner of the Proxy"
   creator: User!
 
+  "The number of times ownership has been transferred"
+  transfers: BigInt!
+
   "The Split Recipients and their allocations; JSON.stringify()'d"
   splitRecipients: String!
 
-  "The amount of ETH available to claim by Split Recipients"
+  "The amount of ETH/WETH available to claim by Split Recipients"
   ETH: BigInt!
 
   "The ERC721(s) the Proxy created"
-  creations: [ERC721!]! @derivedFrom(field: "creator")
+  creations: [SplitNFT!]! @derivedFrom(field: "creator")
 }
 
 type User @entity {
@@ -55,10 +60,31 @@ type User @entity {
   id: ID!
 
   "Proxies that this address owns"
-  ownedProxies: [OurProxy!]! @derivedFrom(field: "owner")
+  ownedProxies: [OurProxy!]! @derivedFrom(field: "proxyOwner")
 
   "Proxies that this address created"
-  createdProxies: [OurProxy!]! @derivedFrom(field: "creator")
+  createdProxies: [OurProxy!]! @derivedFrom(field: "proxyCreator")
 
-  ethClaimed: BigInt
+  "Total amount of ETH claimed"
+  ethClaimed: BigInt!
+}
+
+type TransferOfOwnership @entity {
+  "<ourProxy>-<transactionHash>"
+  id: ID!
+
+  "Transaction hash for the transfer"
+  transactionHash: String!
+
+  "The Proxy which ownership is being transferred"
+  proxy: OurProxy!
+
+  "The User transferring ownership of the Proxy"
+  from: User!
+
+  "The User to be the new Owner"
+  to: User!
+
+  "The timestamp of the block the Transfer occurred"
+  timestamp: BigInt!
 }

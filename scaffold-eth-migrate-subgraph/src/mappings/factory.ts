@@ -1,38 +1,29 @@
-import { BigInt, json, Address } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts"
 import { ProxyCreated } from "../../generated/OurFactory/OurFactory"
-import { OurProxy, User } from "../../generated/schema"
+import { OurProxy } from "../../generated/schema"
+import { findOrCreateUser } from "./helpers";
 
 /**
- * Find or Create a User entity with `id` and return it
- * @param id
+ * Handler called when the `ProxyCreated` Event is emitted on OurFactory
+ * @eventParam address ourProxy: address of the newly created contract
+ * @eventParam address proxyOwner: address of the user who created and now manages the proxy
+ * @eventParam string splitRecipients: JSON.stringify([array]) of the Split's recipients
  */
-function findOrCreateUser(id: string): User {
-  let user = User.load(id)
-
-  if (user == null) {
-    user = new User(id)
-    user.save()
-  }
-
-  return user as User
-}
-
 export function handleProxyCreated(event: ProxyCreated): void {
-  let proxyAddress = event.params.ourProxy.toHexString()
-  let owner = findOrCreateUser(event.params.proxyManager.toHexString())
-  let splitRecipientsJSON = json.fromBytes(event.params.splitRecipients)
+  let proxyAddress = event.params.ourProxy.toHexString();
+  let owner = findOrCreateUser(event.params.proxyOwner.toHexString());
+  let splitRecipients = event.params.splitRecipients;
 
+  let ourProxy = new OurProxy(proxyAddress);
 
-  let ourProxy = new OurProxy(proxyAddress)
-
-  ourProxy.transactionHash = event.transaction.hash.toHexString()
-  ourProxy.createdAtTimestamp = event.block.timestamp
-  ourProxy.createdAtBlockNumber = event.block.number
-  ourProxy.owner = owner.id
-  ourProxy.creator = owner.id
-  ourProxy.splitRecipients = splitRecipients
-  ourProxy.ETH = BigInt.fromI32(0)
-
+  ourProxy.transactionHash = event.transaction.hash.toHexString();
+  ourProxy.createdAtTimestamp = event.block.timestamp;
+  ourProxy.createdAtBlockNumber = event.block.number;
+  ourProxy.proxyOwner = owner.id;
+  ourProxy.proxyCreator = owner.id;
+  ourProxy.transfers = BigInt.fromI32(0);
+  ourProxy.splitRecipients = splitRecipients;
+  ourProxy.ETH = BigInt.fromI32(0);
 
   ourProxy.save()
 }

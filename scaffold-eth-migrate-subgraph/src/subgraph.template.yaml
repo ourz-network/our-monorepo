@@ -24,28 +24,28 @@ dataSources:
       eventHandlers:
         - event: ProxyCreated(address,address,string)
           handler: handleProxyCreated
-  # - kind: ethereum/contract
-  #   name: OurSplitter
-  #   network: rinkeby
-  #   source:
-  #     address: "{{OurSplitterAddress}}"
-  #     abi: OurSplitter
-  #     startBlock: 1
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.4
-  #     language: wasm/assemblyscript
-  #     file: ./src/mappings/splitter.ts
-  #     entities:
-  #       - OurSplitter
-  #     abis:
-  #       - name: OurSplitter
-  #         file: ./abis/OurSplitter.json
-  #     eventHandlers:
-  # - event: TransferETH(address,uint256,bool)
-  #   handler: handleTransferETH
-  # - event: WindowIncremented(uint256,uint256)
-  #   handler: handleWindowIncremented
+  - kind: ethereum/contract
+    name: OurSplitter
+    network: rinkeby
+    source:
+      address: "{{OurSplitterAddress}}"
+      abi: OurSplitter
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/splitter.ts
+      entities:
+        - OurSplitter
+      abis:
+        - name: OurSplitter
+          file: ./abis/OurSplitter.json
+      eventHandlers:
+        - event: TransferETH(address,uint256,bool)
+          handler: handleTransferETH
+        - event: WindowIncremented(uint256,uint256)
+          handler: handleWindowIncremented
   # - kind: ethereum/contract
   #   name: OurMinter
   #   network: rinkeby
