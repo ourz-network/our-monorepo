@@ -53,6 +53,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "newNickname",
+        "type": "string"
+      }
+    ],
+    "name": "ChangeNickname",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "operator",
         "type": "address"
@@ -734,6 +747,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "newNickname_",
+        "type": "string"
+      }
+    ],
+    "name": "editNickname",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

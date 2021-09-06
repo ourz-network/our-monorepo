@@ -58,6 +58,24 @@ export class Batch1155Received__Params {
   }
 }
 
+export class ChangeNickname extends ethereum.Event {
+  get params(): ChangeNickname__Params {
+    return new ChangeNickname__Params(this);
+  }
+}
+
+export class ChangeNickname__Params {
+  _event: ChangeNickname;
+
+  constructor(event: ChangeNickname) {
+    this._event = event;
+  }
+
+  get newNickname(): string {
+    return this._event.parameters[0].value.toString();
+  }
+}
+
 export class ERC1155Received extends ethereum.Event {
   get params(): ERC1155Received__Params {
     return new ERC1155Received__Params(this);
@@ -1319,6 +1337,36 @@ export class CreateZoraAuctionBidCall__Outputs {
   _call: CreateZoraAuctionBidCall;
 
   constructor(call: CreateZoraAuctionBidCall) {
+    this._call = call;
+  }
+}
+
+export class EditNicknameCall extends ethereum.Call {
+  get inputs(): EditNicknameCall__Inputs {
+    return new EditNicknameCall__Inputs(this);
+  }
+
+  get outputs(): EditNicknameCall__Outputs {
+    return new EditNicknameCall__Outputs(this);
+  }
+}
+
+export class EditNicknameCall__Inputs {
+  _call: EditNicknameCall;
+
+  constructor(call: EditNicknameCall) {
+    this._call = call;
+  }
+
+  get newNickname_(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+}
+
+export class EditNicknameCall__Outputs {
+  _call: EditNicknameCall;
+
+  constructor(call: EditNicknameCall) {
     this._call = call;
   }
 }

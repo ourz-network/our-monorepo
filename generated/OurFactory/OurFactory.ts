@@ -34,6 +34,10 @@ export class ProxyCreated__Params {
   get splitRecipients(): string {
     return this._event.parameters[2].value.toString();
   }
+
+  get nickname(): string {
+    return this._event.parameters[3].value.toString();
+  }
 }
 
 export class OurFactory extends ethereum.SmartContract {
@@ -44,15 +48,17 @@ export class OurFactory extends ethereum.SmartContract {
   createSplit(
     merkleRoot_: Bytes,
     data: Bytes,
-    splitRecipients_: string
+    splitRecipients_: string,
+    nickname_: string
   ): Address {
     let result = super.call(
       "createSplit",
-      "createSplit(bytes32,bytes,string):(address)",
+      "createSplit(bytes32,bytes,string,string):(address)",
       [
         ethereum.Value.fromFixedBytes(merkleRoot_),
         ethereum.Value.fromBytes(data),
-        ethereum.Value.fromString(splitRecipients_)
+        ethereum.Value.fromString(splitRecipients_),
+        ethereum.Value.fromString(nickname_)
       ]
     );
 
@@ -62,15 +68,17 @@ export class OurFactory extends ethereum.SmartContract {
   try_createSplit(
     merkleRoot_: Bytes,
     data: Bytes,
-    splitRecipients_: string
+    splitRecipients_: string,
+    nickname_: string
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "createSplit",
-      "createSplit(bytes32,bytes,string):(address)",
+      "createSplit(bytes32,bytes,string,string):(address)",
       [
         ethereum.Value.fromFixedBytes(merkleRoot_),
         ethereum.Value.fromBytes(data),
-        ethereum.Value.fromString(splitRecipients_)
+        ethereum.Value.fromString(splitRecipients_),
+        ethereum.Value.fromString(nickname_)
       ]
     );
     if (result.reverted) {
@@ -168,6 +176,10 @@ export class CreateSplitCall__Inputs {
 
   get splitRecipients_(): string {
     return this._call.inputValues[2].value.toString();
+  }
+
+  get nickname_(): string {
+    return this._call.inputValues[3].value.toString();
   }
 }
 

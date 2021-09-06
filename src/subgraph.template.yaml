@@ -8,7 +8,7 @@ dataSources:
       name: OurFactory
       network: rinkeby
       source:
-          address: "0x7116b16EdA01CF3d939D161B13FF06BD51645B85"
+          address: "{{OurFactoryAddress}}"
           abi: OurFactory
           startBlock: 9200000
       mapping:
@@ -28,7 +28,7 @@ dataSources:
     #   name: OurPylon
     #   network: rinkeby
     #   source:
-    #       address: "0x6866Ba30c4aE8573E754E65B663fFea2de2E0b42"
+    #       address: "{{OurPylonAddress}}"
     #       abi: OurPylon
     #       startBlock: 9100000
     #   mapping:
@@ -68,7 +68,7 @@ dataSources:
     #   name: OurSplitter
     #   network: rinkeby
     #   source:
-    #     address: "0xa57F4E6017831A8aa0A36C974b84FD2f6482944a"
+    #     address: "{{OurSplitterAddress}}"
     #     abi: OurSplitter
     #     startBlock: 1
     #   mapping:
@@ -90,7 +90,7 @@ dataSources:
     #   name: OurMinter
     #   network: rinkeby
     #   source:
-    #     address: "0xba1E1791ef2A8f30438dB7A28A4037c7fC1FcB29"
+    #     address: "{{OurMinterAddress}}"
     #     abi: OurMinter
     #     startBlock: 1
     #   mapping:
@@ -111,7 +111,7 @@ templates:
       name: OurPylon
       network: rinkeby
       source:
-          # address: "0x6866Ba30c4aE8573E754E65B663fFea2de2E0b42"
+          # address: "{{OurPylonAddress}}"
           abi: OurPylon
           # startBlock: 9100000
       mapping:

@@ -140,6 +140,8 @@ export class OurProxy extends Entity {
     this.set("createdAtBlockNumber", Value.fromBigInt(BigInt.zero()));
     this.set("proxyOwners", Value.fromStringArray(new Array(0)));
     this.set("creator", Value.fromString(""));
+    this.set("transfers", Value.fromBigInt(BigInt.zero()));
+    this.set("ETH", Value.fromBigInt(BigInt.zero()));
     // this.set("splitRecipients", Value.fromStringArray(new Array(0)));
     // this.set("creations", Value.fromStringArray(new Array(0)));
   }
@@ -168,6 +170,23 @@ export class OurProxy extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get nickname(): string | null {
+    let value = this.get("nickname");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set nickname(value: string | null) {
+    if (!value) {
+      this.unset("nickname");
+    } else {
+      this.set("nickname", Value.fromString(<string>value));
+    }
   }
 
   get transactionHash(): string {
@@ -215,6 +234,24 @@ export class OurProxy extends Entity {
     this.set("creator", Value.fromString(value));
   }
 
+  get transfers(): BigInt {
+    let value = this.get("transfers");
+    return value!.toBigInt();
+  }
+
+  set transfers(value: BigInt) {
+    this.set("transfers", Value.fromBigInt(value));
+  }
+
+  get ETH(): BigInt {
+    let value = this.get("ETH");
+    return value!.toBigInt();
+  }
+
+  set ETH(value: BigInt) {
+    this.set("ETH", Value.fromBigInt(value));
+  }
+
   get splitRecipients(): Array<string> {
     let value = this.get("splitRecipients");
     return value!.toStringArray();
@@ -232,40 +269,6 @@ export class OurProxy extends Entity {
   set creations(value: Array<string>) {
     this.set("creations", Value.fromStringArray(value));
   }
-
-  get transfers(): BigInt | null {
-    let value = this.get("transfers");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set transfers(value: BigInt | null) {
-    if (!value) {
-      this.unset("transfers");
-    } else {
-      this.set("transfers", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get ETH(): BigInt | null {
-    let value = this.get("ETH");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set ETH(value: BigInt | null) {
-    if (!value) {
-      this.unset("ETH");
-    } else {
-      this.set("ETH", Value.fromBigInt(<BigInt>value));
-    }
-  }
 }
 
 export class User extends Entity {
@@ -273,6 +276,7 @@ export class User extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("ethClaimed", Value.fromBigInt(BigInt.zero()));
     // this.set("ownedProxies", Value.fromStringArray(new Array(0)));
     // this.set("createdProxies", Value.fromStringArray(new Array(0)));
     // this.set("recipientInfo", Value.fromStringArray(new Array(0)));
@@ -304,6 +308,15 @@ export class User extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get ethClaimed(): BigInt {
+    let value = this.get("ethClaimed");
+    return value!.toBigInt();
+  }
+
+  set ethClaimed(value: BigInt) {
+    this.set("ethClaimed", Value.fromBigInt(value));
+  }
+
   get ownedProxies(): Array<string> {
     let value = this.get("ownedProxies");
     return value!.toStringArray();
@@ -330,23 +343,6 @@ export class User extends Entity {
   set recipientInfo(value: Array<string>) {
     this.set("recipientInfo", Value.fromStringArray(value));
   }
-
-  get ethClaimed(): BigInt | null {
-    let value = this.get("ethClaimed");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set ethClaimed(value: BigInt | null) {
-    if (!value) {
-      this.unset("ethClaimed");
-    } else {
-      this.set("ethClaimed", Value.fromBigInt(<BigInt>value));
-    }
-  }
 }
 
 export class SplitRecipient extends Entity {
@@ -354,8 +350,8 @@ export class SplitRecipient extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("user", Value.fromString(""));
     this.set("splitProxy", Value.fromString(""));
+    this.set("ethClaimed", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -384,13 +380,21 @@ export class SplitRecipient extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get user(): string {
+  get user(): string | null {
     let value = this.get("user");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set user(value: string) {
-    this.set("user", Value.fromString(value));
+  set user(value: string | null) {
+    if (!value) {
+      this.unset("user");
+    } else {
+      this.set("user", Value.fromString(<string>value));
+    }
   }
 
   get splitProxy(): string {
@@ -453,37 +457,29 @@ export class SplitRecipient extends Entity {
     }
   }
 
-  get allocation(): BigInt | null {
+  get allocation(): string | null {
     let value = this.get("allocation");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toString();
     }
   }
 
-  set allocation(value: BigInt | null) {
+  set allocation(value: string | null) {
     if (!value) {
       this.unset("allocation");
     } else {
-      this.set("allocation", Value.fromBigInt(<BigInt>value));
+      this.set("allocation", Value.fromString(<string>value));
     }
   }
 
-  get ethClaimed(): BigInt | null {
+  get ethClaimed(): BigInt {
     let value = this.get("ethClaimed");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set ethClaimed(value: BigInt | null) {
-    if (!value) {
-      this.unset("ethClaimed");
-    } else {
-      this.set("ethClaimed", Value.fromBigInt(<BigInt>value));
-    }
+  set ethClaimed(value: BigInt) {
+    this.set("ethClaimed", Value.fromBigInt(value));
   }
 }

@@ -8,9 +8,9 @@ dataSources:
     name: OurFactory
     network: rinkeby
     source:
-      address: "0x6ecf13fd3a5EB804b9C2Fe0BC5b2d4bccF3fB33b"
+      address: "0x7116b16EdA01CF3d939D161B13FF06BD51645B85"
       abi: OurFactory
-      startBlock: 9100000
+      startBlock: 9200000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -22,7 +22,7 @@ dataSources:
         - name: OurFactory
           file: OurFactory\abis\OurFactory.json
       eventHandlers:
-        - event: ProxyCreated(address,address,string)
+        - event: ProxyCreated(address,address,string,string)
           handler: handleProxyCreated
 templates:
   - kind: ethereum/contract
