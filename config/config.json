@@ -1,7 +1,4 @@
 {
-  "OurFactoryAddress": "0x3c12fF2139328D3e5Af18B4bF379Ad334cefb1cd",
-  "OurMinterAddress": "0xba1E1791ef2A8f30438dB7A28A4037c7fC1FcB29",
-  "OurSplitterAddress": "0xa57F4E6017831A8aa0A36C974b84FD2f6482944a",
-  "OurProxyAddress": "0xE6b44a5144FaB6d997841cBa570063e057b963C1",
-  "OurPylonAddress": "0x8C4E4EAA389c04EF1A2aef2E53e3176C40ff3695"
+  "OurFactoryAddress": "0x6ecf13fd3a5EB804b9C2Fe0BC5b2d4bccF3fB33b",
+  "OurPylonAddress": "0x98E07C2f9889e6cFee272ef1420A999248f9886F",
 }

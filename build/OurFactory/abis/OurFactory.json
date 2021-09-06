@@ -22,7 +22,7 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "proxyOwner",
+        "name": "proxyCreator",
         "type": "address"
       },
       {

@@ -27,7 +27,7 @@ export class ProxyCreated__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get proxyOwner(): Address {
+  get proxyCreator(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 

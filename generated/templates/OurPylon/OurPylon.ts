@@ -88,6 +88,32 @@ export class ERC1155Received__Params {
   }
 }
 
+export class ERC721Received extends ethereum.Event {
+  get params(): ERC721Received__Params {
+    return new ERC721Received__Params(this);
+  }
+}
+
+export class ERC721Received__Params {
+  _event: ERC721Received;
+
+  constructor(event: ERC721Received) {
+    this._event = event;
+  }
+
+  get operator(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get from(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get tokenId(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class ERC777Received extends ethereum.Event {
   get params(): ERC777Received__Params {
     return new ERC777Received__Params(this);
@@ -179,12 +205,8 @@ export class ProxySetup__Params {
     this._event = event;
   }
 
-  get initiator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get owners(): Array<Address> {
-    return this._event.parameters[1].value.toAddressArray();
+    return this._event.parameters[0].value.toAddressArray();
   }
 }
 
@@ -203,32 +225,6 @@ export class RemovedOwner__Params {
 
   get owner(): Address {
     return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class TokenReceived extends ethereum.Event {
-  get params(): TokenReceived__Params {
-    return new TokenReceived__Params(this);
-  }
-}
-
-export class TokenReceived__Params {
-  _event: TokenReceived;
-
-  constructor(event: TokenReceived) {
-    this._event = event;
-  }
-
-  get operator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get from(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tokenId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -819,7 +815,9 @@ export class AcceptZoraMarketBidCall__Inputs {
   }
 
   get expectedBid(): AcceptZoraMarketBidCallExpectedBidStruct {
-    return this._call.inputValues[1].value.toTuple() as AcceptZoraMarketBidCallExpectedBidStruct;
+    return changetype<AcceptZoraMarketBidCallExpectedBidStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 }
 
@@ -849,7 +847,9 @@ export class AcceptZoraMarketBidCallExpectedBidStruct extends ethereum.Tuple {
   }
 
   get sellOnShare(): AcceptZoraMarketBidCallExpectedBidSellOnShareStruct {
-    return this[4].toTuple() as AcceptZoraMarketBidCallExpectedBidSellOnShareStruct;
+    return changetype<AcceptZoraMarketBidCallExpectedBidSellOnShareStruct>(
+      this[4].toTuple()
+    );
   }
 }
 
@@ -1427,11 +1427,15 @@ export class MintToAuctionForETHCall__Inputs {
   }
 
   get mediaData(): MintToAuctionForETHCallMediaDataStruct {
-    return this._call.inputValues[0].value.toTuple() as MintToAuctionForETHCallMediaDataStruct;
+    return changetype<MintToAuctionForETHCallMediaDataStruct>(
+      this._call.inputValues[0].value.toTuple()
+    );
   }
 
   get bidShares(): MintToAuctionForETHCallBidSharesStruct {
-    return this._call.inputValues[1].value.toTuple() as MintToAuctionForETHCallBidSharesStruct;
+    return changetype<MintToAuctionForETHCallBidSharesStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 
   get duration(): BigInt {
@@ -1471,15 +1475,21 @@ export class MintToAuctionForETHCallMediaDataStruct extends ethereum.Tuple {
 
 export class MintToAuctionForETHCallBidSharesStruct extends ethereum.Tuple {
   get prevOwner(): MintToAuctionForETHCallBidSharesPrevOwnerStruct {
-    return this[0].toTuple() as MintToAuctionForETHCallBidSharesPrevOwnerStruct;
+    return changetype<MintToAuctionForETHCallBidSharesPrevOwnerStruct>(
+      this[0].toTuple()
+    );
   }
 
   get creator(): MintToAuctionForETHCallBidSharesCreatorStruct {
-    return this[1].toTuple() as MintToAuctionForETHCallBidSharesCreatorStruct;
+    return changetype<MintToAuctionForETHCallBidSharesCreatorStruct>(
+      this[1].toTuple()
+    );
   }
 
   get owner(): MintToAuctionForETHCallBidSharesOwnerStruct {
-    return this[2].toTuple() as MintToAuctionForETHCallBidSharesOwnerStruct;
+    return changetype<MintToAuctionForETHCallBidSharesOwnerStruct>(
+      this[2].toTuple()
+    );
   }
 }
 
@@ -1519,11 +1529,15 @@ export class MintZoraCall__Inputs {
   }
 
   get mediaData(): MintZoraCallMediaDataStruct {
-    return this._call.inputValues[0].value.toTuple() as MintZoraCallMediaDataStruct;
+    return changetype<MintZoraCallMediaDataStruct>(
+      this._call.inputValues[0].value.toTuple()
+    );
   }
 
   get bidShares(): MintZoraCallBidSharesStruct {
-    return this._call.inputValues[1].value.toTuple() as MintZoraCallBidSharesStruct;
+    return changetype<MintZoraCallBidSharesStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 }
 
@@ -1555,15 +1569,15 @@ export class MintZoraCallMediaDataStruct extends ethereum.Tuple {
 
 export class MintZoraCallBidSharesStruct extends ethereum.Tuple {
   get prevOwner(): MintZoraCallBidSharesPrevOwnerStruct {
-    return this[0].toTuple() as MintZoraCallBidSharesPrevOwnerStruct;
+    return changetype<MintZoraCallBidSharesPrevOwnerStruct>(this[0].toTuple());
   }
 
   get creator(): MintZoraCallBidSharesCreatorStruct {
-    return this[1].toTuple() as MintZoraCallBidSharesCreatorStruct;
+    return changetype<MintZoraCallBidSharesCreatorStruct>(this[1].toTuple());
   }
 
   get owner(): MintZoraCallBidSharesOwnerStruct {
-    return this[2].toTuple() as MintZoraCallBidSharesOwnerStruct;
+    return changetype<MintZoraCallBidSharesOwnerStruct>(this[2].toTuple());
   }
 }
 
@@ -1607,15 +1621,21 @@ export class MintZoraWithSigCall__Inputs {
   }
 
   get mediaData(): MintZoraWithSigCallMediaDataStruct {
-    return this._call.inputValues[1].value.toTuple() as MintZoraWithSigCallMediaDataStruct;
+    return changetype<MintZoraWithSigCallMediaDataStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 
   get bidShares(): MintZoraWithSigCallBidSharesStruct {
-    return this._call.inputValues[2].value.toTuple() as MintZoraWithSigCallBidSharesStruct;
+    return changetype<MintZoraWithSigCallBidSharesStruct>(
+      this._call.inputValues[2].value.toTuple()
+    );
   }
 
   get sig(): MintZoraWithSigCallSigStruct {
-    return this._call.inputValues[3].value.toTuple() as MintZoraWithSigCallSigStruct;
+    return changetype<MintZoraWithSigCallSigStruct>(
+      this._call.inputValues[3].value.toTuple()
+    );
   }
 }
 
@@ -1647,15 +1667,21 @@ export class MintZoraWithSigCallMediaDataStruct extends ethereum.Tuple {
 
 export class MintZoraWithSigCallBidSharesStruct extends ethereum.Tuple {
   get prevOwner(): MintZoraWithSigCallBidSharesPrevOwnerStruct {
-    return this[0].toTuple() as MintZoraWithSigCallBidSharesPrevOwnerStruct;
+    return changetype<MintZoraWithSigCallBidSharesPrevOwnerStruct>(
+      this[0].toTuple()
+    );
   }
 
   get creator(): MintZoraWithSigCallBidSharesCreatorStruct {
-    return this[1].toTuple() as MintZoraWithSigCallBidSharesCreatorStruct;
+    return changetype<MintZoraWithSigCallBidSharesCreatorStruct>(
+      this[1].toTuple()
+    );
   }
 
   get owner(): MintZoraWithSigCallBidSharesOwnerStruct {
-    return this[2].toTuple() as MintZoraWithSigCallBidSharesOwnerStruct;
+    return changetype<MintZoraWithSigCallBidSharesOwnerStruct>(
+      this[2].toTuple()
+    );
   }
 }
 
@@ -2029,7 +2055,9 @@ export class SetZoraMarketAskCall__Inputs {
   }
 
   get ask(): SetZoraMarketAskCallAskStruct {
-    return this._call.inputValues[1].value.toTuple() as SetZoraMarketAskCallAskStruct;
+    return changetype<SetZoraMarketAskCallAskStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 }
 
@@ -2073,7 +2101,9 @@ export class SetZoraMarketBidCall__Inputs {
   }
 
   get bid(): SetZoraMarketBidCallBidStruct {
-    return this._call.inputValues[1].value.toTuple() as SetZoraMarketBidCallBidStruct;
+    return changetype<SetZoraMarketBidCallBidStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 
   get spender(): Address {
@@ -2107,7 +2137,9 @@ export class SetZoraMarketBidCallBidStruct extends ethereum.Tuple {
   }
 
   get sellOnShare(): SetZoraMarketBidCallBidSellOnShareStruct {
-    return this[4].toTuple() as SetZoraMarketBidCallBidSellOnShareStruct;
+    return changetype<SetZoraMarketBidCallBidSellOnShareStruct>(
+      this[4].toTuple()
+    );
   }
 }
 
@@ -2139,7 +2171,9 @@ export class SetZoraMarketBidSharesCall__Inputs {
   }
 
   get bidShares(): SetZoraMarketBidSharesCallBidSharesStruct {
-    return this._call.inputValues[1].value.toTuple() as SetZoraMarketBidSharesCallBidSharesStruct;
+    return changetype<SetZoraMarketBidSharesCallBidSharesStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 }
 
@@ -2153,15 +2187,21 @@ export class SetZoraMarketBidSharesCall__Outputs {
 
 export class SetZoraMarketBidSharesCallBidSharesStruct extends ethereum.Tuple {
   get prevOwner(): SetZoraMarketBidSharesCallBidSharesPrevOwnerStruct {
-    return this[0].toTuple() as SetZoraMarketBidSharesCallBidSharesPrevOwnerStruct;
+    return changetype<SetZoraMarketBidSharesCallBidSharesPrevOwnerStruct>(
+      this[0].toTuple()
+    );
   }
 
   get creator(): SetZoraMarketBidSharesCallBidSharesCreatorStruct {
-    return this[1].toTuple() as SetZoraMarketBidSharesCallBidSharesCreatorStruct;
+    return changetype<SetZoraMarketBidSharesCallBidSharesCreatorStruct>(
+      this[1].toTuple()
+    );
   }
 
   get owner(): SetZoraMarketBidSharesCallBidSharesOwnerStruct {
-    return this[2].toTuple() as SetZoraMarketBidSharesCallBidSharesOwnerStruct;
+    return changetype<SetZoraMarketBidSharesCallBidSharesOwnerStruct>(
+      this[2].toTuple()
+    );
   }
 }
 

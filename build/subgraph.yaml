@@ -8,12 +8,12 @@ dataSources:
     name: OurFactory
     network: rinkeby
     source:
-      address: "0x3c12fF2139328D3e5Af18B4bF379Ad334cefb1cd"
+      address: "0x6ecf13fd3a5EB804b9C2Fe0BC5b2d4bccF3fB33b"
       abi: OurFactory
-      startBlock: 1
+      startBlock: 9100000
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: OurFactory\OurFactory.wasm
       entities:
@@ -24,25 +24,24 @@ dataSources:
       eventHandlers:
         - event: ProxyCreated(address,address,string)
           handler: handleProxyCreated
+templates:
   - kind: ethereum/contract
     name: OurPylon
     network: rinkeby
     source:
-      address: "0x8C4E4EAA389c04EF1A2aef2E53e3176C40ff3695"
       abi: OurPylon
-      startBlock: 1
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: OurPylon\OurPylon.wasm
+      file: templates\OurPylon\OurPylon.wasm
       entities:
         - OurPylon
       abis:
         - name: OurPylon
           file: OurPylon\abis\OurPylon.json
       eventHandlers:
-        - event: ProxySetup(indexed address,address[])
+        - event: ProxySetup(address[])
           handler: handleProxySetup
         - event: AddedOwner(address)
           handler: handleAddedOwner
@@ -52,23 +51,5 @@ dataSources:
           handler: handleETHReceived
         - event: TransferETH(address,uint256,bool)
           handler: handleTransferETH
-        - event: TokenReceived(address,address,uint256)
-          handler: handleTokenReceived
-templates:
-  - name: OurProxy
-    kind: ethereum/contract
-    network: rinkeby
-    source:
-      abi: OurProxy
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates\OurProxy\OurProxy.wasm
-      entities:
-        - OurProxy
-      abis:
-        - name: OurProxy
-          file: OurProxy\abis\OurProxy.json
-        - name: OurPylon
-          file: OurProxy\abis\OurPylon.json
+        - event: ERC721Received(address,address,uint256)
+          handler: handleERC721Received

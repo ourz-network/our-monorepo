@@ -6,14 +6,14 @@ import {
   DataSourceContext
 } from "@graphprotocol/graph-ts";
 
-export class OurProxy extends DataSourceTemplate {
+export class OurPylon extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("OurProxy", [address.toHex()]);
+    DataSourceTemplate.create("OurPylon", [address.toHex()]);
   }
 
   static createWithContext(address: Address, context: DataSourceContext): void {
     DataSourceTemplate.createWithContext(
-      "OurProxy",
+      "OurPylon",
       [address.toHex()],
       context
     );
