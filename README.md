@@ -1,2 +1,12 @@
 # our-interface
-Soon-to-be home of the ourz.network frontend.
+
+Home to the front-end of ourz.network.
+
+WIP. 
+
+`npm i`
+
+create env.local (see env.template)
+
+`npm run dev`
+
