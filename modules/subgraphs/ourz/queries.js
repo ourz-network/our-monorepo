@@ -36,6 +36,7 @@ export const SPLITS_BY_OWNER = (owner) => {
       user(id: "${owner}") {
         ownedProxies {
           id
+          nickname
           proxyOwners {
             id
           }
@@ -63,21 +64,46 @@ export const SPLITS_BY_OWNER = (owner) => {
 };
 
 /**
- * Returns gql query to retrieve all Split Proxies by creator
- * @param {String} creator address
+ * Returns gql query to retrieve all Split Proxies by recipient
+ * @param {String} recipient address
  * @returns {gql} query with template string embedded
  */
-// export const SPLITS_BY_CREATOR = (creator) => {
-//   console.log(`graphProtocol queries.js creator: `, creator);
-//   creator = creator.toString().toLowerCase();
-//   return gql`
-//     {
-//       ourProxies(where: { creator: "${creator}" } ) {
-//         id
-//       }
-//     }
-//   `;
-// };
+export const SPLITS_BY_RECIPIENT = (recipient) => {
+  console.log(`graphProtocol queries.js recipient: `, recipient);
+  recipient = recipient.toString().toLowerCase();
+  return gql`
+    {
+      user(id: "${recipient}") {
+        recipientInfo {
+          splitProxy {
+            id
+            nickname
+            proxyOwners {
+              id
+            }
+            splitRecipients {
+              user {
+                id
+              }
+            }
+            creations {
+              tokenId
+              contract {
+                id
+              }
+            }
+            ETH
+          }
+          name
+          role
+          shares
+          allocation
+          ethClaimed
+        }
+      }
+    }
+  `;
+};
 
 /**
  * Calculates maximum number of Zora media items
