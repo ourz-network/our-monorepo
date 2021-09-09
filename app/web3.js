@@ -328,6 +328,51 @@ function useWeb3() {
     }
   };
 
+  const createZoraAuction = async ({ proxyAddress, tokenId, tokenContract, duration, reservePrice, curator, curatorFeePercentage, auctionCurrency }) => {
+    console.log(`proxyAddress ${proxyAddress}\n tokenId: ${tokenId}`);
+    // init Proxy instance as OurPylon, so owner can call Mint
+    const pylonABI = pylonJSON.abi;
+    const proxyPylon = new ethers.Contract(
+      proxyAddress, // rinkeby
+      pylonABI,
+      signer
+    );
+
+    
+
+    /** Make transaction
+     *  uint256 tokenId
+     *  address tokenContract
+     *  uint256 duration (time in seconds)
+     *  uint256 reservePrice
+     *  address curator (0x00 or owner address if no curator)
+     *  uint8 curatorFeePercentage
+     *  address auctionCurrency (must be 0x00 or WETH)
+     */
+    const auctionTx = await proxyPylon.createZoraAuction(
+      tokenId, 
+      //zora media rinkeby
+      "0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4", 
+      // ethers.BigNumber.from(duration), 
+      parseUnits(`${reservePrice}`, "ether"), 
+      // ethers.BigNumber.from(reservePrice), 
+      parseUnits(`${reservePrice}`, "ether"), 
+      curator || proxyAddress,
+      curatorFeePercentage || Number(0),
+      auctionCurrency || "0x0000000000000000000000000000000000000000"
+    );
+
+    // Wait for Tx to process
+    const auctionReceipt = await auctionTx.wait();
+
+    if (auctionReceipt) {
+      console.log(`AUCTION RECEIPT: `, auctionReceipt);
+      console.log(`AUCTION RECEIPT JSON: `, JSON.stringify(auctionReceipt));
+      const auctionId = parseInt(auctionReceipt.events[3].topics[1], 16);
+      return auctionId;
+    }
+  };
+
   const mintZoraSolo = async ({ formData }) => {
     // Upload file to IPFS
     const cryptomedia = formData;
@@ -425,6 +470,7 @@ function useWeb3() {
     mintZoraSplit,
     mintZoraSolo,
     newProxy,
+    createZoraAuction
   };
 }
 
