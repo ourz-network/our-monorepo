@@ -5,7 +5,7 @@ import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import SinglePageViewNFT from "@/components/Cards/SinglePageViewNFT";
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
-import { getSplitRecipients } from "@/modules/graphProtocol/ourz/functions"; // GraphQL client
+import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 
 const NFTView = ({ tokenId, creator, recipients }) => {
   console.log(`tokenId: ${tokenId}\nrecipients: ${recipients}`);
