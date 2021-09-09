@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import PageLayout from "@/components/Layout/PageLayout";
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
-import { getOwnedSplits } from "@/modules/graphProtocol/ourz/functions"; // Post retrieval function
+import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
 import DashboardSplit from "@/components/Cards/DashboardSplit";
 import Button from "@/components/Button";
 
@@ -11,6 +11,10 @@ const CreateDashboard = () => {
   const [ownedSplits, setOwnedSplits] = useState([]);
   const { address, network } = web3.useContainer();
   const Router = useRouter();
+
+  const handleClick = (id) => {
+    Router.push(`/create/new-mint/${id}`);
+  };
 
   useEffect(() => {
     async function collectOwnedSplits(ethAddress) {
@@ -47,19 +51,15 @@ const CreateDashboard = () => {
             {ownedSplits ? (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">
-                  Splits You Manage:
+                  Splits that you can mint an NFT for:
                 </h1>
                 <div className="grid w-5/6 h-full grid-cols-3 gap-8 mx-auto mt-4 auto-rows-min">
                   {ownedSplits.map((OurProxy, i) => {
                     return (
                       <DashboardSplit
                         key={i}
-                        proxyAddress={OurProxy.id}
-                        ownerAddresses={OurProxy.proxyOwners}
-                        ethAvailable={OurProxy.ETH}
-                        createdNFTs={OurProxy.creations}
-                        recipients={OurProxy.splitRecipients}
-                        Router={Router}
+                        ownedSplit={OurProxy}
+                        handleClick={() => handleClick(OurProxy.id)}
                       />
                     );
                   })}

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import PageLayout from "@/components/Layout/PageLayout";
 import React, { useState } from "react"; // React state management
-import { getPostByID } from "@/modules/graphProtocol/zora/functions"; // Post collection helper
+import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post collection helper
 import HomepageNFT from "@/components/Cards/HomepageNFT";
 import { Zora } from "@zoralabs/zdk";
 import { ethers } from "ethers";

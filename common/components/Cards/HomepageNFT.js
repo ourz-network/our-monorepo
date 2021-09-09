@@ -117,10 +117,16 @@ const HomepageNFT = (props) => {
   if (metadata?.mimeType?.includes("video")) {
     return (
       <div
-        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow`}
+        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow cursor-hover`}
       >
         <div className="flex flex-col w-full h-full cursor-pointer xl:h-full ">
-          <Link href={`/nft/${tokenId}`} passHref={true}>
+          <Link 
+            href={{
+              pathname: '/nft/[tokenId]',
+              query: { tokenId: tokenId }, 
+            }}
+            passHref={true}
+          >
             <div className="relative object-cover w-full h-full bg-transparent">
               {contentURI && (
                 <video
@@ -143,10 +149,13 @@ const HomepageNFT = (props) => {
   } else if (metadata?.mimeType?.includes("image")) {
     return (
       <div
-        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent`}
+        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent cursor-hover`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">
-          <Link href={`/nft/${tokenId}`} passHref={true}>
+          <Link 
+            pathname={`/nft/${tokenId}`} 
+            passHref={true}
+          >
             <div className="relative object-cover w-full h-full bg-transparent">
               {contentURI && (
                 <Image

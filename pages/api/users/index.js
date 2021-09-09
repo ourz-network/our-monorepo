@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         user = await UserModel.findOne({ ethAddress: ethAddress });
         user = await UserModel.findOne({ username: username });
         user = await UserModel.findOne({
-          username_lower: username.toLowerCase(),
+          username_lower: username?.toLowerCase(),
         });
 
         if (user) {
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
         user = new UserModel({
           ethAddress: ethAddress,
           username: username,
-          username_lower: username.toLowerCase(),
+          username_lower: username?.toLowerCase(),
         });
 
         console.log("Attempting to create new user...");

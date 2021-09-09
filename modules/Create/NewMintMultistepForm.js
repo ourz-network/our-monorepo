@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
-import { getOwnedSplits } from "@/modules/graphProtocol/ourz/functions"; // GraphQL client
+import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 
 //Steps 1-4:
 // import MintSelectSplit from "./MintSelectSplit";

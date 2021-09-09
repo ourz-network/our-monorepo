@@ -44,7 +44,7 @@ export const Profile = ({
 
         {loading ? (
           // If loading state, show loading
-          <div className="flex w-full mx-auto text-center transition-opacity text-dark-secondary animate-pulse">
+          <div className="justify-center w-screen h-screen mx-auto text-center align-middle transition-opacity text-dark-secondary animate-pulse">
             <span>Loading...</span>
           </div>
         ) : posts.length > 0 ? (

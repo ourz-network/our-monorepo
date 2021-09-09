@@ -25,7 +25,7 @@ const FormModal = ({
   const Router = useRouter();
 
   // Global State. Connected wallet.
-  const { address, signerProfile, verifyAPIpost } = web3.useContainer();
+  const { address, verifyAPIpost } = web3.useContainer();
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
   const cancelButtonRef = useRef(null); // TailwindUI
@@ -37,7 +37,7 @@ const FormModal = ({
   const [open, setOpen] = useState(showModal ? true : false);
   const hide = () => {
     setOpen(false);
-    setShowModal(false);
+    setShowModal({ showModal: false });
   };
 
   // UserProfile stored to state. This collects the MongoDB document and web3 address
@@ -107,7 +107,7 @@ const FormModal = ({
     // console.log("formData :", formData);
 
     // If no account is found for the address...
-    if (!signerProfile) {
+    if (!profileDetails) {
       // console.log("Creating New Profile... \nformData :", formData);
       try {
         if (!usernameAvailable) {
@@ -254,8 +254,8 @@ const FormModal = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+              <div className="inline-block overflow-hidden text-left align-bottom transition-all transform shadow-xl bg-dark-background sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="px-4 pt-5 pb-4 border rounded-sm bg-dark-background border-dark-border sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     {/* Dialog Container */}
                     {/* <div className="flex items-center justify-center flex-shrink w-full mx-auto bg-ourange-500 ll flex-shrin h-1/2 sm:mx-0 sm:h-10 sm:w-10">
@@ -264,9 +264,9 @@ const FormModal = ({
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h2"
-                        className="mx-2 text-2xl font-extrabold text-center text-dark-secondary "
+                        className="mx-2 text-2xl font-extrabold text-center text-dark-primary "
                       >
-                        {!signerProfile ? "Create Profile" : "Edit Profile"}
+                        {!profileDetails ? "Create Profile" : "Edit Profile"}
                       </Dialog.Title>
                       <div className="mt-2">
                         {/* <p className="text-sm text-dark-secondary ">
@@ -274,7 +274,7 @@ const FormModal = ({
                           This action cannot be undone.
                         </p> */}
                         <p className="mx-2 text-sm text-center text-dark-secondary ">
-                          {!signerProfile
+                          {!profileDetails
                             ? "Choose a username to create an account. This is completely optional. Anyone can mint an NFT without a user profile."
                             : "Click Submit or hit Enter on your keyboard."}
                         </p>
@@ -290,7 +290,7 @@ const FormModal = ({
                           <div className="overflow-hidden shadow sm:">
                             <div className="p-4 sm:p-6">
                               <div className="flex flex-col items-center content-center justify-items-center">
-                                {!signerProfile && (
+                                {!profileDetails && (
                                   <>
                                     <label
                                       htmlFor="username"
@@ -300,13 +300,13 @@ const FormModal = ({
                                       Username
                                     </label>
                                     <div className="flex shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-secondary border-dark-border md bg-dark-background">
+                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
                                         @
                                       </span>
                                       <input
                                         type="text"
                                         placeholder="username"
-                                        className="flex-1 block w-full border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                        className="flex-1 block w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
                                         {...register("username", {
                                           required: true, // JS only: <p>error message</p>
                                           minLength: {
@@ -328,7 +328,7 @@ const FormModal = ({
                                     </div>
                                   </>
                                 )}
-                                {signerProfile && (
+                                {profileDetails && (
                                   <>
                                     <label
                                       htmlFor="newUsername"
@@ -338,13 +338,13 @@ const FormModal = ({
                                       New Username
                                     </label>
                                     <div className="flex mb-4 shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-secondary border-dark-border md bg-dark-background">
+                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border bg-dark-background">
                                         @
                                       </span>
                                       <input
                                         type="text"
                                         placeholder={`${user.username}`}
-                                        className="flex-1 block w-full border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                        className="flex-1 block w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         {...register("desiredUsername", {
                                           required: "error message", // JS only: <p>error message</p>
                                           minLength: {
@@ -403,7 +403,7 @@ const FormModal = ({
                                                       ? `${user[keyName]}`
                                                       : `${keyName}`
                                                   }
-                                                  className="flex-1 block w-full border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                                  className="flex-1 block w-full text-dark-primary bg-dark-accent border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
                                                   {...register(`${keyName}`)}
                                                 />
                                               </div>
@@ -427,7 +427,7 @@ const FormModal = ({
                           <div className="px-4 py-3 bg-dark-background sm:px-6 sm:flex sm:flex-row-reverse">
                             <button
                               type="submit"
-                              className="inline-flex justify-center w-1/2 px-4 py-2 text-base font-medium text-white bg-ourange-500 border border-transparent shadow-sm hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-500 sm:ml-3 sm:w-auto sm:text-sm"
+                              className="inline-flex justify-center w-1/2 px-4 py-2 text-base font-medium text-white border border-transparent shadow-sm bg-ourange-500 hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-500 sm:ml-3 sm:w-auto sm:text-sm"
                             >
                               Submit
                             </button>
