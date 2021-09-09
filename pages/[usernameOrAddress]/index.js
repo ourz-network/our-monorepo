@@ -80,10 +80,10 @@ const ProfilePage = ({
   }, [user, linkAddress]); // Collect owned media on load
   if (router.isFallback) {
     return (
-        <p className="px-4 py-2 m-auto place-self-center text-centeer animate-pulse text-dark-bg">
-          Redirecting...
-        </p>
-    )
+      <p className="px-4 py-2 m-auto place-self-center text-centeer animate-pulse text-dark-bg">
+        Redirecting...
+      </p>
+    );
   }
   return (
     <Profile

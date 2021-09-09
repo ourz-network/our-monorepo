@@ -328,7 +328,16 @@ function useWeb3() {
     }
   };
 
-  const createZoraAuction = async ({ proxyAddress, tokenId, tokenContract, duration, reservePrice, curator, curatorFeePercentage, auctionCurrency }) => {
+  const createZoraAuction = async ({
+    proxyAddress,
+    tokenId,
+    tokenContract,
+    duration,
+    reservePrice,
+    curator,
+    curatorFeePercentage,
+    auctionCurrency,
+  }) => {
     console.log(`proxyAddress ${proxyAddress}\n tokenId: ${tokenId}`);
     // init Proxy instance as OurPylon, so owner can call Mint
     const pylonABI = pylonJSON.abi;
@@ -337,8 +346,6 @@ function useWeb3() {
       pylonABI,
       signer
     );
-
-    
 
     /** Make transaction
      *  uint256 tokenId
@@ -350,13 +357,13 @@ function useWeb3() {
      *  address auctionCurrency (must be 0x00 or WETH)
      */
     const auctionTx = await proxyPylon.createZoraAuction(
-      tokenId, 
+      tokenId,
       //zora media rinkeby
-      "0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4", 
-      // ethers.BigNumber.from(duration), 
-      parseUnits(`${reservePrice}`, "ether"), 
-      // ethers.BigNumber.from(reservePrice), 
-      parseUnits(`${reservePrice}`, "ether"), 
+      "0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4",
+      // ethers.BigNumber.from(duration),
+      parseUnits(`${reservePrice}`, "ether"),
+      // ethers.BigNumber.from(reservePrice),
+      parseUnits(`${reservePrice}`, "ether"),
       curator || proxyAddress,
       curatorFeePercentage || Number(0),
       auctionCurrency || "0x0000000000000000000000000000000000000000"
@@ -470,7 +477,7 @@ function useWeb3() {
     mintZoraSplit,
     mintZoraSolo,
     newProxy,
-    createZoraAuction
+    createZoraAuction,
   };
 }
 

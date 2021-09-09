@@ -191,7 +191,7 @@ const NewSplit = () => {
               {controlledFields.map((field, index) => (
                 <li
                   key={field.id}
-                  className="flex justify-center w-full mx-auto mb-3 space-x-3 flex-nowrap"
+                  className="flex justify-center w-full pt-3 mx-auto mb-3 space-x-3 border-t border-dark-border flex-nowrap"
                 >
                   <input
                     name={`splits.${index}.address`}

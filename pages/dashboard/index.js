@@ -5,23 +5,26 @@ import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import SinglePageViewNFT from "@/components/Cards/SinglePageViewNFT";
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
-import { getOwnedSplits, getClaimableSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
+import {
+  getOwnedSplits,
+  getClaimableSplits,
+} from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
 import DashboardSplit from "@/components/Cards/DashboardSplit";
 import SplitQuickview from "../../common/components/Cards/SplitQuickview";
 import CurationDashboard from "../../common/components/CurationDashboard";
 
 const SplitDashboard = () => {
   const { address, network } = web3.useContainer();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [ownedSplits, setOwnedSplits] = useState([]);
   const [claimableSplits, setClaimableSplits] = useState([]);
 
-  const [showQuickview, setShowQuickview] = useState(false)
+  const [showQuickview, setShowQuickview] = useState(false);
   const [viewedSplit, setViewedSplit] = useState();
   const [viewOwned, setViewOwned] = useState();
 
-  const [showDashboard, setShowDashboard] = useState(false)
-  const [activeDashboard, setActiveDashboard] = useState('')
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [activeDashboard, setActiveDashboard] = useState("");
 
   const Router = useRouter();
 
@@ -49,22 +52,26 @@ const SplitDashboard = () => {
     setViewOwned(isOwned);
     setViewedSplit(split);
     setShowQuickview(true);
-    console.log(`owned ${isOwned}, split ${split.id}, modal vis ${showQuickview}`);
+    console.log(
+      `owned ${isOwned}, split ${split.id}, modal vis ${showQuickview}`
+    );
   };
 
-  const handleClickManageSplit = (split, isOwned) => {
-    
-  }
+  const handleClickManageSplit = (split, isOwned) => {};
 
   return (
     <PageLayout>
-      {showDashboard && activeDashboard == "curation" &&
-        <CurationDashboard />
-      }
+      {showDashboard && activeDashboard == "curation" && <CurationDashboard />}
       <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
         {showQuickview && (
-          <SplitQuickview split={viewedSplit} isOwned={viewOwned} showQuickview={showQuickview} setShowQuickview={setShowQuickview} setShowDashboard={setShowDashboard}
-          setActiveDashboard={setActiveDashboard} />
+          <SplitQuickview
+            split={viewedSplit}
+            isOwned={viewOwned}
+            showQuickview={showQuickview}
+            setShowQuickview={setShowQuickview}
+            setShowDashboard={setShowDashboard}
+            setActiveDashboard={setActiveDashboard}
+          />
         )}
         {loading || network.name != "rinkeby" ? (
           <p className="px-4 py-2 mx-auto mt-16 border border-dark-border animate-pulse text-dark-primary">
@@ -108,7 +115,9 @@ const SplitDashboard = () => {
                         key={`rec-${i}`}
                         claimableSplit={OurProxy}
                         Router={Router}
-                        handleClick={() => handleClickThumbnail(OurProxy, false)}
+                        handleClick={() =>
+                          handleClickThumbnail(OurProxy, false)
+                        }
                       />
                     );
                   })}
@@ -123,7 +132,7 @@ const SplitDashboard = () => {
         )}
       </div>
     </PageLayout>
-  )
+  );
 };
 
 export default SplitDashboard;

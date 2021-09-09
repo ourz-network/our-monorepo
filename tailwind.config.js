@@ -13,9 +13,9 @@ module.exports = {
       center: true,
     },
     extend: {
-      backgroundImage: theme=> (({
-        'zorb': "url('public/ourZorb.png')"
-      })),
+      backgroundImage: (theme) => ({
+        zorb: "url('public/ourZorb.png')",
+      }),
       screens: {
         "2k": "2560px",
         "": "",

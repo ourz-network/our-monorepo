@@ -31,6 +31,10 @@ export const getPostByID = async (id) => {
           return undefined;
         }
 
+        if (metadata?.external_url != 'www.ourz.network') {
+          return undefined
+        }
+
         let post = Object.assign({ metadata: metadata }, media);
         // console.log(
         //   `Functions.js - getPostByID \ntokenId: ${id} \npost: `,

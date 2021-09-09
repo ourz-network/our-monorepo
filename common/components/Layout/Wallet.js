@@ -128,8 +128,8 @@ const Wallet = () => {
                               </Link>
                             )}
                             <Link href={`/dashboard`} passHref>
-                              <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary whitespace-nowrap">  
-                                  Manage Splits
+                              <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary whitespace-nowrap">
+                                Manage Splits
                               </div>
                             </Link>
                             <button
@@ -152,7 +152,6 @@ const Wallet = () => {
       </Popover>
       <Link href={`/create`} passHref={true}>
         <Button
-          key="Go to /create"
           text={network?.name == "rinkeby" ? `Create` : `Switch to Rinkeby`}
           isMain={true}
         />
@@ -162,7 +161,6 @@ const Wallet = () => {
     // Else if user is not authenticated
     <div className="items-center justify-end mt-2 md:mt-0 lg:mr-8 md:flex md:flex-1 lg:w-0">
       <Button
-        key="Login"
         text="Connect Wallet"
         isMain={true}
         onClick={authenticateWithLoading}

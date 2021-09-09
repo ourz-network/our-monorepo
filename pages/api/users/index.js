@@ -29,10 +29,7 @@ export default async function handler(req, res) {
       break;
     case "POST":
       // console.log("signupApi req", req.body);
-      const {
-        ethAddress,
-        username
-      } = req.body;
+      const { ethAddress, username } = req.body;
 
       try {
         let user;

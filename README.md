@@ -2,11 +2,10 @@
 
 Home to the front-end of ourz.network.
 
-WIP. 
+WIP.
 
 `npm i`
 
 create env.local (see env.template)
 
 `npm run dev`
-

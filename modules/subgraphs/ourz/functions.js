@@ -1,5 +1,9 @@
 import ourzSubgraph from "./index"; // Apollo Client
-import { SPLITS_BY_OWNER, SPLITS_BY_RECIPIENT, RECIPIENTS_BY_ID } from "./queries"; // GraphQL Queries
+import {
+  SPLITS_BY_OWNER,
+  SPLITS_BY_RECIPIENT,
+  RECIPIENTS_BY_ID,
+} from "./queries"; // GraphQL Queries
 
 /**
  * Collect Split Proxies owned by a specific address

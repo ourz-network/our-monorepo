@@ -120,10 +120,10 @@ const HomepageNFT = (props) => {
         className={`${aspectRatio} landingPage-item shadow-deep transition-shadow cursor-hover`}
       >
         <div className="flex flex-col w-full h-full cursor-pointer xl:h-full ">
-          <Link 
+          <Link
             href={{
-              pathname: '/nft/[tokenId]',
-              query: { tokenId: tokenId }, 
+              pathname: "/nft/[tokenId]",
+              query: { tokenId: tokenId },
             }}
             passHref={true}
           >
@@ -152,10 +152,7 @@ const HomepageNFT = (props) => {
         className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent cursor-hover`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">
-          <Link 
-            pathname={`/nft/${tokenId}`} 
-            passHref={true}
-          >
+          <Link href={`/nft/${tokenId}`} passHref={true}>
             <div className="relative object-cover w-full h-full bg-transparent">
               {contentURI && (
                 <Image
