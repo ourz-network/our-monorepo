@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import makeBlockie from "ethereum-blockies-base64"; // Ethereum avatar
 import { toTrimmedAddress } from "@/ethereum/utils";
 import axios from "axios";
-import FormModal from "../FormModal";
+import ProfileForm from "@/components/Profile/ProfileForm";
 import Image from "next/image";
 
 export const ProfileHeader = ({
@@ -62,7 +62,7 @@ export const ProfileHeader = ({
           <h3>{user?.username && `@${user.username}`}</h3>
         </div>
         {showModal && (
-          <FormModal
+          <ProfileForm
             modalType={user?.username ? "editProfile" : "signUp"}
             User={user}
             profileDetails={profileDetails}

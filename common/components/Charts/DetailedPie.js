@@ -1,9 +1,9 @@
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import { useState } from "react";
 
-const PieChartPreview = (props) => {
+const DetailedPie = (props) => {
   const chartData = props.chartData;
-  // console.log(`PieChartPreview - chartData\n`, chartData);
+  // console.log(`DetailedPie - chartData\n`, chartData);
   const secondaryBool = props.secondaryBool;
   // https://recharts.org/en-US/examples/TwoLevelPieChart
   // https://recharts.org/en-US/examples/CustomActiveShapePieChart
@@ -128,4 +128,4 @@ const PieChartPreview = (props) => {
   return renderPieChart;
 };
 
-export default PieChartPreview;
+export default DetailedPie;

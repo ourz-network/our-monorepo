@@ -1,5 +1,5 @@
 import ProfileHeader from "@/components/Profile/ProfileHeader";
-import ProfilePageNFT from "@/components/Cards/ProfilePageNFT";
+import ProfileNFT from "@/components/Cards/ProfileNFT";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import Head from "next/head";
 
@@ -60,7 +60,7 @@ export const Profile = ({
                 return (
                   // Return Post component
                   <div key={i} className="flex justify-center w-full h-full">
-                    <ProfilePageNFT
+                    <ProfileNFT
                       tokenId={post.id}
                       username={user ? user.username : null}
                       address={linkAddress ? linkAddress : null}

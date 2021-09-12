@@ -2,33 +2,22 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import web3 from "@/app/web3";
 import { useRouter } from "next/router";
+import AuctionForm from "@/components/Dashboard/AuctionForm";
 
-const SplitQuickview = ({
-  split,
-  isOwned,
-  showQuickview,
-  setShowQuickview,
-  setShowDashboard,
-  setActiveDashboard,
+const ActionDialog = ({
+  children,
+  showDialog,
+  setShowDialog
 }) => {
-  const { createZoraAuction } = web3.useContainer();
   const Router = useRouter();
 
-  const [open, setOpen] = useState(showQuickview ? true : false);
+  const [open, setOpen] = useState(showDialog ? true : false);
 
-  const handleClickManageSplit = () => {
-    setActiveDashboard("curation");
-    hide();
-    setShowDashboard(true);
-  };
-
-  const hide = () => {
-    setShowQuickview(false);
-  };
+console.log(`actionDialog: ${open}`);
 
   return (
     <>
-      <Transition.Root show={showQuickview} as={Fragment}>
+      <Transition.Root show={showDialog} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-50 overflow-y-auto"
@@ -71,49 +60,15 @@ const SplitQuickview = ({
                 <div className="relative flex items-center w-full px-4 pb-8 overflow-hidden border shadow-2xl bg-dark-background border-dark-border pt-14 sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                   <button
                     type="button"
+                    href="#"
+                    tabIndex="0"
                     className="absolute text-dark-primary top-4 right-4 hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
-                    onClick={() => setShowQuickview(false)}
+                    onClick={() => setShowDialog(false)}
                   >
                     <span className="">Close</span>
                     {/* <XIcon className="w-6 h-6" aria-hidden="true" /> */}
                   </button>
-
-                  <div className="grid items-start w-full grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
-                    <div className="w-48 h-48 m-auto overflow-hidden bg-center bg-cover rounded-lg bg-zorb aspect-w-2 aspect-h-3 sm:col-span-4 lg:col-span-5"></div>
-                    <div className="sm:col-span-8 lg:col-span-7">
-                      <h1 className="text-lg font-bold text-dark-primary">
-                        {split.nickname}
-                      </h1>
-                      <h2 className="text-sm font-extrabold text-dark-secondary sm:pr-12">
-                        {split.id}
-                      </h2>
-                      <p className="text-2xl text-dark-primary">
-                        {split.creations.length} NFT(s) minted
-                      </p>
-
-                      <section
-                        aria-labelledby="options-heading"
-                        className="mt-10"
-                      >
-                        <h3 id="options-heading" className="sr-only">
-                          Product options
-                        </h3>
-
-                        <div>
-                          <h4 className="text-sm font-medium whitespace-pre-wrap text-dark-primary">
-                            {split.ETH} ETH unclaimed in Split.
-                          </h4>
-                        </div>
-                        <button
-                          type="submit"
-                          className="flex items-center justify-center w-full px-8 py-3 mt-6 text-base font-medium border border-transparent rounded-md bg-ourange-300 text-dark-primary hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-800"
-                          onClick={() => handleClickManageSplit()}
-                        >
-                          Manage This Split
-                        </button>
-                      </section>
-                    </div>
-                  </div>
+                {children}
                 </div>
               </div>
             </Transition.Child>
@@ -124,4 +79,4 @@ const SplitQuickview = ({
   );
 };
 
-export default SplitQuickview;
+export default ActionDialog;

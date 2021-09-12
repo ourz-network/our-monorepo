@@ -3,17 +3,20 @@ import PageLayout from "@/components/Layout/PageLayout";
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
 import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
-import DashboardSplit from "@/components/Cards/DashboardSplit";
+import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
+import NewSplit from "@/modules/Create/NewSplit";
 
 const CreateDashboard = () => {
   const [loading, setLoading] = useState(true); // Global loading state
   const [ownedSplits, setOwnedSplits] = useState([]);
+  const [newSplit, setNewSplit] = useState(false)
   const { address, network } = web3.useContainer();
+
   const Router = useRouter();
 
   const handleClick = (id) => {
-    Router.push(`/create/new-mint/${id}`);
+    Router.push(`/create/mint/${id}`);
   };
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const CreateDashboard = () => {
       const splits = await getOwnedSplits(ethAddress);
       if (splits) {
         setOwnedSplits(splits);
-        console.log(`User ${address} - OwnedSplits:\n`, ownedSplits);
+        // console.log(`User ${address} - OwnedSplits:\n`, ownedSplits);
       }
       setLoading(false);
     }
@@ -33,6 +36,10 @@ const CreateDashboard = () => {
 
   return (
     <PageLayout>
+      {newSplit &&
+        <NewSplit />
+      }
+
       <div className="flex flex-col w-full h-full bg-dark-background">
         {loading || network.name != "rinkeby" ? (
           <p className="px-4 py-2 mx-auto mt-16 border border-dark-border animate-pulse text-dark-primary">
@@ -45,9 +52,10 @@ const CreateDashboard = () => {
               <Button
                 isMain={true}
                 text="Create New Split"
-                onClick={() => Router.push(`/create/new-split`)}
+                onClick={() => setNewSplit(true)}
               />
             </div>
+
             {ownedSplits ? (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">
@@ -56,7 +64,7 @@ const CreateDashboard = () => {
                 <div className="grid w-5/6 h-full grid-cols-3 gap-8 mx-auto mt-4 auto-rows-min">
                   {ownedSplits.map((OurProxy, i) => {
                     return (
-                      <DashboardSplit
+                      <SplitThumb
                         key={i}
                         ownedSplit={OurProxy}
                         handleClick={() => handleClick(OurProxy.id)}
@@ -72,6 +80,7 @@ const CreateDashboard = () => {
             )}
           </>
         )}
+
       </div>
     </PageLayout>
   );

@@ -3,7 +3,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import { ethers } from "ethers";
-import PieChartPreview from "@/components/PieChartPreview";
+import DetailedPie from "@/components/Charts/DetailedPie";
 
 const NewSplit = () => {
   const Router = useRouter();
@@ -15,6 +15,8 @@ const NewSplit = () => {
     role: "",
     shares: 100,
   });
+
+  const [nickname, setNickname] = useState()
 
   const [chartData, setChartData] = useState([
     { name: "Creator", shares: 100 },
@@ -42,11 +44,12 @@ const NewSplit = () => {
     // console.log(`splitData \n`, splitData);
     console.log(`calling newProxy in web3..`);
     const proxyAddress = await newProxy(
-      controlledFields // received as 'splitData'
+      controlledFields, // received as 'splitData'
+      nickname, // received as 'splitData'
     );
 
     if (proxyAddress) {
-      Router.push(`/create/new-mint/${proxyAddress}`);
+      Router.push(`/create/mint/${proxyAddress}`);
       // console.log(proxyAddress);
       // setLoading(false);
     }
@@ -136,10 +139,12 @@ const NewSplit = () => {
             </label>
           </div>
           <div className="w-full mx-auto -my-32 max-w-500px">
-            <PieChartPreview chartData={chartData} secondaryBool={false} />
+            <DetailedPie chartData={chartData} secondaryBool={false} />
           </div>
         </div>
         <form className="justify-center w-full -mt-1 text-center">
+          <label htmlFor="nickname">Nickname for Split:</label>
+          <input type="text" id="splitNickname" name="nickname" placeholder="Nickname" onChange={(e) => setNickname(e.target.value)} />
           <div className="flex flex-col justify-center w-full border-b">
             <ul className="z-10 flex flex-col w-full mt-4">
               <li className="flex justify-center w-full mx-auto mb-3 space-x-3 flex-nowrap">

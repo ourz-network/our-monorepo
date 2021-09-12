@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
 import axios from "axios";
 
-const HomepageNFT = (props) => {
+const HomeNFT = (props) => {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -28,7 +28,7 @@ const HomepageNFT = (props) => {
       if (dirtyContentURI.match(regexIPFS)) {
         // console.log(dirtyContentURI);
         const IPFShash = regexIPFS.exec(dirtyContentURI).groups.IPFShash;
-        // console.log(`HomepageNFT.js\n   - HomeThumb\n   - IPFShash:\n${IPFShash}`);
+        // console.log(`HomeNFT.js\n   - HomeThumb\n   - IPFShash:\n${IPFShash}`);
         setContentURI(`https://ipfs.io/ipfs/` + `${IPFShash}`);
       } else {
         setContentURI(dirtyContentURI);
@@ -50,7 +50,7 @@ const HomepageNFT = (props) => {
   const [aspectRatio, setAspectRatio] = useState();
 
   const calcAspectRatio = (loadedMedia) => {
-    // console.log(`HomepageNFT.js - loadedMedia:\n`, loadedMedia);
+    // console.log(`HomeNFT.js - loadedMedia:\n`, loadedMedia);
     let ratio;
     let width;
     let height;
@@ -176,4 +176,4 @@ const HomepageNFT = (props) => {
   } else return null;
 };
 
-export default HomepageNFT;
+export default HomeNFT;

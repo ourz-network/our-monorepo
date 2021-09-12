@@ -359,11 +359,11 @@ function useWeb3() {
     const auctionTx = await proxyPylon.createZoraAuction(
       tokenId,
       //zora media rinkeby
-      "0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4",
-      // ethers.BigNumber.from(duration),
-      parseUnits(`${reservePrice}`, "ether"),
+      tokenContract,
+      duration,
+      // parseUnits(`${reservePrice}`, "ether"),
       // ethers.BigNumber.from(reservePrice),
-      parseUnits(`${reservePrice}`, "ether"),
+      ethers.utils.parseUnits(`${reservePrice}`, "ether"),
       curator || proxyAddress,
       curatorFeePercentage || Number(0),
       auctionCurrency || "0x0000000000000000000000000000000000000000"

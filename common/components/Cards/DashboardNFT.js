@@ -1,36 +1,41 @@
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
-import React, { useContext } from "react"; // React state management
+import React, { useContext, useState } from "react"; // React state management
 import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { toTrimmedAddress } from "@/ethereum/utils";
 import {
   NFTPreview,
   NFTDataContext,
-  MediaConfiguration,
 } from "@zoralabs/nft-components";
 
-const ProfilePageNFT = (props) => {
-  // console.log(`ProfilePageNFT.js - props: ${JSON.stringify(props)}`)
-  const tokenId = props.tokenId;
-  const username = props.username;
-  const address = props.address;
+const DashboardNFT = ({
+  split,
+  tokenId,
+  onClick
+}) => {
   let name;
+
+  const [hidden, setHidden] = useState(false)
+
   const ProfileThumb = () => {
     const { nft } = useContext(NFTDataContext);
+    console.log(nft);
     if (!nft.data?.nft) {
       return null;
     }
-
-    // console.log(`ProfilePageNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);
+    if (nft.data?.owner != split.id) {
+      setHidden(true)
+    }
+    console.log(`DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);
     let contentURI = nft.data.zoraNFT.contentURI;
     const regexIPFS = /https\:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
 
     if (contentURI.match(regexIPFS)) {
       const IPFShash = regexIPFS.exec(contentURI).groups.IPFShash;
-      // console.log(`ProfilePageNFT.js\n   - ProfileThumb\n   - IPFShash:\n${IPFShash}`);
+      console.log(`DashboardNFT.js\n   - ProfileThumb\n   - IPFShash:\n${IPFShash}`);
 
       contentURI = `https://ipfs.io/ipfs/` + `${IPFShash}`;
-      // console.log(`ProfilePageNFT.js\n   - ProfileThumb\n   - contentURI:\n${JSON.stringify(contentURI)}`);
+      console.log(`DashboardNFT.js\n   - ProfileThumb\n   - contentURI:\n${JSON.stringify(contentURI)}`);
 
       return (
         <Link href={`/nft/${tokenId}`} passHref>
@@ -58,8 +63,8 @@ const ProfilePageNFT = (props) => {
     } else if (metadata.attributes) {
       const creatorAddress = nft.data.nft.creator;
       name = metadata.name;
-      // console.log(`metadata: `, metadata);
-      // console.log(`ProfilePageNFT.js\n   - TitleAuthor\n   - nft.data:\n${JSON.stringify(nft.data.nft.creator)}`);
+      console.log(`metadata: `, metadata);
+      console.log(`DashboardNFT.js\n   - TitleAuthor\n   - nft.data:\n${JSON.stringify(nft.data.nft.creator)}`);
 
       return (
         <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
@@ -76,43 +81,18 @@ const ProfilePageNFT = (props) => {
   };
 
   return (
-    <div className="m-auto">
-      <MediaConfiguration
-        networkId="4"
-        style={{
-          theme: {
-            borderStyle: "1px solid #4D4D4D", //dark-border
-            defaultBorderRadius: 0,
-            lineSpacing: 28,
-            // headerFont: "color: #691900;",
-            // titleFont: "color: #FF7246;", //dark-primary
-            bodyFont: "color: #FFFFFF;", //dark-primary
-            linkColor: "#FF7246", //ourange-300
-            previewCard: {
-              background: "#060606", //dark-background
-              height: "330px",
-              width: "330px",
-            },
-            // cardItemInfo: {
-            //   display: none
-            // },
-            cardAuctionPricing: {
-              display: "hidden",
-            },
-          },
-          cardItemInfo: {
-            display: "hidden",
-          },
-        }}
-      >
-        <NFTPreview id={tokenId}>
-          {/* <PreviewComponents.MediaThumbnail /> */}
-          <ProfileThumb />
-          <TitleAuthor />
-        </NFTPreview>
-      </MediaConfiguration>
-    </div>
+    <>
+      {!hidden &&
+        <div className="w-full h-full m-auto">
+          <NFTPreview id={tokenId} onClick={onClick}>
+            {/* <PreviewComponents.MediaThumbnail /> */}
+            <ProfileThumb />
+            <TitleAuthor />
+          </NFTPreview>
+        </div>
+      }
+    </>
   );
 };
 
-export default ProfilePageNFT;
+export default DashboardNFT;

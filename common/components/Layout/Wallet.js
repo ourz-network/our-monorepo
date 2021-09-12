@@ -113,7 +113,7 @@ const Wallet = () => {
                             {/* see comments above */}
                             {signerProfile ? (
                               <Link
-                                href={`/${signerProfile.username_lower}`}
+                                href={`/profile/${signerProfile.username_lower}`}
                                 passHref
                               >
                                 <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary">

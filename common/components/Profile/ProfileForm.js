@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 let cancel;
 
 // This modal allows connected wallets to sign up/edit their profile
-const FormModal = ({
+const ProfileForm = ({
   modalType,
   User,
   linkAddress,
@@ -150,7 +150,7 @@ const FormModal = ({
         if (verifiedSignature) {
           const res = await axios.put(`/api/users/${username}`, formData);
 
-          // console.log(`formModal update profile -  \nres :\n`, res);
+          // console.log(`ProfileForm update profile -  \nres :\n`, res);
           // Throw error with status code in case Fetch API req failed
           if (res.data != "Success") {
             throw new Error(res.status);
@@ -185,7 +185,7 @@ const FormModal = ({
         setUsernameAvailable(false);
         return;
       }
-      // console.log(`FormModal.js\n   - CheckUsername\n   - res:\n`, res);
+      // console.log(`ProfileForm.js\n   - CheckUsername\n   - res:\n`, res);
       setErrorMsg(null);
     } catch (error) {
       setUsernameAvailable(true);
@@ -203,7 +203,7 @@ const FormModal = ({
 
   const registerUser = async () => {
     try {
-      // console.log("FormModal registerUser", address, user.username);
+      // console.log("ProfileForm registerUser", address, user.username);
       const username = user.username;
       const res = await axios.post(`/api/signup`, { address, username });
       // console.log(res.data);
@@ -454,4 +454,4 @@ const FormModal = ({
   );
 };
 
-export default FormModal;
+export default ProfileForm;

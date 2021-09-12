@@ -2,7 +2,7 @@ import Head from "next/head";
 import PageLayout from "@/components/Layout/PageLayout";
 import React, { useState } from "react"; // React state management
 import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post collection helper
-import HomepageNFT from "@/components/Cards/HomepageNFT";
+import HomeNFT from "@/components/Cards/HomeNFT";
 import { Zora } from "@zoralabs/zdk";
 import { ethers } from "ethers";
 
@@ -14,7 +14,7 @@ const Home = (props) => {
 
   const collectMore = async () => {
     setLoading(true); // Toggle button loading
-    
+
     let newPosts = [];
     // For numPosts ... max(numPosts - 24, 0)
     for (let i = numPosts; i >= numPosts - 23; i--) {
@@ -49,7 +49,7 @@ const Home = (props) => {
                   // For each Zora post
                   return (
                     // Return Post component
-                    <HomepageNFT key={i} tokenId={post.id} />
+                    <HomeNFT key={i} tokenId={post.id} />
                   );
                 })}
               </div>

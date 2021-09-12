@@ -23,11 +23,3 @@ export const checkForProfile = async (web3Address) => {
     return null;
   }
 };
-
-export const checkForOwnedSplits = async (userId) => {
-  try {
-    const res = await axios.get(`/api/users/${web3Address}`);
-  } catch (error) {
-    return null;
-  }
-};
