@@ -119,7 +119,7 @@ const HomeNFT = (props) => {
       <div
         className={`${aspectRatio} landingPage-item shadow-deep transition-shadow cursor-hover`}
       >
-        <div className="flex flex-col w-full h-full cursor-pointer xl:h-full ">
+        {/* <div className="flex flex-col w-full h-full cursor-pointer xl:h-full ">
           <Link
             href={{
               pathname: "/nft/[tokenId]",
@@ -143,7 +143,7 @@ const HomeNFT = (props) => {
               )}
             </div>
           </Link>
-        </div>
+        </div> */}
       </div>
     );
   } else if (metadata?.mimeType?.includes("image")) {
