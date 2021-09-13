@@ -6,6 +6,7 @@ import { toTrimmedAddress } from "@/ethereum/utils";
 import {
   NFTPreview,
   NFTDataContext,
+  PreviewComponents,
 } from "@zoralabs/nft-components";
 
 const DashboardNFT = ({
@@ -24,7 +25,7 @@ const DashboardNFT = ({
     if (!nft.data?.nft) {
       return null;
     }
-    if (nft.data?.owner != split.id && isCreation) {
+    if ((nft.data?.owner != split.id) && isCreation) {
       setHidden(true)
     }
     console.log(`DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);
@@ -83,15 +84,15 @@ const DashboardNFT = ({
 
   return (
     <>
-      {!hidden &&
+      {/* {!hidden && */}
         <div className="w-full h-full m-auto">
           <NFTPreview id={tokenId} onClick={onClick}>
             {/* <PreviewComponents.MediaThumbnail /> */}
             <ProfileThumb />
-            <TitleAuthor />
+            <PreviewComponents.PricingComponent />
           </NFTPreview>
         </div>
-      }
+      {/* } */}
     </>
   );
 };

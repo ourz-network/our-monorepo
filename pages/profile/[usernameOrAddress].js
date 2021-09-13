@@ -28,7 +28,7 @@ const ProfilePage = ({
   useEffect(() => {
     // Static Redirect
     if (redirectUsername) {
-      router.push(`/${redirectUsername}`);
+      router.push(`/profile/${redirectUsername}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redirectUsername]);

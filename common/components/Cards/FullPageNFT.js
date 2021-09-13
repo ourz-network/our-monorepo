@@ -62,10 +62,14 @@ const FullPageNFT = (props) => {
         <div className="flex flex-col content-center w-full mb-6 xl:flex-row">
           <div className="flex flex-col xl:w-7/12">
             <FullComponents.MediaInfo />
+            <FullComponents.AuctionInfo />
+            <div className="self-end my-2">
+              <FullComponents.PlaceOfferButton />
+            </div>
+            <FullComponents.BidHistory />
             <div className="my-2">
               <FullComponents.ProofAuthenticity />
             </div>
-            <FullComponents.BidHistory />
           </div>
           <div className="flex flex-col justify-between xl:mt-0 xl:w-5/12 xl:ml-6">
             <div className="mb-2">

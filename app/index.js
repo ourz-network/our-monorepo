@@ -19,9 +19,9 @@ export default function GlobalProvider({ children }) {
               bodyFont: "color: #FFFFFF;", //dark-primary
               linkColor: "#FF7246", //ourange-300
               buttonColor: {
-                primaryBackground: "#000",
+                primaryBackground: "#FFF",
                 primaryText: "#000",
-                background: "#000",
+                background: "#000"
               },
               previewCard: {
                 background: "#060606", //dark-background
