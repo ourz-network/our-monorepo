@@ -2,22 +2,29 @@ import { useRouter } from "next/router";
 import PageLayout from "@/components/Layout/PageLayout";
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
-import { getOwnedSplits } from "@/modules/graphProtocol/ourz/functions"; // Post retrieval function
-import DashboardSplit from "@/components/Cards/DashboardSplit";
+import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
+import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
+import NewSplit from "@/modules/Create/NewSplit";
 
 const CreateDashboard = () => {
   const [loading, setLoading] = useState(true); // Global loading state
   const [ownedSplits, setOwnedSplits] = useState([]);
+  const [newSplit, setNewSplit] = useState(false)
   const { address, network } = web3.useContainer();
+
   const Router = useRouter();
+
+  const handleClick = (id) => {
+    Router.push(`/create/mint/${id}`);
+  };
 
   useEffect(() => {
     async function collectOwnedSplits(ethAddress) {
       const splits = await getOwnedSplits(ethAddress);
       if (splits) {
         setOwnedSplits(splits);
-        console.log(`User ${address} - OwnedSplits:\n`, ownedSplits);
+        // console.log(`User ${address} - OwnedSplits:\n`, ownedSplits);
       }
       setLoading(false);
     }
@@ -29,7 +36,11 @@ const CreateDashboard = () => {
 
   return (
     <PageLayout>
-      <div className="flex flex-col w-full h-full bg-dark-background">
+      {newSplit &&
+        <NewSplit />
+      }
+
+      <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
         {loading || network.name != "rinkeby" ? (
           <p className="px-4 py-2 mx-auto mt-16 border border-dark-border animate-pulse text-dark-primary">
             Loading... Please connect your wallet to Rinkeby if you
@@ -41,25 +52,22 @@ const CreateDashboard = () => {
               <Button
                 isMain={true}
                 text="Create New Split"
-                onClick={() => Router.push(`/create/new-split`)}
+                onClick={() => setNewSplit(true)}
               />
             </div>
+
             {ownedSplits ? (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">
-                  Splits You Manage:
+                  Splits that you can mint an NFT for:
                 </h1>
                 <div className="grid w-5/6 h-full grid-cols-3 gap-8 mx-auto mt-4 auto-rows-min">
                   {ownedSplits.map((OurProxy, i) => {
                     return (
-                      <DashboardSplit
+                      <SplitThumb
                         key={i}
-                        proxyAddress={OurProxy.id}
-                        ownerAddresses={OurProxy.proxyOwners}
-                        ethAvailable={OurProxy.ETH}
-                        createdNFTs={OurProxy.creations}
-                        recipients={OurProxy.splitRecipients}
-                        Router={Router}
+                        ownedSplit={OurProxy}
+                        handleClick={() => handleClick(OurProxy.id)}
                       />
                     );
                   })}
@@ -72,6 +80,7 @@ const CreateDashboard = () => {
             )}
           </>
         )}
+
       </div>
     </PageLayout>
   );

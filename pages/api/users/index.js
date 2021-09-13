@@ -29,17 +29,14 @@ export default async function handler(req, res) {
       break;
     case "POST":
       // console.log("signupApi req", req.body);
-      const {
-        ethAddress,
-        username
-      } = req.body;
+      const { ethAddress, username } = req.body;
 
       try {
         let user;
         user = await UserModel.findOne({ ethAddress: ethAddress });
         user = await UserModel.findOne({ username: username });
         user = await UserModel.findOne({
-          username_lower: username.toLowerCase(),
+          username_lower: username?.toLowerCase(),
         });
 
         if (user) {
@@ -50,7 +47,7 @@ export default async function handler(req, res) {
         user = new UserModel({
           ethAddress: ethAddress,
           username: username,
-          username_lower: username.toLowerCase(),
+          username_lower: username?.toLowerCase(),
         });
 
         console.log("Attempting to create new user...");

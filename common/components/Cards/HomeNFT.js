@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
 import axios from "axios";
 
-const HomepageNFT = (props) => {
+const HomeNFT = (props) => {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -28,7 +28,7 @@ const HomepageNFT = (props) => {
       if (dirtyContentURI.match(regexIPFS)) {
         // console.log(dirtyContentURI);
         const IPFShash = regexIPFS.exec(dirtyContentURI).groups.IPFShash;
-        // console.log(`HomepageNFT.js\n   - HomeThumb\n   - IPFShash:\n${IPFShash}`);
+        // console.log(`HomeNFT.js\n   - HomeThumb\n   - IPFShash:\n${IPFShash}`);
         setContentURI(`https://ipfs.io/ipfs/` + `${IPFShash}`);
       } else {
         setContentURI(dirtyContentURI);
@@ -50,7 +50,7 @@ const HomepageNFT = (props) => {
   const [aspectRatio, setAspectRatio] = useState();
 
   const calcAspectRatio = (loadedMedia) => {
-    // console.log(`HomepageNFT.js - loadedMedia:\n`, loadedMedia);
+    // console.log(`HomeNFT.js - loadedMedia:\n`, loadedMedia);
     let ratio;
     let width;
     let height;
@@ -117,10 +117,16 @@ const HomepageNFT = (props) => {
   if (metadata?.mimeType?.includes("video")) {
     return (
       <div
-        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow`}
+        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow cursor-hover`}
       >
         <div className="flex flex-col w-full h-full cursor-pointer xl:h-full ">
-          <Link href={`/nft/${tokenId}`} passHref={true}>
+          <Link
+            href={{
+              pathname: "/nft/[tokenId]",
+              query: { tokenId: tokenId },
+            }}
+            passHref={true}
+          >
             <div className="relative object-cover w-full h-full bg-transparent">
               {contentURI && (
                 <video
@@ -143,10 +149,16 @@ const HomepageNFT = (props) => {
   } else if (metadata?.mimeType?.includes("image")) {
     return (
       <div
-        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent`}
+        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent cursor-hover`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">
-          <Link href={`/nft/${tokenId}`} passHref={true}>
+          <Link 
+            href={{
+              pathname: "/nft/[tokenId]",
+              query: { tokenId: tokenId },
+            }} 
+            passHref={true}
+          >
             <div className="relative object-cover w-full h-full bg-transparent">
               {contentURI && (
                 <Image
@@ -170,4 +182,4 @@ const HomepageNFT = (props) => {
   } else return null;
 };
 
-export default HomepageNFT;
+export default HomeNFT;

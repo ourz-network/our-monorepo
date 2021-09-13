@@ -1,5 +1,5 @@
 import React from "react";
-import PieChartPreview from "@/components/PieChartPreview";
+import DetailedPie from "@/components/Charts/DetailedPie";
 import Button from "@/components/Button";
 
 const MintConfirm = (props) => {
@@ -31,7 +31,7 @@ const MintConfirm = (props) => {
                 First Sale:
               </p>
               <div className="z-10 w-full mx-auto -my-32 max-w-500px">
-                <PieChartPreview chartData={firstSale} secondaryBool={false} />
+                <DetailedPie chartData={firstSale} secondaryBool={false} />
               </div>
             </div>
             <div className="flex flex-col w-1/2">
@@ -39,7 +39,7 @@ const MintConfirm = (props) => {
                 Secondary Sales:
               </p>
               <div className="z-10 w-full mx-auto -my-32 max-w-500px">
-                <PieChartPreview
+                <DetailedPie
                   chartData={secondarySales}
                   secondaryBool={true}
                 />

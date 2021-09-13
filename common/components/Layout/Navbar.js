@@ -60,7 +60,7 @@ const Navbar = () => {
 
   return (
     <div id="navContainer">
-      <Popover className="relative z-30 flex items-center h-16 border-b border-dark-border bg-dark-background">
+      <Popover className="relative z-30 flex items-center pb-2 border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
         {({ open }) => (
           <>
             <div className="w-5/6 mx-auto">
@@ -220,7 +220,7 @@ const Navbar = () => {
                     {/* If user is logged in, show link to their creations */}
                     {address && (
                       <h3>
-                        <Link href={`/${address}`}>
+                        <Link href={`/profile/${address}`}>
                           <a className="">Your Creations</a>
                         </Link>
                       </h3>

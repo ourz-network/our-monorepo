@@ -1,6 +1,6 @@
 import NewMintMultistepForm from "@/modules/Create/NewMintMultistepForm";
 import { useRouter } from "next/router";
-import { getSplitRecipients } from "@/modules/graphProtocol/ourz/functions";
+import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions";
 import { useState, useEffect } from "react";
 
 const MintNFTFromExistingSplit = () => {

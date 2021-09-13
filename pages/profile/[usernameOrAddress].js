@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
-import zoraSubgraph from "@/modules/graphProtocol/zora/index"; // GraphQL client
-import { getPostByID } from "@/modules/graphProtocol/zora/functions"; // Post retrieval function
-import { ZORA_MEDIA_BY_OWNER } from "@/modules/graphProtocol/zora/queries"; // Retrieval query
+import zoraSubgraph from "@/modules/subgraphs/zora/index"; // GraphQL client
+import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post retrieval function
+import { ZORA_MEDIA_BY_OWNER } from "@/modules/subgraphs/zora/queries"; // Retrieval query
 import Profile from "@/components/Profile/Profile";
 import connectDB from "@/modules/mongodb/utils/connectDB";
 import UserModel from "@/modules/mongodb/models/UserModel";
@@ -28,7 +28,7 @@ const ProfilePage = ({
   useEffect(() => {
     // Static Redirect
     if (redirectUsername) {
-      router.push(`/${redirectUsername}`);
+      router.push(`/profile/${redirectUsername}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redirectUsername]);
@@ -79,7 +79,11 @@ const ProfilePage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, linkAddress]); // Collect owned media on load
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <p className="px-4 py-2 m-auto place-self-center text-centeer animate-pulse text-dark-bg">
+        Redirecting...
+      </p>
+    );
   }
   return (
     <Profile
@@ -219,7 +223,7 @@ export async function getStaticProps(context) {
           followingLength: followingLength,
           postsToSet: postsToSet || null,
         },
-        revalidate: 15,
+        revalidate: 5,
       };
     } catch (error) {
       console.log(error);

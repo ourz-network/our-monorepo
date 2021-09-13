@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import SinglePageViewNFT from "@/components/Cards/SinglePageViewNFT";
+import FullPageNFT from "@/components/Cards/FullPageNFT";
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
-import { getSplitRecipients } from "@/modules/graphProtocol/ourz/functions"; // GraphQL client
+import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 
 const NFTView = ({ tokenId, creator, recipients }) => {
   console.log(`tokenId: ${tokenId}\nrecipients: ${recipients}`);
@@ -77,7 +77,7 @@ const NFTView = ({ tokenId, creator, recipients }) => {
           <p className="mx-auto text-center text-dark-primary"> 
             one moment please...
           </p>} */}
-        <SinglePageViewNFT
+        <FullPageNFT
           tokenId={tokenId}
           ownAccount={true}
           chartData={firstSale}

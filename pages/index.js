@@ -1,8 +1,8 @@
 import Head from "next/head";
 import PageLayout from "@/components/Layout/PageLayout";
 import React, { useState } from "react"; // React state management
-import { getPostByID } from "@/modules/graphProtocol/zora/functions"; // Post collection helper
-import HomepageNFT from "@/components/Cards/HomepageNFT";
+import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post collection helper
+import HomeNFT from "@/components/Cards/HomeNFT";
 import { Zora } from "@zoralabs/zdk";
 import { ethers } from "ethers";
 
@@ -12,16 +12,12 @@ const Home = (props) => {
   const [loading, setLoading] = useState(false); // Button loading state
   const [numPosts, setNumPosts] = useState(props.maxSupply); // Number of loadable posts
 
-  /**
-   * Collects more posts (6 at a time, unless < 6 remaining posts)
-   */
   const collectMore = async () => {
-    setNumPosts(numPosts - 12); // Update number of loadable posts count
     setLoading(true); // Toggle button loading
 
     let newPosts = [];
-    // For numPosts ... max(numPosts - 12, 0)
-    for (let i = numPosts; i >= numPosts - 11; i--) {
+    // For numPosts ... max(numPosts - 24, 0)
+    for (let i = numPosts; i >= numPosts - 23; i--) {
       if (i !== 2) {
         // Collect post
         const post = await getPostByID(i);
@@ -31,6 +27,7 @@ const Home = (props) => {
         }
       }
     }
+    setNumPosts(numPosts - 24); // Update number of loadable posts count
 
     setPosts([...posts, ...newPosts]); // Append newPosts to posts array
     setLoading(false); // Toggle button loading
@@ -52,7 +49,7 @@ const Home = (props) => {
                   // For each Zora post
                   return (
                     // Return Post component
-                    <HomepageNFT key={i} tokenId={post.id} />
+                    <HomeNFT key={i} tokenId={post.id} />
                   );
                 })}
               </div>
@@ -103,7 +100,7 @@ export async function getStaticProps() {
   let requests = [];
   let postsToSet = [];
   if (maxSupply) {
-    for (let i = maxSupply; i >= maxSupply - 23; i--) {
+    for (let i = maxSupply; i >= maxSupply - 47; i--) {
       // Collect post
       const post = await getPostByID(i);
       if (post != null) {
@@ -114,7 +111,7 @@ export async function getStaticProps() {
     return {
       props: {
         postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-        maxSupply: JSON.parse(JSON.stringify(Number(maxSupply - 24))),
+        maxSupply: JSON.parse(JSON.stringify(Number(maxSupply - 48))),
       },
       revalidate: 60,
     };

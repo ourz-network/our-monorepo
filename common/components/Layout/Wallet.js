@@ -106,39 +106,38 @@ const Wallet = () => {
                     >
                       <Popover.Panel
                         static
-                        className="absolute z-10 w-screen px-2 mt-6 -ml-4 transform max-w-xxs sm:px-0 lg:-ml-2 lg:left-1/12 lg:-translate-x-1/12"
+                        className="absolute z-10 w-screen px-2 mt-6 -ml-4 transform min-w-min max-w-xxs sm:px-0 lg:-ml-2 lg:left-1/12 lg:-translate-x-1/12"
                       >
                         <div className="overflow-hidden border-2 shadow-lg border-ourange-500 ring-1 ring-ourange-500 ring-opacity-5">
-                          <div className="relative grid gap-3 px-5 pt-2 pb-4 bg-dark-background">
+                          <div className="relative grid gap-4 p-4 bg-dark-background">
                             {/* see comments above */}
                             {signerProfile ? (
                               <Link
-                                href={`/${signerProfile.username_lower}`}
+                                href={`/profile/${signerProfile.username_lower}`}
                                 passHref
                               >
-                                <div className="flex items-center justify-center w-full p-3 mx-auto mt-2 cursor-pointer hover:bg-dark-background">
-                                  <p className="mx-auto text-base font-medium text-dark-primary">
-                                    Profile
-                                  </p>
+                                <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary">
+                                  @{signerProfile.username}
                                 </div>
                               </Link>
                             ) : (
                               <Link href={`/${address}`} passHref>
-                                <div className="flex items-center justify-center w-full p-3 mx-auto mt-2 cursor-pointer hover:bg-dark-background">
-                                  <p className="mx-auto text-base font-medium text-dark-primary">
-                                    Profile
-                                  </p>
+                                <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary">
+                                  Profile
                                 </div>
                               </Link>
                             )}
+                            <Link href={`/dashboard`} passHref>
+                              <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary whitespace-nowrap">
+                                Manage Splits
+                              </div>
+                            </Link>
                             <button
                               key="Logout"
-                              className="flex items-center justify-center w-full p-3 mx-auto cursor-pointer hover:bg-dark-background"
+                              className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary"
                               onClick={handleDeactivate}
                             >
-                              <p className="mx-auto text-base font-medium text-dark-primary">
-                                Disconnect
-                              </p>
+                              Disconnect
                             </button>
                           </div>
                         </div>
@@ -153,7 +152,6 @@ const Wallet = () => {
       </Popover>
       <Link href={`/create`} passHref={true}>
         <Button
-          key="Go to /create"
           text={network?.name == "rinkeby" ? `Create` : `Switch to Rinkeby`}
           isMain={true}
         />
@@ -163,7 +161,6 @@ const Wallet = () => {
     // Else if user is not authenticated
     <div className="items-center justify-end mt-2 md:mt-0 lg:mr-8 md:flex md:flex-1 lg:w-0">
       <Button
-        key="Login"
         text="Connect Wallet"
         isMain={true}
         onClick={authenticateWithLoading}
