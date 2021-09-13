@@ -3,13 +3,10 @@ import Image from "next/image"; // Dynamic routing
 import React, { useContext } from "react"; // React state management
 import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { toTrimmedAddress } from "@/ethereum/utils";
-import {
-  NFTPreview,
-  NFTDataContext,
-} from "@zoralabs/nft-components";
+import { NFTPreview, NFTDataContext } from "@zoralabs/nft-components";
 
 const ProfileNFT = (props) => {
-  console.log(`ProfileNFT.js - props: ${JSON.stringify(props)}`)
+  console.log(`ProfileNFT.js - props: ${JSON.stringify(props)}`);
   const tokenId = props.tokenId;
   const username = props.username;
   const address = props.address;

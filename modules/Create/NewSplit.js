@@ -16,7 +16,7 @@ const NewSplit = () => {
     shares: 100,
   });
 
-  const [nickname, setNickname] = useState()
+  const [nickname, setNickname] = useState();
 
   const [chartData, setChartData] = useState([
     { name: "Creator", shares: 100 },
@@ -45,7 +45,7 @@ const NewSplit = () => {
     console.log(`calling newProxy in web3..`);
     const proxyAddress = await newProxy(
       controlledFields, // received as 'splitData'
-      nickname, // received as 'splitData'
+      nickname // received as 'splitData'
     );
 
     if (proxyAddress) {
@@ -143,8 +143,16 @@ const NewSplit = () => {
           </div>
         </div>
         <form className="justify-center w-full -mt-1 text-center">
-          <label htmlFor="nickname" className="mr-2 text-dark-primary">Nickname for Split:</label>
-          <input type="text" id="splitNickname" name="nickname" placeholder="Nickname" onChange={(e) => setNickname(e.target.value)} />
+          <label htmlFor="nickname" className="mr-2 text-dark-primary">
+            Nickname for Split:
+          </label>
+          <input
+            type="text"
+            id="splitNickname"
+            name="nickname"
+            placeholder="Nickname"
+            onChange={(e) => setNickname(e.target.value)}
+          />
           <div className="flex flex-col justify-center w-full border-b">
             <ul className="z-10 flex flex-col w-full mt-4">
               <li className="flex justify-center w-full mx-auto mb-3 space-x-3 flex-nowrap">

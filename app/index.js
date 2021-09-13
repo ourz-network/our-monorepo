@@ -3,7 +3,6 @@ import { MediaConfiguration } from "@zoralabs/nft-components";
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 
 export default function GlobalProvider({ children }) {
-
   return (
     <NFTFetchConfiguration network={Networks.RINKEBY}>
       <web3.Provider>
@@ -21,7 +20,7 @@ export default function GlobalProvider({ children }) {
               buttonColor: {
                 primaryBackground: "#FFF",
                 primaryText: "#000",
-                background: "#000"
+                background: "#000",
               },
               previewCard: {
                 background: "#060606", //dark-background
@@ -47,7 +46,7 @@ export default function GlobalProvider({ children }) {
         </MediaConfiguration>
       </web3.Provider>
     </NFTFetchConfiguration>
-  )
+  );
 }
 
 export { web3 };

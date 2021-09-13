@@ -18,7 +18,7 @@ module.exports = {
       "gateway.pinata.cloud",
       "ipfs.dweb.link",
       "images.mirror-media.xyz",
-      "media.giphy.com"
+      "media.giphy.com",
     ],
     path: "/_next/image",
     // loader can be 'default', 'imgix', 'cloudinary', 'akamai', or 'custom'

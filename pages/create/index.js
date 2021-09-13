@@ -10,7 +10,7 @@ import NewSplit from "@/modules/Create/NewSplit";
 const CreateDashboard = () => {
   const [loading, setLoading] = useState(true); // Global loading state
   const [ownedSplits, setOwnedSplits] = useState([]);
-  const [newSplit, setNewSplit] = useState(false)
+  const [newSplit, setNewSplit] = useState(false);
   const { address, network } = web3.useContainer();
 
   const Router = useRouter();
@@ -36,9 +36,7 @@ const CreateDashboard = () => {
 
   return (
     <PageLayout>
-      {newSplit &&
-        <NewSplit />
-      }
+      {newSplit && <NewSplit />}
 
       <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
         {loading || network.name != "rinkeby" ? (
@@ -80,7 +78,6 @@ const CreateDashboard = () => {
             )}
           </>
         )}
-
       </div>
     </PageLayout>
   );

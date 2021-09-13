@@ -1,11 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-const ActionDialog = ({
-  children,
-  showDialog,
-  setShowDialog
-}) => {
+const ActionDialog = ({ children, showDialog, setShowDialog }) => {
   const [open, setOpen] = useState(showDialog ? true : false);
 
   return (
@@ -61,7 +57,7 @@ const ActionDialog = ({
                     <span className="">Close</span>
                     {/* <XIcon className="w-6 h-6" aria-hidden="true" /> */}
                   </button>
-                {children}
+                  {children}
                 </div>
               </div>
             </Transition.Child>
