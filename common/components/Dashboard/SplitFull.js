@@ -1,6 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Dialog, RadioGroup, Transition } from "@headlessui/react";
-import web3 from "@/app/web3";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Button from "@/components/Button";
@@ -53,7 +51,6 @@ const SplitFull = ({
               onClick={() => setShowFull(false)}
             >
               <span className="text-ourange-400">Back</span>
-              {/* <XIcon className="w-6 h-6" aria-hidden="true" /> */}
             </button>
             {showDialog && dialog == 'auction' &&
               <ActionDialog
@@ -118,15 +115,14 @@ const SplitFull = ({
           <p className="mt-4 text-2xl text-center text-dark-primary">
             {split?.creations ? split.creations?.length : 0 } NFT(s) minted
           </p>
+          <h1 className="mx-auto mt-2 text-center text-dark-primary">If any NFTs are currently owned by the split, they will be shown below. <br /> Click to start an Auction</h1>
           <div className="flex w-full">
             {isOwned &&
               <>
-                <h1 className="mx-auto mt-2 text-center text-dark-primary">If any NFTs are currently owned by the split, they will be shown below. <br /> Click to start an Auction</h1>
-                <div className="flex flex-col gap-4 mx-4 justify-items-center content-evenly justify-evenly md:grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 max-w-auto">
                   {split?.creations?.length > 0 ? (
                     <div
                       id="medias"
-                      className="w-full h-auto mx-auto"
+                      className="flex flex-col gap-4 mx-4 justify-items-center content-evenly justify-evenly md:grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 max-w-auto"
                     >
                     {split.creations.map((creation, i) => {
                       return (
@@ -145,7 +141,6 @@ const SplitFull = ({
                       ''
                     )
                   }
-                </div>
               </>
             }
             {data && 

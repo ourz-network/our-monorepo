@@ -1,19 +1,12 @@
-import { Fragment, useState, useEffect } from "react";
-import { Dialog, RadioGroup, Transition } from "@headlessui/react";
-import web3 from "@/app/web3";
-import { useRouter } from "next/router";
-import AuctionForm from "@/components/Dashboard/AuctionForm";
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 
 const ActionDialog = ({
   children,
   showDialog,
   setShowDialog
 }) => {
-  const Router = useRouter();
-
   const [open, setOpen] = useState(showDialog ? true : false);
-
-console.log(`actionDialog: ${open}`);
 
   return (
     <>

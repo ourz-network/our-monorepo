@@ -1,16 +1,9 @@
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 
-
 const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
   if (claimableSplit) {
     const recipientsLength = claimableSplit.splitProxy.splitRecipients.length;
-    const creationsLength = claimableSplit.splitProxy.creations.length;
-
-    const yourName = claimableSplit.name;
     const yourRole = claimableSplit.role;
-    const yourShares = claimableSplit.shares;
-    const ethClaimed = claimableSplit.ethClaimed;
-    const ethAvailableToClaim = claimableSplit.splitProxy.ETH;
 
     return (
       <NFTFetchConfiguration network={Networks.RINKEBY}>
@@ -29,15 +22,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
                 ` and ${recipientsLength - 1} other recipient(s)`}
               .
               <br />
-              {/* Your name in this split: {yourName}
-              <br /> */}
               Role: {yourRole}
-              {/* <br />
-              Up to {ethAvailableToClaim} ETH available to claim.
-              <br />
-              You have claimed {ethClaimed} ETH so far. */}
-              <br />
-              {/* {JSON.stringify(auctions.data)} */}
             </p>
           </div>
         </div>
@@ -64,7 +49,6 @@ const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
               <br />
               Minted {creationsLength} NFTs.
               <br />
-              {/* {JSON.stringify(auctions.data)} */}
             </p>
           </div>
         </div>

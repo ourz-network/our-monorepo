@@ -2,7 +2,6 @@ import web3 from "@/app/web3";
 import Button from "@/components/Button"
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useNFT } from "@zoralabs/nft-hooks";
 
 const AuctionForm = ({
   tokenId,

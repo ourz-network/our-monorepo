@@ -2,16 +2,12 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import FullPageNFT from "@/components/Cards/FullPageNFT";
-import { ethers } from "ethers";
-import { Zora } from "@zoralabs/zdk";
 import {
   getOwnedSplits,
   getClaimableSplits,
 } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button"
-import Dashboard from "@/components/Dashboard/Dashboard";
 import SplitFull from "@/components/Dashboard/SplitFull"
 
 const UserDashboard = () => {
@@ -22,16 +18,8 @@ const UserDashboard = () => {
   const [claimableSplits, setClaimableSplits] = useState([]);
 
   const [showFull, setShowFull] = useState();
-  const [showQuickview, setShowQuickview] = useState();
   const [selectedSplit, setSelectedSplit] = useState();
   const [selectedIsOwned, setSelectedIsOwned] = useState();
-
-  console.log(`showquick? ${showQuickview}`);
-  console.log(`showfull? ${showFull}`);
-
-
-  const [showDashboard, setShowDashboard] = useState(false);
-  const [activeDashboard, setActiveDashboard] = useState("");
 
   const Router = useRouter();
 
@@ -59,9 +47,6 @@ const UserDashboard = () => {
     setSelectedSplit(split);
     setSelectedIsOwned(isOwned);
     setShowFull(true);
-    console.log(
-      `owned ${isOwned}, split ${split.id}, modal vis ${showQuickview}`
-    );
   };
 
   const handleTabs = (clickedTab) => {
@@ -70,21 +55,7 @@ const UserDashboard = () => {
 
   return (
     <PageLayout>
-      {showDashboard && activeDashboard == "curation" && <Dashboard />}
-
       <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-        
-        {/* {showQuickview && (
-          <ActionDialog
-            split={selectedSplit}
-            isOwned={selectedIsOwned}
-            showQuickview={showQuickview}
-            setShowQuickview={setShowQuickview}
-            setShowFull={setShowFull}
-            handleClick={() => handleClickManageSplit()}
-          />
-        )} */}
-
         {showFull && (
           <SplitFull
             split={selectedSplit} 

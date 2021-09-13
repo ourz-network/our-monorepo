@@ -220,7 +220,7 @@ const Navbar = () => {
                     {/* If user is logged in, show link to their creations */}
                     {address && (
                       <h3>
-                        <Link href={`/${address}`}>
+                        <Link href={`/profile/${address}`}>
                           <a className="">Your Creations</a>
                         </Link>
                       </h3>
