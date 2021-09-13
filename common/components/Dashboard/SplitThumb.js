@@ -1,5 +1,5 @@
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
-import { useAuctions } from "@zoralabs/nft-hooks";
+
 
 const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
   if (claimableSplit) {

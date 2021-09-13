@@ -85,6 +85,11 @@ export const SPLITS_BY_RECIPIENT = (recipient) => {
               user {
                 id
               }
+              name
+              role
+              shares
+              allocation
+              ethClaimed
             }
             creations {
               tokenId

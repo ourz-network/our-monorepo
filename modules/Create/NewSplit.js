@@ -143,7 +143,7 @@ const NewSplit = () => {
           </div>
         </div>
         <form className="justify-center w-full -mt-1 text-center">
-          <label htmlFor="nickname">Nickname for Split:</label>
+          <label htmlFor="nickname" className="mr-2 text-dark-primary">Nickname for Split:</label>
           <input type="text" id="splitNickname" name="nickname" placeholder="Nickname" onChange={(e) => setNickname(e.target.value)} />
           <div className="flex flex-col justify-center w-full border-b">
             <ul className="z-10 flex flex-col w-full mt-4">

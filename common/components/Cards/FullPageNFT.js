@@ -6,6 +6,7 @@ import {
 } from "@zoralabs/nft-components";
 import { toTrimmedAddress } from "@/ethereum/utils";
 import DetailedPie from "@/components/Charts/DetailedPie";
+import Table from "@/components/Charts/Table";
 
 const FullPageNFT = (props) => {
   const creatorAddress = props.creator;
@@ -55,7 +56,7 @@ const FullPageNFT = (props) => {
       <div className="object-contain py-1 border-b border-dark-border bg-dark-accent min-h-33vh">
         <FullComponents.MediaFull />
       </div>
-      <div className="p-6 mx-auto mb-16 max-w-11/12 xl:max-w-2/3">
+      <div className="p-6 mx-auto mb-16 max-w-11/12 xl:max-w-5/6">
         {" "}
         {/*border-b border-l border-r shadow-xl*/}
         <div className="flex flex-col content-center w-full mb-6 xl:flex-row">
@@ -71,55 +72,7 @@ const FullPageNFT = (props) => {
               <FullComponents.CreatorEquity />
             </div>
             {recipients?.length > 1 && (
-              <div className="p-2 mb-2 border border-dark-border">
-                <div className="text-xl text-center">{`${recipients.length} Split Recipients`}</div>
-                <table className="w-full mt-2 table-fixed">
-                  <thead>
-                    <tr>
-                      <th className="w-3/12 font-normal text-center border border-dark-border">
-                        Recipient
-                      </th>
-                      <th className="w-4/12 font-normal text-center border border-dark-border">
-                        Name
-                      </th>
-                      <th className="w-3/12 font-normal text-center border border-dark-border">
-                        Role
-                      </th>
-                      <th className="w-2/12 font-normal text-center border border-dark-border">
-                        Share
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recipients.map((split, i) => {
-                      return (
-                        <tr
-                          key={i}
-                          className={i % 2 == 0 ? `bg-dark-background` : ``}
-                        >
-                          <td className="w-3/12 text-center border border-dark-border overflow-ellipsis hover:underline">
-                            <Link
-                              href={`/${split.user.id}`}
-                              className="cursor-pointer"
-                            >
-                              {toTrimmedAddress(split.user.id)}
-                            </Link>
-                          </td>
-                          <td className="text-center border border-dark-border">
-                            {split.name}
-                          </td>
-                          <td className="text-center border border-dark-border">
-                            {split.role}
-                          </td>
-                          <td className="text-center border border-dark-border">
-                            {split.shares}%
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+              <Table recipients={recipients} />
             )}
             {chartData?.length > 1 && (
               <div className="border border-dark-border h-96">

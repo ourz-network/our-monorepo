@@ -400,7 +400,7 @@ function useWeb3() {
     }
   };
 
-  const newProxy = async (formData) => {
+  const newProxy = async (formData, nickname) => {
     /** Step 1)
      * If user defined splits other than their own royalties,
      * format them for merkle tree & metadata
@@ -436,7 +436,7 @@ function useWeb3() {
         rootHash,
         deployData,
         JSON.stringify(splitsForMeta),
-        "NicknameHere"
+        nickname
       );
 
       const proxyReceipt = await proxyTx.wait();

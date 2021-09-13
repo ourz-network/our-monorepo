@@ -11,7 +11,8 @@ import {
 const DashboardNFT = ({
   split,
   tokenId,
-  onClick
+  onClick,
+  isCreation
 }) => {
   let name;
 
@@ -23,7 +24,7 @@ const DashboardNFT = ({
     if (!nft.data?.nft) {
       return null;
     }
-    if (nft.data?.owner != split.id) {
+    if (nft.data?.owner != split.id && isCreation) {
       setHidden(true)
     }
     console.log(`DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);

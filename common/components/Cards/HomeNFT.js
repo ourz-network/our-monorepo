@@ -152,7 +152,13 @@ const HomeNFT = (props) => {
         className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent cursor-hover`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">
-          <Link href={`/nft/${tokenId}`} passHref={true}>
+          <Link 
+            href={{
+              pathname: "/nft/[tokenId]",
+              query: { tokenId: tokenId },
+            }} 
+            passHref={true}
+          >
             <div className="relative object-cover w-full h-full bg-transparent">
               {contentURI && (
                 <Image

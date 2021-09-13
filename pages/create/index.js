@@ -40,7 +40,7 @@ const CreateDashboard = () => {
         <NewSplit />
       }
 
-      <div className="flex flex-col w-full h-full bg-dark-background">
+      <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
         {loading || network.name != "rinkeby" ? (
           <p className="px-4 py-2 mx-auto mt-16 border border-dark-border animate-pulse text-dark-primary">
             Loading... Please connect your wallet to Rinkeby if you
