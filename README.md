@@ -6,8 +6,12 @@
 
 ## **Do not consider them safe for mainnet yet.**
 
-<br/><br/>
-
+<br/>
+`npm i`
+<br/>
+`npm run test`
+<br/>
+https://discord.gg/GmmaBszDTK is the discord if you need help
 ---
 
 # our-contracts
@@ -19,5 +23,6 @@ Or whatever else you can think of, it just needs to be implemented in OurMinter.
 <br/>
 
 Subgraph: https://thegraph.com/legacy-explorer/subgraph/nickadamson/ourzrinkebyv2
+
 
 # Critiques, ideas, and any other feedback are greatly appreciated. Open an issue, or email me: nickadamson@pm.me
