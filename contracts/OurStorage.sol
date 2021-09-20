@@ -4,7 +4,7 @@ pragma solidity 0.8.4;
 /**
  * @title OurStorage
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts

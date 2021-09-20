@@ -4,17 +4,17 @@ pragma experimental ABIEncoderV2;
 
 /// @us The Future Is Ourz
 
-import { OurManagement } from "./OurManagement.sol";
-import { IZora } from "./interfaces/IZora.sol";
-import { IMirror } from "./interfaces/IMirror.sol";
-import { IPartyBid } from "./interfaces/IPartyBid.sol";
-import { IERC721 } from "./interfaces/IERC721.sol";
-import { IERC20 } from "./interfaces/IERC20.sol";
+import {OurManagement} from './OurManagement.sol';
+import {IZora} from './interfaces/IZora.sol';
+import {IMirror} from './interfaces/IMirror.sol';
+import {IPartyBid} from './interfaces/IPartyBid.sol';
+import {IERC721} from './interfaces/IERC721.sol';
+import {IERC20} from './interfaces/IERC20.sol';
 
 /**
  * @title OurMinter
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
@@ -31,9 +31,9 @@ contract OurMinter is OurManagement {
     address public constant _zoraMedia = 0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
     address public constant _zoraMarket = 0x85e946e1Bd35EC91044Dc83A5DdAB2B6A262ffA6;
     address public constant _zoraAH = 0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
+    address public constant _zoraEditions = 0x7E335506443252196cd5A61bd4a1906D79791Fc6;
     address public constant _mirrorAH = 0x2D5c022fd4F81323bbD1Cc0Ec6959EC8CC1C5A11;
     address public constant _mirrorCrowdfund = 0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
-    address public constant _mirrorEditions = 0xa8b8F7cC0C64c178ddCD904122844CBad0021647;
     address public constant _partyBid = 0xB725682D5AdadF8dfD657f8e7728744C0835ECd9;
     address public constant _weth = 0xc778417E063141139Fce010982780140Aa0cD5Ab;
 
@@ -80,10 +80,7 @@ contract OurMinter is OurManagement {
     /** Media
      * @notice Mint new Zora NFT for Split Contract.
      */
-    function mintZora(IZora.MediaData calldata mediaData, IZora.BidShares calldata bidShares)
-        external
-        onlyOwners
-    {
+    function mintZora(IZora.MediaData calldata mediaData, IZora.BidShares calldata bidShares) external onlyOwners {
         IZora(_zoraMedia).mint(mediaData, bidShares);
     }
 
@@ -241,6 +238,34 @@ contract OurMinter is OurManagement {
     function cancelZoraAuction(uint256 auctionId) external onlyOwners {
         IZora(_zoraAH).cancelAuction(auctionId);
     }
+
+    /** NFT-Editions
+     * @notice Creates a new edition contract as a factory with a deterministic address
+     */
+    function createZoraEdtion(
+        string memory _name,
+        string memory _symbol,
+        string memory _description,
+        string memory _animationUrl,
+        bytes32 _animationHash,
+        string memory _imageUrl,
+        bytes32 _imageHash,
+        uint256 _editionSize,
+        uint256 _royaltyBPS
+    ) external onlyOwners {
+        IZora(_zoraEditions).createEdition(
+            _name,
+            _symbol,
+            _description,
+            _animationUrl,
+            _animationHash,
+            _imageUrl,
+            _imageHash,
+            _editionSize,
+            _royaltyBPS
+        );
+    }
+
     //======== /IZora =========
 
     /**======== IMirror =========
@@ -265,24 +290,6 @@ contract OurMinter is OurManagement {
      */
     function updateMirrorMinBid(uint256 minBid) external onlyOwners {
         IMirror(_mirrorAH).updateMinBid(minBid);
-    }
-
-    /** Editions
-     * @notice Create an Edition
-     */
-    function createMirrorEdition(
-        uint256 quantity,
-        uint256 price,
-        address payable fundingRecipient
-    ) external onlyOwners {
-        IMirror(_mirrorEditions).createEdition(quantity, price, fundingRecipient);
-    }
-
-    /** Editions
-     * @notice Withdraw funds from Edition
-     */
-    function withdrawEditionFunds(uint256 editionId) external onlyOwners {
-        IMirror(_mirrorEditions).withdrawFunds(editionId);
     }
 
     /** Crowdfund
@@ -313,6 +320,7 @@ contract OurMinter is OurManagement {
     function untrustedCloseCrowdFunding(address crowdfundProxy_) external onlyOwners {
         IMirror(crowdfundProxy_).closeFunding();
     }
+
     //======== /IMirror =========
 
     /**======== IPartyBid =========
@@ -332,6 +340,7 @@ contract OurMinter is OurManagement {
     ) external onlyOwners {
         IPartyBid(_partyBid).startParty(marketWrapper, nftContract, tokenId, auctionId, name, symbol);
     }
+
     //======== /IPartyBid =========
 
     /**======== IERC721 =========
@@ -364,8 +373,6 @@ contract OurMinter is OurManagement {
     ) external onlyOwners {
         IERC721(tokenContract_).safeTransferFrom(address(msg.sender), newOwner_, tokenId_);
     }
-
-
 
     /**
      * NOTE: Marked as >> untrusted << Use caution when supplying tokenContract_

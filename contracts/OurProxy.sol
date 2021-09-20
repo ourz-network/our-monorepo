@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity 0.8.4;
 
-import {OurStorage} from "./OurStorage.sol";
+import {OurStorage} from './OurStorage.sol';
 
 interface IOurFactory {
     function pylon() external returns (address);
@@ -12,7 +12,7 @@ interface IOurFactory {
 /**
  * @title OurProxy
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts

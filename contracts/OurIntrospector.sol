@@ -1,26 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity 0.8.4;
 
-import "./interfaces/ERC1155TokenReceiver.sol";
-import "./interfaces/ERC721TokenReceiver.sol";
-import "./interfaces/ERC777TokensRecipient.sol";
-import "./interfaces/IERC165.sol";
+import './interfaces/ERC1155TokenReceiver.sol';
+import './interfaces/ERC721TokenReceiver.sol';
+import './interfaces/ERC777TokensRecipient.sol';
+import './interfaces/IERC165.sol';
 
 /**
  * @title OurIntrospector
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
  * & of course, @author OpenZeppelin
  */
-contract OurIntrospector is
-    ERC1155TokenReceiver,
-    ERC777TokensRecipient,
-    ERC721TokenReceiver,
-    IERC165
-{
+contract OurIntrospector is ERC1155TokenReceiver, ERC777TokensRecipient, ERC721TokenReceiver, IERC165 {
     //======== ERC721 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC721/IERC721Receiver.sol
     event ERC721Received(address operator, address from, uint256 tokenId);
@@ -37,18 +32,8 @@ contract OurIntrospector is
 
     //======== IERC1155 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC1155/IERC1155Receiver.sol
-    event ERC1155Received(
-        address operator,
-        address from,
-        uint256 id,
-        uint256 value
-    );
-    event Batch1155Received(
-        address operator,
-        address from,
-        uint256[] ids,
-        uint256[] values
-    );
+    event ERC1155Received(address operator, address from, uint256 id, uint256 value);
+    event Batch1155Received(address operator, address from, uint256[] ids, uint256[] values);
 
     function onERC1155Received(
         address operator,
@@ -74,12 +59,7 @@ contract OurIntrospector is
 
     //======== IERC777 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC777/IERC777Recipient.sol
-    event ERC777Received(
-        address operator,
-        address from,
-        address to,
-        uint256 amount
-    );
+    event ERC777Received(address operator, address from, address to, uint256 amount);
 
     function tokensReceived(
         address operator,
@@ -94,12 +74,7 @@ contract OurIntrospector is
 
     //======== IERC165 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/utils/introspection/ERC165.sol
-    function supportsInterface(bytes4 interfaceId)
-        external
-        pure
-        override
-        returns (bool)
-    {
+    function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
         return
             interfaceId == type(ERC1155TokenReceiver).interfaceId ||
             interfaceId == type(ERC721TokenReceiver).interfaceId ||

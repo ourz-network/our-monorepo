@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity 0.8.4;
 
-import { OurStorage } from "./OurStorage.sol";
+import {OurStorage} from './OurStorage.sol';
 
 interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
-    
+
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
@@ -18,7 +18,7 @@ interface IWETH {
 /**
  * @title OurSplitter
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
@@ -31,11 +31,10 @@ contract OurSplitter is OurStorage {
         bytes32[] merkleProof;
     }
 
-
     /**======== Subgraph =========
      * ETHReceived - emits sender and value in receive() fallback
      * TransferETH - emits destination address, value, and success bool
-     * MassTransferERC20 - emits token address, total transferred amount, and success bool 
+     * MassTransferERC20 - emits token address, total transferred amount, and success bool
      * WindowIncremented - emits token address, current claim window, and available value of ERC20
      */
     event ETHReceived(address indexed sender, uint256 value);
@@ -49,30 +48,17 @@ contract OurSplitter is OurStorage {
         uint256 scaledPercentageAllocation,
         bytes32[] calldata merkleProof
     ) external {
-        require(currentWindow > window, "cannot claim for a future window");
-        require(
-            !isClaimed(window, account),
-            "Account already claimed the given window"
-        );
+        require(currentWindow > window, 'cannot claim for a future window');
+        require(!isClaimed(window, account), 'Account already claimed the given window');
 
         setClaimed(window, account);
 
-        require(
-            verifyProof(
-                merkleProof,
-                merkleRoot,
-                getNode(account, scaledPercentageAllocation)
-            ),
-            "Invalid proof"
-        );
+        require(verifyProof(merkleProof, merkleRoot, getNode(account, scaledPercentageAllocation)), 'Invalid proof');
 
         transferETHOrWETH(
             account,
             // The absolute amount that's claimable.
-            scaleAmountByPercentage(
-                balanceForWindow[window],
-                scaledPercentageAllocation
-            )
+            scaleAmountByPercentage(balanceForWindow[window], scaledPercentageAllocation)
         );
     }
 
@@ -87,12 +73,8 @@ contract OurSplitter is OurStorage {
         Proof[] calldata merkleProofs
     ) internal {
         require(
-            verifyProof(
-                merkleProofs[0].merkleProof,
-                merkleRoot,
-                getNode(accounts[0], allocations[0])
-            ),
-            "Invalid proof for Account 0"
+            verifyProof(merkleProofs[0].merkleProof, merkleRoot, getNode(accounts[0], allocations[0])),
+            'Invalid proof for Account 0'
         );
 
         uint256 ERC20Balance = IERC20(tokenAddress).balanceOf(address(this));
@@ -100,29 +82,17 @@ contract OurSplitter is OurStorage {
 
         for (uint256 i = 1; i < accounts.length; i++) {
             require(
-                verifyProof(
-                    merkleProofs[i].merkleProof,
-                    merkleRoot,
-                    getNode(accounts[i], allocations[i])
-                ),
-                "Invalid proof"
+                verifyProof(merkleProofs[i].merkleProof, merkleRoot, getNode(accounts[i], allocations[i])),
+                'Invalid proof'
             );
 
             uint256 scaledAmount = scaleAmountByPercentage(ERC20Balance, allocations[i]);
-            transferERC20(
-                tokenAddress, 
-                accounts[i], 
-                scaledAmount
-            );
+            transferERC20(tokenAddress, accounts[i], scaledAmount);
             totalSent += scaledAmount;
         }
 
         uint256 remaining = ERC20Balance - totalSent;
-        transferERC20(
-                tokenAddress, 
-                accounts[0], 
-                remaining
-        );
+        transferERC20(tokenAddress, accounts[0], remaining);
         emit MassTransferERC20(tokenAddress, ERC20Balance, true);
     }
 
@@ -132,10 +102,7 @@ contract OurSplitter is OurStorage {
         bytes32[] calldata merkleProof
     ) external {
         // Make sure that the user has this allocation granted.
-        require(
-            verifyProof(merkleProof, merkleRoot, getNode(account, percentageAllocation)),
-            "Invalid proof"
-        );
+        require(verifyProof(merkleProof, merkleRoot, getNode(account, percentageAllocation)), 'Invalid proof');
 
         uint256 amount = 0;
         for (uint256 i = 0; i < currentWindow; i++) {
@@ -161,7 +128,7 @@ contract OurSplitter is OurStorage {
         }
 
         depositedInWindow = 0;
-        require(fundsAvailable > 0, "No additional funds for window");
+        require(fundsAvailable > 0, 'No additional funds for window');
         balanceForWindow.push(fundsAvailable);
         currentWindow += 1;
         emit WindowIncremented(currentWindow, fundsAvailable);
@@ -177,16 +144,13 @@ contract OurSplitter is OurStorage {
         claimAll(account, percentageAllocation, merkleProof);
     }
 
-     function claimAll(
+    function claimAll(
         address account,
         uint256 percentageAllocation,
         bytes32[] calldata merkleProof
     ) private {
         // Make sure that the user has this allocation granted.
-        require(
-            verifyProof(merkleProof, merkleRoot, getNode(account, percentageAllocation)),
-            "Invalid proof"
-        );
+        require(verifyProof(merkleProof, merkleRoot, getNode(account, percentageAllocation)), 'Invalid proof');
 
         uint256 amount = 0;
         for (uint256 i = 0; i < currentWindow; i++) {
@@ -200,11 +164,7 @@ contract OurSplitter is OurStorage {
         transferETHOrWETH(account, amount);
     }
 
-    function scaleAmountByPercentage(uint256 amount, uint256 scaledPercent)
-        public
-        pure
-        returns (uint256 scaledAmount)
-    {
+    function scaleAmountByPercentage(uint256 amount, uint256 scaledPercent) public pure returns (uint256 scaledAmount) {
         /* Example:
                 BalanceForWindow = 100 ETH // Allocation = 2%
                 To find out the amount we use, for example: (100 * 200) / (100 * 100)
@@ -213,13 +173,10 @@ contract OurSplitter is OurStorage {
         scaledAmount = (amount * scaledPercent) / (100 * PERCENTAGE_SCALE);
     }
 
-    function isClaimed(uint256 window, address account)
-        public
-        view
-        returns (bool)
-    {
+    function isClaimed(uint256 window, address account) public view returns (bool) {
         return claimed[getClaimHash(window, account)];
     }
+
     //======== /QoL =========
 
     //======== Private Functions ========
@@ -227,12 +184,7 @@ contract OurSplitter is OurStorage {
         claimed[getClaimHash(window, account)] = true;
     }
 
-
-    function getClaimHash(uint256 window, address account)
-        private
-        pure
-        returns (bytes32)
-    {
+    function getClaimHash(uint256 window, address account) private pure returns (bytes32) {
         return keccak256(abi.encodePacked(window, account));
     }
 
@@ -266,7 +218,7 @@ contract OurSplitter is OurStorage {
         // Here increase the gas limit a reasonable amount above the default, and try
         // to send ETH to the recipient.
         // NOTE: This might allow the recipient to attempt  a limited reentrancy attack.
-        (bool success, ) = to.call{ value: value, gas: 30000 }("");
+        (bool success, ) = to.call{value: value, gas: 30000}('');
         return success;
     }
 
@@ -276,7 +228,11 @@ contract OurSplitter is OurStorage {
      * @notice A rogue owner could easily bypass countermeasures. Provided as last resort,
      * in case Proxy receives ERC20.
      */
-    function transferERC20(address tokenAddress, address splitRecipient, uint256 allocatedAmount) internal {
+    function transferERC20(
+        address tokenAddress,
+        address splitRecipient,
+        uint256 allocatedAmount
+    ) internal {
         bool didSucceed = IERC20(tokenAddress).transfer(splitRecipient, allocatedAmount);
         require(didSucceed);
     }

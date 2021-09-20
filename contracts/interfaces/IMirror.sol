@@ -29,22 +29,6 @@ interface IMirror {
     function updateMinBid(uint256 _minBid) external;
 
     /**
-     * @notice Interface for the Editions contract
-     */
-    function createEdition(
-        // The number of tokens that can be minted and sold.
-        uint256 quantity,
-        // The price to purchase a token.
-        uint256 price,
-        // The account that should receive the revenue.
-        address payable fundingRecipient
-    ) external;
-
-    function buyEdition(uint256 editionId) external payable;
-
-    function withdrawFunds(uint256 editionId) external;
-
-    /**
      * @notice Interface for the Crowdfund contracts
      */
     function createCrowdfund(

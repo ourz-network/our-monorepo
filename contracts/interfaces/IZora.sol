@@ -41,11 +41,7 @@ interface IZora {
     }
 
     event TokenURIUpdated(uint256 indexed _tokenId, address owner, string _uri);
-    event TokenMetadataURIUpdated(
-        uint256 indexed _tokenId,
-        address owner,
-        string _uri
-    );
+    event TokenMetadataURIUpdated(uint256 indexed _tokenId, address owner, string _uri);
 
     // /**
     //  * @notice Return the metadata URI for a piece of media given the token URI
@@ -58,8 +54,7 @@ interface IZora {
     /**
      * @notice Mint new media for msg.sender.
      */
-    function mint(MediaData calldata data, BidShares calldata bidShares)
-        external;
+    function mint(MediaData calldata data, BidShares calldata bidShares) external;
 
     /**
      * @notice EIP-712 mintWithSig method. Mints new media for a creator given a valid signature.
@@ -91,10 +86,7 @@ interface IZora {
     /**
      * @notice Update the token metadata uri
      */
-    function updateTokenMetadataURI(
-        uint256 tokenId,
-        string calldata metadataURI
-    ) external;
+    function updateTokenMetadataURI(uint256 tokenId, string calldata metadataURI) external;
 
     /**
      * @notice EIP-712 permit method. Sets an approved spender given a valid signature.
@@ -176,8 +168,7 @@ interface IZora {
 
     // function configure(address mediaContractAddress) external;
 
-    function setBidShares(uint256 tokenId, BidShares calldata bidShares)
-        external;
+    function setBidShares(uint256 tokenId, BidShares calldata bidShares) external;
 
     function setAsk(uint256 tokenId, Ask calldata ask) external;
 
@@ -194,7 +185,7 @@ interface IZora {
     function acceptBid(uint256 tokenId, Bid calldata expectedBid) external;
 
     /**
-     * @title Interface for Auction Houses
+     * @title Interface for Auction House
      */
     struct Auction {
         // ID for the ERC721 token
@@ -299,12 +290,78 @@ interface IZora {
 
     function setAuctionApproval(uint256 auctionId, bool approved) external;
 
-    function setAuctionReservePrice(uint256 auctionId, uint256 reservePrice)
-        external;
+    function setAuctionReservePrice(uint256 auctionId, uint256 reservePrice) external;
 
     function createBid(uint256 auctionId, uint256 amount) external payable;
 
     function endAuction(uint256 auctionId) external;
 
     function cancelAuction(uint256 auctionId) external;
+
+    /**
+     * @title Interface for NFT-Editions
+     */
+
+    /// Creates a new edition contract as a factory with a deterministic address
+    /// Important: None of these fields (except the Url fields with the same hash) can be changed after calling
+    /// @param _name Name of the edition contract
+    /// @param _symbol Symbol of the edition contract
+    /// @param _description Metadata: Description of the edition entry
+    /// @param _animationUrl Metadata: Animation url (optional) of the edition entry
+    /// @param _animationHash Metadata: SHA-256 Hash of the animation (if no animation url, can be 0x0)
+    /// @param _imageUrl Metadata: Image url (semi-required) of the edition entry
+    /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
+    /// @param _editionSize Total size of the edition (number of possible editions)
+    /// @param _royaltyBPS BPS amount of royalty
+    function createEdition(
+        string memory _name,
+        string memory _symbol,
+        string memory _description,
+        string memory _animationUrl,
+        bytes32 _animationHash,
+        string memory _imageUrl,
+        bytes32 _imageHash,
+        uint256 _editionSize,
+        uint256 _royaltyBPS
+    ) external returns (uint256);
+
+    /**
+      @param _salePrice if sale price is 0 sale is stopped, otherwise that amount 
+                       of ETH is needed to start the sale.
+      @dev This sets a simple ETH sales price
+           Setting a sales price allows users to mint the edition until it sells out.
+           For more granular sales, use an external sales contract.
+     */
+    function setSalePrice(uint256 _salePrice) external;
+
+    /**
+      @dev This withdraws ETH from the contract to the contract owner.
+     */
+    function withdraw() external;
+
+    /**
+      @param recipients list of addresses to send the newly minted editions to
+      @dev This mints multiple editions to the given list of addresses.
+     */
+    function mintEditions(address[] memory recipients) external returns (uint256);
+
+    /**
+      @param minter address to set approved minting status for
+      @param allowed boolean if that address is allowed to mint
+      @dev Sets the approved minting status of the given address.
+           This requires that msg.sender is the owner of the given edition id.
+           If the ZeroAddress (address(0x0)) is set as a minter,
+             anyone will be allowed to mint.
+           This setup is similar to setApprovalForAll in the ERC721 spec.
+     */
+    // function setApprovedMinter(address minter, bool allowed) public;
+
+    /**
+      @dev Allows for updates of edition urls by the owner of the edition.
+           Only URLs can be updated (data-uris are supported), hashes cannot be updated.
+     */
+    // function updateEditionURLs(
+    //     string memory _imageUrl,
+    //     string memory _animationUrl
+    // ) public;
 }
