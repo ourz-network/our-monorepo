@@ -5,6 +5,7 @@ coverage/
 cache/
 artifacts/
 build/
+typechain/
 .env
 *.DS_Store
 env*
