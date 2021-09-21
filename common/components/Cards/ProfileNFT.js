@@ -62,7 +62,7 @@ const ProfileNFT = (props) => {
           <div className="text-bold">{metadata.name}</div>
           <div className="text-right">
             by:{" "}
-            <Link href={`/${creatorAddress}`}>
+            <Link href={`/profile/${creatorAddress}`}>
               {toTrimmedAddress(creatorAddress)}
             </Link>
           </div>

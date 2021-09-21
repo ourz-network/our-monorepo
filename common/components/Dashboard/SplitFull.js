@@ -8,9 +8,11 @@ import { utils } from "ethers";
 import DashboardNFT from "@/components/Cards/DashboardNFT";
 import Table from "@/components/Charts/Table";
 import { useAuctions } from "@zoralabs/nft-hooks";
+import web3 from "@/app/web3";
 
 const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
   const Router = useRouter();
+  const { claimFunds } = web3.useContainer();
   const { data, loading, error } = useAuctions(split.id);
   const [dialog, setDialog] = useState();
   const [showDialog, setShowDialog] = useState();
@@ -21,6 +23,16 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
 
   const handleClickClose = () => {
     hide();
+  };
+
+  const clickClaim = async () => {
+    const didClaim = await claimFunds({
+      splits: split.splitRecipients,
+      proxyAddress: split.id,
+    });
+    if (didClaim) {
+      console.log("success");
+    }
   };
 
   const startAnAuction = (tokenId) => {
@@ -80,7 +92,9 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
                     {split.ETH ? utils.formatEther(split.ETH) : 0} ETH unclaimed
                     in Split.
                   </h4>
-                  {split.ETH > 0 && <Button text="Claim" onClick={""} />}
+                  {split.ETH > 0 && (
+                    <Button text="Claim" onClick={() => clickClaim()} />
+                  )}
                 </div>
                 {isOwned && (
                   <div className="flex items-baseline gap-4 p-4 mx-auto mt-8 border border-dark-border w-min">
@@ -156,7 +170,7 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
                       tokenId={auction.tokenId}
                       onClick={(evt) =>
                         router.push(
-                          `/token/${auction.tokenContract}/${auction.tokenId}`
+                          `/nft/${auction.tokenContract}/${auction.tokenId}`
                         )
                       }
                       split={split}

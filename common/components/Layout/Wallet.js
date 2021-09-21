@@ -121,7 +121,7 @@ const Wallet = () => {
                                 </div>
                               </Link>
                             ) : (
-                              <Link href={`/${address}`} passHref>
+                              <Link href={`/profile/${address}`} passHref>
                                 <div className="w-full p-2 text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary">
                                   Profile
                                 </div>

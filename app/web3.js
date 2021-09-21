@@ -178,7 +178,7 @@ function useWeb3() {
    * & metadata for zNFT's and Subgraph.
    */
   const formatSplits = (formData) => {
-    console.log(`fromatSplits - formData\n`, formData);
+    console.log(`formatSplits - formData\n`, formData);
     // see https://github.com/mirror-xyz/splits
     let splitsForMerkle = []; // Required Format: [{account: '0x..', allocation: #}]
     let tree; // for Mirror Splits
@@ -201,7 +201,7 @@ function useWeb3() {
         allocation: Number((split.shares * 1000000).toFixed(0)).toString(),
       };
     });
-    console.log(`fromatSplits - splitsForMeta\n`, splitsForMeta);
+    console.log(`formatSplits - splitsForMeta\n`, splitsForMeta);
 
     // Format splits[] for merkle-tree. WILL NOT WORK if ENS names aren't translated to 0x0
     // keep address and allocation
@@ -215,7 +215,7 @@ function useWeb3() {
         allocation: Number(split.allocation),
       };
     });
-    console.log(`fromatSplits - splitsForMerkle\n`, splitsForMerkle);
+    console.log(`formatSplits - splitsForMerkle\n`, splitsForMerkle);
 
     // Create Merkle Tree for Split
     tree = new BalanceTree(splitsForMerkle);
@@ -461,6 +461,64 @@ function useWeb3() {
     }
   };
 
+  const claimFunds = async ({ splits, proxyAddress }) => {
+    // Format splits[] for merkle-tree. WILL NOT WORK if ENS names aren't translated to 0x0
+    // keep address and allocation
+    let splitsForMerkle = splits.map(
+      ({ name, role, shares, __typename, ...keepAttrs }) => keepAttrs
+    );
+    // Change 'address' -> 'account'
+    splitsForMerkle = splitsForMerkle.map(function (split) {
+      return {
+        account: split.user.id,
+        allocation: Number(split.allocation),
+      };
+    });
+
+    const signersSplit = splitsForMerkle.find(
+      (split) => split.account === address.toString().toLowerCase()
+    );
+    const { account, allocation } = signersSplit;
+
+    // Create Merkle Tree for Split and then get proof
+    const tree = new BalanceTree(splitsForMerkle);
+    const proof = tree.getProof(account, allocation);
+
+    const pylonABI = pylonJSON.abi;
+    const proxy_WRITE = new ethers.Contract(proxyAddress, pylonABI, signer);
+
+    // try to claim without incrementing window, if ethers errors estimating gas, increment window then claim
+    try {
+      const claimTx = await proxy_WRITE.claimETHForAllWindows(
+        account,
+        allocation,
+        proof
+      );
+      const claimReceipt = await claimTx.wait();
+
+      if (claimReceipt) {
+        console.log(`claim receipt: `, claimReceipt);
+      }
+    } catch (error) {
+      console.log(error);
+      const windowTx = await proxy_WRITE.incrementWindow();
+      const windowReceipt = await windowTx.wait();
+
+      if (windowReceipt) {
+        const claimTx = await proxy_WRITE.claimETHForAllWindows(
+          account,
+          allocation,
+          proof
+        );
+        const claimReceipt = await claimTx.wait();
+
+        if (claimReceipt) {
+          console.log(`claim receipt: `, claimReceipt);
+        }
+      }
+    }
+  };
+
   // On load events
   // useEffect(setupWeb3Modal, []);
 
@@ -478,6 +536,7 @@ function useWeb3() {
     mintZoraSolo,
     newProxy,
     createZoraAuction,
+    claimFunds,
   };
 }
 

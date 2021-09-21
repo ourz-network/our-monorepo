@@ -29,7 +29,10 @@ const Table = ({ recipients }) => {
               return (
                 <tr key={i} className={i % 2 == 0 ? `bg-dark-background` : ``}>
                   <td className="w-3/12 text-center border text-dark-primary border-dark-border overflow-ellipsis hover:underline">
-                    <Link href={`/${split.user.id}`} className="cursor-pointer">
+                    <Link
+                      href={`/profile/${split.user.id}`}
+                      className="cursor-pointer"
+                    >
                       {toTrimmedAddress(split.user.id)}
                     </Link>
                   </td>
