@@ -10,7 +10,7 @@ const Home = (props) => {
   // console.log(`props`, props);
   const [posts, setPosts] = useState(props.postsToSet); // Posts array
   const [loading, setLoading] = useState(false); // Button loading state
-  const [numPosts, setNumPosts] = useState(props.maxSupply); // Number of loadable posts
+  const [numPosts, setNumPosts] = useState(props.loadMoreStartIndex); // Number of loadable posts
 
   const collectMore = async () => {
     setLoading(true); // Toggle button loading
@@ -43,8 +43,8 @@ const Home = (props) => {
         {posts.length >= 0 ? (
           // If posts array contains at least 1 post
           <>
-            <div className="w-full h-full mx-auto max-w-11/12 xl:mx-16">
-              <div className="w-full h-full space-x-4 space-y-4 timeline xl:grid">
+            <div className="mx-auto w-full h-full max-w-11/12 xl:mx-16">
+              <div className="space-x-4 space-y-4 w-full h-full timeline xl:grid">
                 {posts.map((post, i) => {
                   // For each Zora post
                   return (
@@ -77,8 +77,8 @@ const Home = (props) => {
           </>
         ) : (
           // Else, display loading state
-          <div className="items-center content-center w-8 h-8 mx-auto mt-32 text-center transition-opacity bg-ourange-500 ll animate-pulse">
-            {/* <h3 className="px-3 py-1 bg-dark-background ">Loading...</h3> */}
+          <div className="content-center items-center mx-auto mt-32 w-8 h-8 text-center transition-opacity animate-pulse bg-ourange-500 ll">
+            {/* <h3 className="px-3 py-1 bg-dark-background">Loading...</h3> */}
           </div>
         )}
       </div>
@@ -100,7 +100,7 @@ export async function getStaticProps() {
   let requests = [];
   let postsToSet = [];
   if (maxSupply) {
-    for (let i = maxSupply; i >= maxSupply - 47; i--) {
+    for (let i = maxSupply; i >= 3700; i--) {
       // Collect post
       const post = await getPostByID(i);
       if (post != null) {
@@ -111,7 +111,7 @@ export async function getStaticProps() {
     return {
       props: {
         postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-        maxSupply: JSON.parse(JSON.stringify(Number(maxSupply - 48))),
+        loadMoreStartIndex: 3699,
       },
       revalidate: 60,
     };
