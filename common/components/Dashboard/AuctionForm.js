@@ -1,17 +1,12 @@
-import web3 from "@/app/web3";    
-import Button from "@/components/Button"
+import web3 from "@/app/web3";
+import Button from "@/components/Button";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const AuctionForm = ({
-  tokenId,
-  split,
-  onClick
-}) => {
+const AuctionForm = ({ tokenId, split, onClick }) => {
   const { createZoraAuction } = web3.useContainer();
   const Router = useRouter();
 
-  
   const [formData, setFormData] = useState({
     proxyAddress: split.id,
     tokenId: tokenId,
@@ -21,16 +16,16 @@ const AuctionForm = ({
     curator: split.id,
     curatorFeePercentage: 0,
     auctionCurrency: "0x0000000000000000000000000000000000000000",
-  })
+  });
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const auctionId = await createZoraAuction(formData);
     if (auctionId) {
       onClick();
-      Router.push(`/nft/${tokenId}`)
+      Router.push(`/nft/${tokenId}`);
     }
-  }
+  };
 
   return (
     <>
@@ -39,10 +34,7 @@ const AuctionForm = ({
         <div className="sm:col-span-8 lg:col-span-7 text-dark-primary">
           Auction for {tokenId}
         </div>
-        <form
-          className="flex flex-col space-y-6"
-          onSubmit={(e) => onSubmit(e)}
-        >
+        <form className="flex flex-col space-y-6" onSubmit={(e) => onSubmit(e)}>
           <label
             htmlFor="reservePrice"
             className="text-sm font-medium text-dark-primary"
@@ -58,21 +50,19 @@ const AuctionForm = ({
           </label>
           <input type="text" placeholder={formData.duration} />
 
-
-
           <div className="flex justify-between w-full">
-            <Button 
-              text="Cancel"
-              onClick={onClick}
-            />
-            <button type="submit" className="inline-flex items-center justify-center px-4 py-1 text-base font-light transition-all text-dark-accent bg-dark-primary whitespace-nowrap">
+            <Button text="Cancel" onClick={onClick} />
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center px-4 py-1 text-base font-light transition-all text-dark-accent bg-dark-primary whitespace-nowrap"
+            >
               Create Auction
             </button>
           </div>
         </form>
       </div>
     </>
-  )
-}      
+  );
+};
 
 export default AuctionForm;

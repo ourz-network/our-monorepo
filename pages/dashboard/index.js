@@ -7,13 +7,13 @@ import {
   getClaimableSplits,
 } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
-import Button from "@/components/Button"
-import SplitFull from "@/components/Dashboard/SplitFull"
+import Button from "@/components/Button";
+import SplitFull from "@/components/Dashboard/SplitFull";
 
 const UserDashboard = () => {
   const { address, network } = web3.useContainer();
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("owned")
+  const [activeTab, setActiveTab] = useState("owned");
   const [ownedSplits, setOwnedSplits] = useState([]);
   const [claimableSplits, setClaimableSplits] = useState([]);
 
@@ -58,13 +58,13 @@ const UserDashboard = () => {
       <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
         {showFull && (
           <SplitFull
-            split={selectedSplit} 
+            split={selectedSplit}
             isOwned={selectedIsOwned}
             showFull={showFull}
             setShowFull={setShowFull}
           />
         )}
-  
+
         {(loading || network.name != "rinkeby") && (
           <p className="px-4 py-2 mx-auto mt-16 border border-dark-border animate-pulse text-dark-primary">
             Loading... Please connect your wallet to Rinkeby if you
@@ -75,11 +75,17 @@ const UserDashboard = () => {
           <>
             {!showFull && (
               <div className="flex justify-around w-full mx-auto space-x-2 border-b border-dark-border bg-dark-accent text-dark-secondary">
-                <Button text="Show Owned Splits" onClick={() => handleTabs("owned")} />
-                <Button text="Show Claimable Splits" onClick={() => handleTabs("recipient")} />
+                <Button
+                  text="Show Owned Splits"
+                  onClick={() => handleTabs("owned")}
+                />
+                <Button
+                  text="Show Claimable Splits"
+                  onClick={() => handleTabs("recipient")}
+                />
               </div>
             )}
-            {activeTab == 'owned' && !showFull && (
+            {activeTab == "owned" && !showFull && (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">
                   Owned Splits:
@@ -98,13 +104,17 @@ const UserDashboard = () => {
                 </div>
               </>
             )}
-            {!ownedSplits && ( 
-              <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
+            {!ownedSplits && (
+              <p
+                className={`mx-auto text-center text-dark-primary ${
+                  showFull && `hidden`
+                }`}
+              >
                 You will need to create a new Split first.
               </p>
             )}
 
-            {activeTab == 'recipient' && !showFull && (
+            {activeTab == "recipient" && !showFull && (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">
                   Recipient of:
@@ -125,12 +135,15 @@ const UserDashboard = () => {
                 </div>
               </>
             )}
-            {!claimableSplits && ( 
-              <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
+            {!claimableSplits && (
+              <p
+                className={`mx-auto text-center text-dark-primary ${
+                  showFull && `hidden`
+                }`}
+              >
                 You are not the recipient of any Splits.
               </p>
             )}
-            
           </>
         )}
       </div>

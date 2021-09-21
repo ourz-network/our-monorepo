@@ -39,10 +39,7 @@ const MintConfirm = (props) => {
                 Secondary Sales:
               </p>
               <div className="z-10 w-full mx-auto -my-32 max-w-500px">
-                <DetailedPie
-                  chartData={secondarySales}
-                  secondaryBool={true}
-                />
+                <DetailedPie chartData={secondarySales} secondaryBool={true} />
               </div>
             </div>
           </div>

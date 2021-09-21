@@ -1,6 +1,4 @@
 const FAQ = () => {
-  return (
-    <div>LandingPage</div>
-  )
-}
+  return <div>LandingPage</div>;
+};
 export default FAQ;

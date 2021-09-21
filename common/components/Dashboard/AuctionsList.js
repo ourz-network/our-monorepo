@@ -16,16 +16,11 @@ export const AuctionsList = ({ tokens }) => {
               initialData={token}
               id={tokenInfo.tokenId}
               contract={tokenInfo.tokenContract}
-              onClick={(evt) =>
-                router.push(
-                  `/nft/${tokenInfo.tokenId}`
-                )
-              }
+              onClick={(evt) => router.push(`/nft/${tokenInfo.tokenId}`)}
               useBetaIndexer={true}
             />
           );
-        })
-      }
+        })}
     </div>
   );
 };

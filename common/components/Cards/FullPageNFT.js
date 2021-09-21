@@ -1,9 +1,6 @@
 import Link from "next/link"; // Dynamic routing
 import { NFTE } from "@nfte/react";
-import {
-  NFTFullPage,
-  FullComponents,
-} from "@zoralabs/nft-components";
+import { NFTFullPage, FullComponents } from "@zoralabs/nft-components";
 import { toTrimmedAddress } from "@/ethereum/utils";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
@@ -75,16 +72,11 @@ const FullPageNFT = (props) => {
             <div className="mb-2">
               <FullComponents.CreatorEquity />
             </div>
-            {recipients?.length > 1 && (
-              <Table recipients={recipients} />
-            )}
+            {recipients?.length > 1 && <Table recipients={recipients} />}
             {chartData?.length > 1 && (
               <div className="border border-dark-border h-96">
                 <div className="mx-auto -mt-8 -mb-12 w-96 h-96">
-                  <DetailedPie
-                    chartData={chartData}
-                    secondaryBool={false}
-                  />
+                  <DetailedPie chartData={chartData} secondaryBool={false} />
                 </div>
               </div>
             )}

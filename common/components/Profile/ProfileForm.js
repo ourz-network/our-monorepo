@@ -126,7 +126,7 @@ const ProfileForm = ({
 
           if (res.data) {
             // Push to new account page
-            Router.push(`/${username}`);
+            Router.push(`/profile/${username}`);
             hide();
           } else {
             // Throw error with status code in case Fetch API req failed

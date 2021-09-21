@@ -9,15 +9,10 @@ import {
   PreviewComponents,
 } from "@zoralabs/nft-components";
 
-const DashboardNFT = ({
-  split,
-  tokenId,
-  onClick,
-  isCreation
-}) => {
+const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
   let name;
 
-  const [hidden, setHidden] = useState(false)
+  const [hidden, setHidden] = useState(false);
 
   const ProfileThumb = () => {
     const { nft } = useContext(NFTDataContext);
@@ -25,19 +20,27 @@ const DashboardNFT = ({
     if (!nft.data?.nft) {
       return null;
     }
-    if ((nft.data?.owner != split.id) && isCreation) {
-      setHidden(true)
+    if (nft.data?.owner != split.id && isCreation) {
+      setHidden(true);
     }
-    console.log(`DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);
+    console.log(
+      `DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`
+    );
     let contentURI = nft.data.zoraNFT.contentURI;
     const regexIPFS = /https\:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
 
     if (contentURI.match(regexIPFS)) {
       const IPFShash = regexIPFS.exec(contentURI).groups.IPFShash;
-      console.log(`DashboardNFT.js\n   - ProfileThumb\n   - IPFShash:\n${IPFShash}`);
+      console.log(
+        `DashboardNFT.js\n   - ProfileThumb\n   - IPFShash:\n${IPFShash}`
+      );
 
       contentURI = `https://ipfs.io/ipfs/` + `${IPFShash}`;
-      console.log(`DashboardNFT.js\n   - ProfileThumb\n   - contentURI:\n${JSON.stringify(contentURI)}`);
+      console.log(
+        `DashboardNFT.js\n   - ProfileThumb\n   - contentURI:\n${JSON.stringify(
+          contentURI
+        )}`
+      );
 
       return (
         <Link href={`/nft/${tokenId}`} passHref>
@@ -66,14 +69,18 @@ const DashboardNFT = ({
       const creatorAddress = nft.data.nft.creator;
       name = metadata.name;
       console.log(`metadata: `, metadata);
-      console.log(`DashboardNFT.js\n   - TitleAuthor\n   - nft.data:\n${JSON.stringify(nft.data.nft.creator)}`);
+      console.log(
+        `DashboardNFT.js\n   - TitleAuthor\n   - nft.data:\n${JSON.stringify(
+          nft.data.nft.creator
+        )}`
+      );
 
       return (
         <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
           <div className="text-bold">{metadata.name}</div>
           <div className="text-right">
             by:{" "}
-            <Link href={`/${creatorAddress}`}>
+            <Link href={`/profile/${creatorAddress}`}>
               {toTrimmedAddress(creatorAddress)}
             </Link>
           </div>
@@ -85,13 +92,13 @@ const DashboardNFT = ({
   return (
     <>
       {/* {!hidden && */}
-        <div className="w-full h-full m-auto">
-          <NFTPreview id={tokenId} onClick={onClick}>
-            {/* <PreviewComponents.MediaThumbnail /> */}
-            <ProfileThumb />
-            <PreviewComponents.PricingComponent />
-          </NFTPreview>
-        </div>
+      <div className="w-full h-full m-auto">
+        <NFTPreview id={tokenId} onClick={onClick}>
+          {/* <PreviewComponents.MediaThumbnail /> */}
+          <ProfileThumb />
+          <PreviewComponents.PricingComponent />
+        </NFTPreview>
+      </div>
       {/* } */}
     </>
   );
