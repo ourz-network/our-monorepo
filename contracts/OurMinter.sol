@@ -242,7 +242,7 @@ contract OurMinter is OurManagement {
     /** NFT-Editions
      * @notice Creates a new edition contract as a factory with a deterministic address
      */
-    function createZoraEdtion(
+    function createZoraEdition(
         string memory _name,
         string memory _symbol,
         string memory _description,
@@ -264,6 +264,27 @@ contract OurMinter is OurManagement {
             _editionSize,
             _royaltyBPS
         );
+    }
+
+    /** NFT-Editions
+      @param minter address to set approved minting status for
+      @param allowed boolean if that address is allowed to mint
+      @dev Sets the approved minting status of the given address.
+           This requires that msg.sender is the owner of the given edition id.
+           If the ZeroAddress (address(0x0)) is set as a minter,
+             anyone will be allowed to mint.
+           This setup is similar to setApprovalForAll in the ERC721 spec.
+     */
+    function setEditionMinter(address minter, bool allowed) public onlyOwners {
+        IZora(_zoraEditions).setApprovedMinter(minter, allowed);
+    }
+
+    /** NFT-Editions
+      @dev Allows for updates of edition urls by the owner of the edition.
+           Only URLs can be updated (data-uris are supported), hashes cannot be updated.
+     */
+    function setEditionURLs(string memory _imageUrl, string memory _animationUrl) public onlyOwners {
+        IZora(_zoraEditions).updateEditionURLs(_imageUrl, _animationUrl);
     }
 
     //======== /IZora =========
@@ -324,7 +345,7 @@ contract OurMinter is OurManagement {
     //======== /IMirror =========
 
     /**======== IPartyBid =========
-     * @notice Various functions allowing a Split to interact with PartyDAO
+     * @notice Allows Split Contract to start a Party Bid
      * @dev see IPartyBid.sol
      */
     /** PartyBid

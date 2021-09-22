@@ -354,14 +354,11 @@ interface IZora {
              anyone will be allowed to mint.
            This setup is similar to setApprovalForAll in the ERC721 spec.
      */
-    // function setApprovedMinter(address minter, bool allowed) public;
+    function setApprovedMinter(address minter, bool allowed) external;
 
     /**
       @dev Allows for updates of edition urls by the owner of the edition.
            Only URLs can be updated (data-uris are supported), hashes cannot be updated.
      */
-    // function updateEditionURLs(
-    //     string memory _imageUrl,
-    //     string memory _animationUrl
-    // ) public;
+    function updateEditionURLs(string memory _imageUrl, string memory _animationUrl) external;
 }

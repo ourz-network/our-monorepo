@@ -33,18 +33,4 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
         // Approve Zora AH
         // setupApprovalForAH();
     }
-
-    /**
-     * @dev Attempts transferring entire balance of an ERC20 to corresponding Recipients
-     * @notice see OurSplitter -> massClaimERC20()
-     */
-    function claimERC20ForAllSplits(
-        address tokenAddress,
-        address[] calldata accounts,
-        uint256[] calldata allocations,
-        Proof[] calldata merkleProofs
-    ) external onlyOwners {
-        require(tokenAddress != address(0), 'Use claimETH');
-        massClaimERC20(tokenAddress, accounts, allocations, merkleProofs);
-    }
 }

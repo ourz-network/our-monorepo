@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai'
-import { Signer, Wallet, BigNumber, Contract } from 'ethers'
+import { Signer, Wallet, BigNumber, Contract, BigNumberish } from 'ethers'
 import asPromised from 'chai-as-promised'
 import { ethers, waffle } from 'hardhat'
 import { OurPylon, OurProxy, FakeERC20, FakeERC721, OurFactory } from '../typechain'
@@ -285,6 +285,13 @@ describe('SplitProxy via Factory', () => {
       let account2: SignerWithAddress
       let account3: SignerWithAddress
       let account4: SignerWithAddress
+      let account5: SignerWithAddress
+      let account6: SignerWithAddress
+      let account7: SignerWithAddress
+      let account8: SignerWithAddress
+      let account9: SignerWithAddress
+      let account10: SignerWithAddress
+      let account11: SignerWithAddress
       // Setup
       let proxy: Contract
       let proxyAddress: string
@@ -322,9 +329,28 @@ describe('SplitProxy via Factory', () => {
           account2,
           account3,
           account4,
+          account5,
+          account6,
+          account7,
+          account8,
+          account9,
+          account10,
+          account11,
         ] = await ethers.getSigners()
 
-        claimers = [account1, account2, account3, account4]
+        claimers = [
+          account1,
+          account2,
+          account3,
+          account4,
+          account5,
+          account6,
+          account7,
+          account8,
+          account9,
+          account10,
+          account11,
+        ]
       })
 
       describe('#createSplit', () => {
@@ -389,21 +415,21 @@ describe('SplitProxy via Factory', () => {
           })
 
           // NOTE: Gas cost is around 495k on rinkeby/mainnet, due to constructor approval calls.
-          it('costs around ~340k gas to deploy the proxy', async () => {
+          it('costs around ~350k gas to deploy the proxy', async () => {
             const gasUsed = (await deployTx.wait()).gasUsed
             expect(gasUsed).to.be.gt(330000)
-            expect(gasUsed).to.be.lt(350000)
+            expect(gasUsed).to.be.lt(370000)
           })
 
           it('costs around ~3.75M gas to deploy the Pylon', async () => {
             const gasUsed = (await pylon.deployTransaction.wait()).gasUsed
-            expect(gasUsed).to.be.gt(3700000)
-            expect(gasUsed).to.be.lt(3800000)
+            expect(gasUsed).to.be.gt(3500000)
+            expect(gasUsed).to.be.lt(4000000)
           })
 
           describe('#ERC20', async () => {
-            let splitBalanceBefore: { toString: () => any }
-            let splitBalanceAfter: { toString: () => any }
+            let splitBalanceBefore: BigNumberish
+            let splitBalanceAfter: BigNumberish
             let gasUsed
 
             describe('When someone sends ERC20 Tokens to the split', () => {
@@ -412,28 +438,24 @@ describe('SplitProxy via Factory', () => {
                 gasUsed = BigNumber.from(0)
 
                 // const transferERC20s = await fake20.connect(funder).transfer(proxyAddress, 100000000)
-                const transferERC20s = await fake20.connect(funder).transfer(proxyAddress, 837621)
+                const transferERC20s = await fake20
+                  .connect(funder)
+                  .transfer(proxyAddress, ethers.utils.parseUnits('9.999999999999999999', 18))
                 const mintMoreToFunder = await fake20.connect(funder).mint()
                 splitBalanceAfter = await fake20.balanceOf(proxy.address)
               })
 
               describe('and the split receives', () => {
                 // it('100000000 tokens', async () => {
-                it('837621 tokens', async () => {
+                it('9.999999999999999999 tokens', async () => {
                   expect(splitBalanceBefore.toString()).to.eq(BigNumber.from(0).toString())
-                  expect(splitBalanceAfter.toString()).to.eq('837621')
+                  expect(ethers.utils.formatUnits(splitBalanceAfter).toString()).to.eq('9.999999999999999999')
                 })
 
                 describe('Which are only accessible via claimERC20ForAllSplits', () => {
-                  it('does not allow non-Owners to call', async () => {
-                    await expect(
-                      proxyPylonByAnyone.claimERC20ForAllSplits(fake20.address, addresses, allocs, proofs)
-                    ).revertedWith('Caller is not an approved owner of this Split')
-                  })
-
-                  describe('does allow Owners to call', async () => {
+                  describe('allows anyone to call', async () => {
                     beforeEach(async () => {
-                      const claimERC20Tx = await proxyPylonByOwner.claimERC20ForAllSplits(
+                      const claimERC20Tx = await proxyPylonByAnyone.claimERC20ForAll(
                         fake20.address,
                         addresses,
                         allocs,
@@ -445,17 +467,17 @@ describe('SplitProxy via Factory', () => {
                       const splitBalanceAfterClaim = await fake20.connect(transactionHandler).balanceOf(proxy.address)
                       expect(splitBalanceAfterClaim.toString()).to.eq(BigNumber.from(0).toString())
                     })
-
                     describe('with correct amounts being sent', () => {
                       for (let accountIndex = 0; accountIndex < allocationPercentages.length; accountIndex++) {
                         it(`to Account ${accountIndex + 1}`, async () => {
-                          const accountBalance = await fake20.balanceOf(`${addresses[accountIndex]}`)
-                          // expect(accountBalance.toString()).to.eq(((Number(allocationPercentages[accountIndex]*100000000)/(100*1000000)).toFixed(0)).toString())
-                          expect(accountBalance.toString()).to.eq(
-                            (Number(allocationPercentages[accountIndex] * 837621) / (100 * 1000000))
-                              .toFixed(0)
-                              .toString()
-                          )
+                          const allocatedAmount =
+                            Number(allocationPercentages[accountIndex] * 9999999999999999999) / (100 * 1000000)
+
+                          const accountBalance: BigNumber = await fake20.balanceOf(`${addresses[accountIndex]}`)
+
+                          // expect(accountBalance.toString()).to.eq(allocatedAmount.toString());
+                          expect(Number(accountBalance.toString())).to.be.gte(allocatedAmount - 100)
+                          expect(Number(accountBalance.toString())).to.be.lte(allocatedAmount + 100)
                         })
                       }
                     })
@@ -526,10 +548,10 @@ describe('SplitProxy via Factory', () => {
                   )
                 })
 
-                // NOTE: Gas cost is around 72k, but depends slightly.
-                it('costs ~72k gas', async () => {
+                // NOTE: Gas cost is around 73k, but depends slightly.
+                it('costs ~73k gas', async () => {
                   expect(Number(gasUsed.toString())).to.be.gt(71000)
-                  expect(Number(gasUsed.toString())).to.be.lt(73000)
+                  expect(Number(gasUsed.toString())).to.be.lt(75000)
                 })
               })
 
@@ -563,11 +585,11 @@ describe('SplitProxy via Factory', () => {
                     )
                   })
 
-                  // NOTE: Gas cost is around 72k, but depends slightly on the size of the
+                  // NOTE: Gas cost is around 73k, but depends slightly on the size of the
                   // allocation. Can check by uncommenting this and running the test.
-                  it('costs ~72k gas', async () => {
+                  it('costs ~73k gas', async () => {
                     expect(Number(gasUsed.toString())).to.be.gt(71000)
-                    expect(Number(gasUsed.toString())).to.be.lt(73000)
+                    expect(Number(gasUsed.toString())).to.be.lt(75000)
                   })
                 })
               })
@@ -675,10 +697,10 @@ describe('SplitProxy via Factory', () => {
 
                 // NOTE: Gas cost is around 98k, but depends slightly on the size of the
                 // allocation. Can check by uncommenting this and running the test.
-                it('costs ~98k gas', async () => {
+                it('costs ~99k gas', async () => {
                   const receipt = await tx.wait()
                   expect(Number(receipt.gasUsed.toString())).to.be.gt(97000)
-                  expect(Number(receipt.gasUsed.toString())).to.be.lt(99999)
+                  expect(Number(receipt.gasUsed.toString())).to.be.lt(101000)
                 })
               })
 

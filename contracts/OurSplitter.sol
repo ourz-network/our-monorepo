@@ -7,6 +7,8 @@ interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
 
     function transfer(address recipient, uint256 amount) external returns (bool);
+
+    function decimals() external returns (uint8);
 }
 
 interface IWETH {
@@ -63,15 +65,19 @@ contract OurSplitter is OurStorage {
     }
 
     /**
+     * @dev Attempts transferring entire balance of an ERC20 to corresponding Recipients
      * @notice if amount of tokens are not equally divisible according to allocation
-     * the remainder will be forwarded to accounts[0]
+     * the remainder will be forwarded to accounts[0].
+     * In most cases, the difference will be negligible:
+     *      ~remainder × 10^-17,
+     *      or about 0.000000000000000100 at most.
      */
-    function massClaimERC20(
+    function claimERC20ForAll(
         address tokenAddress,
         address[] calldata accounts,
         uint256[] calldata allocations,
         Proof[] calldata merkleProofs
-    ) internal {
+    ) external {
         require(
             verifyProof(merkleProofs[0].merkleProof, merkleRoot, getNode(accounts[0], allocations[0])),
             'Invalid proof for Account 0'
@@ -80,7 +86,7 @@ contract OurSplitter is OurStorage {
         uint256 ERC20Balance = IERC20(tokenAddress).balanceOf(address(this));
         uint256 totalSent = 0;
 
-        for (uint256 i = 1; i < accounts.length; i++) {
+        for (uint256 i = 0; i < accounts.length; i++) {
             require(
                 verifyProof(merkleProofs[i].merkleProof, merkleRoot, getNode(accounts[i], allocations[i])),
                 'Invalid proof'
@@ -92,7 +98,9 @@ contract OurSplitter is OurStorage {
         }
 
         uint256 remaining = ERC20Balance - totalSent;
-        transferERC20(tokenAddress, accounts[0], remaining);
+        if (remaining != 0) {
+            transferERC20(tokenAddress, accounts[0], remaining);
+        }
         emit MassTransferERC20(tokenAddress, ERC20Balance, true);
     }
 
