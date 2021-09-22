@@ -27,12 +27,14 @@ import {IERC20} from './interfaces/IERC20.sol';
  * https://consensys.github.io/smart-contract-best-practices/recommendations/#mark-untrusted-contracts
  */
 contract OurMinter is OurManagement {
+    //======== Subgraph =========
+    event EditionMinted(uint256 editionId, uint256 editionSize);
+
     /// @notice RINKEBY ADDRESSES
     address public constant _zoraMedia = 0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
     address public constant _zoraMarket = 0x85e946e1Bd35EC91044Dc83A5DdAB2B6A262ffA6;
     address public constant _zoraAH = 0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
     address public constant _zoraEditions = 0x7E335506443252196cd5A61bd4a1906D79791Fc6;
-    address public constant _mirrorAH = 0x2D5c022fd4F81323bbD1Cc0Ec6959EC8CC1C5A11;
     address public constant _mirrorCrowdfund = 0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
     address public constant _partyBid = 0xB725682D5AdadF8dfD657f8e7728744C0835ECd9;
     address public constant _weth = 0xc778417E063141139Fce010982780140Aa0cD5Ab;
@@ -144,24 +146,6 @@ contract OurMinter is OurManagement {
     }
 
     /** Market
-     * @notice Set zora/core/market bid (NOT zora/auctionHouse)
-     */
-    function setZoraMarketBid(
-        uint256 tokenId,
-        IZora.Bid calldata bid,
-        address spender
-    ) external onlyOwners {
-        IZora(_zoraMarket).setBid(tokenId, bid, spender);
-    }
-
-    /** Market
-     * @notice Remove zora/core/market bid (NOT zora/auctionHouse)
-     */
-    function removeZoraMarketBid(uint256 tokenId, address bidder) external onlyOwners {
-        IZora(_zoraMarket).removeBid(tokenId, bidder);
-    }
-
-    /** Market
      * @notice Accept zora/core/market bid
      */
     function acceptZoraMarketBid(uint256 tokenId, IZora.Bid calldata expectedBid) external onlyOwners {
@@ -172,7 +156,7 @@ contract OurMinter is OurManagement {
      * @notice Create auction on Zora's AuctionHouse for an owned/approved NFT
      * @dev requires currency ETH or WETH
      */
-    function createZoraAuction(
+    function createZoraAuctionETH(
         uint256 tokenId,
         address tokenContract,
         uint256 duration,
@@ -194,11 +178,11 @@ contract OurMinter is OurManagement {
     }
 
     /** AuctionHouse
-     * @notice SPLITS DO NOT SUPPORT ERC20. MUST BE HANDLED MANUALLY.
-     * NOTE: Marked as >> unsafe << as FUNDS WILL NOT BE SPLIT.
-     * @dev Provided as option in case you know what you're doing.
+     * @notice ERC20s may not be split perfectly
+     * if the amount is indivisable among recipients,
+     * the remainder will be sent to the first recipient
      */
-    function unsafeCreateZoraAuction(
+    function createZoraAuctionERC20(
         uint256 tokenId,
         address tokenContract,
         uint256 duration,
@@ -219,14 +203,14 @@ contract OurMinter is OurManagement {
     }
 
     /** AuctionHouse
-     * @notice Approve Auction; aka Split Contract is now the Curator
+     * @notice Approves an Auction proposal that requested the Split be the curator
      */
     function setZoraAuctionApproval(uint256 auctionId, bool approved) external onlyOwners {
         IZora(_zoraAH).setAuctionApproval(auctionId, approved);
     }
 
     /** AuctionHouse
-     * @notice Set Auction's reserve price
+     * @notice Set an Auction's reserve price
      */
     function setZoraAuctionReservePrice(uint256 auctionId, uint256 reservePrice) external onlyOwners {
         IZora(_zoraAH).setAuctionReservePrice(auctionId, reservePrice);
@@ -253,7 +237,7 @@ contract OurMinter is OurManagement {
         uint256 _editionSize,
         uint256 _royaltyBPS
     ) external onlyOwners {
-        IZora(_zoraEditions).createEdition(
+        uint256 editionId = IZora(_zoraEditions).createEdition(
             _name,
             _symbol,
             _description,
@@ -264,6 +248,8 @@ contract OurMinter is OurManagement {
             _editionSize,
             _royaltyBPS
         );
+
+        emit EditionMinted(editionId, _editionSize);
     }
 
     /** NFT-Editions
