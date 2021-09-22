@@ -3,21 +3,25 @@
   "license": "UNLICENSED",
   "version": "1.0.0",
   "scripts": {
+    "pretty": "prettier --write src/**/*.*",
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nickadamson/ourzrinkebyv2",
     "create-local": "graph create --node http://localhost:8020/ scaffold-eth/your-contract",
     "remove-local": "graph remove --node http://localhost:8020/ scaffold-eth/your-contract",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@assemblyscript/loader": "^0.19.12",
     "@graphprotocol/graph-ts": "^0.22.0-alpha.2",
     "assemblyscript": "^0.19.12",
-    "assemblyscript-json": "^1.1.0"
+    "assemblyscript-json": "^1.1.0",
+    "prettier": "^2.4.1"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.22.0-alpha.2",
+    "husky": "^7.0.0",
     "mustache": "^4.2.0"
   }
 }

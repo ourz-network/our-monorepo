@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "lib": [
-      "ESNext.String"
-    ]
+    "lib": ["ESNext.String"]
   }
 }
