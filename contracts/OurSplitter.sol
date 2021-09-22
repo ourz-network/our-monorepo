@@ -34,15 +34,13 @@ contract OurSplitter is OurStorage {
     }
 
     /**======== Subgraph =========
-     * ETHReceived - emits sender and value in receive() fallback
-     * TransferETH - emits destination address, value, and success bool
-     * MassTransferERC20 - emits token address, total transferred amount, and success bool
      * WindowIncremented - emits token address, current claim window, and available value of ERC20
+     * TransferETH - emits to address, value, and success bool
+     * TransferERC20 - emits to address, token address, total transferred amount, and success bool
      */
-    event ETHReceived(address indexed sender, uint256 value);
-    event TransferETH(address account, uint256 amount, bool success);
-    event MassTransferERC20(address token, uint256 amount, bool success);
     event WindowIncremented(uint256 currentWindow, uint256 fundsAvailable);
+    event TransferETH(address account, uint256 amount, bool success);
+    event TransferERC20(address account, address token, uint256 amount, bool success);
 
     function claimETH(
         uint256 window,
@@ -101,7 +99,6 @@ contract OurSplitter is OurStorage {
         if (remaining != 0) {
             transferERC20(tokenAddress, accounts[0], remaining);
         }
-        emit MassTransferERC20(tokenAddress, ERC20Balance, true);
     }
 
     function claimETHForAllWindows(
@@ -242,6 +239,7 @@ contract OurSplitter is OurStorage {
         uint256 allocatedAmount
     ) internal {
         bool didSucceed = IERC20(tokenAddress).transfer(splitRecipient, allocatedAmount);
+        emit TransferERC20(splitRecipient, tokenAddress, ERC20Balance, didSucceed);
         require(didSucceed);
     }
 

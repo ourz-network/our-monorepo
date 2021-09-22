@@ -14,7 +14,7 @@ contract OurManagement {
     event ProxySetup(address[] owners);
     event AddedOwner(address owner);
     event RemovedOwner(address owner);
-    event ChangeNickname(string newNickname);
+    event NameChanged(string newName);
 
     // used as origin pointer for linked list of owners
     address internal constant SENTINEL_OWNERS = address(0x1);
@@ -104,8 +104,9 @@ contract OurManagement {
         emit AddedOwner(newOwner);
     }
 
-    function editNickname(string calldata newNickname_) public onlyOwners {
-        emit ChangeNickname(newNickname_);
+    /// @dev for subgraph
+    function editNickname(string calldata newName_) public onlyOwners {
+        emit NameChanged(newName_);
     }
 
     function isOwner(address owner) public view returns (bool) {
