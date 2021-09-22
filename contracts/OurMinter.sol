@@ -293,26 +293,6 @@ contract OurMinter is OurManagement {
      * @notice Various functions allowing a Split to interact with MirrorXYZ
      * @dev see IMirror.sol
      */
-    /** ReserveAuctionV3
-     * @notice Create Reserve Auction
-     */
-    function createMirrorAuction(
-        uint256 tokenId,
-        uint256 duration,
-        uint256 reservePrice,
-        address creator,
-        address payable creatorShareRecipient
-    ) external onlyOwners {
-        IMirror(_mirrorAH).createAuction(tokenId, duration, reservePrice, creator, creatorShareRecipient);
-    }
-
-    /** ReserveAuctionV3
-     * @notice Update Minimum Bid on Reserve Auction
-     */
-    function updateMirrorMinBid(uint256 minBid) external onlyOwners {
-        IMirror(_mirrorAH).updateMinBid(minBid);
-    }
-
     /** Crowdfund
      * @notice Create a Crowdfund
      */
@@ -335,10 +315,10 @@ contract OurMinter is OurManagement {
     }
 
     /** Crowdfund
-     * @notice Marked as >> untrusted << Use caution when supplying crowdfundProxy_
+     * @notice Use caution when supplying crowdfundProxy_,
      * @dev Close Funding period for Crowdfund
      */
-    function untrustedCloseCrowdFunding(address crowdfundProxy_) external onlyOwners {
+    function closeCrowdFunding(address crowdfundProxy_) external onlyOwners {
         IMirror(crowdfundProxy_).closeFunding();
     }
 
