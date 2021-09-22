@@ -2,157 +2,70 @@ specVersion: 0.0.2
 description: Ourz
 repository:
 schema:
-    file: ./src/schema.graphql
+  file: ./src/schema.graphql
 dataSources:
-    - kind: ethereum/contract
-      name: OurFactory
-      network: rinkeby
-      source:
-          address: "{{OurFactoryAddress}}"
-          abi: OurFactory
-          startBlock: 9200000
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.5
-          language: wasm/assemblyscript
-          file: ./src/mappings/factory.ts
-          entities:
-              - OurFactory
-          abis:
-              - name: OurFactory
-                file: ./abis/OurFactory.json
-          eventHandlers:
-              - event: ProxyCreated(address,address,string,string)
-                handler: handleProxyCreated
-    # - kind: ethereum/contract
-    #   name: OurPylon
-    #   network: rinkeby
-    #   source:
-    #       address: "{{OurPylonAddress}}"
-    #       abi: OurPylon
-    #       startBlock: 9100000
-    #   mapping:
-    #       kind: ethereum/events
-    #       apiVersion: 0.0.4
-    #       language: wasm/assemblyscript
-    #       file: ./src/mappings/pylon.ts
-    #       entities:
-    #           - OurPylon
-    #       abis:
-    #           - name: OurPylon
-    #             file: ./abis/OurPylon.json
-    #       eventHandlers:
-    #           - event: ProxySetup(address[])
-    #             handler: handleProxySetup
-    #           - event: AddedOwner(address)
-    #             handler: handleAddedOwner
-    #           - event: RemovedOwner(address)
-    #             handler: handleRemovedOwner
-    #           - event: ETHReceived(indexed address,uint256)
-    #             handler: handleETHReceived
-    #           - event: TransferETH(address,uint256,bool)
-    #             handler: handleTransferETH
-    #           - event: ERC721Received(address,address,uint256)
-    #             handler: handleERC721Received
-    # - event: Batch1155Received(address,address,uint256[],uint256[])
-    #   handler: handleBatch1155Received
-    # - event: ERC1155Received(address,address,uint256,uint256)
-    #   handler: handleERC1155Received
-    # - event: ERC777Received(address,address,address,uint256)
-    #   handler: handleERC777Received
-    # - event: MassTransferERC20(address,uint256,bool)
-    #   handler: handleMassTransferERC20
-    # - event: WindowIncremented(uint256,uint256)
-    #   handler: handleWindowIncremented
-    # - kind: ethereum/contract
-    #   name: OurSplitter
-    #   network: rinkeby
-    #   source:
-    #     address: "{{OurSplitterAddress}}"
-    #     abi: OurSplitter
-    #     startBlock: 1
-    #   mapping:
-    #     kind: ethereum/events
-    #     apiVersion: 0.0.4
-    #     language: wasm/assemblyscript
-    #     file: ./src/mappings/splitter.ts
-    #     entities:
-    #       - OurSplitter
-    #     abis:
-    #       - name: OurSplitter
-    #         file: ./abis/OurSplitter.json
-    #     eventHandlers:
-    #       - event: TransferETH(address,uint256,bool)
-    #         handler: handleTransferETH
-    #       - event: WindowIncremented(uint256,uint256)
-    #         handler: handleWindowIncremented
-    # - kind: ethereum/contract
-    #   name: OurMinter
-    #   network: rinkeby
-    #   source:
-    #     address: "{{OurMinterAddress}}"
-    #     abi: OurMinter
-    #     startBlock: 1
-    #   mapping:
-    #     kind: ethereum/events
-    #     apiVersion: 0.0.4
-    #     language: wasm/assemblyscript
-    #     entities:
-    #       - OurMinter
-    #     abis:
-    #       - name: OurMinter
-    #         file: ./abis/OurMinter.json
-    #     eventHandlers:
-    #       - event: SetPurpose(address,string)
-    #         handler: handleSetPurpose
-    #     file: ./minter.ts
+  - kind: ethereum/contract
+    name: OurFactory
+    network: rinkeby
+    source:
+      address: "{{OurFactoryAddress}}"
+      abi: OurFactory
+      startBlock: 9200000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - OurFactory
+      abis:
+        - name: OurFactory
+          file: ./abis/OurFactory.json
+      eventHandlers:
+        - event: ProxyCreated(address,address,string,string)
+          handler: handleProxyCreated
 templates:
-    - kind: ethereum/contract
-      name: OurPylon
-      network: rinkeby
-      source:
-          # address: "{{OurPylonAddress}}"
-          abi: OurPylon
-          # startBlock: 9100000
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.5
-          language: wasm/assemblyscript
-          file: ./src/mappings/pylon.ts
-          entities:
-              - OurPylon
-          abis:
-              - name: OurPylon
-                file: ./abis/OurPylon.json
-          eventHandlers:
-              - event: ProxySetup(address[])
-                handler: handleProxySetup
-              - event: AddedOwner(address)
-                handler: handleAddedOwner
-              - event: RemovedOwner(address)
-                handler: handleRemovedOwner
-              - event: ETHReceived(indexed address,uint256)
-                handler: handleETHReceived
-              - event: TransferETH(address,uint256,bool)
-                handler: handleTransferETH
-              - event: ERC721Received(address,address,uint256)
-                handler: handleERC721Received
-          # eventHandlers:
-          # - event: ProxySetup(address[])
-          #   handler: handleProxySetup
-          # - event: AddedOwner(address)
-          #   handler: handleAddedOwner
-          # - event: RemovedOwner(address)
-          #   handler: handleRemovedOwner
-          # - event: ETHReceived(indexed address,uint256)
-          #   handler: handleETHReceived
-          # - event: TransferETH(address,uint256,bool)
-          #   handler: handleTransferETH
-          # - event: ERC721Received(address,address,uint256)
-          #   handler: handleERC721Received
-          # - event: OwnershipTransferred(indexed address,indexed address)
-          #   handler: handleOwnershipTransferred
-          # - event: TokenReceived(address,address,uint256,bytes)
-          #   handler: handleTokenReceived
-          # - event: ETHReceived(address,address,uint256)
-          #   handler: handleETHReceived
+  - kind: ethereum/contract
+    name: OurPylon
+    network: rinkeby
+    source:
+      abi: OurPylon
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/pylon.ts
+      entities:
+        - OurPylon
+      abis:
+        - name: OurPylon
+          file: ./abis/OurPylon.json
+        - name: OurProxy
+          file: ./abis/OurProxy.json
+      eventHandlers:
+        - event: ProxySetup(address[])
+          handler: handleProxySetup
+        - event: AddedOwner(address)
+          handler: handleAddedOwner
+        - event: RemovedOwner(address)
+          handler: handleRemovedOwner
+        - event: NameChanged(string)
+          handler: handleNameChanged
+        - event: ETHReceived(indexed address,uint256)
+          handler: handleETHReceived
+        - event: WindowIncremented(uint256,uint256)
+          handler: handleWindowIncremented
+        - event: TransferETH(address,uint256,bool)
+          handler: handleTransferETH
+        - event: TransferERC20(address,address,uint256,bool)
+          handler: handleTransferERC20
+        - event: ERC721Received(address,address,uint256)
+          handler: handleERC721Received
+        - event: ERC1155Received(address,address,uint256,uint256)
+          handler: handleERC1155Received
+        - event: Batch1155Received(address,address,uint256[],uint256[])
+          handler: handleBatch1155Received
+        - event: ERC777Received(address,address,address,uint256)
+          handler: handleERC777Received
+        - event: EditionMinted(uint256,uint256)
+          handler: handleEditionMinted

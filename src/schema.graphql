@@ -1,102 +1,109 @@
 type NFTContract @entity {
-    "The Contract Address"
-    id: ID!
+  "The Contract Address"
+  id: ID!
 
-    splitNFTs: [SplitNFT!]! @derivedFrom(field: "contract")
+  "All of the NFTs from the contract that were created by Split Proxies"
+  splitNFTs: [SplitNFT!]! @derivedFrom(field: "contract")
 }
 
 type SplitNFT @entity {
-    # ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
-    "<tokenId>-<contractAddress>"
-    id: ID!
+  # ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
+  "<tokenId>-<contractAddress>"
+  id: ID!
 
-    "The tokenId of the ERC-721"
-    tokenId: String!
+  "The tokenId of the ERC-721"
+  tokenId: String!
 
-    "The ERC-721 contract's address"
-    contract: NFTContract!
+  "The ERC-721 contract's address"
+  contract: NFTContract!
 
-    "The creator of the ERC-721"
-    creator: OurProxy!
+  "The creator of the ERC-721"
+  creator: OurProxy!
 
-    "The transaction hash the ERC-721 was originally logged in this subgraph"
-    transactionHash: String!
+  "The transaction hash the ERC-721 was originally logged in this subgraph"
+  transactionHash: String!
 }
 
 type OurProxy @entity {
-    "The address of the Proxy"
-    id: ID!
+  "The address of the Proxy"
+  id: ID!
 
-    "A nickname for the Proxy"
-    nickname: String
+  "A nickname for the Proxy"
+  nickname: String
 
-    "The transaction hash the Proxy was created at"
-    transactionHash: String!
+  "The transaction hash the Proxy was created at"
+  transactionHash: String!
 
-    "The timestamp of the block the Ask was created in"
-    createdAtTimestamp: BigInt!
+  "The timestamp of the block the Ask was created in"
+  createdAtTimestamp: BigInt!
 
-    "The number of the block the Ask created in"
-    createdAtBlockNumber: BigInt!
+  "The number of the block the Ask created in"
+  createdAtBlockNumber: BigInt!
 
-    "The current owner(s) of the Proxy"
-    proxyOwners: [User!]!
+  "The current owner(s) of the Proxy"
+  proxyOwners: [User!]!
 
-    "The original owner of the Proxy"
-    creator: User!
+  "The original owner of the Proxy"
+  creator: User!
 
-    "The number of times ownership has been transferred"
-    transfers: BigInt!
+  "The number of times ownership has been transferred"
+  transfers: BigInt!
 
-    "The amount of ETH/WETH available to claim by Split Recipients"
-    ETH: BigInt!
+  "The amount of ETH/WETH available to claim by Split Recipients"
+  ETH: BigInt!
 
-    "Array of SplitRecipients"
-    splitRecipients: [SplitRecipient!]! @derivedFrom(field: "splitProxy")
+  "Recipients should increment window before claiming"
+  needsIncremented: Bool!
 
-    "The ERC721(s) the Proxy created"
-    creations: [SplitNFT!]! @derivedFrom(field: "creator")
+  "Array of SplitRecipients"
+  splitRecipients: [SplitRecipient!]! @derivedFrom(field: "splitProxy")
+
+  "The ERC721(s) the Proxy created"
+  creations: [SplitNFT!]! @derivedFrom(field: "creator")
 }
 
 type User @entity {
-    "Ethereum Address"
-    id: ID!
+  "Ethereum Address"
+  id: ID!
 
-    "Total amount of ETH claimed from all Splits"
-    ethClaimed: BigInt!
+  "Total amount of ETH claimed from all Splits"
+  ethClaimed: BigInt!
 
-    "Proxies that this address owns"
-    ownedProxies: [OurProxy!]! @derivedFrom(field: "proxyOwners")
+  "Proxies that this address owns"
+  ownedProxies: [OurProxy!]! @derivedFrom(field: "proxyOwners")
 
-    "Proxies that this address created"
-    createdProxies: [OurProxy!]! @derivedFrom(field: "creator")
+  "Proxies that this address created"
+  createdProxies: [OurProxy!]! @derivedFrom(field: "creator")
 
-    "Splits that this address is a recipient of"
-    recipientInfo: [SplitRecipient!]! @derivedFrom(field: "user")
+  "Splits that this address is a recipient of"
+  recipientInfo: [SplitRecipient!]! @derivedFrom(field: "user")
 }
 
 type SplitRecipient @entity {
-    "`${proxyAddress}-${userAddress}`"
-    id: ID!
+  "`${proxyAddress}-${userAddress}`"
+  id: ID!
 
-    "User Entity"
-    user: User
+  "User Entity"
+  user: User!
 
-    "OurProxy Entity"
-    splitProxy: OurProxy!
+  "OurProxy Entity"
+  splitProxy: OurProxy!
 
-    "Name/Alias of User"
-    name: String
+  "Name/Alias of User"
+  name: String
 
-    "Role in Split"
-    role: String
+  "Role in Split"
+  role: String
 
-    "Number between 0-100 as a string"
-    shares: String
+  "Number between 0-100 as a string"
+  shares: String
 
-    "Shares * 1,000,000 as a string"
-    allocation: String
+  "Shares * 1,000,000 as a string"
+  allocation: String
 
-    "Total amount of ETH claimed from this Split"
-    ethClaimed: BigInt!
+  "ETH available to claim for the specific user"
+  claimableETH: BigInt!
+
+  "Total amount of ETH claimed from this Split"
+  ethClaimed: BigInt!
 }
