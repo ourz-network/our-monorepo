@@ -1,10 +1,13 @@
+/* eslint-disable */
 // From https://github.com/Uniswap/merkle-distributor
 
 import { bufferToHex, keccak256 } from "ethereumjs-util";
 
 export default class MerkleTree {
   private readonly elements: Buffer[];
+
   private readonly bufferElementPositionIndex: { [hexElement: string]: number };
+
   private readonly layers: Buffer[][];
 
   constructor(elements: Buffer[]) {
@@ -102,15 +105,12 @@ export default class MerkleTree {
 
     if (pairIdx < layer.length) {
       return layer[pairIdx];
-    } else {
-      return null;
     }
+    return null;
   }
 
   private static bufDedup(elements: Buffer[]): Buffer[] {
-    return elements.filter((el, idx) => {
-      return idx === 0 || !elements[idx - 1].equals(el);
-    });
+    return elements.filter((el, idx) => idx === 0 || !elements[idx - 1].equals(el));
   }
 
   private static bufArrToHexArr(arr: Buffer[]): string[] {
@@ -118,7 +118,7 @@ export default class MerkleTree {
       throw new Error("Array is not an array of buffers");
     }
 
-    return arr.map((el) => "0x" + el.toString("hex"));
+    return arr.map((el) => `0x${el.toString("hex")}`);
   }
 
   private static sortAndConcat(...args: Buffer[]): Buffer {
