@@ -3,6 +3,12 @@
 // })
 // withBundleAnalyzer(
 module.exports = {
+  eslint: {
+    dirs: ['app', 'components', 'modules', 'pages'], 
+  },
+  extends: [
+    'plugin:@next/next/recommended',
+  ],
   images: {
     // limit of 25 deviceSizes values
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

@@ -32,6 +32,7 @@
     "@zoralabs/zdk": "^1.2.3",
     "autoprefixer": "^10.3.5",
     "axios": "^0.21.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "ethereum-blockies-base64": "^1.0.2",
     "ethereumjs-util": "^7.1.0",
     "ethers": "5.4.7",
@@ -52,13 +53,13 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^11.1.2",
-    "lint-staged": "^11.1.2",
+    "@next/eslint-plugin-next": "^11.1.2",
     "@tailwindcss/forms": "^0.3.3",
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.1.2",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
     "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
     "prettier": "2.4.1",
     "tailwindcss": "^2.2.15"
   }

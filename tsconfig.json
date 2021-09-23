@@ -18,8 +18,8 @@
     "paths": {
       "@/app/*": ["app/*"],
       "@/common/*": ["common/*"],
-      "@/components/*": ["common/components/*"],
-      "@/hooks/*": ["common/hooks/*"],
+      "@/components/*": ["components/*"],
+      "@/hooks/*": ["hooks/*"],
       "@/ethereum/*": ["modules/ethereum/*"],
       "@/modules/*": ["modules/*"],
       "@/pages/*": ["pages/*"]
