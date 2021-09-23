@@ -2,26 +2,19 @@
 // create an account and set up their information like bio and social links.
 // if they decline just use server side rendering that way create is off limits.
 
-import React, { Fragment, useState, useEffect, useRef } from "react";
-import axios from "axios";
-import web3 from "@/app/web3";
-import { Dialog, Transition } from "@headlessui/react";
-import { useForm } from "react-hook-form";
-import catchErrors from "@/modules/mongodb/utils/catchErrors";
+import React, { Fragment, useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import web3 from '@/app/web3';
+import { Dialog, Transition } from '@headlessui/react';
+import { useForm } from 'react-hook-form';
+import catchErrors from '@/modules/mongodb/utils/catchErrors';
 // import userUpdate from "@/modules/mongodb/utils/userActions";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 let cancel;
 
 // This modal allows connected wallets to sign up/edit their profile
-const ProfileForm = ({
-  modalType,
-  User,
-  linkAddress,
-  profileDetails,
-  showModal,
-  setShowModal,
-}) => {
+const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, setShowModal }) => {
   const Router = useRouter();
 
   // Global State. Connected wallet.
@@ -44,26 +37,22 @@ const ProfileForm = ({
   const [user, setUser] = useState({
     ethAddress: User?.ethAddress || linkAddress || address,
     userId: User?._id || null,
-    username: User?.username || "",
-    name: profileDetails?.name || "",
-    bio: profileDetails?.bio || "",
-    website: (profileDetails?.social && profileDetails?.social?.website) || "",
-    twitter: (profileDetails?.social && profileDetails?.social?.twitter) || "",
-    instagram:
-      (profileDetails?.social && profileDetails?.social?.instagram) || "",
-    discord: (profileDetails?.social && profileDetails?.social?.discord) || "",
-    github: (profileDetails?.social && profileDetails?.social?.github) || "",
-    linktree:
-      (profileDetails?.social && profileDetails?.social?.linktree) || "",
-    yat: (profileDetails?.social && profileDetails?.social?.yat) || "",
-    galleryso:
-      (profileDetails?.social && profileDetails?.social?.galleryso) || "",
-    lazy: (profileDetails?.social && profileDetails?.social?.lazy) || "",
-    showtime:
-      (profileDetails?.social && profileDetails?.social?.showtime) || "",
-    tiktok: (profileDetails?.social && profileDetails?.social?.tiktok) || "",
-    twitch: (profileDetails?.social && profileDetails?.social?.twitch) || "",
-    youtube: (profileDetails?.social && profileDetails?.social?.youtube) || "",
+    username: User?.username || '',
+    name: profileDetails?.name || '',
+    bio: profileDetails?.bio || '',
+    website: (profileDetails?.social && profileDetails?.social?.website) || '',
+    twitter: (profileDetails?.social && profileDetails?.social?.twitter) || '',
+    instagram: (profileDetails?.social && profileDetails?.social?.instagram) || '',
+    discord: (profileDetails?.social && profileDetails?.social?.discord) || '',
+    github: (profileDetails?.social && profileDetails?.social?.github) || '',
+    linktree: (profileDetails?.social && profileDetails?.social?.linktree) || '',
+    yat: (profileDetails?.social && profileDetails?.social?.yat) || '',
+    galleryso: (profileDetails?.social && profileDetails?.social?.galleryso) || '',
+    lazy: (profileDetails?.social && profileDetails?.social?.lazy) || '',
+    showtime: (profileDetails?.social && profileDetails?.social?.showtime) || '',
+    tiktok: (profileDetails?.social && profileDetails?.social?.tiktok) || '',
+    twitch: (profileDetails?.social && profileDetails?.social?.twitch) || '',
+    youtube: (profileDetails?.social && profileDetails?.social?.youtube) || '',
   });
 
   //
@@ -71,36 +60,29 @@ const ProfileForm = ({
     register,
     handleSubmit,
     formState: { errors },
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useForm({
     defaultValues: {
       ethAddress: User?.ethAddress || linkAddress || address,
       userId: User?._id || null,
-      desiredUsername: User?.username || "",
-      name: profileDetails?.name || "",
-      bio: profileDetails?.bio || "",
-      website:
-        (profileDetails?.social && profileDetails?.social?.website) || "",
-      twitter:
-        (profileDetails?.social && profileDetails?.social?.twitter) || "",
-      instagram:
-        (profileDetails?.social && profileDetails?.social?.instagram) || "",
-      discord:
-        (profileDetails?.social && profileDetails?.social?.discord) || "",
-      github: (profileDetails?.social && profileDetails?.social?.github) || "",
-      linktree:
-        (profileDetails?.social && profileDetails?.social?.linktree) || "",
-      yat: (profileDetails?.social && profileDetails?.social?.yat) || "",
-      galleryso:
-        (profileDetails?.social && profileDetails?.social?.galleryso) || "",
-      lazy: (profileDetails?.social && profileDetails?.social?.lazy) || "",
-      showtime:
-        (profileDetails?.social && profileDetails?.social?.showtime) || "",
-      tiktok: (profileDetails?.social && profileDetails?.social?.tiktok) || "",
-      twitch: (profileDetails?.social && profileDetails?.social?.twitch) || "",
-      youtube:
-        (profileDetails?.social && profileDetails?.social?.youtube) || "",
+      desiredUsername: User?.username || '',
+      name: profileDetails?.name || '',
+      bio: profileDetails?.bio || '',
+      website: (profileDetails?.social && profileDetails?.social?.website) || '',
+      twitter: (profileDetails?.social && profileDetails?.social?.twitter) || '',
+      instagram: (profileDetails?.social && profileDetails?.social?.instagram) || '',
+      discord: (profileDetails?.social && profileDetails?.social?.discord) || '',
+      github: (profileDetails?.social && profileDetails?.social?.github) || '',
+      linktree: (profileDetails?.social && profileDetails?.social?.linktree) || '',
+      yat: (profileDetails?.social && profileDetails?.social?.yat) || '',
+      galleryso: (profileDetails?.social && profileDetails?.social?.galleryso) || '',
+      lazy: (profileDetails?.social && profileDetails?.social?.lazy) || '',
+      showtime: (profileDetails?.social && profileDetails?.social?.showtime) || '',
+      tiktok: (profileDetails?.social && profileDetails?.social?.tiktok) || '',
+      twitch: (profileDetails?.social && profileDetails?.social?.twitch) || '',
+      youtube: (profileDetails?.social && profileDetails?.social?.youtube) || '',
     },
-    mode: "all",
+    mode: 'all',
   });
 
   const onSubmit = async (formData) => {
@@ -111,18 +93,16 @@ const ProfileForm = ({
       // console.log("Creating New Profile... \nformData :", formData);
       try {
         if (!usernameAvailable) {
-          throw new Error("Username Unavailable");
+          throw new Error('Username Unavailable');
         }
         const { username, ethAddress } = formData;
         // console.log(`username, address:\n`, username, address);
 
         // Request signed message
-        const verifiedSignature = await verifyAPIpost(
-          `${JSON.stringify(formData)}`
-        );
+        const verifiedSignature = await verifyAPIpost(`${JSON.stringify(formData)}`);
 
         if (verifiedSignature) {
-          const res = await axios.post("/api/users", { username, ethAddress });
+          const res = await axios.post('/api/users', { username, ethAddress });
 
           if (res.data) {
             // Push to new account page
@@ -143,16 +123,14 @@ const ProfileForm = ({
       // console.log("Updating Profile... \nformData :", formData);
       try {
         // Request signed message
-        const verifiedSignature = await verifyAPIpost(
-          `${JSON.stringify(formData)}`
-        );
+        const verifiedSignature = await verifyAPIpost(`${JSON.stringify(formData)}`);
 
         if (verifiedSignature) {
           const res = await axios.put(`/api/users/${username}`, formData);
 
           // console.log(`ProfileForm update profile -  \nres :\n`, res);
           // Throw error with status code in case Fetch API req failed
-          if (res.data != "Success") {
+          if (res.data != 'Success') {
             throw new Error(res.status);
           }
 
@@ -181,7 +159,7 @@ const ProfileForm = ({
       });
       // console.log(`checkUsername res: `, res);
       if (errorMsg == null) {
-        setErrorMsg("Username Not Available");
+        setErrorMsg('Username Not Available');
         setUsernameAvailable(false);
         return;
       }
@@ -196,8 +174,9 @@ const ProfileForm = ({
     setUsernameLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const checkAvailibility = useEffect(() => {
-    username === "" ? setUsernameAvailable(false) : checkUsername();
+    username === '' ? setUsernameAvailable(false) : checkUsername();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
@@ -220,12 +199,12 @@ const ProfileForm = ({
         <Dialog
           as="div"
           static
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="overflow-y-auto fixed inset-0 z-10"
           initialFocus={cancelButtonRef}
           open={open}
           onClose={setOpen}
         >
-          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex justify-center items-center px-4 pt-4 pb-20 min-h-screen text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -235,14 +214,11 @@ const ProfileForm = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 transition-opacity bg-opacity-100 bg-dark-background" />
+              <Dialog.Overlay className="fixed inset-0 bg-opacity-100 transition-opacity bg-dark-background" />
             </Transition.Child>
 
             {/* This element is to trick the browser into centering the modal contents. */}
-            <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
-              aria-hidden="true"
-            >
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
               &#8203;
             </span>
             <Transition.Child
@@ -254,42 +230,39 @@ const ProfileForm = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="inline-block overflow-hidden text-left align-bottom transition-all transform shadow-xl bg-dark-background sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div className="px-4 pt-5 pb-4 border rounded-sm bg-dark-background border-dark-border sm:p-6 sm:pb-4">
+              <div className="inline-block overflow-hidden text-left align-bottom shadow-xl transition-all transform bg-dark-background sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="px-4 pt-5 pb-4 rounded-sm border bg-dark-background border-dark-border sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     {/* Dialog Container */}
-                    {/* <div className="flex items-center justify-center flex-shrink w-full mx-auto bg-ourange-500 ll flex-shrin h-1/2 sm:mx-0 sm:h-10 sm:w-10">
+                    {/* <div className="flex flex-shrink justify-center items-center mx-auto w-full h-1/2 bg-ourange-500 ll flex-shrin sm:mx-0 sm:h-10 sm:w-10">
                       <ExclamationIcon className="w-6 h-6 text-ourange-500" aria-hidden="true" />
                     </div> */}
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h2"
-                        className="mx-2 text-2xl font-extrabold text-center text-dark-primary "
+                        className="mx-2 text-2xl font-extrabold text-center text-dark-primary"
                       >
-                        {!profileDetails ? "Create Profile" : "Edit Profile"}
+                        {!profileDetails ? 'Create Profile' : 'Edit Profile'}
                       </Dialog.Title>
                       <div className="mt-2">
-                        {/* <p className="text-sm text-dark-secondary ">
+                        {/* <p className="text-sm text-dark-secondary">
                           Are you sure you want to deactivate your account? All of your data will be permanently removed.
                           This action cannot be undone.
                         </p> */}
-                        <p className="mx-2 text-sm text-center text-dark-secondary ">
+                        <p className="mx-2 text-sm text-center text-dark-secondary">
                           {!profileDetails
-                            ? "Choose a username to create an account. This is completely optional. Anyone can mint an NFT without a user profile."
-                            : "Click Submit or hit Enter on your keyboard."}
+                            ? 'Choose a username to create an account. This is completely optional. Anyone can mint an NFT without a user profile.'
+                            : 'Click Submit or hit Enter on your keyboard.'}
                         </p>
                       </div>
                       <div className="py-1">
                         <div className="border-t border-dark-border"></div>
                       </div>
                       <div className="mx-1 md:mx-0">
-                        <form
-                          className="space-y-6"
-                          onSubmit={handleSubmit(onSubmit)}
-                        >
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                           <div className="overflow-hidden shadow sm:">
                             <div className="p-4 sm:p-6">
-                              <div className="flex flex-col items-center content-center justify-items-center">
+                              <div className="flex flex-col justify-items-center content-center items-center">
                                 {!profileDetails && (
                                   <>
                                     <label
@@ -306,8 +279,8 @@ const ProfileForm = ({
                                       <input
                                         type="text"
                                         placeholder="username"
-                                        className="flex-1 block w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                        {...register("username", {
+                                        className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                        {...register('username', {
                                           required: true, // JS only: <p>error message</p>
                                           minLength: {
                                             value: 3,
@@ -315,11 +288,10 @@ const ProfileForm = ({
                                           maxLength: {
                                             value: 24,
                                           },
-                                          pattern:
-                                            /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
+                                          pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
                                           validate: {
                                             available: async (v) => {
-                                              console.log("validate", v);
+                                              console.log('validate', v);
                                               checkUsername(v);
                                             },
                                           },
@@ -338,26 +310,26 @@ const ProfileForm = ({
                                       New Username
                                     </label>
                                     <div className="flex mb-4 shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border bg-dark-background">
+                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
                                         @
                                       </span>
                                       <input
                                         type="text"
                                         placeholder={`${user.username}`}
-                                        className="flex-1 block w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        {...register("desiredUsername", {
-                                          required: "error message", // JS only: <p>error message</p>
+                                        className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        {...register('desiredUsername', {
+                                          required: 'error message', // JS only: <p>error message</p>
                                           minLength: {
                                             value: 3,
-                                            message: "error message", // JS only: <p>error message</p> TS only support string
+                                            message: 'error message', // JS only: <p>error message</p> TS only support string
                                           },
                                           maxLength: {
                                             value: 24,
-                                            message: "error message", // JS only: <p>error message</p> TS only support string
+                                            message: 'error message', // JS only: <p>error message</p> TS only support string
                                           },
                                           validate: {
                                             available: async (v) => {
-                                              console.log("validate", v);
+                                              console.log('validate', v);
                                               setUser((prev) => ({
                                                 ...prev,
                                                 username: v,
@@ -368,55 +340,51 @@ const ProfileForm = ({
                                         })}
                                       />
                                     </div>
-                                    <div className="grid w-full grid-flow-row-dense grid-cols-3 gap-4">
-                                      {Object.keys(user).map(
-                                        (keyName, keyIndex) => {
-                                          if (
-                                            keyName != "username" &&
-                                            keyName != "ethAddress" &&
-                                            keyName != "userId"
-                                          ) {
-                                            return (
-                                              <div
-                                                key={`${keyIndex}`}
-                                                className={
-                                                  keyName == "name" ||
-                                                  keyName == "bio" ||
-                                                  keyName == "website"
-                                                    ? `col-span-full w-1/2 mx-auto`
-                                                    : `col-span-1 `
-                                                }
+                                    <div className="grid grid-cols-3 grid-flow-row-dense gap-4 w-full">
+                                      {Object.keys(user).map((keyName, keyIndex) => {
+                                        if (
+                                          keyName != 'username' &&
+                                          keyName != 'ethAddress' &&
+                                          keyName != 'userId'
+                                        ) {
+                                          return (
+                                            <div
+                                              key={`${keyIndex}`}
+                                              className={
+                                                keyName == 'name' ||
+                                                keyName == 'bio' ||
+                                                keyName == 'website'
+                                                  ? `col-span-full w-1/2 mx-auto`
+                                                  : `col-span-1 `
+                                              }
+                                            >
+                                              <label
+                                                key={`label-${keyIndex}`}
+                                                htmlFor={`${keyName}`}
+                                                className="hidden text-sm font-medium"
+                                                aria-hidden="true"
                                               >
-                                                <label
-                                                  key={`label-${keyIndex}`}
-                                                  htmlFor={`${keyName}`}
-                                                  className="hidden text-sm font-medium"
-                                                  aria-hidden="true"
-                                                >
-                                                  {`${keyName}`}
-                                                </label>
-                                                <input
-                                                  key={`input-${keyIndex}`}
-                                                  type="text"
-                                                  placeholder={
-                                                    user[keyName]
-                                                      ? `${user[keyName]}`
-                                                      : `${keyName}`
-                                                  }
-                                                  className="flex-1 block w-full text-dark-primary bg-dark-accent border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                                  {...register(`${keyName}`)}
-                                                />
-                                              </div>
-                                            );
-                                          }
+                                                {`${keyName}`}
+                                              </label>
+                                              <input
+                                                key={`input-${keyIndex}`}
+                                                type="text"
+                                                placeholder={
+                                                  user[keyName] ? `${user[keyName]}` : `${keyName}`
+                                                }
+                                                className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                                {...register(`${keyName}`)}
+                                              />
+                                            </div>
+                                          );
                                         }
-                                      )}
+                                      })}
                                     </div>
                                   </>
                                 )}
                               </div>
                               {errors.username && (
-                                <p className="justify-center w-2/3 mx-auto text-center text-ourange-500 place-items-center text-small">
+                                <p className="justify-center place-items-center mx-auto w-2/3 text-center text-ourange-500 text-small">
                                   3-24 alphanumeric characters
                                   <br />
                                   No spaces
@@ -427,13 +395,13 @@ const ProfileForm = ({
                           <div className="px-4 py-3 bg-dark-background sm:px-6 sm:flex sm:flex-row-reverse">
                             <button
                               type="submit"
-                              className="inline-flex justify-center w-1/2 px-4 py-2 text-base font-medium text-white border border-transparent shadow-sm bg-ourange-500 hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-500 sm:ml-3 sm:w-auto sm:text-sm"
+                              className="inline-flex justify-center px-4 py-2 w-1/2 text-base font-medium text-white border border-transparent shadow-sm bg-ourange-500 hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-500 sm:ml-3 sm:w-auto sm:text-sm"
                             >
                               Submit
                             </button>
                             <button
                               type="button"
-                              className="inline-flex justify-center w-1/2 px-4 py-2 mt-3 text-base font-medium bg-white border shadow-sm text-dark-secondary border-dark-border hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                              className="inline-flex justify-center px-4 py-2 mt-3 w-1/2 text-base font-medium bg-white border shadow-sm text-dark-secondary border-dark-border hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                               onClick={() => hide()}
                               ref={cancelButtonRef}
                             >

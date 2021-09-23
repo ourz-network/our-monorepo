@@ -1,12 +1,12 @@
-import Link from "next/link"; // Dynamic routing
-import Image from "next/image";
-import React, { useState, useEffect } from "react"; // React state management
-import { ethers } from "ethers";
-import { Zora } from "@zoralabs/zdk";
-import axios from "axios";
+import Link from 'next/link'; // Dynamic routing
+import Image from 'next/image';
+import React, { useState, useEffect } from 'react'; // React state management
+import { ethers } from 'ethers';
+import { Zora } from '@zoralabs/zdk';
+import axios from 'axios';
 
 const HomeNFT = (props) => {
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  const queryProvider = ethers.providers.getDefaultProvider('rinkeby', {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,
@@ -15,7 +15,7 @@ const HomeNFT = (props) => {
   const zoraQuery = new Zora(queryProvider, 4);
   const [loading, setLoading] = useState(true);
   const tokenId = props.tokenId;
-  const [metadata, setMetadata] = useState("0x00");
+  const [metadata, setMetadata] = useState('0x00');
   const [contentURI, setContentURI] = useState();
   console.log(metadata);
   useEffect(() => {
@@ -41,6 +41,7 @@ const HomeNFT = (props) => {
         setLoading(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenId]);
 
   /**       ---  Dual-axis Masonry Layout  ---
@@ -66,68 +67,66 @@ const HomeNFT = (props) => {
       height = Number(loadedMedia.target.videoHeight);
       ratio = width / height;
     } else {
-      setAspectRatio("hidden");
+      setAspectRatio('hidden');
     }
 
     if (ratio > 0.8 && ratio < 1.24) {
       // Mostly Square
-      setAspectRatio("square");
+      setAspectRatio('square');
     }
 
     if (ratio > 1.21) {
       // landscape
       if (ratio < 1.3) {
-        setAspectRatio("landscape-4x5");
+        setAspectRatio('landscape-4x5');
       } else if (ratio < 1.385) {
-        setAspectRatio("landscape-3x4");
+        setAspectRatio('landscape-3x4');
       } else if (ratio < 1.5) {
-        setAspectRatio("landscape-5x7");
+        setAspectRatio('landscape-5x7');
       } else if (ratio < 1.68) {
-        setAspectRatio("landscape-2x3");
+        setAspectRatio('landscape-2x3');
       } else if (ratio < 1.9) {
-        setAspectRatio("landscape-9x16");
+        setAspectRatio('landscape-9x16');
       } else if (ratio < 2.5) {
-        setAspectRatio("landscape-2x1");
+        setAspectRatio('landscape-2x1');
       } else {
-        setAspectRatio("landscape-widest");
+        setAspectRatio('landscape-widest');
       }
     }
 
     if (ratio <= 0.83) {
       // portrait
       if (ratio >= 0.765) {
-        setAspectRatio("portrait-4x5");
+        setAspectRatio('portrait-4x5');
       } else if (ratio >= 0.735) {
-        setAspectRatio("portrait-3x4");
+        setAspectRatio('portrait-3x4');
       } else if (ratio >= 0.685) {
-        setAspectRatio("portrait-5x7");
+        setAspectRatio('portrait-5x7');
       } else if (ratio >= 0.605) {
-        setAspectRatio("portrait-2x3");
+        setAspectRatio('portrait-2x3');
       } else if (ratio >= 0.53) {
-        setAspectRatio("portrait-9x16");
+        setAspectRatio('portrait-9x16');
       } else if (ratio > 0.41) {
-        setAspectRatio("portrait-2x1");
+        setAspectRatio('portrait-2x1');
       } else {
-        setAspectRatio("portrait-tallest");
+        setAspectRatio('portrait-tallest');
       }
     }
     // console.log(`#${tokenId} \n ratio :${aspectRatio}`);
   };
 
-  if (metadata?.mimeType?.includes("video")) {
+  if (metadata?.mimeType?.includes('video')) {
     return (
-      <div
-        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow cursor-hover`}
-      >
-        <div className="flex flex-col w-full h-full cursor-pointer xl:h-full ">
+      <div className={`transition-shadow ${aspectRatio} landingPage-item shadow-deep cursor-hover`}>
+        <div className="flex flex-col w-full h-full cursor-pointer xl:h-full">
           <Link
             href={{
-              pathname: "/nft/[tokenId]",
+              pathname: '/nft/[tokenId]',
               query: { tokenId: tokenId },
             }}
             passHref={true}
           >
-            <div className="relative object-cover w-full h-full bg-transparent">
+            <div className="object-cover relative w-full h-full bg-transparent">
               {contentURI && (
                 <video
                   muted
@@ -146,20 +145,20 @@ const HomeNFT = (props) => {
         </div>
       </div>
     );
-  } else if (metadata?.mimeType?.includes("image")) {
+  } else if (metadata?.mimeType?.includes('image')) {
     return (
       <div
-        className={`${aspectRatio} landingPage-item shadow-deep transition-shadow border border-dark-accent cursor-hover`}
+        className={`border transition-shadow ${aspectRatio} landingPage-item shadow-deep border-dark-accent cursor-hover`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">
           <Link
             href={{
-              pathname: "/nft/[tokenId]",
+              pathname: '/nft/[tokenId]',
               query: { tokenId: tokenId },
             }}
             passHref={true}
           >
-            <div className="relative object-cover w-full h-full bg-transparent">
+            <div className="object-cover relative w-full h-full bg-transparent">
               {contentURI && (
                 <Image
                   alt={`NFT ${tokenId} Thumbnail`}
@@ -169,9 +168,7 @@ const HomeNFT = (props) => {
                   src={contentURI}
                   placeholder="empty"
                   className="w-full h-full"
-                  onLoadingComplete={(loadedMedia) =>
-                    calcAspectRatio(loadedMedia)
-                  }
+                  onLoadingComplete={(loadedMedia) => calcAspectRatio(loadedMedia)}
                 />
               )}
             </div>

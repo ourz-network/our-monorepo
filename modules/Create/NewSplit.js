@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { useRouter } from "next/router";
-import web3 from "@/app/web3";
-import { ethers } from "ethers";
-import DetailedPie from "@/components/Charts/DetailedPie";
+import React, { useEffect, useState } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import web3 from '@/app/web3';
+import { ethers } from 'ethers';
+import DetailedPie from '@/components/Charts/DetailedPie';
 
 const NewSplit = () => {
   const Router = useRouter();
@@ -11,16 +11,14 @@ const NewSplit = () => {
 
   const [ownerData, setOwnerData] = useState({
     account: address,
-    name: "",
-    role: "",
+    name: '',
+    role: '',
     shares: 100,
   });
 
   const [nickname, setNickname] = useState();
 
-  const [chartData, setChartData] = useState([
-    { name: "Creator", shares: 100 },
-  ]);
+  const [chartData, setChartData] = useState([{ name: 'Creator', shares: 100 }]);
 
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +33,7 @@ const NewSplit = () => {
     if (!ownerData.account) {
       ownerData.account = address;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   const onSubmit = async () => {
@@ -61,17 +60,16 @@ const NewSplit = () => {
    *  A bit overkill for the rest of the form, but the easiest way to achieve
    *  live-updating fields & charts, AFAIK.
    */
-  const { control, register, setValue, getValues, handleSubmit, watch } =
-    useForm({
-      mode: "all",
-    });
+  const { control, register, setValue, getValues, handleSubmit, watch } = useForm({
+    mode: 'all',
+  });
   // https://react-hook-form.com/api/usefieldarray/
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "splits",
+    name: 'splits',
   });
   // Live updates for pie chart
-  const watchSplits = watch("splits");
+  const watchSplits = watch('splits');
   const controlledFields = fields.map((field, index) => {
     return {
       ...field,
@@ -80,7 +78,7 @@ const NewSplit = () => {
   });
   // on 'Add Another'
   const onAppend = () => {
-    append({ account: "", name: "", role: "", shares: 0 });
+    append({ account: '', name: '', role: '', shares: 0 });
     updateChart();
   };
   const calculateOwnerShares = () => {
@@ -119,8 +117,8 @@ const NewSplit = () => {
   };
 
   return (
-    <div className="flex flex-row content-center w-full h-full place-content-center bg-dark-background">
-      <div className="flex flex-col w-full h-auto px-4 py-4 mt-12 " id="splits">
+    <div className="flex flex-row content-center place-content-center w-full h-full bg-dark-background">
+      <div className="flex flex-col px-4 py-4 mt-12 w-full h-auto" id="splits">
         <div className="flex justify-center w-full" id="graphs">
           <div className="flex flex-col justify-center w-1/2 text-center">
             <label htmlFor="splits">
@@ -133,16 +131,15 @@ const NewSplit = () => {
                 <br />
                 Funds received by the contract, like NFT sales and royalties,
                 <br />
-                will be claimable by the Split Recipients, up to their allocated
-                amount.
+                will be claimable by the Split Recipients, up to their allocated amount.
               </p>
             </label>
           </div>
-          <div className="w-full mx-auto -my-32 max-w-500px">
+          <div className="mx-auto -my-32 w-full max-w-500px">
             <DetailedPie chartData={chartData} secondaryBool={false} />
           </div>
         </div>
-        <form className="justify-center w-full -mt-1 text-center">
+        <form className="justify-center -mt-1 w-full text-center">
           <label htmlFor="nickname" className="mr-2 text-dark-primary">
             Nickname for Split:
           </label>
@@ -154,15 +151,15 @@ const NewSplit = () => {
             onChange={(e) => setNickname(e.target.value)}
           />
           <div className="flex flex-col justify-center w-full border-b">
-            <ul className="z-10 flex flex-col w-full mt-4">
-              <li className="flex justify-center w-full mx-auto mb-3 space-x-3 flex-nowrap">
+            <ul className="flex z-10 flex-col mt-4 w-full">
+              <li className="flex flex-nowrap justify-center mx-auto mb-3 space-x-3 w-full">
                 <input
                   type="text"
                   id="ownerAddress"
                   name="address"
                   defaultValue={address}
                   placeholder="Please 'Connect Wallet' before continuing."
-                  className="w-1/3 p-3 text-sm border shadow border-dark-border"
+                  className="p-3 w-1/3 text-sm border shadow border-dark-border"
                   disabled
                 />
                 <input
@@ -173,7 +170,7 @@ const NewSplit = () => {
                   placeholder="Your Name / Alias"
                   onBlur={updateChart}
                   onChange={handleChange}
-                  className="w-1/4 p-3 text-sm border shadow border-dark-border min-w-1/4"
+                  className="p-3 w-1/4 text-sm border shadow border-dark-border min-w-1/4"
                 />
                 <input
                   type="text"
@@ -183,20 +180,20 @@ const NewSplit = () => {
                   value={ownerData.role}
                   onChange={handleChange}
                   onBlur={updateChart}
-                  className="w-1/4 p-3 text-sm border shadow border-dark-border min-w-1/4"
+                  className="p-3 w-1/4 text-sm border shadow border-dark-border min-w-1/4"
                 />
                 <input
                   type="number"
                   id="ownerShare"
                   name="shares"
                   value={ownerData.shares}
-                  className="p-3 text-sm border shadow appearance-none border-dark-border w-14"
+                  className="p-3 w-14 text-sm border shadow appearance-none border-dark-border"
                   disabled
                 />
                 <button
                   type="button"
                   onClick={onAppend}
-                  className="w-auto px-5 py-3 transition duration-200 border shadow text-dark-primary bg-dark-background hover:ring-4 whitespace-nowrap hover:ring-yellow-500"
+                  className="px-5 py-3 w-auto whitespace-nowrap border shadow transition duration-200 text-dark-primary bg-dark-background hover:ring-4 hover:ring-yellow-500"
                 >
                   Add Split
                 </button>
@@ -204,7 +201,7 @@ const NewSplit = () => {
               {controlledFields.map((field, index) => (
                 <li
                   key={field.id}
-                  className="flex justify-center w-full pt-3 mx-auto mb-3 space-x-3 border-t border-dark-border flex-nowrap"
+                  className="flex flex-nowrap justify-center pt-3 mx-auto mb-3 space-x-3 w-full border-t border-dark-border"
                 >
                   <input
                     name={`splits.${index}.address`}
@@ -215,12 +212,11 @@ const NewSplit = () => {
                       `splits.${index}.account`,
                       { required: true },
                       {
-                        validate: (value) =>
-                          ethers.utils.isAddress(value) == true,
+                        validate: (value) => ethers.utils.isAddress(value) == true,
                       }
                     )}
                     onBlur={updateChart}
-                    className="w-1/3 h-auto p-3 text-sm border shadow border-dark-border"
+                    className="p-3 w-1/3 h-auto text-sm border shadow border-dark-border"
                   />
                   <input
                     name={`splits.${index}.name`}
@@ -229,7 +225,7 @@ const NewSplit = () => {
                     defaultValue={field.name}
                     {...register(`splits.${index}.name`)}
                     onBlur={updateChart}
-                    className="w-auto p-3 text-sm border shadow border-dark-border min-w-1/4"
+                    className="p-3 w-auto text-sm border shadow border-dark-border min-w-1/4"
                   />
                   <input
                     name={`splits.${index}.role`}
@@ -238,7 +234,7 @@ const NewSplit = () => {
                     defaultValue={field.role}
                     {...register(`splits.${index}.role`)}
                     onBlur={updateChart}
-                    className="w-auto p-3 text-sm border shadow border-dark-border min-w-1/4"
+                    className="p-3 w-auto text-sm border shadow border-dark-border min-w-1/4"
                   />
                   <input
                     name={`splits.${index}.shares`}
@@ -250,14 +246,14 @@ const NewSplit = () => {
                     type="number"
                     defaultValue={field.shares}
                     placeholder="%"
-                    className="p-3 text-sm border shadow appearance-none border-dark-border w-14"
+                    className="p-3 w-14 text-sm border shadow appearance-none border-dark-border"
                     onBlur={updateChart}
                     // disabled={`index` ? 0 : "true"}
                   />
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="px-6 py-3 text-white transition duration-200 border shadow bg-dark-background hover:ring-4 hover:ring-ourange-500"
+                    className="px-6 py-3 text-white border shadow transition duration-200 bg-dark-background hover:ring-4 hover:ring-ourange-500"
                   >
                     Remove
                   </button>
@@ -275,11 +271,9 @@ const NewSplit = () => {
           </button>
         </div>
         <p className="mt-3 text-center text-dark-secondary">
-          *Note*: This transaction will only create the Split Contract that is
-          able to mint NFTs.
+          *Note*: This transaction will only create the Split Contract that is able to mint NFTs.
           <br />
-          You will still have to make a separate transaction after this, if you
-          want to mint an NFT.
+          You will still have to make a separate transaction after this, if you want to mint an NFT.
         </p>
       </div>
     </div>

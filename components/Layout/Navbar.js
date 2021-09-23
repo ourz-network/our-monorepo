@@ -1,14 +1,16 @@
-import { Popover, Transition } from "@headlessui/react"; // TailwindUI
-import Link from "next/link"; // Dynamic routing
-import { Fragment } from "react"; // State management, Fragment for TailwindUI
-import web3 from "@/app/web3"; // Global State
-import Wallet from "./Wallet";
+/* eslint-disable jsx-a11y/anchor-is-valid */ // next/link passes href
+
+import { Popover, Transition } from '@headlessui/react'; // TailwindUI
+import Link from 'next/link'; // Dynamic routing
+import { Fragment } from 'react'; // State management, Fragment for TailwindUI
+import web3 from '@/app/web3'; // Global State
+import Wallet from './Wallet';
 
 const learn = [
   {
-    name: "FAQ",
-    description: "Having trouble? Get answers to common questions.",
-    href: "#",
+    name: 'FAQ',
+    description: 'Having trouble? Get answers to common questions.',
+    href: '#',
     icon: (
       //support-icon heroicon
       <svg
@@ -28,9 +30,9 @@ const learn = [
     ),
   },
   {
-    name: "Documentation",
-    description: "For Developers",
-    href: "#",
+    name: 'Documentation',
+    description: 'For Developers',
+    href: '#',
     icon: (
       //document-search
       <svg
@@ -52,7 +54,7 @@ const learn = [
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 const Navbar = () => {
@@ -60,12 +62,12 @@ const Navbar = () => {
 
   return (
     <div id="navContainer">
-      <Popover className="relative z-30 flex items-center pb-2 border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
+      <Popover className="flex relative z-30 items-center pb-2 border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
         {({ open }) => (
           <>
-            <div className="w-5/6 mx-auto">
-              <div className="relative flex flex-col items-center justify-between px-8 md:flex-row md:justify-start md:space-x-10 sm:px-6">
-                <div className="flex flex-col items-center content-center justify-start flex-1 px-8 text-center md:flex-row lg:w-0 lg:flex-1">
+            <div className="mx-auto w-5/6">
+              <div className="flex relative flex-col justify-between items-center px-8 md:flex-row md:justify-start md:space-x-10 sm:px-6">
+                <div className="flex flex-col flex-1 justify-start content-center items-center px-8 text-center md:flex-row lg:w-0 lg:flex-1">
                   {/* <div href="#" className="mt-1 md:-mr-11 lg:pl-12">
                     <Image
                       height={30}
@@ -89,12 +91,12 @@ const Navbar = () => {
                   </Link>
                   <a
                     href="#"
-                    className="self-center w-auto text-sm font-black leading-tight tracking-wider text-center capitalize text-ourange-500 md:pr-8 hover:text-dark-secondary "
+                    className="self-center w-auto text-sm font-black tracking-wider leading-tight text-center capitalize text-ourange-500 md:pr-8 hover:text-dark-secondary"
                   >
                     {/* About */} CAUTION - RINKEBY TESTNET ONLY!
                   </a>
                   {/* <div className="-my-2 -mr-2 md:hidden">
-                    <Popover.Button className="inline-flex items-center justify-center p-2 bg-white text-dark-secondary hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-yellow-500">
+                    <Popover.Button className="inline-flex justify-center items-center p-2 bg-white text-dark-secondary hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-yellow-500">
                       <span className="sr-only">Open menu</span>
                       <MenuIcon className="w-6 h-6" aria-hidden="true" />
                     </Popover.Button>
@@ -106,8 +108,8 @@ const Navbar = () => {
                         <>
                           <Popover.Button
                             className={classNames(
-                              open ? 'text-dark-secondary ' : 'text-sm tracking-wider leading-tight capitalize text-dark-secondary ',
-                              'group bg-white  pl-2 inline-flex items-center hover:text-dark-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500'
+                              open ? 'text-dark-secondary' : 'text-sm tracking-wider leading-tight capitalize text-dark-secondary',
+                              'inline-flex items-center pl-2 bg-white group hover:text-dark-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500'
                             )}
                           >
                             <span className="text-center">Learn</span>
@@ -129,10 +131,10 @@ const Navbar = () => {
                           >
                             <Popover.Panel
                               static
-                              className="absolute z-10 w-auto max-w-md px-2 mt-3 -ml-4 transform sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
+                              className="absolute z-10 px-2 mt-3 -ml-4 w-auto max-w-md transform sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
                             >
-                              <div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5">
-                                <div className="relative grid gap-6 px-5 py-6 bg-white sm:gap-8 sm:p-8">
+                              <div className="overflow-hidden ring-1 ring-black ring-opacity-5 shadow-lg">
+                                <div className="grid relative gap-6 px-5 py-6 bg-white sm:gap-8 sm:p-8">
                                   {learn.map((item) => (
                                     <a
                                       key={item.name}
@@ -140,8 +142,8 @@ const Navbar = () => {
                                       className="flex items-start p-3 -m-3 hover:bg-dark-background"
                                     >
                                       <item.icon className="flex-shrink-0 w-6 h-6 text-yellow-500" aria-hidden="true" />
-                                      <div className="mx-4 ">
-                                        <p className="text-base font-medium text-left text-dark-secondary ">{item.name}</p>
+                                      <div className="mx-4">
+                                        <p className="text-base font-medium text-left text-dark-secondary">{item.name}</p>
                                         <p className="hidden mt-1 text-sm text-left text-dark-secondary md:block">{item.description}</p>
                                       </div>
                                     </a>
@@ -155,7 +157,7 @@ const Navbar = () => {
                     </Popover>
                   </Popover.Group> */}
                 </div>
-                <div className="items-center justify-center md:justify-end md:flex md:flex-1 lg:w-0">
+                <div className="justify-center items-center md:justify-end md:flex md:flex-1 lg:w-0">
                   <Wallet />
                 </div>
               </div>
@@ -174,11 +176,11 @@ const Navbar = () => {
               <Popover.Panel
                 focus
                 static
-                className="absolute inset-x-0 top-0 p-2 transition origin-top-right transform md:hidden"
+                className="absolute inset-x-0 top-0 p-2 transition transform origin-top-right md:hidden"
               >
-                <div className="bg-white divide-y-2 shadow-lg ring-1 ring-black ring-opacity-5 divide-gray-50">
+                <div className="bg-white divide-y-2 divide-gray-50 ring-1 ring-black ring-opacity-5 shadow-lg">
                   <div className="px-5 pt-5 pb-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex justify-between items-center">
                       <div>
                         {/* <img
                           className="w-auto h-8"
@@ -187,7 +189,7 @@ const Navbar = () => {
                         /> */}
                       </div>
                       <div className="-mr-2">
-                        <Popover.Button className="inline-flex items-center justify-center p-2 bg-white text-dark-secondary hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-yellow-500">
+                        <Popover.Button className="inline-flex justify-center items-center p-2 bg-white text-dark-secondary hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-yellow-500">
                           <span className="sr-only">Close menu</span>
                           {/* x heroicon */}
                           <svg
@@ -209,10 +211,10 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div className="px-5 py-6 mt-8 mb-4 space-y-6">
-                    <div className="grid grid-cols-2 mt-6 gap-y-6 gap-x-8">
+                    <div className="grid grid-cols-2 gap-y-6 gap-x-8 mt-6">
                       <a
                         href="#"
-                        className="pt-2 text-base font-medium text-dark-secondary hover:text-dark-secondary "
+                        className="pt-2 text-base font-medium text-dark-secondary hover:text-dark-secondary"
                       >
                         About
                       </a>

@@ -4,11 +4,9 @@
 // withBundleAnalyzer(
 module.exports = {
   eslint: {
-    dirs: ['app', 'components', 'modules', 'pages'], 
+    dirs: ['app', 'components', 'modules', 'pages'],
   },
-  extends: [
-    'plugin:@next/next/recommended',
-  ],
+  extends: ['plugin:@next/next/recommended'],
   images: {
     // limit of 25 deviceSizes values
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -16,19 +14,19 @@ module.exports = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // limit of 50 domains values
     domains: [
-      "ipfs.io",
-      "ipfs.fleek.co",
-      "storage.fleek.co",
-      "storageapi.fleek.co",
-      "arweave.net",
-      "gateway.pinata.cloud",
-      "ipfs.dweb.link",
-      "images.mirror-media.xyz",
-      "media.giphy.com",
+      'ipfs.io',
+      'ipfs.fleek.co',
+      'storage.fleek.co',
+      'storageapi.fleek.co',
+      'arweave.net',
+      'gateway.pinata.cloud',
+      'ipfs.dweb.link',
+      'images.mirror-media.xyz',
+      'media.giphy.com',
     ],
-    path: "/_next/image",
+    path: '/_next/image',
     // loader can be 'default', 'imgix', 'cloudinary', 'akamai', or 'custom'
-    loader: "default",
+    loader: 'default',
     // disable static imports for image files
     disableStaticImages: false,
     // minimumCacheTTL is in seconds, must be integer 0 or more

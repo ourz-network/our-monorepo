@@ -1,15 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { useRouter } from "next/router";
-import web3 from "@/app/web3";
-import PageLayout from "@/components/Layout/PageLayout";
-import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
+/* eslint-disable @next/next/no-img-element */ // next/image not necessary for upload flow
+
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { useRouter } from 'next/router';
+import web3 from '@/app/web3';
+import PageLayout from '@/components/Layout/PageLayout';
+import { getOwnedSplits } from '@/modules/subgraphs/ourz/functions'; // GraphQL client
 
 //Steps 1-4:
 // import MintSelectSplit from "./MintSelectSplit";
-import MintUpload from "./MintUpload";
-import MintDetails from "./MintDetails";
-import MintConfirm from "./MintConfirm";
+import MintUpload from './MintUpload';
+import MintDetails from './MintDetails';
+import MintConfirm from './MintConfirm';
 
 /** NewMintMultistepForm()
  * Maintains state while navigating through a multi-step form to mint an NFT.
@@ -28,14 +30,14 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
   const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    media: "",
-    mediaKind: "",
-    mediaPreview: "",
-    mediaBlob: "",
-    title: "",
-    description: "",
+    media: '',
+    mediaKind: '',
+    mediaPreview: '',
+    mediaBlob: '',
+    title: '',
+    description: '',
     creatorBidShare: 10,
-    splitMetadata: "",
+    splitMetadata: '',
     mintSuccess: false,
   });
 
@@ -66,13 +68,11 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
       // edit for secondary sales chart data
       newChartData = newChartData.map((recipient) => ({
         name: recipient.name,
-        shares:
-          Number(recipient.shares) *
-          (Number(formData.creatorBidShare) / 100).toFixed(4),
+        shares: Number(recipient.shares) * (Number(formData.creatorBidShare) / 100).toFixed(4),
       }));
 
       newChartData.push({
-        name: "Owner",
+        name: 'Owner',
         shares: 100 - Number(formData.creatorBidShare),
       });
 
@@ -82,6 +82,7 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
     if (splitRecipients) {
       formatChartData(splitRecipients);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [splitRecipients, formData.creatorBidShare]);
 
   const handleMedia = () => {
@@ -142,8 +143,8 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
       // Takes the acceptedFile and reads it for uploading as a blob.
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
         // Save the readFile to state under mediaBlob
         const arrayBuffer = reader.result;
@@ -163,10 +164,12 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
         })
       )
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
-    accept: "image/*, video/*, audio/*, text/plain",
+    accept: 'image/*, video/*, audio/*, text/plain',
     onDrop: onDrop,
   });
 
@@ -178,18 +181,13 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
   ));
 
   // Mapping is not exactly necessary, only 1 file can be uploaded, but too lazy to rewrite.
-  const thumbs = files.map((file) => (
+  const thumbs = files.map((file) => {
     <div className="box-border inline-flex p-5" key={file.name}>
-      <div className="flex min-w-0 overflow-hidden h-96">
-        {/* // eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={file.preview}
-          className="block w-auto h-full"
-          alt="Preview of your image"
-        />
+      <div className="flex overflow-hidden min-w-0 h-96">
+        <img src={file.preview} className="block w-auto h-full" alt="Preview of your upload" />
       </div>
-    </div>
-  ));
+    </div>;
+  });
   useEffect(
     () => () => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));
