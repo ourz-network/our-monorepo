@@ -133,5 +133,3 @@ yarn-error.log*
 # vercel
 .vercel
 next-env.d.ts
-yarn.lock
-package-lock.json
