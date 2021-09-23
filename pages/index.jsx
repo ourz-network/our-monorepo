@@ -58,7 +58,7 @@ const Home = (props) => {
                 onClick={() => collectMore()}
                 disabled={loading}
                 className={`w-auto mx-auto my-12 text-center transition-opacity px-3 py-1 mainButton border border-dark-border text-dark-primary${
-                  loading ? `animate-pulse  text-dark-primary` : ""
+                  loading ? `animate-pulse text-dark-primary` : ""
                 }`}
                 type="button"
               >
@@ -83,32 +83,40 @@ const Home = (props) => {
 };
 
 export async function getStaticProps() {
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-    infura: process.env.NEXT_PUBLIC_INFURA_ID,
-    alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-    pocket: process.env.NEXT_PUBLIC_POKT_ID,
-    etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-  });
-  const zoraQuery = new Zora(queryProvider, 4);
-  const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
-  // eslint-disable-next-line radix
-  const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned));
+  // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
+  //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+  //   pocket: process.env.NEXT_PUBLIC_POKT_ID,
+  //   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+  // });
+  // const zoraQuery = new Zora(queryProvider, 4);
+  // const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
+  // // eslint-disable-next-line radix
+  // const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned));
 
-  const requests = [];
+  // const requests = [];
   const postsToSet = [];
-  if (maxSupply) {
-    for (let i = maxSupply; i >= 3700; i--) {
-      // Collect post
-      const post = await getPostByID(i);
-      if (post != null) {
-        postsToSet.push(post);
-      }
+  // if (maxSupply) {
+  //   for (let i = maxSupply; i >= 3700; i--) {
+  //     // Collect post
+  //     const post = await getPostByID(i);
+  //     if (post != null) {
+  //       postsToSet.push(post);
+  //     }
+  //   }
+
+  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774];
+  for (let i = ourzSampleTokenIDs.length - 1; i > -1; i--) {
+    // Collect post
+    const post = await getPostByID(ourzSampleTokenIDs[i]);
+    if (post != null) {
+      postsToSet.push(post);
     }
 
     return {
       props: {
         postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-        loadMoreStartIndex: 3699,
+        loadMoreStartIndex: 3688,
       },
       revalidate: 60,
     };
