@@ -17,7 +17,6 @@
     "isolatedModules": true,
     "paths": {
       "@/app/*": ["app/*"],
-      "@/common/*": ["common/*"],
       "@/components/*": ["components/*"],
       "@/hooks/*": ["hooks/*"],
       "@/ethereum/*": ["modules/ethereum/*"],
@@ -26,5 +25,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src"],
-  "exclude": ["node_modules", "modules/ethereum/merkle-tree"]
+  "exclude": ["node_modules"]
 }

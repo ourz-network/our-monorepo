@@ -1,7 +1,7 @@
 module.exports = {
   purge: [
-    "./common/**/*.{js,ts,jsx,tsx}",
-    "./ethereum/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
     "./modules/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./public/**/*.{js,ts,jsx,tsx}",
@@ -18,8 +18,6 @@ module.exports = {
       }),
       screens: {
         "2k": "2560px",
-        "": "",
-        "": "",
       },
       boxShadow: {
         rainbow:
@@ -111,5 +109,6 @@ module.exports = {
   variants: {
     extend: {},
   },
+  // eslint-disable-next-line global-require
   plugins: [require("@tailwindcss/forms")],
 };
