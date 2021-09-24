@@ -1,6 +1,6 @@
-import { Global, css } from '@emotion/react'
-import { media, buttonStyle } from './mixins'
-import { returnBreakpoint } from './breakpoints'
+import { Global, css } from "@emotion/react";
+import { media, buttonStyle } from "./mixins";
+import { returnBreakpoint } from "./breakpoints";
 
 export default function GlobalStyles() {
   return (
@@ -19,7 +19,7 @@ export default function GlobalStyles() {
           /* FONTS */
           --font-a: Helvetica, Arial, sans-serif;
           --font-b: Courier, monospace;
-          
+
           /* SPACING */
           --base-unit: 8px;
           --space-sm: calc(var(--base-unit) * 2);
@@ -38,8 +38,8 @@ export default function GlobalStyles() {
           --header-height: calc(var(--base-unit) * 10);
           --footer-height: calc(var(--base-unit) * 10);
           --content-width-md: 960px;
-          --content-width-lg: ${returnBreakpoint('desktop')};
-          --content-width-xl: ${returnBreakpoint('xl')};
+          --content-width-lg: ${returnBreakpoint("desktop")};
+          --content-width-xl: ${returnBreakpoint("xl")};
         }
 
         /* MEDIA QUERY MIXIN */
@@ -60,7 +60,7 @@ export default function GlobalStyles() {
         /* DEFAULTS */
         /* LAYOUT */
         body * {
-          font-family: var(--font-a)!important;
+          font-family: var(--font-a) !important;
         }
 
         main {
@@ -91,7 +91,12 @@ export default function GlobalStyles() {
         }
 
         /* TYPOGRPAHY */
-        h1,h2,h3,h4,h5,h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
           font-weight: 500;
         }
         h1 {
@@ -111,7 +116,9 @@ export default function GlobalStyles() {
         a {
           font-weight: 400;
         }
-        p,ol,ul {
+        p,
+        ol,
+        ul {
           font-size: var(--text-02);
           padding-bottom: var(--space-sm);
           line-height: 1.35;
@@ -128,20 +135,20 @@ export default function GlobalStyles() {
         */
         .zora-wallet-modalContent {
           h3 {
-            font-size: var(--text-03)!important;
+            font-size: var(--text-03) !important;
             padding: 0 0 15px;
           }
           .zora--auction-house-modalSuccessMessage {
-            font-size: var(--text-02)!important;
+            font-size: var(--text-02) !important;
           }
           img {
             object-fit: contain;
           }
           p {
-            font-size: var(--text-02)!important;
+            font-size: var(--text-02) !important;
             padding: 0 0 10px;
             &:last-of-type {
-              padding-bottom: 30px!important;
+              padding-bottom: 30px !important;
             }
           }
           .zora--auction-house-ethAmountLabel {
@@ -158,5 +165,5 @@ export default function GlobalStyles() {
         }
       `}
     />
-  )
+  );
 }

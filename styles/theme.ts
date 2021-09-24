@@ -1,5 +1,5 @@
-import { css } from '@emotion/react'
-import * as mixins from './mixins'
+import { css } from "@emotion/react";
+import * as mixins from "./mixins";
 
 export const mediaConfigurationStyles = {
   theme: {
@@ -160,5 +160,5 @@ export const mediaConfigurationStyles = {
         object-fit: cover;
       }
     `*/
-  }
-}
+  },
+};

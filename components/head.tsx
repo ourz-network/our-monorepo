@@ -1,19 +1,21 @@
-import NextHead from 'next/head';
+/* eslint-disable react/require-default-props */
+import NextHead from "next/head";
 
-const defaultTitle = process.env.NEXT_PUBLIC_APP_TITLE || '';
-const defaultDescription = process.env.NEXT_PUBLIC_DEFAULT_DESCRIPTION || '';
-const defaultOGURL = process.env.NEXT_PUBLIC_BASE_URL || '';
+const defaultTitle = process.env.NEXT_PUBLIC_APP_TITLE || "";
+const defaultDescription = process.env.NEXT_PUBLIC_DEFAULT_DESCRIPTION || "";
+const defaultOGURL = process.env.NEXT_PUBLIC_BASE_URL || "";
 const defaultOGImage = `${process.env.NEXT_PUBLIC_BASE_URL}/fpo/social-card.jpg`;
-const favicon = '/fpo/favicon.png'
+const favicon = "/fpo/favicon.png";
 
 type HeadProps = {
-  title?: string,
-  description?: string,
-  url?: string,
-  ogImage?: string
-}
+  title?: string;
+  description?: string;
+  url?: string;
+  ogImage?: string;
+};
 
 const Head = ({ title, description, url, ogImage }: HeadProps) => (
+  // eslint-disable-next-line react/jsx-filename-extension
   <NextHead>
     <meta charSet="UTF-8" />
     <title>{title ? `${defaultTitle} | ${title}` : defaultTitle}</title>
@@ -21,7 +23,7 @@ const Head = ({ title, description, url, ogImage }: HeadProps) => (
     <meta name="description" content={description || defaultDescription} />
     <link rel="icon" type="image/png" sizes="24x24" href={favicon} />
     <meta property="og:url" content={url || defaultOGURL} />
-    <meta property="og:title" content={title || ''} />
+    <meta property="og:title" content={title || ""} />
     <meta property="og:description" content={description || defaultDescription} />
     <meta name="twitter:site" content={url || defaultOGURL} />
     <meta name="twitter:card" content="summary_large_image" />
