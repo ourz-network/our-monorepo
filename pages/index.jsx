@@ -106,13 +106,18 @@ export async function getStaticProps() {
   //   }
 
   const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774];
-  for (let i = ourzSampleTokenIDs.length - 1; i > -1; i--) {
-    // Collect post
-    const post = await getPostByID(ourzSampleTokenIDs[i]);
-    if (post != null) {
-      postsToSet.push(post);
-    }
+  const completeFetch = await Promise.all(
+    ourzSampleTokenIDs.map(async (id, index) => {
+      // Collect post
+      const post = await getPostByID(id);
+      if (post != null) {
+        postsToSet.push(post);
+        console.log(`HOMEPAGE. LOADING TOKEN ${id} (${index}/7)`);
+      }
+    })
+  );
 
+  if (completeFetch) {
     return {
       props: {
         postsToSet: JSON.parse(JSON.stringify(postsToSet)),
