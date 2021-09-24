@@ -19,7 +19,7 @@ export const getPostByID = async (id) => {
     // Collect post metadata
 
     try {
-      const res = await axios.get(media.metadataURI, { timeout: 5000 });
+      const res = await axios.get(media.metadataURI, { timeout: 10000 });
       // console.log(
       //   `Functions.js - getPostByID \nGetMetadata: ${id} \nres: `,
       //   res
