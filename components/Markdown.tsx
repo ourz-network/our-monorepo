@@ -4,15 +4,15 @@ import parse from "remark-parse";
 import remark2react from "remark-react";
 
 type MarkdownWrapperProps = {
+  // eslint-disable-next-line react/require-default-props
   markdown?: string;
+  // eslint-disable-next-line react/require-default-props
   styleOverrides?: any;
 };
 
-export default function MarkdownWrapper({
-  markdown,
-  styleOverrides,
-}: MarkdownWrapperProps) {
+export default function MarkdownWrapper({ markdown, styleOverrides }: MarkdownWrapperProps) {
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <article
       css={[
         css`
@@ -70,8 +70,7 @@ export default function MarkdownWrapper({
             line-height: 1.45;
             border-radius: 5px;
             background-color: var(--bg-color);
-            font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo,
-                monospace !important;
+            font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace !important;
           }
         `,
         styleOverrides,

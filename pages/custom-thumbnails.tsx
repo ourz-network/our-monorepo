@@ -1,18 +1,13 @@
 import styled from "@emotion/styled";
-import Head from "../components/head";
-import { PageWrapper } from "../styles/components";
-import { GetStaticProps } from "next";
 
-import {
-  FetchStaticData,
-  MediaFetchAgent,
-  NetworkIDs,
-} from "@zoralabs/nft-hooks";
+import { FetchStaticData } from "@zoralabs/nft-hooks";
 
 import { MediaThumbnailWrapper } from "@zoralabs/nft-components/dist/nft-preview/MediaThumbnailWrapper";
 import { NFTPreview, PreviewComponents } from "@zoralabs/nft-components";
 import { useRouter } from "next/router";
 import { SyntheticEvent } from "react";
+import Head from "../components/head";
+import { PageWrapper } from "../styles/components";
 import { media, buttonStyle, absoluteCentered } from "../styles/mixins";
 
 // Create A Token Thumbnail
@@ -21,12 +16,13 @@ const TokenThumbnail = ({
   linkDetails = true,
 }: {
   token: any;
+  // eslint-disable-next-line react/require-default-props
   linkDetails?: boolean;
 }) => {
   const listed = token.auctions && token.auctions.length > 0;
   const router = useRouter();
   const linkTarget = listed ? `/${token.address}/${token.tokenId}` : "/list";
-  
+
   const wrapperLink = linkDetails
     ? {
         onClick: (evt: SyntheticEvent) => {
@@ -37,12 +33,13 @@ const TokenThumbnail = ({
       }
     : {};
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <NFTPreview
       key={`${token.tokenContract}-${token.tokenId}`}
       contract={token.tokenContract}
       id={token.tokenId}
       initialData={token}
-      useBetaIndexer={true}
+      useBetaIndexer
     >
       <div
         key={token.tokenId}
@@ -55,32 +52,23 @@ const TokenThumbnail = ({
       >
         <MediaThumbnailWrapper {...wrapperLink}>
           <PreviewComponents.MediaThumbnail />
-          {token.auctions && token.auctions.length > 0 && (
-            <PreviewComponents.PricingComponent />
-          )}
+          {token.auctions && token.auctions.length > 0 && <PreviewComponents.PricingComponent />}
         </MediaThumbnailWrapper>
       </div>
     </NFTPreview>
-  )
-}
-
-// LIST THE TOKENS
-const CustomAuctionsList = ({ tokens }: { tokens: any[] }) => {
-  return (
-    <div className="token-list-wrapper">
-      {tokens &&
-        tokens.map((token) => {
-          const tokenInfo = FetchStaticData.getIndexerServerTokenInfo(token);
-          return (
-            <TokenThumbnail
-              token={token}
-              key={tokenInfo.tokenId}
-            />
-          );
-        })}
-    </div>
   );
 };
+
+// LIST THE TOKENS
+const CustomAuctionsList = ({ tokens }: { tokens: any[] }) => (
+  <div className="token-list-wrapper">
+    {tokens &&
+      tokens.map((token) => {
+        const tokenInfo = FetchStaticData.getIndexerServerTokenInfo(token);
+        return <TokenThumbnail token={token} key={tokenInfo.tokenId} />;
+      })}
+  </div>
+);
 
 // INCLUDE IN THE PAGE
 export default function Home({ tokens }: { tokens: any }) {
@@ -92,26 +80,6 @@ export default function Home({ tokens }: { tokens: any }) {
     </IndexWrapper>
   );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  const fetchAgent = new MediaFetchAgent(
-    process.env.NEXT_PUBLIC_NETWORK_ID as NetworkIDs
-  );
-  const tokens = await FetchStaticData.fetchZoraIndexerList(fetchAgent, {
-    curatorAddress: process.env.NEXT_PUBLIC_CURATORS_ID as string,
-    collectionAddress: process.env
-      .NEXT_PUBLIC_TARGET_CONTRACT_ADDRESS as string,
-    limit: 100,
-    offset: 0,
-  });
-
-  return {
-    props: {
-      tokens,
-    },
-    revalidate: 60,
-  };
-};
 
 // STYLE IT UP - Using the classes applied based on different auction states to add some cusom messaging
 const IndexWrapper = styled(PageWrapper)`
@@ -128,7 +96,7 @@ const IndexWrapper = styled(PageWrapper)`
       &.not-listed {
         opacity: 0.5;
         .zora-cardLink:before {
-          content: 'Own this? List It Here!'!important;
+          content: "Own this? List It Here!" !important;
         }
       }
       &.not-listed {
@@ -137,10 +105,10 @@ const IndexWrapper = styled(PageWrapper)`
       &.auction-live {
         order: -1;
         .zora-cardLink:before {
-          content: 'Bid Now!'!important;
+          content: "Bid Now!" !important;
         }
         .zora-cardAuctionPricing {
-            background-color: var(--green)!important;
+          background-color: var(--green) !important;
         }
       }
       ${media.canHover`
@@ -166,10 +134,10 @@ const IndexWrapper = styled(PageWrapper)`
       }
       .zora-cardAuctionPricing {
         width: 100%;
-        background-color: var(--blue)!important;
+        background-color: var(--blue) !important;
         * {
-          color: var(--white)!important;
-          opacity: 1!important;
+          color: var(--white) !important;
+          opacity: 1 !important;
         }
       }
       .zora-cardLink {
@@ -184,7 +152,7 @@ const IndexWrapper = styled(PageWrapper)`
         &:before {
           z-index: 10;
           ${buttonStyle};
-          content: 'Start Bidding!';
+          content: "Start Bidding!";
           width: 200px;
           height: 23px;
           font-size: var(--text-01);
@@ -192,7 +160,7 @@ const IndexWrapper = styled(PageWrapper)`
           ${absoluteCentered};
         }
         &:after {
-          content: '';
+          content: "";
           width: 100%;
           height: 100%;
           position: absolute;

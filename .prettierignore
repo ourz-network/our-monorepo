@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-package-lock.json
 
 # testing
 /coverage
@@ -31,6 +30,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# mongoDB
+default.json
+config.env
+
 # vercel
 .vercel
-yarn.lock

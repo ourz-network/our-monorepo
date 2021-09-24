@@ -1,4 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+// eslint-disable-next-line @next/next/no-document-import-in-page
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class CreateAuctionHouseDocument extends Document {
   render() {
@@ -23,8 +24,8 @@ class CreateAuctionHouseDocument extends Document {
           </body>
         </Html>
       </>
-    )
+    );
   }
 }
 
-export default CreateAuctionHouseDocument
+export default CreateAuctionHouseDocument;
