@@ -11,3 +11,4 @@ typechain/
 env*
 .vscode
 package-lock.json
+scripts/deploy.ts

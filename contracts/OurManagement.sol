@@ -28,7 +28,10 @@ contract OurManagement {
     }
 
     function checkIsOwner(address caller_) internal view {
-        require(isOwner(caller_), 'Caller is not an approved owner of this Split');
+        require(
+            isOwner(caller_),
+            "Caller is not a whitelisted owner of this Split"
+        );
     }
 
     modifier onlyOwners() {
@@ -43,12 +46,17 @@ contract OurManagement {
      * @notice threshold ensures that setup function can only be called once.
      */
     function setupOwners(address[] memory owners_) internal {
-        require(threshold == 0, 'Setup has already been completed once.');
+        require(threshold == 0, "Setup has already been completed once.");
         // Initializing Proxy owners.
         address currentOwner = SENTINEL_OWNERS;
         for (uint256 i = 0; i < owners_.length; i++) {
             address owner = owners_[i];
-            require(owner != address(0) && owner != SENTINEL_OWNERS && owner != address(this) && currentOwner != owner);
+            require(
+                owner != address(0) &&
+                    owner != SENTINEL_OWNERS &&
+                    owner != address(this) &&
+                    currentOwner != owner
+            );
             require(owners[owner] == address(0));
             owners[currentOwner] = owner;
             currentOwner = owner;
@@ -61,7 +69,11 @@ contract OurManagement {
     /// @dev Allows to add a new owner
     function addOwner(address owner) public onlyOwners {
         // Owner address cannot be null, the sentinel or the Safe itself.
-        require(owner != address(0) && owner != SENTINEL_OWNERS && owner != address(this));
+        require(
+            owner != address(0) &&
+                owner != SENTINEL_OWNERS &&
+                owner != address(this)
+        );
         // No duplicate owners allowed.
         require(owners[owner] == address(0));
         owners[owner] = owners[SENTINEL_OWNERS];
@@ -91,12 +103,17 @@ contract OurManagement {
         address newOwner
     ) public onlyOwners {
         // Owner address cannot be null, the sentinel or the Safe itself.
-        require(newOwner != address(0) && newOwner != SENTINEL_OWNERS && newOwner != address(this), '2');
+        require(
+            newOwner != address(0) &&
+                newOwner != SENTINEL_OWNERS &&
+                newOwner != address(this),
+            "2"
+        );
         // No duplicate owners allowed.
-        require(owners[newOwner] == address(0), '3');
+        require(owners[newOwner] == address(0), "3");
         // Validate oldOwner address and check that it corresponds to owner index.
-        require(oldOwner != address(0) && oldOwner != SENTINEL_OWNERS, '4');
-        require(owners[prevOwner] == oldOwner, '5');
+        require(oldOwner != address(0) && oldOwner != SENTINEL_OWNERS, "4");
+        require(owners[prevOwner] == oldOwner, "5");
         owners[newOwner] = owners[oldOwner];
         owners[prevOwner] = newOwner;
         owners[oldOwner] = address(0);

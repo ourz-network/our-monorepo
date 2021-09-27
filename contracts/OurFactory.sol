@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity 0.8.4;
 
-import {OurProxy} from './OurProxy.sol';
+import {OurProxy} from "./OurProxy.sol";
 
 /**
  * @title OurFactory
@@ -14,7 +14,12 @@ import {OurProxy} from './OurProxy.sol';
  */
 contract OurFactory {
     //======== Subgraph =========
-    event ProxyCreated(address ourProxy, address proxyCreator, string splitRecipients, string nickname);
+    event ProxyCreated(
+        address ourProxy,
+        address proxyCreator,
+        string splitRecipients,
+        string nickname
+    );
 
     //======== Immutable storage =========
     address public immutable pylon;
@@ -36,14 +41,19 @@ contract OurFactory {
         string calldata nickname_
     ) external returns (address ourProxy) {
         merkleRoot = merkleRoot_;
-        ourProxy = address(new OurProxy{salt: keccak256(abi.encode(merkleRoot_))}());
+        ourProxy = address(
+            new OurProxy{salt: keccak256(abi.encode(merkleRoot_))}()
+        );
         delete merkleRoot;
 
         emit ProxyCreated(ourProxy, msg.sender, splitRecipients_, nickname_);
 
         // call setup() to set owners
         assembly {
-            if eq(call(gas(), ourProxy, 0, add(data, 0x20), mload(data), 0, 0), 0) {
+            if eq(
+                call(gas(), ourProxy, 0, add(data, 0x20), mload(data), 0, 0),
+                0
+            ) {
                 revert(0, 0)
             }
         }

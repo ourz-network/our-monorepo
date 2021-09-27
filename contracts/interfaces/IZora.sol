@@ -41,7 +41,11 @@ interface IZora {
     }
 
     event TokenURIUpdated(uint256 indexed _tokenId, address owner, string _uri);
-    event TokenMetadataURIUpdated(uint256 indexed _tokenId, address owner, string _uri);
+    event TokenMetadataURIUpdated(
+        uint256 indexed _tokenId,
+        address owner,
+        string _uri
+    );
 
     // /**
     //  * @notice Return the metadata URI for a piece of media given the token URI
@@ -54,7 +58,8 @@ interface IZora {
     /**
      * @notice Mint new media for msg.sender.
      */
-    function mint(MediaData calldata data, BidShares calldata bidShares) external;
+    function mint(MediaData calldata data, BidShares calldata bidShares)
+        external;
 
     /**
      * @notice EIP-712 mintWithSig method. Mints new media for a creator given a valid signature.
@@ -86,7 +91,10 @@ interface IZora {
     /**
      * @notice Update the token metadata uri
      */
-    function updateTokenMetadataURI(uint256 tokenId, string calldata metadataURI) external;
+    function updateTokenMetadataURI(
+        uint256 tokenId,
+        string calldata metadataURI
+    ) external;
 
     /**
      * @notice EIP-712 permit method. Sets an approved spender given a valid signature.
@@ -168,7 +176,8 @@ interface IZora {
 
     // function configure(address mediaContractAddress) external;
 
-    function setBidShares(uint256 tokenId, BidShares calldata bidShares) external;
+    function setBidShares(uint256 tokenId, BidShares calldata bidShares)
+        external;
 
     function setAsk(uint256 tokenId, Ask calldata ask) external;
 
@@ -290,7 +299,8 @@ interface IZora {
 
     function setAuctionApproval(uint256 auctionId, bool approved) external;
 
-    function setAuctionReservePrice(uint256 auctionId, uint256 reservePrice) external;
+    function setAuctionReservePrice(uint256 auctionId, uint256 reservePrice)
+        external;
 
     function createBid(uint256 auctionId, uint256 amount) external payable;
 
@@ -343,7 +353,9 @@ interface IZora {
       @param recipients list of addresses to send the newly minted editions to
       @dev This mints multiple editions to the given list of addresses.
      */
-    function mintEditions(address[] memory recipients) external returns (uint256);
+    function mintEditions(address[] memory recipients)
+        external
+        returns (uint256);
 
     /**
       @param minter address to set approved minting status for
@@ -360,5 +372,8 @@ interface IZora {
       @dev Allows for updates of edition urls by the owner of the edition.
            Only URLs can be updated (data-uris are supported), hashes cannot be updated.
      */
-    function updateEditionURLs(string memory _imageUrl, string memory _animationUrl) external;
+    function updateEditionURLs(
+        string memory _imageUrl,
+        string memory _animationUrl
+    ) external;
 }
