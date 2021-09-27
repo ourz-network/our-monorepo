@@ -24,6 +24,23 @@ type SplitNFT @entity {
   transactionHash: String!
 }
 
+type ERC20Transfer @entity {
+  "<txHash>-<userAddress>-<amount>"
+  id: ID!
+
+  "The recipient of the ERC20s"
+  recipient: User!
+
+  "The transaction hash of the transfer"
+  transactionHash: String!
+
+  "The address of the ERC20 Contract"
+  contract: String!
+
+  "The amount of ERC20s Transferred"
+  amount: BigInt!
+}
+
 type OurProxy @entity {
   "The address of the Proxy"
   id: ID!
@@ -53,10 +70,10 @@ type OurProxy @entity {
   ETH: BigInt!
 
   "Recipients should increment window before claiming"
-  needsIncremented: Bool!
+  needsIncremented: Boolean!
 
   "Array of SplitRecipients"
-  splitRecipients: [SplitRecipient!]! @derivedFrom(field: "splitProxy")
+  splitRecipients: [SplitRecipient!]!
 
   "The ERC721(s) the Proxy created"
   creations: [SplitNFT!]! @derivedFrom(field: "creator")
@@ -90,16 +107,16 @@ type SplitRecipient @entity {
   splitProxy: OurProxy!
 
   "Name/Alias of User"
-  name: String
+  name: String!
 
   "Role in Split"
-  role: String
+  role: String!
 
   "Number between 0-100 as a string"
-  shares: String
+  shares: String!
 
   "Shares * 1,000,000 as a string"
-  allocation: String
+  allocation: String!
 
   "ETH available to claim for the specific user"
   claimableETH: BigInt!

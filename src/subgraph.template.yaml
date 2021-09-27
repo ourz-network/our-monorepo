@@ -29,7 +29,7 @@ templates:
     name: OurPylon
     network: rinkeby
     source:
-      abi: OurPylon
+      abi: [OurPylon, OurProxy]
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

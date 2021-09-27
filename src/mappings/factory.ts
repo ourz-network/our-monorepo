@@ -1,23 +1,8 @@
-import {
-  BigInt,
-  ByteArray,
-  Bytes,
-  Address,
-  log,
-  json,
-  JSONValue,
-  JSONValueKind,
-  Value,
-} from "@graphprotocol/graph-ts";
+import { BigInt, ByteArray, Bytes, Address, log, json, JSONValue, JSONValueKind, Value } from "@graphprotocol/graph-ts";
 import { ProxyCreated } from "../../generated/OurFactory/OurFactory";
 import { OurPylon } from "../../generated/templates";
 import { OurProxy, SplitRecipient } from "../../generated/schema";
-import {
-  findOrCreateUser,
-  jsonToString,
-  jsonToBigInt,
-  jsonToArrayString,
-} from "./helpers";
+import { findOrCreateUser, jsonToString, jsonToBigInt, jsonToArrayString } from "./helpers";
 import { JSON } from "assemblyscript-json";
 
 /**
@@ -46,12 +31,6 @@ export function handleProxyCreated(event: ProxyCreated): void {
   ourProxy.ETH = BigInt.fromI32(0);
   ourProxy.needsIncremented = false;
 
-  ourProxy.save();
-  log.info(
-    "Created succesfully! Subgraph now monitoring contract at {}; created by {}.",
-    [proxyAddress, creatorAddress]
-  );
-
   // Parse Split Recipients (JSON array of objects)
   let splitRecipients = event.params.splitRecipients;
   log.debug("Incoming SplitRecipients: {}", [splitRecipients]);
@@ -59,6 +38,7 @@ export function handleProxyCreated(event: ProxyCreated): void {
 
   let splitArr: JSON.Arr = <JSON.Arr>JSON.parse(splitRecipients);
 
+  let recipients: Array<string> = [];
   if (splitArr != null) {
     log.debug("Parsed. New stringified version: {}", [splitArr.toString()]);
 
@@ -73,17 +53,13 @@ export function handleProxyCreated(event: ProxyCreated): void {
       let splitObject: JSON.Obj = <JSON.Obj>splitArray[i];
 
       if (splitObject != null) {
-        log.debug("splitObject #{} toString: {}", [
-          `${i}`,
-          splitObject.toString(),
-        ]);
+        log.debug("splitObject #{} toString: {}", [`${i}`, splitObject.toString()]);
 
         let addressOrNull: JSON.Str | null = splitObject.getString("address");
         let nameOrNull: JSON.Str | null = splitObject.getString("name");
         let roleOrNull: JSON.Str | null = splitObject.getString("role");
         let sharesOrNull: JSON.Str | null = splitObject.getString("shares");
-        let allocationOrNull: JSON.Str | null =
-          splitObject.getString("allocation");
+        let allocationOrNull: JSON.Str | null = splitObject.getString("allocation");
 
         let address: string;
         let name: string;
@@ -126,25 +102,33 @@ export function handleProxyCreated(event: ProxyCreated): void {
             shares = sharesOrNull.valueOf();
             if (shares != null) {
               recipient.shares = shares;
-            }
+            } else recipient.shares = "0";
           }
 
           if (allocationOrNull != null) {
             allocation = allocationOrNull.valueOf();
             if (allocation != null) {
               recipient.allocation = allocation;
-            }
+            } else recipient.allocation = "0";
           }
 
-          // log.debug('Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}', [`${i}`, address, name, role, shares, allocation])
+          log.debug('Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}', [`${i}`, address, name, role, shares, allocation])
 
           recipient.claimableETH = BigInt.fromI32(0);
           recipient.ethClaimed = BigInt.fromI32(0);
 
+          recipients.push(recipientId);
           recipient.save();
           log.info("Recipient #{} saved successfully!", [`${i}`]);
         }
       }
     }
   }
+  
+  ourProxy.splitRecipients = recipients
+  ourProxy.save();
+  log.info("Created succesfully! Subgraph now monitoring contract at {}; created by {}.", [
+    proxyAddress,
+    creatorAddress,
+  ]);
 }

@@ -16,8 +16,6 @@ export class NFTContract extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    // this.set("splitNFTs", Value.fromStringArray(new Array(0)));
   }
 
   save(): void {
@@ -130,6 +128,80 @@ export class SplitNFT extends Entity {
   }
 }
 
+export class ERC20Transfer extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("recipient", Value.fromString(""));
+    this.set("transactionHash", Value.fromString(""));
+    this.set("contract", Value.fromString(""));
+    this.set("amount", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ERC20Transfer entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ERC20Transfer entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ERC20Transfer", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ERC20Transfer | null {
+    return changetype<ERC20Transfer | null>(store.get("ERC20Transfer", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get recipient(): string {
+    let value = this.get("recipient");
+    return value!.toString();
+  }
+
+  set recipient(value: string) {
+    this.set("recipient", Value.fromString(value));
+  }
+
+  get transactionHash(): string {
+    let value = this.get("transactionHash");
+    return value!.toString();
+  }
+
+  set transactionHash(value: string) {
+    this.set("transactionHash", Value.fromString(value));
+  }
+
+  get contract(): string {
+    let value = this.get("contract");
+    return value!.toString();
+  }
+
+  set contract(value: string) {
+    this.set("contract", Value.fromString(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value!.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+}
+
 export class OurProxy extends Entity {
   constructor(id: string) {
     super();
@@ -142,8 +214,8 @@ export class OurProxy extends Entity {
     this.set("creator", Value.fromString(""));
     this.set("transfers", Value.fromBigInt(BigInt.zero()));
     this.set("ETH", Value.fromBigInt(BigInt.zero()));
-    // this.set("splitRecipients", Value.fromStringArray(new Array(0)));
-    // this.set("creations", Value.fromStringArray(new Array(0)));
+    this.set("needsIncremented", Value.fromBoolean(false));
+    this.set("splitRecipients", Value.fromStringArray(new Array(0)));
   }
 
   save(): void {
@@ -252,6 +324,15 @@ export class OurProxy extends Entity {
     this.set("ETH", Value.fromBigInt(value));
   }
 
+  get needsIncremented(): boolean {
+    let value = this.get("needsIncremented");
+    return value!.toBoolean();
+  }
+
+  set needsIncremented(value: boolean) {
+    this.set("needsIncremented", Value.fromBoolean(value));
+  }
+
   get splitRecipients(): Array<string> {
     let value = this.get("splitRecipients");
     return value!.toStringArray();
@@ -277,9 +358,6 @@ export class User extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("ethClaimed", Value.fromBigInt(BigInt.zero()));
-    // this.set("ownedProxies", Value.fromStringArray(new Array(0)));
-    // this.set("createdProxies", Value.fromStringArray(new Array(0)));
-    // this.set("recipientInfo", Value.fromStringArray(new Array(0)));
   }
 
   save(): void {
@@ -350,7 +428,13 @@ export class SplitRecipient extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("user", Value.fromString(""));
     this.set("splitProxy", Value.fromString(""));
+    this.set("name", Value.fromString(""));
+    this.set("role", Value.fromString(""));
+    this.set("shares", Value.fromString(""));
+    this.set("allocation", Value.fromString(""));
+    this.set("claimableETH", Value.fromBigInt(BigInt.zero()));
     this.set("ethClaimed", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -380,21 +464,13 @@ export class SplitRecipient extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get user(): string | null {
+  get user(): string {
     let value = this.get("user");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set user(value: string | null) {
-    if (!value) {
-      this.unset("user");
-    } else {
-      this.set("user", Value.fromString(<string>value));
-    }
+  set user(value: string) {
+    this.set("user", Value.fromString(value));
   }
 
   get splitProxy(): string {
@@ -406,72 +482,49 @@ export class SplitRecipient extends Entity {
     this.set("splitProxy", Value.fromString(value));
   }
 
-  get name(): string | null {
+  get name(): string {
     let value = this.get("name");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set name(value: string | null) {
-    if (!value) {
-      this.unset("name");
-    } else {
-      this.set("name", Value.fromString(<string>value));
-    }
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
   }
 
-  get role(): string | null {
+  get role(): string {
     let value = this.get("role");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set role(value: string | null) {
-    if (!value) {
-      this.unset("role");
-    } else {
-      this.set("role", Value.fromString(<string>value));
-    }
+  set role(value: string) {
+    this.set("role", Value.fromString(value));
   }
 
-  get shares(): string | null {
+  get shares(): string {
     let value = this.get("shares");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set shares(value: string | null) {
-    if (!value) {
-      this.unset("shares");
-    } else {
-      this.set("shares", Value.fromString(<string>value));
-    }
+  set shares(value: string) {
+    this.set("shares", Value.fromString(value));
   }
 
-  get allocation(): string | null {
+  get allocation(): string {
     let value = this.get("allocation");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set allocation(value: string | null) {
-    if (!value) {
-      this.unset("allocation");
-    } else {
-      this.set("allocation", Value.fromString(<string>value));
-    }
+  set allocation(value: string) {
+    this.set("allocation", Value.fromString(value));
+  }
+
+  get claimableETH(): BigInt {
+    let value = this.get("claimableETH");
+    return value!.toBigInt();
+  }
+
+  set claimableETH(value: BigInt) {
+    this.set("claimableETH", Value.fromBigInt(value));
   }
 
   get ethClaimed(): BigInt {

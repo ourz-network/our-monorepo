@@ -58,24 +58,6 @@ export class Batch1155Received__Params {
   }
 }
 
-export class ChangeNickname extends ethereum.Event {
-  get params(): ChangeNickname__Params {
-    return new ChangeNickname__Params(this);
-  }
-}
-
-export class ChangeNickname__Params {
-  _event: ChangeNickname;
-
-  constructor(event: ChangeNickname) {
-    this._event = event;
-  }
-
-  get newNickname(): string {
-    return this._event.parameters[0].value.toString();
-  }
-}
-
 export class ERC1155Received extends ethereum.Event {
   get params(): ERC1155Received__Params {
     return new ERC1155Received__Params(this);
@@ -184,29 +166,43 @@ export class ETHReceived__Params {
   }
 }
 
-export class MassTransferERC20 extends ethereum.Event {
-  get params(): MassTransferERC20__Params {
-    return new MassTransferERC20__Params(this);
+export class EditionMinted extends ethereum.Event {
+  get params(): EditionMinted__Params {
+    return new EditionMinted__Params(this);
   }
 }
 
-export class MassTransferERC20__Params {
-  _event: MassTransferERC20;
+export class EditionMinted__Params {
+  _event: EditionMinted;
 
-  constructor(event: MassTransferERC20) {
+  constructor(event: EditionMinted) {
     this._event = event;
   }
 
-  get token(): Address {
-    return this._event.parameters[0].value.toAddress();
+  get editionId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get amount(): BigInt {
+  get editionSize(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
+}
 
-  get success(): boolean {
-    return this._event.parameters[2].value.toBoolean();
+export class NameChanged extends ethereum.Event {
+  get params(): NameChanged__Params {
+    return new NameChanged__Params(this);
+  }
+}
+
+export class NameChanged__Params {
+  _event: NameChanged;
+
+  constructor(event: NameChanged) {
+    this._event = event;
+  }
+
+  get newName(): string {
+    return this._event.parameters[0].value.toString();
   }
 }
 
@@ -243,6 +239,36 @@ export class RemovedOwner__Params {
 
   get owner(): Address {
     return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class TransferERC20 extends ethereum.Event {
+  get params(): TransferERC20__Params {
+    return new TransferERC20__Params(this);
+  }
+}
+
+export class TransferERC20__Params {
+  _event: TransferERC20;
+
+  constructor(event: TransferERC20) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get token(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get success(): boolean {
+    return this._event.parameters[3].value.toBoolean();
   }
 }
 
@@ -322,21 +348,6 @@ export class OurPylon extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  _mirrorAH(): Address {
-    let result = super.call("_mirrorAH", "_mirrorAH():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__mirrorAH(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_mirrorAH", "_mirrorAH():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _mirrorCrowdfund(): Address {
     let result = super.call(
       "_mirrorCrowdfund",
@@ -351,29 +362,6 @@ export class OurPylon extends ethereum.SmartContract {
     let result = super.tryCall(
       "_mirrorCrowdfund",
       "_mirrorCrowdfund():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _mirrorEditions(): Address {
-    let result = super.call(
-      "_mirrorEditions",
-      "_mirrorEditions():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__mirrorEditions(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_mirrorEditions",
-      "_mirrorEditions():(address)",
       []
     );
     if (result.reverted) {
@@ -398,21 +386,6 @@ export class OurPylon extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _weth(): Address {
-    let result = super.call("_weth", "_weth():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__weth(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_weth", "_weth():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _zoraAH(): Address {
     let result = super.call("_zoraAH", "_zoraAH():(address)", []);
 
@@ -421,6 +394,25 @@ export class OurPylon extends ethereum.SmartContract {
 
   try__zoraAH(): ethereum.CallResult<Address> {
     let result = super.tryCall("_zoraAH", "_zoraAH():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  _zoraEditions(): Address {
+    let result = super.call("_zoraEditions", "_zoraEditions():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try__zoraEditions(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "_zoraEditions",
+      "_zoraEditions():(address)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -907,36 +899,6 @@ export class AddOwnerCall__Outputs {
   }
 }
 
-export class BuyMirrorEditionCall extends ethereum.Call {
-  get inputs(): BuyMirrorEditionCall__Inputs {
-    return new BuyMirrorEditionCall__Inputs(this);
-  }
-
-  get outputs(): BuyMirrorEditionCall__Outputs {
-    return new BuyMirrorEditionCall__Outputs(this);
-  }
-}
-
-export class BuyMirrorEditionCall__Inputs {
-  _call: BuyMirrorEditionCall;
-
-  constructor(call: BuyMirrorEditionCall) {
-    this._call = call;
-  }
-
-  get editionId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class BuyMirrorEditionCall__Outputs {
-  _call: BuyMirrorEditionCall;
-
-  constructor(call: BuyMirrorEditionCall) {
-    this._call = call;
-  }
-}
-
 export class CancelZoraAuctionCall extends ethereum.Call {
   get inputs(): CancelZoraAuctionCall__Inputs {
     return new CancelZoraAuctionCall__Inputs(this);
@@ -967,20 +929,20 @@ export class CancelZoraAuctionCall__Outputs {
   }
 }
 
-export class ClaimERC20ForAllSplitsCall extends ethereum.Call {
-  get inputs(): ClaimERC20ForAllSplitsCall__Inputs {
-    return new ClaimERC20ForAllSplitsCall__Inputs(this);
+export class ClaimERC20ForAllCall extends ethereum.Call {
+  get inputs(): ClaimERC20ForAllCall__Inputs {
+    return new ClaimERC20ForAllCall__Inputs(this);
   }
 
-  get outputs(): ClaimERC20ForAllSplitsCall__Outputs {
-    return new ClaimERC20ForAllSplitsCall__Outputs(this);
+  get outputs(): ClaimERC20ForAllCall__Outputs {
+    return new ClaimERC20ForAllCall__Outputs(this);
   }
 }
 
-export class ClaimERC20ForAllSplitsCall__Inputs {
-  _call: ClaimERC20ForAllSplitsCall;
+export class ClaimERC20ForAllCall__Inputs {
+  _call: ClaimERC20ForAllCall;
 
-  constructor(call: ClaimERC20ForAllSplitsCall) {
+  constructor(call: ClaimERC20ForAllCall) {
     this._call = call;
   }
 
@@ -996,16 +958,24 @@ export class ClaimERC20ForAllSplitsCall__Inputs {
     return this._call.inputValues[2].value.toBigIntArray();
   }
 
-  get merkleProofZero(): Array<Bytes> {
-    return this._call.inputValues[3].value.toBytesArray();
+  get merkleProofs(): Array<ClaimERC20ForAllCallMerkleProofsStruct> {
+    return this._call.inputValues[3].value.toTupleArray<
+      ClaimERC20ForAllCallMerkleProofsStruct
+    >();
   }
 }
 
-export class ClaimERC20ForAllSplitsCall__Outputs {
-  _call: ClaimERC20ForAllSplitsCall;
+export class ClaimERC20ForAllCall__Outputs {
+  _call: ClaimERC20ForAllCall;
 
-  constructor(call: ClaimERC20ForAllSplitsCall) {
+  constructor(call: ClaimERC20ForAllCall) {
     this._call = call;
+  }
+}
+
+export class ClaimERC20ForAllCallMerkleProofsStruct extends ethereum.Tuple {
+  get merkleProof(): Array<Bytes> {
+    return this[0].toBytesArray();
   }
 }
 
@@ -1089,82 +1059,6 @@ export class ClaimETHForAllWindowsCall__Outputs {
   }
 }
 
-export class CreateMirrorAuctionCall extends ethereum.Call {
-  get inputs(): CreateMirrorAuctionCall__Inputs {
-    return new CreateMirrorAuctionCall__Inputs(this);
-  }
-
-  get outputs(): CreateMirrorAuctionCall__Outputs {
-    return new CreateMirrorAuctionCall__Outputs(this);
-  }
-}
-
-export class CreateMirrorAuctionCall__Inputs {
-  _call: CreateMirrorAuctionCall;
-
-  constructor(call: CreateMirrorAuctionCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get duration(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get reservePrice(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get creator(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
-  get creatorShareRecipient(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-}
-
-export class CreateMirrorAuctionCall__Outputs {
-  _call: CreateMirrorAuctionCall;
-
-  constructor(call: CreateMirrorAuctionCall) {
-    this._call = call;
-  }
-}
-
-export class CreateMirrorBidCall extends ethereum.Call {
-  get inputs(): CreateMirrorBidCall__Inputs {
-    return new CreateMirrorBidCall__Inputs(this);
-  }
-
-  get outputs(): CreateMirrorBidCall__Outputs {
-    return new CreateMirrorBidCall__Outputs(this);
-  }
-}
-
-export class CreateMirrorBidCall__Inputs {
-  _call: CreateMirrorBidCall;
-
-  constructor(call: CreateMirrorBidCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class CreateMirrorBidCall__Outputs {
-  _call: CreateMirrorBidCall;
-
-  constructor(call: CreateMirrorBidCall) {
-    this._call = call;
-  }
-}
-
 export class CreateMirrorCrowdfundCall extends ethereum.Call {
   get inputs(): CreateMirrorCrowdfundCall__Inputs {
     return new CreateMirrorCrowdfundCall__Inputs(this);
@@ -1215,44 +1109,6 @@ export class CreateMirrorCrowdfundCall__Outputs {
   }
 }
 
-export class CreateMirrorEditionCall extends ethereum.Call {
-  get inputs(): CreateMirrorEditionCall__Inputs {
-    return new CreateMirrorEditionCall__Inputs(this);
-  }
-
-  get outputs(): CreateMirrorEditionCall__Outputs {
-    return new CreateMirrorEditionCall__Outputs(this);
-  }
-}
-
-export class CreateMirrorEditionCall__Inputs {
-  _call: CreateMirrorEditionCall;
-
-  constructor(call: CreateMirrorEditionCall) {
-    this._call = call;
-  }
-
-  get quantity(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get price(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get fundingRecipient(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-}
-
-export class CreateMirrorEditionCall__Outputs {
-  _call: CreateMirrorEditionCall;
-
-  constructor(call: CreateMirrorEditionCall) {
-    this._call = call;
-  }
-}
-
 export class CreateZoraAuctionCall extends ethereum.Call {
   get inputs(): CreateZoraAuctionCall__Inputs {
     return new CreateZoraAuctionCall__Inputs(this);
@@ -1290,7 +1146,7 @@ export class CreateZoraAuctionCall__Inputs {
     return this._call.inputValues[4].value.toAddress();
   }
 
-  get curatorFeePercentages(): i32 {
+  get curatorFeePercentage(): i32 {
     return this._call.inputValues[5].value.toI32();
   }
 
@@ -1307,36 +1163,64 @@ export class CreateZoraAuctionCall__Outputs {
   }
 }
 
-export class CreateZoraAuctionBidCall extends ethereum.Call {
-  get inputs(): CreateZoraAuctionBidCall__Inputs {
-    return new CreateZoraAuctionBidCall__Inputs(this);
+export class CreateZoraEditionCall extends ethereum.Call {
+  get inputs(): CreateZoraEditionCall__Inputs {
+    return new CreateZoraEditionCall__Inputs(this);
   }
 
-  get outputs(): CreateZoraAuctionBidCall__Outputs {
-    return new CreateZoraAuctionBidCall__Outputs(this);
+  get outputs(): CreateZoraEditionCall__Outputs {
+    return new CreateZoraEditionCall__Outputs(this);
   }
 }
 
-export class CreateZoraAuctionBidCall__Inputs {
-  _call: CreateZoraAuctionBidCall;
+export class CreateZoraEditionCall__Inputs {
+  _call: CreateZoraEditionCall;
 
-  constructor(call: CreateZoraAuctionBidCall) {
+  constructor(call: CreateZoraEditionCall) {
     this._call = call;
   }
 
-  get auctionId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get _name(): string {
+    return this._call.inputValues[0].value.toString();
   }
 
-  get amount(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get _symbol(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get _description(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+
+  get _animationUrl(): string {
+    return this._call.inputValues[3].value.toString();
+  }
+
+  get _animationHash(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+
+  get _imageUrl(): string {
+    return this._call.inputValues[5].value.toString();
+  }
+
+  get _imageHash(): Bytes {
+    return this._call.inputValues[6].value.toBytes();
+  }
+
+  get _editionSize(): BigInt {
+    return this._call.inputValues[7].value.toBigInt();
+  }
+
+  get _royaltyBPS(): BigInt {
+    return this._call.inputValues[8].value.toBigInt();
   }
 }
 
-export class CreateZoraAuctionBidCall__Outputs {
-  _call: CreateZoraAuctionBidCall;
+export class CreateZoraEditionCall__Outputs {
+  _call: CreateZoraEditionCall;
 
-  constructor(call: CreateZoraAuctionBidCall) {
+  constructor(call: CreateZoraEditionCall) {
     this._call = call;
   }
 }
@@ -1358,7 +1242,7 @@ export class EditNicknameCall__Inputs {
     this._call = call;
   }
 
-  get newNickname_(): string {
+  get newName_(): string {
     return this._call.inputValues[0].value.toString();
   }
 }
@@ -1371,62 +1255,40 @@ export class EditNicknameCall__Outputs {
   }
 }
 
-export class EndMirrorAuctionCall extends ethereum.Call {
-  get inputs(): EndMirrorAuctionCall__Inputs {
-    return new EndMirrorAuctionCall__Inputs(this);
+export class IncrementThenClaimAllCall extends ethereum.Call {
+  get inputs(): IncrementThenClaimAllCall__Inputs {
+    return new IncrementThenClaimAllCall__Inputs(this);
   }
 
-  get outputs(): EndMirrorAuctionCall__Outputs {
-    return new EndMirrorAuctionCall__Outputs(this);
+  get outputs(): IncrementThenClaimAllCall__Outputs {
+    return new IncrementThenClaimAllCall__Outputs(this);
   }
 }
 
-export class EndMirrorAuctionCall__Inputs {
-  _call: EndMirrorAuctionCall;
+export class IncrementThenClaimAllCall__Inputs {
+  _call: IncrementThenClaimAllCall;
 
-  constructor(call: EndMirrorAuctionCall) {
+  constructor(call: IncrementThenClaimAllCall) {
     this._call = call;
   }
 
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get percentageAllocation(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get merkleProof(): Array<Bytes> {
+    return this._call.inputValues[2].value.toBytesArray();
   }
 }
 
-export class EndMirrorAuctionCall__Outputs {
-  _call: EndMirrorAuctionCall;
+export class IncrementThenClaimAllCall__Outputs {
+  _call: IncrementThenClaimAllCall;
 
-  constructor(call: EndMirrorAuctionCall) {
-    this._call = call;
-  }
-}
-
-export class EndZoraAuctionCall extends ethereum.Call {
-  get inputs(): EndZoraAuctionCall__Inputs {
-    return new EndZoraAuctionCall__Inputs(this);
-  }
-
-  get outputs(): EndZoraAuctionCall__Outputs {
-    return new EndZoraAuctionCall__Outputs(this);
-  }
-}
-
-export class EndZoraAuctionCall__Inputs {
-  _call: EndZoraAuctionCall;
-
-  constructor(call: EndZoraAuctionCall) {
-    this._call = call;
-  }
-
-  get auctionId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class EndZoraAuctionCall__Outputs {
-  _call: EndZoraAuctionCall;
-
-  constructor(call: EndZoraAuctionCall) {
+  constructor(call: IncrementThenClaimAllCall) {
     this._call = call;
   }
 }
@@ -1979,36 +1841,70 @@ export class RemoveZoraMarketAskCall__Outputs {
   }
 }
 
-export class RemoveZoraMarketBidCall extends ethereum.Call {
-  get inputs(): RemoveZoraMarketBidCall__Inputs {
-    return new RemoveZoraMarketBidCall__Inputs(this);
+export class SetEditionMinterCall extends ethereum.Call {
+  get inputs(): SetEditionMinterCall__Inputs {
+    return new SetEditionMinterCall__Inputs(this);
   }
 
-  get outputs(): RemoveZoraMarketBidCall__Outputs {
-    return new RemoveZoraMarketBidCall__Outputs(this);
+  get outputs(): SetEditionMinterCall__Outputs {
+    return new SetEditionMinterCall__Outputs(this);
   }
 }
 
-export class RemoveZoraMarketBidCall__Inputs {
-  _call: RemoveZoraMarketBidCall;
+export class SetEditionMinterCall__Inputs {
+  _call: SetEditionMinterCall;
 
-  constructor(call: RemoveZoraMarketBidCall) {
+  constructor(call: SetEditionMinterCall) {
     this._call = call;
   }
 
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get minter(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 
-  get bidder(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get allowed(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
   }
 }
 
-export class RemoveZoraMarketBidCall__Outputs {
-  _call: RemoveZoraMarketBidCall;
+export class SetEditionMinterCall__Outputs {
+  _call: SetEditionMinterCall;
 
-  constructor(call: RemoveZoraMarketBidCall) {
+  constructor(call: SetEditionMinterCall) {
+    this._call = call;
+  }
+}
+
+export class SetEditionURLsCall extends ethereum.Call {
+  get inputs(): SetEditionURLsCall__Inputs {
+    return new SetEditionURLsCall__Inputs(this);
+  }
+
+  get outputs(): SetEditionURLsCall__Outputs {
+    return new SetEditionURLsCall__Outputs(this);
+  }
+}
+
+export class SetEditionURLsCall__Inputs {
+  _call: SetEditionURLsCall;
+
+  constructor(call: SetEditionURLsCall) {
+    this._call = call;
+  }
+
+  get _imageUrl(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get _animationUrl(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+}
+
+export class SetEditionURLsCall__Outputs {
+  _call: SetEditionURLsCall;
+
+  constructor(call: SetEditionURLsCall) {
     this._call = call;
   }
 }
@@ -2124,76 +2020,6 @@ export class SetZoraMarketAskCallAskStruct extends ethereum.Tuple {
 
   get currency(): Address {
     return this[1].toAddress();
-  }
-}
-
-export class SetZoraMarketBidCall extends ethereum.Call {
-  get inputs(): SetZoraMarketBidCall__Inputs {
-    return new SetZoraMarketBidCall__Inputs(this);
-  }
-
-  get outputs(): SetZoraMarketBidCall__Outputs {
-    return new SetZoraMarketBidCall__Outputs(this);
-  }
-}
-
-export class SetZoraMarketBidCall__Inputs {
-  _call: SetZoraMarketBidCall;
-
-  constructor(call: SetZoraMarketBidCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get bid(): SetZoraMarketBidCallBidStruct {
-    return changetype<SetZoraMarketBidCallBidStruct>(
-      this._call.inputValues[1].value.toTuple()
-    );
-  }
-
-  get spender(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-}
-
-export class SetZoraMarketBidCall__Outputs {
-  _call: SetZoraMarketBidCall;
-
-  constructor(call: SetZoraMarketBidCall) {
-    this._call = call;
-  }
-}
-
-export class SetZoraMarketBidCallBidStruct extends ethereum.Tuple {
-  get amount(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get currency(): Address {
-    return this[1].toAddress();
-  }
-
-  get bidder(): Address {
-    return this[2].toAddress();
-  }
-
-  get recipient(): Address {
-    return this[3].toAddress();
-  }
-
-  get sellOnShare(): SetZoraMarketBidCallBidSellOnShareStruct {
-    return changetype<SetZoraMarketBidCallBidSellOnShareStruct>(
-      this[4].toTuple()
-    );
-  }
-}
-
-export class SetZoraMarketBidCallBidSellOnShareStruct extends ethereum.Tuple {
-  get value(): BigInt {
-    return this[0].toBigInt();
   }
 }
 
@@ -2439,60 +2265,6 @@ export class TokensReceivedCall__Outputs {
   }
 }
 
-export class UnsafeCreateZoraAuctionCall extends ethereum.Call {
-  get inputs(): UnsafeCreateZoraAuctionCall__Inputs {
-    return new UnsafeCreateZoraAuctionCall__Inputs(this);
-  }
-
-  get outputs(): UnsafeCreateZoraAuctionCall__Outputs {
-    return new UnsafeCreateZoraAuctionCall__Outputs(this);
-  }
-}
-
-export class UnsafeCreateZoraAuctionCall__Inputs {
-  _call: UnsafeCreateZoraAuctionCall;
-
-  constructor(call: UnsafeCreateZoraAuctionCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get tokenContract(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get duration(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get reservePrice(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get curator(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-
-  get curatorFeePercentages(): i32 {
-    return this._call.inputValues[5].value.toI32();
-  }
-
-  get auctionCurrency(): Address {
-    return this._call.inputValues[6].value.toAddress();
-  }
-}
-
-export class UnsafeCreateZoraAuctionCall__Outputs {
-  _call: UnsafeCreateZoraAuctionCall;
-
-  constructor(call: UnsafeCreateZoraAuctionCall) {
-    this._call = call;
-  }
-}
-
 export class UntrustedBurn721Call extends ethereum.Call {
   get inputs(): UntrustedBurn721Call__Inputs {
     return new UntrustedBurn721Call__Inputs(this);
@@ -2523,36 +2295,6 @@ export class UntrustedBurn721Call__Outputs {
   _call: UntrustedBurn721Call;
 
   constructor(call: UntrustedBurn721Call) {
-    this._call = call;
-  }
-}
-
-export class UntrustedCloseCrowdFundingCall extends ethereum.Call {
-  get inputs(): UntrustedCloseCrowdFundingCall__Inputs {
-    return new UntrustedCloseCrowdFundingCall__Inputs(this);
-  }
-
-  get outputs(): UntrustedCloseCrowdFundingCall__Outputs {
-    return new UntrustedCloseCrowdFundingCall__Outputs(this);
-  }
-}
-
-export class UntrustedCloseCrowdFundingCall__Inputs {
-  _call: UntrustedCloseCrowdFundingCall;
-
-  constructor(call: UntrustedCloseCrowdFundingCall) {
-    this._call = call;
-  }
-
-  get crowdfundProxy_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class UntrustedCloseCrowdFundingCall__Outputs {
-  _call: UntrustedCloseCrowdFundingCall;
-
-  constructor(call: UntrustedCloseCrowdFundingCall) {
     this._call = call;
   }
 }
@@ -2629,36 +2371,6 @@ export class UntrustedSetApproval721Call__Outputs {
   _call: UntrustedSetApproval721Call;
 
   constructor(call: UntrustedSetApproval721Call) {
-    this._call = call;
-  }
-}
-
-export class UpdateMirrorMinBidCall extends ethereum.Call {
-  get inputs(): UpdateMirrorMinBidCall__Inputs {
-    return new UpdateMirrorMinBidCall__Inputs(this);
-  }
-
-  get outputs(): UpdateMirrorMinBidCall__Outputs {
-    return new UpdateMirrorMinBidCall__Outputs(this);
-  }
-}
-
-export class UpdateMirrorMinBidCall__Inputs {
-  _call: UpdateMirrorMinBidCall;
-
-  constructor(call: UpdateMirrorMinBidCall) {
-    this._call = call;
-  }
-
-  get minBid(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class UpdateMirrorMinBidCall__Outputs {
-  _call: UpdateMirrorMinBidCall;
-
-  constructor(call: UpdateMirrorMinBidCall) {
     this._call = call;
   }
 }
@@ -2765,36 +2477,6 @@ export class UpdateZoraMediaURIsCall__Outputs {
   _call: UpdateZoraMediaURIsCall;
 
   constructor(call: UpdateZoraMediaURIsCall) {
-    this._call = call;
-  }
-}
-
-export class WithdrawEditionFundsCall extends ethereum.Call {
-  get inputs(): WithdrawEditionFundsCall__Inputs {
-    return new WithdrawEditionFundsCall__Inputs(this);
-  }
-
-  get outputs(): WithdrawEditionFundsCall__Outputs {
-    return new WithdrawEditionFundsCall__Outputs(this);
-  }
-}
-
-export class WithdrawEditionFundsCall__Inputs {
-  _call: WithdrawEditionFundsCall;
-
-  constructor(call: WithdrawEditionFundsCall) {
-    this._call = call;
-  }
-
-  get editionId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class WithdrawEditionFundsCall__Outputs {
-  _call: WithdrawEditionFundsCall;
-
-  constructor(call: WithdrawEditionFundsCall) {
     this._call = call;
   }
 }

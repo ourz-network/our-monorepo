@@ -5,7 +5,7 @@ import {
   ERC1155Received,
   ERC777Received,
   ETHReceived,
-  MassTransferERC20,
+  TransferERC20,
   ProxySetup,
   RemovedOwner,
   ERC721Received,
@@ -13,17 +13,8 @@ import {
   WindowIncremented,
   NameChanged,
 } from "../../generated/templates/OurPylon/OurPylon";
-import {
-  OurProxy,
-  User,
-  SplitNFT,
-  SplitRecipient,
-} from "../../generated/schema";
-import {
-  zeroAddress,
-  findOrCreateUser,
-  findOrCreateNFTContract,
-} from "./helpers";
+import { OurProxy, User, SplitNFT, SplitRecipient, ERC20Transfer } from "../../generated/schema";
+import { zeroAddress, findOrCreateUser, findOrCreateNFTContract } from "./helpers";
 
 /**
  * Handler called when the `ProxySetup` Event is emitted on a Proxy
@@ -65,11 +56,7 @@ export function handleProxySetup(event: ProxySetup): void {
 
 /**
  * Handler called when the `AddedOwner` Event is emitted on a Proxy
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
+ * @eventParam owner: new owner
  */
 export function handleAddedOwner(event: AddedOwner): void {
   // get formatted variables
@@ -90,11 +77,7 @@ export function handleAddedOwner(event: AddedOwner): void {
 
 /**
  * Handler called when the `RemovedOwner` Event is emitted on a Proxy
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
+ * @eventParam owner: ex owner
  */
 export function handleRemovedOwner(event: RemovedOwner): void {
   // get formatted variables
@@ -116,11 +99,7 @@ export function handleRemovedOwner(event: RemovedOwner): void {
 
 /**
  * Handler called when the `NameChanged` Event is emitted on a Proxy
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
+ * @eventParam newName: new nickname for split
  */
 export function handleNameChanged(event: NameChanged): void {
   // get formatted variables
@@ -151,38 +130,41 @@ export function handleETHReceived(event: ETHReceived): void {
 
   let ourProxy = OurProxy.load(proxyAddress)!;
 
-  let beforeETH = ourProxy.ETH;
   let value = event.params.value;
 
-  let afterETH = beforeETH.plus(value);
-  ourProxy.ETH = afterETH;
+  let beforeETH = ourProxy.ETH || BigInt.fromI32(0);
+  let afterETH: BigInt;
 
-  if ((ourProxy.needsIncremented = false)) {
-    ourProxy.needsIncremented = true;
+  if (beforeETH.gt(BigInt.fromI32(0))) {
+    afterETH = beforeETH.plus(value);
+  } else {
+    afterETH = value;
   }
 
-  let recipients = ourProxy.splitRecipients;
+  ourProxy.ETH = afterETH;
+  ourProxy.needsIncremented = true;
 
-  for (let i = 0; i < recipients.length; i++) {
-    let recipientId = recipients[i];
+  let recipients = ourProxy.splitRecipients 
+  for (let i = 0; i < ourProxy.splitRecipients.length; i++) {
+    let recipientId = recipients[i]
     let recipient = SplitRecipient.load(recipientId)!;
 
     let allocationString = recipient.allocation;
     let allocation = BigInt.fromString(allocationString);
+    
+    let scaledAmount = value.times(allocation)
+    let hundredMillion = BigInt.fromI32(100000000)
 
-    let recipientAllocation = value
-      .times(allocation)
-      .div(BigInt.fromI32(100).times(BigInt.fromI32(1000000)));
+    let recipientAllocation = scaledAmount.div(hundredMillion);
 
     let currentClaimable = recipient.claimableETH;
     let newClaimable = currentClaimable.plus(recipientAllocation);
 
     recipient.claimableETH = newClaimable;
     recipient.save();
-    log.debug("Recipient {} now has {} ETH available to claim. #{}", [
+    log.debug("Recipient {} now has {} ETH available to claim.", [
       recipient.id,
-      newClaimable.toString(),
-      i,
+      newClaimable.toString()
     ]);
   }
 
@@ -197,11 +179,6 @@ export function handleETHReceived(event: ETHReceived): void {
 
 /**
  * Handler called when the `WindowIncremented` Event is emitted on a Proxy
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
  */
 export function handleWindowIncremented(event: WindowIncremented): void {
   // get formatted variables
@@ -216,6 +193,12 @@ export function handleWindowIncremented(event: WindowIncremented): void {
   ourProxy.save();
 }
 
+/**
+ * Handler called when the `TransferETH` Event is emitted on a Proxy
+ * @eventParam success: boolean
+ * @eventParam account: user that received eth
+ * @eventParam amount: value of eth received
+ */
 export function handleTransferETH(event: TransferETH): void {
   let success = event.params.success;
 
@@ -233,7 +216,7 @@ export function handleTransferETH(event: TransferETH): void {
     ourProxy.ETH = amountBefore.minus(amount);
     ourProxy.save();
 
-    let user = User.load(userAddress);
+    let user = User.load(userAddress)!;
     let claimedBefore = user.ethClaimed;
     let newClaimed = claimedBefore.plus(amount);
     user.ethClaimed = newClaimed;
@@ -252,12 +235,9 @@ export function handleTransferETH(event: TransferETH): void {
 }
 
 /**
- * Handler called when the `` Event is emitted on a Proxy
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
+ * Handler called when the `TransferERC20` Event is emitted on a Proxy
+ * @eventParam token: contract for ERC20
+ * @eventParam amount: total erc20s sent to recipients
  */
 export function handleTransferERC20(event: TransferERC20): void {
   let success = event.params.success;
@@ -273,11 +253,23 @@ export function handleTransferERC20(event: TransferERC20): void {
     let userAddress = event.params.account.toHexString();
     let tokenAddress = event.params.token.toHexString();
     let amount = event.params.amount;
+    let txHash = event.transaction.hash.toHexString();
+
+    let user = User.load(userAddress)!;
+
+    let transferId = `${txHash}-${userAddress}-${amount.toString()}`;
+    let transfer = new ERC20Transfer(transferId);
+    transfer.recipient = user.id;
+    transfer.transactionHash = txHash;
+    transfer.contract = tokenAddress;
+    transfer.amount = amount;
+
+    transfer.save();
   }
 }
 
 /**
- * Handler called when the `TokenReceived` Event is emitted on a Proxy.
+ * Handler called when the `ERC721Received` Event is emitted on a Proxy.
  * Only creates SplitNFT entity if newly minted
  * @eventParam address operator: msg.sender of ERC721 transfer (usually parent contract)
  * @eventParam address from: last owner of ERC721 OR 0x00 address if newly minted
@@ -310,50 +302,38 @@ export function handleERC721Received(event: ERC721Received): void {
 /**
  * Handler called when the `` Event is emitted on a Proxy
  * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
  */
-export function handleERC1155Received(event: ERC1155Received): void {
-  // get formatted variables
-  let proxy = event.address;
-  let proxyAddress = proxy.toHexString();
-  log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
+// export function handleERC1155Received(event: ERC1155Received): void {
+//   // get formatted variables
+//   let proxy = event.address;
+//   let proxyAddress = proxy.toHexString();
+//   log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
 
-  let ourProxy = OurProxy.load(proxyAddress)!;
-}
+//   let ourProxy = OurProxy.load(proxyAddress)!;
+// }
 
 /**
  * Handler called when the `` Event is emitted on a Proxy
  * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
  */
-export function handleBatch1155Received(event: Batch1155Received): void {
-  // get formatted variables
-  let proxy = event.address;
-  let proxyAddress = proxy.toHexString();
-  log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
+// export function handleBatch1155Received(event: Batch1155Received): void {
+//   // get formatted variables
+//   let proxy = event.address;
+//   let proxyAddress = proxy.toHexString();
+//   log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
 
-  let ourProxy = OurProxy.load(proxyAddress)!;
-}
+//   let ourProxy = OurProxy.load(proxyAddress)!;
+// }
 
 /**
  * Handler called when the `` Event is emitted on a Proxy
  * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
- * @eventParam
  */
-export function handleERC777Received(event: ERC777Received): void {
-  // get formatted variables
-  let proxy = event.address;
-  let proxyAddress = proxy.toHexString();
-  log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
+// export function handleERC777Received(event: ERC777Received): void {
+//   // get formatted variables
+//   let proxy = event.address;
+//   let proxyAddress = proxy.toHexString();
+//   log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
 
-  let ourProxy = OurProxy.load(proxyAddress)!;
-}
+//   let ourProxy = OurProxy.load(proxyAddress)!;
+// }

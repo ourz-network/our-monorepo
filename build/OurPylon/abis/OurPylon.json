@@ -53,19 +53,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "newNickname",
-        "type": "string"
-      }
-    ],
-    "name": "ChangeNickname",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "operator",
         "type": "address"
@@ -172,24 +159,31 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "editionId",
         "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "success",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "editionSize",
+        "type": "uint256"
       }
     ],
-    "name": "MassTransferERC20",
+    "name": "EditionMinted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "newName",
+        "type": "string"
+      }
+    ],
+    "name": "NameChanged",
     "type": "event"
   },
   {
@@ -216,6 +210,37 @@
       }
     ],
     "name": "RemovedOwner",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "name": "TransferERC20",
     "type": "event"
   },
   {
@@ -277,33 +302,7 @@
   },
   {
     "inputs": [],
-    "name": "_mirrorAH",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "_mirrorCrowdfund",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_mirrorEditions",
     "outputs": [
       {
         "internalType": "address",
@@ -329,7 +328,7 @@
   },
   {
     "inputs": [],
-    "name": "_weth",
+    "name": "_zoraAH",
     "outputs": [
       {
         "internalType": "address",
@@ -342,7 +341,7 @@
   },
   {
     "inputs": [],
-    "name": "_zoraAH",
+    "name": "_zoraEditions",
     "outputs": [
       {
         "internalType": "address",
@@ -467,19 +466,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "editionId",
-        "type": "uint256"
-      }
-    ],
-    "name": "buyMirrorEdition",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "auctionId",
         "type": "uint256"
       }
@@ -507,12 +493,19 @@
         "type": "uint256[]"
       },
       {
-        "internalType": "bytes32[]",
-        "name": "merkleProofZero",
-        "type": "bytes32[]"
+        "components": [
+          {
+            "internalType": "bytes32[]",
+            "name": "merkleProof",
+            "type": "bytes32[]"
+          }
+        ],
+        "internalType": "struct OurSplitter.Proof[]",
+        "name": "merkleProofs",
+        "type": "tuple[]"
       }
     ],
-    "name": "claimERC20ForAllSplits",
+    "name": "claimERC20ForAll",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -571,52 +564,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "reservePrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "internalType": "address payable",
-        "name": "creatorShareRecipient",
-        "type": "address"
-      }
-    ],
-    "name": "createMirrorAuction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "createMirrorBid",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "string",
         "name": "name",
         "type": "string"
@@ -656,29 +603,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "quantity",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "fundingRecipient",
-        "type": "address"
-      }
-    ],
-    "name": "createMirrorEdition",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
       },
@@ -704,7 +628,7 @@
       },
       {
         "internalType": "uint8",
-        "name": "curatorFeePercentages",
+        "name": "curatorFeePercentage",
         "type": "uint8"
       },
       {
@@ -721,19 +645,54 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_animationUrl",
+        "type": "string"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_animationHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "_imageUrl",
+        "type": "string"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_imageHash",
+        "type": "bytes32"
+      },
+      {
         "internalType": "uint256",
-        "name": "auctionId",
+        "name": "_editionSize",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "_royaltyBPS",
         "type": "uint256"
       }
     ],
-    "name": "createZoraAuctionBid",
+    "name": "createZoraEdition",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -753,37 +712,11 @@
     "inputs": [
       {
         "internalType": "string",
-        "name": "newNickname_",
+        "name": "newName_",
         "type": "string"
       }
     ],
     "name": "editNickname",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "endMirrorAuction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "auctionId",
-        "type": "uint256"
-      }
-    ],
-    "name": "endZoraAuction",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -799,6 +732,29 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "percentageAllocation",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "merkleProof",
+        "type": "bytes32[]"
+      }
+    ],
+    "name": "incrementThenClaimAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1287,24 +1243,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "bidder",
-        "type": "address"
-      }
-    ],
-    "name": "removeZoraMarketBid",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       },
@@ -1323,6 +1261,42 @@
       }
     ],
     "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "minter",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "setEditionMinter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_imageUrl",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_animationUrl",
+        "type": "string"
+      }
+    ],
+    "name": "setEditionURLs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1387,63 +1361,6 @@
       }
     ],
     "name": "setZoraMarketAsk",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "currency",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "bidder",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "recipient",
-            "type": "address"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IZora.D256",
-            "name": "sellOnShare",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct IZora.Bid",
-        "name": "bid",
-        "type": "tuple"
-      },
-      {
-        "internalType": "address",
-        "name": "spender",
-        "type": "address"
-      }
-    ],
-    "name": "setZoraMarketBid",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1638,49 +1555,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenContract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "reservePrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "curator",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "curatorFeePercentages",
-        "type": "uint8"
-      },
-      {
-        "internalType": "address",
-        "name": "auctionCurrency",
-        "type": "address"
-      }
-    ],
-    "name": "unsafeCreateZoraAuction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "tokenContract_",
         "type": "address"
@@ -1692,19 +1566,6 @@
       }
     ],
     "name": "untrustedBurn721",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "crowdfundProxy_",
-        "type": "address"
-      }
-    ],
-    "name": "untrustedCloseCrowdFunding",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1751,19 +1612,6 @@
       }
     ],
     "name": "untrustedSetApproval721",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "minBid",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateMirrorMinBid",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1838,19 +1686,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "editionId",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawEditionFunds",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

@@ -1,22 +1,7 @@
-import {
-  BigInt,
-  Address,
-  JSONValue,
-  JSONValueKind,
-  BigDecimal,
-  ByteArray,
-} from "@graphprotocol/graph-ts";
+import { BigInt, Address, JSONValue, JSONValueKind, BigDecimal, ByteArray } from "@graphprotocol/graph-ts";
 import { ProxyCreated } from "../../generated/OurFactory/OurFactory";
-import {
-  ERC721Received,
-  ETHReceived,
-} from "../../generated/templates/OurPylon/OurPylon";
-import {
-  OurProxy,
-  User,
-  NFTContract,
-  SplitRecipient,
-} from "../../generated/schema";
+import { ERC721Received, ETHReceived } from "../../generated/templates/OurPylon/OurPylon";
+import { OurProxy, User, NFTContract, SplitRecipient } from "../../generated/schema";
 
 export const zeroAddress = "0x0000000000000000000000000000000000000000";
 
@@ -62,8 +47,7 @@ export function jsonToArrayString(val: JSONValue | null): Array<string> {
     let valArray = val.toArray();
     let result: Array<string>;
     for (let i = 0; i < valArray.length; i++) {
-      if (valArray[i].kind === JSONValueKind.STRING)
-        result.push(valArray[i].toString());
+      if (valArray[i].kind === JSONValueKind.STRING) result.push(valArray[i].toString());
     }
     return result;
   }
