@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity 0.8.4;
 
-import {OurSplitter} from './OurSplitter.sol';
-import {OurMinter} from './OurMinter.sol';
-import {OurIntrospector} from './OurIntrospector.sol';
+import {OurSplitter} from "./OurSplitter.sol";
+import {OurMinter} from "./OurMinter.sol";
+import {OurIntrospector} from "./OurIntrospector.sol";
 
 /**
  * @title OurPylon
@@ -31,6 +31,6 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
         emit ProxySetup(owners_);
 
         // Approve Zora AH
-        // setupApprovalForAH();
+        // setApprovalForAH();
     }
 }
