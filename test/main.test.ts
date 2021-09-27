@@ -133,7 +133,7 @@ describe('SplitProxy via Factory', () => {
         it('does not allow a non-Owner to swap Owners', async () => {
           await expect(
             proxyPylonByAnyone.swapOwner(splitCreator.address, account1.address, account2.address)
-          ).revertedWith('Caller is not an approved owner of this Split')
+          ).revertedWith('Caller is not a whitelisted owner of this Split')
         })
       })
 
@@ -415,10 +415,10 @@ describe('SplitProxy via Factory', () => {
           })
 
           // NOTE: Gas cost is around 495k on rinkeby/mainnet, due to constructor approval calls.
-          it('costs around ~350k gas to deploy the proxy', async () => {
+          it('costs around ~325k gas to deploy the proxy', async () => {
             const gasUsed = (await deployTx.wait()).gasUsed
-            expect(gasUsed).to.be.gt(330000)
-            expect(gasUsed).to.be.lt(370000)
+            expect(gasUsed).to.be.gt(300000)
+            expect(gasUsed).to.be.lt(350000)
           })
 
           it('costs around ~3.75M gas to deploy the Pylon', async () => {
