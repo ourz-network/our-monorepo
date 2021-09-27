@@ -26,9 +26,6 @@ import {IERC721} from "./interfaces/IERC721.sol";
  * https://consensys.github.io/smart-contract-best-practices/recommendations/#mark-untrusted-contracts
  */
 contract OurMinter is OurManagement {
-    //======== Subgraph =========
-    event EditionMinted(uint256 editionId, uint256 editionSize);
-
     /// @notice RINKEBY ADDRESSES
     address public constant _zoraMedia =
         0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
@@ -42,6 +39,9 @@ contract OurMinter is OurManagement {
         0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
     address public constant _partyBid =
         0xB725682D5AdadF8dfD657f8e7728744C0835ECd9;
+
+    //======== Subgraph =========
+    event EditionMinted(uint256 editionId, uint256 editionSize);
 
     /**======== IZora =========
      * @notice Various functions allowing a Split to interact with Zora Protocol

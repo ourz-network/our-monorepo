@@ -24,10 +24,6 @@ contract OurProxy is OurStorage {
         merkleRoot = IOurFactory(msg.sender).merkleRoot();
     }
 
-    function pylon() public view returns (address) {
-        return _pylon;
-    }
-
     fallback() external payable {
         address _impl = pylon();
         assembly {
@@ -45,5 +41,9 @@ contract OurProxy is OurStorage {
                 return(ptr, size)
             }
         }
+    }
+
+    function pylon() public view returns (address) {
+        return _pylon;
     }
 }

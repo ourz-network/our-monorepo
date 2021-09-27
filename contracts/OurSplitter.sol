@@ -27,13 +27,11 @@ interface IWETH {
  * & of course, @author OpenZeppelin
  */
 contract OurSplitter is OurStorage {
-    // emits sender and value in receive() fallback
-
-    uint256 public constant PERCENTAGE_SCALE = 10e5;
-
     struct Proof {
         bytes32[] merkleProof;
     }
+
+    uint256 public constant PERCENTAGE_SCALE = 10e5;
 
     /**======== Subgraph =========
      * ETHReceived - emits sender and value in receive() fallback
@@ -166,6 +164,15 @@ contract OurSplitter is OurStorage {
         transferETHOrWETH(account, amount);
     }
 
+    function incrementThenClaimAll(
+        address account,
+        uint256 percentageAllocation,
+        bytes32[] calldata merkleProof
+    ) external {
+        incrementWindow();
+        claimAll(account, percentageAllocation, merkleProof);
+    }
+
     function incrementWindow() public {
         uint256 fundsAvailable;
 
@@ -184,14 +191,25 @@ contract OurSplitter is OurStorage {
         emit WindowIncremented(currentWindow, fundsAvailable);
     }
 
-    //======== Quality of Life Functions =========
-    function incrementThenClaimAll(
-        address account,
-        uint256 percentageAllocation,
-        bytes32[] calldata merkleProof
-    ) external {
-        incrementWindow();
-        claimAll(account, percentageAllocation, merkleProof);
+    function scaleAmountByPercentage(uint256 amount, uint256 scaledPercent)
+        public
+        pure
+        returns (uint256 scaledAmount)
+    {
+        /* Example:
+                BalanceForWindow = 100 ETH // Allocation = 2%
+                To find out the amount we use, for example: (100 * 200) / (100 * 100)
+                which returns 2 -- i.e. 2% of the 100 ETH balance.
+         */
+        scaledAmount = (amount * scaledPercent) / (100 * PERCENTAGE_SCALE);
+    }
+
+    function isClaimed(uint256 window, address account)
+        public
+        view
+        returns (bool)
+    {
+        return claimed[getClaimHash(window, account)];
     }
 
     function claimAll(
@@ -223,29 +241,6 @@ contract OurSplitter is OurStorage {
 
         transferETHOrWETH(account, amount);
     }
-
-    function scaleAmountByPercentage(uint256 amount, uint256 scaledPercent)
-        public
-        pure
-        returns (uint256 scaledAmount)
-    {
-        /* Example:
-                BalanceForWindow = 100 ETH // Allocation = 2%
-                To find out the amount we use, for example: (100 * 200) / (100 * 100)
-                which returns 2 -- i.e. 2% of the 100 ETH balance.
-         */
-        scaledAmount = (amount * scaledPercent) / (100 * PERCENTAGE_SCALE);
-    }
-
-    function isClaimed(uint256 window, address account)
-        public
-        view
-        returns (bool)
-    {
-        return claimed[getClaimHash(window, account)];
-    }
-
-    //======== /QoL =========
 
     //======== Private Functions ========
     function setClaimed(uint256 window, address account) private {
@@ -318,7 +313,7 @@ contract OurSplitter is OurStorage {
         address tokenAddress,
         address splitRecipient,
         uint256 allocatedAmount
-    ) internal {
+    ) private {
         bool didSucceed = IERC20(tokenAddress).transfer(
             splitRecipient,
             allocatedAmount

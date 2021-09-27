@@ -13,6 +13,13 @@ import {OurProxy} from "./OurProxy.sol";
  * & of course, @author OpenZeppelin
  */
 contract OurFactory {
+    //======== Immutable storage =========
+    address public immutable pylon;
+
+    //======== Mutable storage =========
+    /// @dev Gets set within the block, and then deleted.
+    bytes32 public merkleRoot;
+
     //======== Subgraph =========
     event ProxyCreated(
         address ourProxy,
@@ -20,13 +27,6 @@ contract OurFactory {
         string splitRecipients,
         string nickname
     );
-
-    //======== Immutable storage =========
-    address public immutable pylon;
-
-    //======== Mutable storage =========
-    /// @dev Gets set within the block, and then deleted.
-    bytes32 public merkleRoot;
 
     //======== Constructor =========
     constructor(address pylon_) {
