@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@assemblyscript/loader@^0.19.12":
+"@assemblyscript/loader@^0.19.16":
   version "0.19.16"
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.19.16.tgz#481063138724deef314dc0930714eebf39117683"
   integrity sha512-Skp0eLY3oP2YfAxaHq4IpsUZQOpllkBB0dNDrhck42mGQTimAJ6KegXMuFVa9PIP6gw3bDlCs2iIegfGnXiuFg==
@@ -28,7 +28,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@graphprotocol/graph-cli@^0.22.0-alpha.2":
+"@graphprotocol/graph-cli@^0.22.1":
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/@graphprotocol/graph-cli/-/graph-cli-0.22.1.tgz#9bd3e060eaa16223b2f822150a44411050cf1f77"
   integrity sha512-MV1MbDRGZUATdjSMoFLBNnGchQy4W5nYIFmWd+6ImGC7IjoVE4V1kgJ/Pq0IkDYwEp1g0PRA+xGrausIPeQ+8Q==
@@ -57,7 +57,7 @@
     which "2.0.2"
     yaml "^1.5.1"
 
-"@graphprotocol/graph-ts@^0.22.0-alpha.2":
+"@graphprotocol/graph-ts@^0.22.1":
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/@graphprotocol/graph-ts/-/graph-ts-0.22.1.tgz#3189b2495b33497280f617316cce68074d48e236"
   integrity sha512-T5xrHN0tHJwd7ZnSTLhk5hAL3rCIp6rJ40kBCrETnv1mfK9hVyoojJK6VtBQXTbLsYtKe4SYjjD0cdOsAR9QiA==
@@ -242,7 +242,7 @@ assemblyscript@0.19.10:
     binaryen "101.0.0-nightly.20210723"
     long "^4.0.0"
 
-assemblyscript@^0.19.12:
+assemblyscript@^0.19.16:
   version "0.19.16"
   resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.19.16.tgz#fc06c9892755775e8e31a59249fbc361fd49e1d1"
   integrity sha512-AMNdwcat+EEsxjkVQ5vOE/lDbXBvy1swQKAuMG2Ken+DZufZH7wKHIAVKR5liteW/jLL3T971l1MN+onP/bixA==
@@ -1215,7 +1215,7 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
-husky@^7.0.0:
+husky@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.2.tgz#21900da0f30199acca43a46c043c4ad84ae88dff"
   integrity sha512-8yKEWNX4z2YsofXAMT7KvA1g8p+GxtB1ffV8XtpAEGuXNAbCV5wdNKH+qTpw8SM9fh4aMPDR+yQuKfgnreyZlg==

@@ -144,16 +144,16 @@ export function handleETHReceived(event: ETHReceived): void {
   ourProxy.ETH = afterETH;
   ourProxy.needsIncremented = true;
 
-  let recipients = ourProxy.splitRecipients 
+  let recipients = ourProxy.splitRecipients;
   for (let i = 0; i < ourProxy.splitRecipients.length; i++) {
-    let recipientId = recipients[i]
+    let recipientId = recipients[i];
     let recipient = SplitRecipient.load(recipientId)!;
 
     let allocationString = recipient.allocation;
     let allocation = BigInt.fromString(allocationString);
-    
-    let scaledAmount = value.times(allocation)
-    let hundredMillion = BigInt.fromI32(100000000)
+
+    let scaledAmount = value.times(allocation);
+    let hundredMillion = BigInt.fromI32(100000000);
 
     let recipientAllocation = scaledAmount.div(hundredMillion);
 
@@ -162,10 +162,7 @@ export function handleETHReceived(event: ETHReceived): void {
 
     recipient.claimableETH = newClaimable;
     recipient.save();
-    log.debug("Recipient {} now has {} ETH available to claim.", [
-      recipient.id,
-      newClaimable.toString()
-    ]);
+    log.debug("Recipient {} now has {} ETH available to claim.", [recipient.id, newClaimable.toString()]);
   }
 
   ourProxy.save();
