@@ -1,7 +1,7 @@
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 import { ethers } from "ethers";
 
-const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
+const SplitThumb = ({ ownedSplit, claimableSplit, userInfo, handleClick }) => {
   if (claimableSplit) {
     const recipientsLength = claimableSplit.splitProxy.splitRecipients.length;
     const yourRole = claimableSplit.role;
@@ -23,7 +23,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
               <br />
               Role: {yourRole}
               <br />
-              {ethers.utils.formatEther(claimableSplit.splitProxy.ETH)} ETH unclaimed.
+              {ethers.utils.formatEther(userInfo?.claimableETH || 0)} ETH unclaimed.
             </p>
           </div>
         </div>
