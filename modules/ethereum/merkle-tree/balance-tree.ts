@@ -1,13 +1,14 @@
-import MerkleTree from "./merkle-tree";
+/* eslint-disable */
+
 import { BigNumber, utils } from "ethers";
+import MerkleTree from "./merkle-tree";
 
 export default class BalanceTree {
   private readonly tree: MerkleTree;
+
   constructor(balances: { account: string; allocation: BigNumber }[]) {
     this.tree = new MerkleTree(
-      balances.map(({ account, allocation }, index) => {
-        return BalanceTree.toNode(account, allocation);
-      })
+      balances.map(({ account, allocation }, index) => BalanceTree.toNode(account, allocation))
     );
   }
 
@@ -27,9 +28,7 @@ export default class BalanceTree {
 
   public static toNode(account: string, allocation: BigNumber): Buffer {
     return Buffer.from(
-      utils
-        .solidityKeccak256(["address", "uint256"], [account, allocation])
-        .substr(2),
+      utils.solidityKeccak256(["address", "uint256"], [account, allocation]).substr(2),
       "hex"
     );
   }
