@@ -1,9 +1,10 @@
+/* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
 import React, { useContext, useState } from "react"; // React state management
 import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { NFTPreview, NFTDataContext, PreviewComponents } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils";
+import { toTrimmedAddress } from "@/ethereum/utils.ts";
 
 const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
   let name;
@@ -16,7 +17,7 @@ const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
     if (!nft.data?.nft) {
       return null;
     }
-    if (nft.data?.owner != split.id && isCreation) {
+    if (nft.data?.owner !== split.id && isCreation) {
       setHidden(true);
     }
     console.log(`DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);

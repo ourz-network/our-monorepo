@@ -150,19 +150,20 @@ function useWeb3() {
     if (signature) {
       return true;
     }
+    return false;
   };
 
   // Relocate these
   // Create instances of Zora Contracts (from ZDK) for querying and txs
   useEffect(() => {
     async function getZoraQuery() {
-      const zoraQuery = new Zora(injectedProvider, 4);
-      setZoraQuery(zoraQuery);
+      const ZoraQuery = new Zora(injectedProvider, 4);
+      setZoraQuery(ZoraQuery);
     }
 
     async function getZora() {
-      const zora = new Zora(signer, 4);
-      setZora(zora);
+      const zoraInstance = new Zora(signer, 4);
+      setZora(zoraInstance);
     }
 
     if (injectedProvider) {
@@ -312,7 +313,9 @@ function useWeb3() {
         const tokenId = parseInt(mintReceipt.events[0].topics[3], 16);
         return tokenId;
       }
+      return -1;
     }
+    return -1;
   };
 
   const createZoraAuction = async ({
@@ -365,6 +368,7 @@ function useWeb3() {
       const auctionId = parseInt(auctionReceipt.events[3].topics[1], 16);
       return auctionId;
     }
+    return -1;
   };
 
   const mintZoraSolo = async ({ formData }) => {
@@ -385,6 +389,7 @@ function useWeb3() {
         return tokenId;
       }
     }
+    return -1;
   };
 
   const newProxy = async (formData, nickname) => {
@@ -400,20 +405,16 @@ function useWeb3() {
 
     // init contract
     const factoryABI = factoryJSON.abi; // RINKEBY
-    const factory_WRITE = new ethers.Contract(
-      process.env.NEXT_PUBLIC_FACTORY_4,
-      factoryABI,
-      signer
-    );
+    const factoryWrite = new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_4, factoryABI, signer);
 
     const pylonABI = pylonJSON.abi;
-    const pylon_WRITE = new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_4, pylonABI, signer);
+    const pylonWrite = new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_4, pylonABI, signer);
 
-    const deployData = pylon_WRITE.interface.encodeFunctionData("setup", [owners]);
+    const deployData = pylonWrite.interface.encodeFunctionData("setup", [owners]);
 
     if (splitsForMeta && rootHash) {
       // Make transaction
-      const proxyTx = await factory_WRITE.createSplit(
+      const proxyTx = await factoryWrite.createSplit(
         rootHash,
         deployData,
         JSON.stringify(splitsForMeta),
@@ -437,6 +438,7 @@ function useWeb3() {
         return proxyAddress;
       }
     }
+    return -1;
   };
 
   const claimFunds = async ({ splits, proxyAddress }) => {
@@ -461,30 +463,41 @@ function useWeb3() {
     const proof = tree.getProof(account, allocation);
 
     const pylonABI = pylonJSON.abi;
-    const proxy_WRITE = new ethers.Contract(proxyAddress, pylonABI, signer);
+    const proxyWrite = new ethers.Contract(proxyAddress, pylonABI, signer);
+    const windowTx = await proxyWrite.incrementWindow();
+    const windowReceipt = await windowTx.wait();
 
-    // try to claim without incrementing window, if ethers errors estimating gas, increment window then claim
-    try {
-      const claimTx = await proxy_WRITE.claimETHForAllWindows(account, allocation, proof);
+    if (windowReceipt) {
+      const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
       const claimReceipt = await claimTx.wait();
 
       if (claimReceipt) {
         console.log(`claim receipt: `, claimReceipt);
       }
-    } catch (error) {
-      console.log(error);
-      const windowTx = await proxy_WRITE.incrementWindow();
-      const windowReceipt = await windowTx.wait();
-
-      if (windowReceipt) {
-        const claimTx = await proxy_WRITE.claimETHForAllWindows(account, allocation, proof);
-        const claimReceipt = await claimTx.wait();
-
-        if (claimReceipt) {
-          console.log(`claim receipt: `, claimReceipt);
-        }
-      }
     }
+
+    // try to claim without incrementing window, if ethers errors estimating gas, increment window then claim
+    // try {
+    //   const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
+    //   const claimReceipt = await claimTx.wait();
+
+    //   if (claimReceipt) {
+    //     console.log(`claim receipt: `, claimReceipt);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   const windowTx = await proxyWrite.incrementWindow();
+    //   const windowReceipt = await windowTx.wait();
+
+    //   if (windowReceipt) {
+    //     const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
+    //     const claimReceipt = await claimTx.wait();
+
+    //     if (claimReceipt) {
+    //       console.log(`claim receipt: `, claimReceipt);
+    //     }
+    //   }
+    // }
   };
 
   // On load events

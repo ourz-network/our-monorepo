@@ -1,18 +1,13 @@
 import Link from "next/link"; // Dynamic routing
 import { NFTE } from "@nfte/react";
 import { NFTFullPage, FullComponents } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils";
+import { toTrimmedAddress } from "@/ethereum/utils.ts";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 
-const FullPageNFT = (props) => {
-  const creatorAddress = props.creator;
-  const { tokenId } = props;
+const FullPageNFT = ({ creator, tokenId, ownAccount, chartData, recipients }) => {
+  const creatorAddress = creator;
   // const [loading, setLoading] = useState(true);
-  const { ownAccount } = props;
-  const { chartData } = props;
-  const { recipients } = props;
-  console.log("chartdata FullPageNFT", chartData);
 
   // useEffect(() => {
   //   async function getSplitMetadata(tokenId) {
@@ -56,7 +51,7 @@ const FullPageNFT = (props) => {
       <div className="p-6 mx-auto mb-16 max-w-11/12 xl:max-w-5/6">
         {" "}
         {/* border-b border-l border-r shadow-xl */}
-        <div className="flex flex-col content-center w-full mb-6 xl:flex-row">
+        <div className="flex flex-col content-center mb-6 w-full xl:flex-row">
           <div className="flex flex-col xl:w-7/12">
             <FullComponents.MediaInfo />
             <FullComponents.AuctionInfo />
@@ -74,7 +69,7 @@ const FullPageNFT = (props) => {
             </div>
             {recipients?.length > 1 && <Table recipients={recipients} />}
             {chartData?.length > 1 && (
-              <div className="border border-dark-border h-96">
+              <div className="h-96 border border-dark-border">
                 <div className="mx-auto -mt-8 -mb-12 w-96 h-96">
                   <DetailedPie chartData={chartData} secondaryBool={false} />
                 </div>
@@ -85,7 +80,7 @@ const FullPageNFT = (props) => {
         {!ownAccount ? (
           ""
         ) : (
-          <div className="flex flex-col w-full h-auto p-4 my-2 border border-dark-border">
+          <div className="flex flex-col p-4 my-2 w-full h-auto border border-dark-border">
             <h1 className="mx-auto mb-2 text-xl text-center">Share</h1>
             <h1 className="mx-auto mb-4 text-sm italic text-center">
               Display on your own website thanks to NFTE!
@@ -95,14 +90,14 @@ const FullPageNFT = (props) => {
                 <div>
                   <h2 className="font-bold">HTML/JS snippet</h2>
                   <h4>Copy/paste into your site:</h4>
-                  <div className="h-auto p-1 mt-1 mb-4 overflow-visible font-mono text-sm border border-solid resize-none text-ourange-300 border-dark-border bg-code-snippet">
+                  <div className="overflow-visible p-1 mt-1 mb-4 h-auto font-mono text-sm border border-solid resize-none text-ourange-300 border-dark-border bg-code-snippet">
                     {jsCodeSnippet}
                   </div>
                 </div>
                 <div>
                   <h2 className="font-bold">React</h2>
                   <h4>Install with npm i @nfte/react or yarn add @nfte/react</h4>
-                  <div className="h-auto p-1 mt-1 overflow-visible font-mono text-sm border border-solid resize-none text-ourange-300 border-dark-border bg-code-snippet">
+                  <div className="overflow-visible p-1 mt-1 h-auto font-mono text-sm border border-solid resize-none text-ourange-300 border-dark-border bg-code-snippet">
                     {reactCodeSnippet}
                   </div>
                 </div>

@@ -2,7 +2,7 @@ import { FetchStaticData } from "@zoralabs/nft-hooks";
 import { NFTPreview } from "@zoralabs/nft-components";
 import { useRouter } from "next/router";
 
-export const AuctionsList = ({ tokens }) => {
+const AuctionsList = ({ tokens }) => {
   const router = useRouter();
 
   return (
@@ -12,7 +12,7 @@ export const AuctionsList = ({ tokens }) => {
           const tokenInfo = FetchStaticData.getIndexerServerTokenInfo(token);
           return (
             <NFTPreview
-              key={i}
+              key={tokenInfo.tokenId}
               initialData={token}
               id={tokenInfo.tokenId}
               contract={tokenInfo.tokenContract}
@@ -24,3 +24,5 @@ export const AuctionsList = ({ tokens }) => {
     </div>
   );
 };
+
+export default AuctionsList;

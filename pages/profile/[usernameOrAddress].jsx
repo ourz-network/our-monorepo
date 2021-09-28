@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import { useState, useEffect } from "react"; // State management
 import { useRouter } from "next/router"; // Page redirects (static routing)
 import web3 from "@/app/web3";
 import zoraSubgraph from "@/modules/subgraphs/zora/index"; // GraphQL client
-import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post retrieval function
+import getPostByID from "@/modules/subgraphs/zora/functions"; // Post retrieval function
 import { ZORA_MEDIA_BY_OWNER } from "@/modules/subgraphs/zora/queries"; // Retrieval query
-import Profile from "@/components/Profile/Profile";
+import { Profile } from "@/components/Profile/Profile";
 import connectDB from "@/modules/mongodb/utils/connectDB";
 import UserModel from "@/modules/mongodb/models/UserModel";
 import ProfileModel from "@/modules/mongodb/models/ProfileModel";
@@ -41,7 +42,7 @@ const ProfilePage = ({
   const [ownAccount, setOwnAccount] = useState(false);
   useEffect(() => {
     if (address && (user || linkAddress != null)) {
-      setOwnAccount(address == (linkAddress || user?.ethAddress));
+      setOwnAccount(address === (linkAddress || user?.ethAddress));
     } else {
       setOwnAccount(false);
     }
@@ -57,19 +58,22 @@ const ProfilePage = ({
       const allPosts = res.data.medias;
       const ownedMedia = [];
       // For all owned posts
-      for (let i = 0; i < allPosts.length; i++) {
-        // Colelct postID
-        const postID = allPosts[i].id;
+      const completeFetch = await Promise.all(
+        allPosts.map(async (item, i) => {
+          const postID = allPosts[i].id;
+          // Collect post
+          const post = await getPostByID(postID);
+          // Push post to newPosts
+          if (post != null) {
+            ownedMedia.push(post);
+          }
+        })
+      );
 
-        // Collect post
-        const post = await getPostByID(postID);
-        // Push post to ownedMedia
-        if (post) {
-          ownedMedia.push(post);
-        }
+      if (completeFetch) {
+        setPosts([...ownedMedia.reverse()]); // Update owned posts (reversed for newest first)
+        setLoading(false); // Toggle loading
       }
-      setPosts([...ownedMedia.reverse()]); // Update owned posts (reversed for newest first)
-      setLoading(false); // Toggle loading
     }
     if (user || linkAddress) {
       collectOwnedMedia();
@@ -78,7 +82,7 @@ const ProfilePage = ({
   }, [user, linkAddress]); // Collect owned media on load
   if (router.isFallback) {
     return (
-      <p className="px-4 py-2 m-auto place-self-center text-centeer animate-pulse text-dark-bg">
+      <p className="place-self-center px-4 py-2 m-auto animate-pulse text-centeer text-dark-bg">
         Redirecting...
       </p>
     );
@@ -120,13 +124,14 @@ export async function getStaticPaths() {
 }
 
 // Run on page load
+// eslint-disable-next-line consistent-return
 export async function getStaticProps(context) {
   const { usernameOrAddress } = context.params;
   // console.log(`usernameOrAddress: `, usernameOrAddress);
   await connectDB();
   let linkAddress;
   let linkUsername;
-  if (usernameOrAddress.length == 42) {
+  if (usernameOrAddress.length === 42) {
     linkAddress = usernameOrAddress;
     // console.log(`linkaddress: `, usernameOrAddress);
 
@@ -143,30 +148,34 @@ export async function getStaticProps(context) {
       };
     } catch (error) {
       // Collect all postIDs by owner
-      const allPosts = await zoraSubgraph.query({
+      const res = await zoraSubgraph.query({
         query: ZORA_MEDIA_BY_OWNER(linkAddress),
       });
+      const allPosts = res.data.medias;
       const ownedMedia = [];
       // For all owned posts
-      for (let i = 0; i < allPosts.length; i++) {
-        // Colelct postID
-        const postID = allPosts[i].id;
-        // FIXME: hardcoded fix for /dev/null lmao
-        if (postID !== "2") {
+      const completeFetch = await Promise.all(
+        allPosts.map(async (item, i) => {
+          const postID = allPosts[i].id;
           // Collect post
-          const post = await getPostByID(allPosts.medias[i].id);
-          // Push post to ownedMedia
-          ownedMedia.push(post);
-        }
+          const post = await getPostByID(postID);
+          // Push post to newPosts
+          if (post != null) {
+            ownedMedia.push(post);
+          }
+        })
+      );
+
+      if (completeFetch) {
+        const postsToSet = ownedMedia.reverse();
+        return {
+          props: {
+            linkAddress,
+            postsToSet,
+          },
+          revalidate: 15,
+        };
       }
-      const postsToSet = ownedMedia.reverse();
-      return {
-        props: {
-          linkAddress,
-          postsToSet,
-        },
-        revalidate: 15,
-      };
     }
   } else {
     linkUsername = usernameOrAddress;
@@ -183,11 +192,6 @@ export async function getStaticProps(context) {
       const followingLength =
         profileFollowStats?.following?.length > 0 ? profileFollowStats.following.length : 0;
 
-      // console.log(`[linkUsername]/\n   - getStaticProps
-      //             \n   - user:\n${JSON.stringify(user)}
-      //             \n   - profileDetails\n${JSON.stringify(profileDetails)}
-      //             \n   - followers/following\n${followersLength}/${followingLength}`);
-
       // Collect all postIDs by owner
       const res = await zoraSubgraph.query({
         query: ZORA_MEDIA_BY_OWNER(user.ethAddress.toLowerCase()),
@@ -195,31 +199,33 @@ export async function getStaticProps(context) {
       const allPosts = res.data.medias;
       const ownedMedia = [];
       // For all owned posts
-      for (let i = 0; i < allPosts.length; i++) {
-        // Colelct postID
-        const postID = allPosts[i].id;
+      const completeFetch = await Promise.all(
+        allPosts.map(async (item, i) => {
+          const postID = allPosts[i].id;
+          // Collect post
+          const post = await getPostByID(postID);
+          // Push post to newPosts
+          if (post != null) {
+            ownedMedia.push(post);
+          }
+        })
+      );
 
-        // Collect post
-        const post = await getPostByID(postID);
-
-        // Push post to ownedMedia
-        if (post) {
-          ownedMedia.push(post);
-        }
+      if (completeFetch) {
+        const postsToSet = [...ownedMedia.reverse()];
+        return {
+          props: {
+            linkUsername: user.username,
+            user: JSON.parse(JSON.stringify(user)),
+            profileDetails: JSON.parse(JSON.stringify(profileDetails)),
+            profileFollowStats: JSON.parse(JSON.stringify(profileFollowStats)),
+            followersLength,
+            followingLength,
+            postsToSet: postsToSet || null,
+          },
+          revalidate: 5,
+        };
       }
-      const postsToSet = [...ownedMedia.reverse()];
-      return {
-        props: {
-          linkUsername: user.username,
-          user: JSON.parse(JSON.stringify(user)),
-          profileDetails: JSON.parse(JSON.stringify(profileDetails)),
-          profileFollowStats: JSON.parse(JSON.stringify(profileFollowStats)),
-          followersLength,
-          followingLength,
-          postsToSet: postsToSet || null,
-        },
-        revalidate: 5,
-      };
     } catch (error) {
       console.log(error);
       return { notFound: true };

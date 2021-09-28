@@ -1,7 +1,15 @@
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 import { ethers } from "ethers";
 
-const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
+function keyDownA11y(handler) {
+  return function onKeyDown(event) {
+    if (["keydown", "keypress"].includes(event.type) && ["Enter", " "].includes(event.key)) {
+      handler();
+    }
+  };
+}
+
+const SplitThumb = ({ ownedSplit, claimableSplit, userInfo, handleClick }) => {
   if (claimableSplit) {
     const recipientsLength = claimableSplit.splitProxy.splitRecipients.length;
     const yourRole = claimableSplit.role;
@@ -12,6 +20,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
           <div
             role="button"
             onClick={handleClick}
+            onKeyDown={keyDownA11y(handleClick)}
             tabIndex={0}
             className="flex z-10 flex-col justify-center items-baseline p-2 m-auto w-3/5 h-1/2 bg-clip-padding bg-opacity-60 rounded-xl border backdrop-filter backdrop-blur-sm lg:h-52 lg:w-60 border-dark-border text-dark-accent"
           >
@@ -23,7 +32,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
               <br />
               Role: {yourRole}
               <br />
-              {ethers.utils.formatEther(claimableSplit.splitProxy.ETH)} ETH unclaimed.
+              {ethers.utils.formatEther(userInfo?.claimableETH || 0)} ETH unclaimed.
             </p>
           </div>
         </div>
@@ -40,6 +49,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, handleClick }) => {
           <div
             role="button"
             onClick={handleClick}
+            onKeyDown={keyDownA11y(handleClick)}
             tabIndex={0}
             className="flex z-10 flex-col justify-center items-baseline p-2 m-auto w-3/5 h-1/2 bg-clip-padding bg-opacity-60 rounded-xl border backdrop-filter backdrop-blur-sm lg:h-52 lg:w-60 border-dark-border text-dark-accent"
           >

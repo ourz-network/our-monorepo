@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import Button from "@/components/Button";
 
 const MintUpload = (props) => {
@@ -18,7 +19,7 @@ const MintUpload = (props) => {
   };
 
   return (
-    <div className="flex flex-row items-center w-full h-full justify-evenly bg-dark-background">
+    <div className="flex flex-row justify-evenly items-center w-full h-full bg-dark-background">
       <div className="flex flex-col shadow-xl lg:-mt-32" id="dropzone">
         <form>
           <div
@@ -32,8 +33,8 @@ const MintUpload = (props) => {
               className="mb-4 font-semibold text-center text-dark-primary"
             >
               Upload Media
+              <input {...getInputProps()} />
             </label>
-            <input {...getInputProps()} />
             <p className="pt-12 pb-6 text-dark-primary">
               Drag &amp; drop your file here, or <u>click to select a file</u>.
             </p>
@@ -44,12 +45,12 @@ const MintUpload = (props) => {
             </p>
           </div>
           {acceptedFiles.length > 0 ? (
-            <div className="flex justify-end py-2 border-b border-l border-r border-dark-border">
-              <div className="mr-12 border shadow-md border-dark-border w-min">
+            <div className="flex justify-end py-2 border-r border-b border-l border-dark-border">
+              <div className="mr-12 w-min border shadow-md border-dark-border">
                 <Button
                   isMain={false}
                   text="Next"
-                  // className="px-4 py-2 m-3 text-base font-semibold border shadow-md bg-dark-background place-self-end hover:bg-green-100 hover:cursor-pointer"
+                  // className="place-self-end px-4 py-2 m-3 text-base font-semibold border shadow-md bg-dark-background hover:bg-green-100 hover:cursor-pointer"
                   onClick={submitMedia}
                 />
               </div>

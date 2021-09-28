@@ -103,7 +103,7 @@ export async function getStaticPaths() {
   const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
   const paths = [];
   if (maxSupply) {
-    for (let i = maxSupply; i >= maxSupply - 2; i--) {
+    for (let i = maxSupply; i >= maxSupply - 2; i -= 1) {
       paths.push({ params: { tokenId: `${i}` } });
     }
 

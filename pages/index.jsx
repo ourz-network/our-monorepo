@@ -3,34 +3,41 @@ import React, { useState } from "react"; // React state management
 import { Zora } from "@zoralabs/zdk";
 import { ethers } from "ethers";
 import PageLayout from "@/components/Layout/PageLayout";
-import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post collection helper
+import getPostByID from "@/modules/subgraphs/zora/functions"; // Post collection helper
 import HomeNFT from "@/components/Cards/HomeNFT";
 
-const Home = (props) => {
+const Home = ({ postsToSet, loadMoreStartIndex }) => {
   // console.log(`props`, props);
-  const [posts, setPosts] = useState(props.postsToSet); // Posts array
+  const [posts, setPosts] = useState(postsToSet); // Posts array
   const [loading, setLoading] = useState(false); // Button loading state
-  const [numPosts, setNumPosts] = useState(props.loadMoreStartIndex); // Number of loadable posts
+  const [numPosts, setNumPosts] = useState(loadMoreStartIndex); // Number of loadable posts
 
   const collectMore = async () => {
     setLoading(true); // Toggle button loading
 
-    const newPosts = [];
+    const idsToSearch = [];
     // For numPosts ... max(numPosts - 24, 0)
-    for (let i = numPosts; i >= numPosts - 23; i--) {
-      if (i !== 2) {
+    for (let i = numPosts; i >= numPosts - 23; i -= 1) {
+      idsToSearch.push(i);
+    }
+    setNumPosts(numPosts - 24); // Update number of loadable posts count
+
+    const newPosts = [];
+    const completeFetch = await Promise.all(
+      idsToSearch.map(async (id) => {
         // Collect post
-        const post = await getPostByID(i);
+        const post = await getPostByID(id);
         // Push post to newPosts
         if (post != null) {
           newPosts.push(post);
         }
-      }
-    }
-    setNumPosts(numPosts - 24); // Update number of loadable posts count
+      })
+    );
 
-    setPosts([...posts, ...newPosts]); // Append newPosts to posts array
-    setLoading(false); // Toggle button loading
+    if (completeFetch) {
+      setPosts([...posts, ...newPosts]); // Append newPosts to posts array
+      setLoading(false); // Toggle button loading
+    }
   };
 
   return (
@@ -48,7 +55,7 @@ const Home = (props) => {
                 {posts.map((post, i) => (
                   // For each Zora post
                   // Return Post component
-                  <HomeNFT key={i} tokenId={post.id} />
+                  <HomeNFT key={post.id} tokenId={post.id} />
                 ))}
               </div>
             </div>
@@ -82,6 +89,7 @@ const Home = (props) => {
   );
 };
 
+// eslint-disable-next-line consistent-return
 export async function getStaticProps() {
   // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
   //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
@@ -105,7 +113,7 @@ export async function getStaticProps() {
   //     }
   //   }
 
-  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774];
+  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831];
   const completeFetch = await Promise.all(
     ourzSampleTokenIDs.map(async (id, index) => {
       // Collect post

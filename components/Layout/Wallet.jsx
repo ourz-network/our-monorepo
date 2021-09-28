@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import Link from "next/link"; // Dynamic routing
 import { useEffect, useState, Fragment } from "react"; // State management, Fragment for TailwindUI
 import { Popover, Transition } from "@headlessui/react"; // TailwindUI
@@ -147,7 +148,7 @@ const Wallet = () => {
         )}
       </Popover>
       <Link href="/create" passHref>
-        <Button text={network?.name == "rinkeby" ? `Create` : `Switch to Rinkeby`} isMain />
+        <Button text={network?.name === "rinkeby" ? `Create` : `Switch to Rinkeby`} isMain />
       </Link>
     </div>
   ) : (

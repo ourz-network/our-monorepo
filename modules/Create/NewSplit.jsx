@@ -36,24 +36,6 @@ const NewSplit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  const onSubmit = async () => {
-    setLoading(true);
-    const splitData = controlledFields;
-    splitData.unshift(ownerData);
-    // console.log(`splitData \n`, splitData);
-    console.log(`calling newProxy in web3..`);
-    const proxyAddress = await newProxy(
-      controlledFields, // received as 'splitData'
-      nickname // received as 'splitData'
-    );
-
-    if (proxyAddress) {
-      Router.push(`/create/mint/${proxyAddress}`);
-      // console.log(proxyAddress);
-      // setLoading(false);
-    }
-  };
-
   /**
    *  react-hook-form
    *  Handles NewSplit.js' dynamic form fields (the "Add Another Split" button).
@@ -77,6 +59,7 @@ const NewSplit = () => {
   // on 'Add Another'
   const onAppend = () => {
     append({ account: "", name: "", role: "", shares: 0 });
+    // eslint-disable-next-line no-use-before-define
     updateChart();
   };
   const calculateOwnerShares = () => {
@@ -109,10 +92,29 @@ const NewSplit = () => {
     // console.log("updateChart() \nnewChartData: \n", JSON.stringify(chartData));
   };
 
+  const onSubmit = async () => {
+    setLoading(true);
+    const splitData = controlledFields;
+    splitData.unshift(ownerData);
+    // console.log(`splitData \n`, splitData);
+    console.log(`calling newProxy in web3..`);
+    const proxyAddress = await newProxy(
+      controlledFields, // received as 'splitData'
+      nickname // received as 'splitData'
+    );
+
+    if (proxyAddress) {
+      Router.push(`/create/mint/${proxyAddress}`);
+      // console.log(proxyAddress);
+      // setLoading(false);
+    }
+  };
+
   const submitSplits = async () => {
     // handleSplits();
     console.log(`calling onSubmit in NewSplit.....`);
-    const newProxy = await onSubmit();
+    // const newProxy = await onSubmit();
+    await onSubmit();
   };
 
   return (
@@ -120,19 +122,17 @@ const NewSplit = () => {
       <div className="flex flex-col px-4 py-4 mt-12 w-full h-auto" id="splits">
         <div className="flex justify-center w-full" id="graphs">
           <div className="flex flex-col justify-center w-1/2 text-center">
-            <label htmlFor="splits">
-              <p className="font-semibold text-dark-primary">Splits</p>
-              <p className="text-dark-secondary">
-                Fill out the form below for everyone
-                <br />
-                that you would like to credit in your Split.
-                <br />
-                <br />
-                Funds received by the contract, like NFT sales and royalties,
-                <br />
-                will be claimable by the Split Recipients, up to their allocated amount.
-              </p>
-            </label>
+            <p className="font-semibold text-dark-primary">Splits</p>
+            <p className="text-dark-secondary">
+              Fill out the form below for everyone
+              <br />
+              that you would like to credit in your Split.
+              <br />
+              <br />
+              Funds received by the contract, like NFT sales and royalties,
+              <br />
+              will be claimable by the Split Recipients, up to their allocated amount.
+            </p>
           </div>
           <div className="mx-auto -my-32 w-full max-w-500px">
             <DetailedPie chartData={chartData} secondaryBool={false} />
@@ -141,14 +141,14 @@ const NewSplit = () => {
         <form className="justify-center -mt-1 w-full text-center">
           <label htmlFor="nickname" className="mr-2 text-dark-primary">
             Nickname for Split:
+            <input
+              type="text"
+              id="splitNickname"
+              name="nickname"
+              placeholder="Nickname"
+              onChange={(e) => setNickname(e.target.value)}
+            />
           </label>
-          <input
-            type="text"
-            id="splitNickname"
-            name="nickname"
-            placeholder="Nickname"
-            onChange={(e) => setNickname(e.target.value)}
-          />
           <div className="flex flex-col justify-center w-full border-b">
             <ul className="flex z-10 flex-col mt-4 w-full">
               <li className="flex flex-nowrap justify-center mx-auto mb-3 space-x-3 w-full">
@@ -207,11 +207,12 @@ const NewSplit = () => {
                     type="text"
                     placeholder="Ethereum Address 0x00..."
                     defaultValue={field.account}
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register(
                       `splits.${index}.account`,
                       { required: true },
                       {
-                        validate: (value) => ethers.utils.isAddress(value) == true,
+                        validate: (value) => ethers.utils.isAddress(value) === true,
                       }
                     )}
                     onBlur={updateChart}
@@ -222,6 +223,7 @@ const NewSplit = () => {
                     type="text"
                     placeholder="Collaborator Name / Alias"
                     defaultValue={field.name}
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register(`splits.${index}.name`)}
                     onBlur={updateChart}
                     className="p-3 w-auto text-sm border shadow border-dark-border min-w-1/4"
@@ -231,12 +233,14 @@ const NewSplit = () => {
                     type="text"
                     placeholder="Role / Description"
                     defaultValue={field.role}
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register(`splits.${index}.role`)}
                     onBlur={updateChart}
                     className="p-3 w-auto text-sm border shadow border-dark-border min-w-1/4"
                   />
                   <input
                     name={`splits.${index}.shares`}
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register(`splits.${index}.shares`, {
                       required: true,
                       min: 0,

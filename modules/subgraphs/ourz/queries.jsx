@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { gql } from "@apollo/client"; // graphql query language
 
 /**
@@ -49,6 +50,7 @@ export const SPLITS_BY_OWNER = (owner) => {
             shares
             allocation
             ethClaimed
+            claimableETH
           }
           creations {
             tokenId
@@ -57,6 +59,7 @@ export const SPLITS_BY_OWNER = (owner) => {
             }
           }
           ETH
+          needsIncremented
         }
       } 
     }

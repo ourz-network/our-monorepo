@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import makeBlockie from "ethereum-blockies-base64"; // Ethereum avatar
 import axios from "axios";
 import Image from "next/image";
-import { toTrimmedAddress } from "@/ethereum/utils";
+import { toTrimmedAddress } from "@/ethereum/utils.ts";
 import ProfileForm from "@/components/Profile/ProfileForm";
 
 export const ProfileHeader = ({

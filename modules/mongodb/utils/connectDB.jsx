@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-multi-assign */
 import mongoose from "mongoose";
 
 const { MONGODB_URI } = process.env;

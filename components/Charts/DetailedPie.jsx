@@ -7,6 +7,7 @@ const DetailedPie = (props) => {
   const { secondaryBool } = props;
   // https://recharts.org/en-US/examples/TwoLevelPieChart
   // https://recharts.org/en-US/examples/CustomActiveShapePieChart
+  // eslint-disable-next-line no-shadow
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
     const {
@@ -101,7 +102,7 @@ const DetailedPie = (props) => {
           endAngle={!secondaryBool ? 360 : -180}
         >
           {chartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${entry}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
       </PieChart>

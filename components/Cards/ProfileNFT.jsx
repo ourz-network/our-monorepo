@@ -1,9 +1,10 @@
+/* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
 import React, { useContext } from "react"; // React state management
 import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { NFTPreview, NFTDataContext } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils";
+import { toTrimmedAddress } from "@/ethereum/utils.ts";
 
 const ProfileNFT = (props) => {
   console.log(`ProfileNFT.js - props: ${JSON.stringify(props)}`);

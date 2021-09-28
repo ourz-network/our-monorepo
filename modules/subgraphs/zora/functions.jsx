@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios from "axios"; // Requests
 import zoraSubgraph from "./index"; // Apollo Client
 import { ZORA_MEDIA_BY_ID } from "./queries"; // GraphQL Queries
@@ -7,7 +8,7 @@ import { ZORA_MEDIA_BY_ID } from "./queries"; // GraphQL Queries
  * @param {Number} id post number
  * @returns {Object} containing Zora media details
  */
-export const getPostByID = async (id) => {
+const getPostByID = async (id) => {
   // console.log(id);
   // Collect post
   const query = await zoraSubgraph.query({
@@ -19,7 +20,7 @@ export const getPostByID = async (id) => {
     // Collect post metadata
 
     try {
-      const res = await axios.get(media.metadataURI, { timeout: 5000 });
+      const res = await axios.get(media.metadataURI, { timeout: 10000 });
       // console.log(
       //   `Functions.js - getPostByID \nGetMetadata: ${id} \nres: `,
       //   res
@@ -31,7 +32,7 @@ export const getPostByID = async (id) => {
           return undefined;
         }
 
-        if (metadata?.external_url != "www.ourz.network") {
+        if (metadata?.external_url !== "www.ourz.network") {
           return undefined;
         }
 
@@ -57,6 +58,9 @@ export const getPostByID = async (id) => {
       }
     } catch (e) {
       console.log(e);
+      return null;
     }
-  }
+  } else return null;
 };
+
+export default getPostByID;

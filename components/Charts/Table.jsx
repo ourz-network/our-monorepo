@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { toTrimmedAddress } from "@/ethereum/utils";
+import { toTrimmedAddress } from "@/ethereum/utils.ts";
 
 const Table = ({ recipients }) => {
   console.log(`table recipients:`, recipients);
@@ -7,7 +7,7 @@ const Table = ({ recipients }) => {
     <>
       <div className="p-2 mb-2 border border-dark-border">
         <div className="text-xl text-center text-dark-primary">{`${recipients?.length} Split Recipients`}</div>
-        <table className="w-full mt-2 table-fixed">
+        <table className="mt-2 w-full table-fixed">
           <thead>
             <tr>
               <th className="w-3/12 font-normal text-center border text-dark-primary border-dark-border">
@@ -26,8 +26,8 @@ const Table = ({ recipients }) => {
           </thead>
           <tbody>
             {recipients?.map((split, i) => (
-              <tr key={i} className={i % 2 == 0 ? `bg-dark-background` : ``}>
-                <td className="w-3/12 text-center border text-dark-primary border-dark-border overflow-ellipsis hover:underline">
+              <tr key={split.id} className={i % 2 === 0 ? `bg-dark-background` : ``}>
+                <td className="w-3/12 text-center overflow-ellipsis border text-dark-primary border-dark-border hover:underline">
                   <Link href={`/profile/${split.user.id}`} className="cursor-pointer">
                     {toTrimmedAddress(split.user.id)}
                   </Link>

@@ -16,6 +16,7 @@ const UserDashboard = () => {
 
   const [showFull, setShowFull] = useState();
   const [selectedSplit, setSelectedSplit] = useState();
+  const [userSplitDetails, setUserSplitDetails] = useState();
   const [selectedIsOwned, setSelectedIsOwned] = useState();
 
   const Router = useRouter();
@@ -42,6 +43,16 @@ const UserDashboard = () => {
 
   const handleClickThumbnail = (split, isOwned) => {
     setSelectedSplit(split);
+    console.log(`splitRecipients`, split.splitRecipients);
+    let userInfo;
+
+    split.splitRecipients.forEach((recipient, i) => {
+      if (recipient.user.id === address.toLowerCase()) {
+        userInfo = recipient;
+      }
+    });
+    console.log(`userInfo`, userInfo);
+    setUserSplitDetails(userInfo);
     setSelectedIsOwned(isOwned);
     setShowFull(true);
   };
@@ -56,26 +67,33 @@ const UserDashboard = () => {
         {showFull && (
           <SplitFull
             split={selectedSplit}
+            userInfo={userSplitDetails}
             isOwned={selectedIsOwned}
             showFull={showFull}
             setShowFull={setShowFull}
           />
         )}
 
-        {(loading || network.name != "rinkeby") && (
+        {(loading || network.name !== "rinkeby") && (
           <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
             Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
           </p>
         )}
-        {!loading && network.name == "rinkeby" && (
+        {!loading && network.name === "rinkeby" && (
           <>
             {!showFull && (
-              <div className="flex justify-around mx-auto space-x-2 w-full border-b border-dark-border bg-dark-accent text-dark-secondary">
-                <Button text="Show Owned Splits" onClick={() => handleTabs("owned")} />
-                <Button text="Show Claimable Splits" onClick={() => handleTabs("recipient")} />
+              <div className="flex justify-center mx-auto space-x-2 w-full border-b border-dark-border bg-dark-accent text-dark-secondary">
+                <Button
+                  text={`${activeTab === "recipient" ? "Show" : ""} Owned Splits`}
+                  onClick={() => handleTabs("owned")}
+                />
+                <Button
+                  text={`${activeTab === "owned" ? "Show" : ""} Claimable Splits`}
+                  onClick={() => handleTabs("recipient")}
+                />
               </div>
             )}
-            {activeTab == "owned" && !showFull && (
+            {activeTab === "owned" && !showFull && (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">Owned Splits:</h1>
                 <div className="grid grid-cols-1 auto-rows-auto gap-8 mx-auto mt-4 w-full h-full min-w-screen lg:grid-cols-3">
@@ -84,6 +102,7 @@ const UserDashboard = () => {
                       key={`own-${OurProxy.id}`}
                       ownedSplit={OurProxy}
                       Router={Router}
+                      userInfo={userSplitDetails}
                       handleClick={() => handleClickThumbnail(OurProxy, true)}
                     />
                   ))}
@@ -96,7 +115,7 @@ const UserDashboard = () => {
               </p>
             )}
 
-            {activeTab == "recipient" && !showFull && (
+            {activeTab === "recipient" && !showFull && (
               <>
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">Recipient of:</h1>
                 <div className="grid grid-cols-1 auto-rows-min gap-8 mx-auto mt-4 w-full h-full lg:grid-cols-3">
@@ -105,6 +124,7 @@ const UserDashboard = () => {
                       key={`rec-${OurProxy.id}`}
                       claimableSplit={OurProxy}
                       Router={Router}
+                      userInfo={userSplitDetails}
                       handleClick={() => handleClickThumbnail(OurProxy.splitProxy, false)}
                     />
                   ))}

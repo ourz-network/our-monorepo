@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -17,9 +18,9 @@ const Dropzone = (props) => {
       };
 
       setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            prevw: URL.createObjectURL(file),
+        acceptedFiles.map((File) =>
+          Object.assign(File, {
+            prevw: URL.createObjectURL(File),
             blob: reader.result,
           })
         )

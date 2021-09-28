@@ -21,6 +21,10 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
 
   const refDiv = useRef(null);
 
+  const hide = () => {
+    setShowFull(false);
+  };
+
   const handleClickClose = () => {
     hide();
   };
@@ -41,10 +45,6 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
     setShowDialog(true);
   };
 
-  const hide = () => {
-    setShowFull(false);
-  };
-
   return (
     <>
       <div className="flex mx-auto w-full min-h-screen text-base text-left transition transform md:inline-block md:align-middle">
@@ -62,7 +62,7 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
             >
               <span className="text-ourange-400">Back</span>
             </button>
-            {showDialog && dialog == "auction" && (
+            {showDialog && dialog === "auction" && (
               <ActionDialog showDialog={showDialog} setShowDialog={setShowDialog}>
                 <AuctionForm
                   tokenId={selectedId}
@@ -124,9 +124,8 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
                     className="flex flex-col gap-4 justify-evenly justify-items-center content-evenly mx-4 md:grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 max-w-auto"
                   >
                     {split.creations.map((creation, i) => (
-                      <div key={i} className="flex justify-center w-full h-full">
+                      <div key={creation.id} className="flex justify-center w-full h-full">
                         <DashboardNFT
-                          key={i}
                           tokenId={creation.tokenId}
                           onClick={() => startAnAuction(creation.tokenId)}
                           split={split}
