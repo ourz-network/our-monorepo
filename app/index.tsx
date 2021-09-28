@@ -4,7 +4,7 @@ import web3 from "@/app/web3";
 
 export default function GlobalProvider({ children }) {
   return (
-    <NFTFetchConfiguration network={Networks.RINKEBY}>
+    <NFTFetchConfiguration networkId={Networks.RINKEBY}>
       <web3.Provider>
         <MediaConfiguration
           networkId="4"
@@ -27,12 +27,14 @@ export default function GlobalProvider({ children }) {
                 height: "330px",
                 width: "330px",
               },
-              titleFont: {
-                color: "#fff",
-              },
-              mediaContentFont: {
-                color: "#fff",
-              },
+              // titleFont: {
+              //   color: "#fff",
+              // },
+              // mediaContentFont: {
+              //   color: "#fff",
+              // },
+            },
+            styles: {
               cardAuctionPricing: {
                 display: "hidden",
               },

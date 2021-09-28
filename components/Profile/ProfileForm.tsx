@@ -92,17 +92,13 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
   });
 
   const onSubmit = async (formData) => {
-    // console.log("formData :", formData);
-
     // If no account is found for the address...
     if (!profileDetails) {
-      // console.log("Creating New Profile... \nformData :", formData);
       try {
         if (!usernameAvailable) {
           throw new Error("Username Unavailable");
         }
         const { username, ethAddress } = formData;
-        // console.log(`username, address:\n`, username, address);
 
         // Request signed message
         const verifiedSignature = await verifyAPIpost(`${JSON.stringify(formData)}`);
@@ -126,7 +122,6 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
 
       // Else edit account details
     } else {
-      // console.log("Updating Profile... \nformData :", formData);
       const { username } = formData;
       try {
         // Request signed message
@@ -135,7 +130,6 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
         if (verifiedSignature) {
           const res = await axios.put(`/api/users/${username}`, formData);
 
-          // console.log(`ProfileForm update profile -  \nres :\n`, res);
           // Throw error with status code in case Fetch API req failed
           if (res.data !== "Success") {
             throw new Error(res.status);
@@ -153,7 +147,6 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
 
   const checkUsername = async (desiredUsername) => {
     setUsernameLoading(true);
-    // console.log("desiredUsername:", desiredUsername)
     try {
       cancel && cancel();
 
@@ -164,19 +157,15 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
           cancel = canceler;
         }),
       });
-      // console.log(`checkUsername res: `, res);
       if (errorMsg == null) {
         setErrorMsg("Username Not Available");
         setUsernameAvailable(false);
         return;
       }
-      // console.log(`ProfileForm.js\n   - CheckUsername\n   - res:\n`, res);
       setErrorMsg(null);
     } catch (error) {
       setUsernameAvailable(true);
-      // console.log("user before:", user);
       setUser((prev) => ({ ...prev, username: desiredUsername }));
-      // console.log("user after:", user);
     }
     setUsernameLoading(false);
   };
@@ -189,10 +178,8 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
 
   const registerUser = async () => {
     try {
-      // console.log("ProfileForm registerUser", address, user.username);
       const { username } = user;
       const res = await axios.post(`/api/signup`, { address, username });
-      // console.log(res.data);
       hide();
     } catch (error) {
       const errorMsg = catchErrors(error);
@@ -296,7 +283,6 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                                             pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
                                             validate: {
                                               available: async (v) => {
-                                                console.log("validate", v);
                                                 checkUsername(v);
                                               },
                                             },
@@ -334,7 +320,6 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                                             },
                                             validate: {
                                               available: async (v) => {
-                                                console.log("validate", v);
                                                 setUser((prev) => ({
                                                   ...prev,
                                                   username: v,

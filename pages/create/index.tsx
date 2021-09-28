@@ -24,7 +24,6 @@ const CreateDashboard = () => {
       const splits = await getOwnedSplits(ethAddress);
       if (splits) {
         setOwnedSplits(splits);
-        // console.log(`User ${address} - OwnedSplits:\n`, ownedSplits);
       }
       setLoading(false);
     }

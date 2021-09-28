@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const DetailedPie = (props) => {
   const { chartData } = props;
-  // console.log(`DetailedPie - chartData\n`, chartData);
   const { secondaryBool } = props;
   // https://recharts.org/en-US/examples/TwoLevelPieChart
   // https://recharts.org/en-US/examples/CustomActiveShapePieChart

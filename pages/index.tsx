@@ -7,7 +7,6 @@ import getPostByID from "@/modules/subgraphs/zora/functions"; // Post collection
 import HomeNFT from "@/components/Cards/HomeNFT";
 
 const Home = ({ postsToSet, loadMoreStartIndex }) => {
-  // console.log(`props`, props);
   const [posts, setPosts] = useState(postsToSet); // Posts array
   const [loading, setLoading] = useState(false); // Button loading state
   const [numPosts, setNumPosts] = useState(loadMoreStartIndex); // Number of loadable posts
@@ -120,7 +119,6 @@ export async function getStaticProps() {
       const post = await getPostByID(id);
       if (post != null) {
         postsToSet.push(post);
-        console.log(`HOMEPAGE. LOADING TOKEN ${id} (${index}/7)`);
       }
     })
   );

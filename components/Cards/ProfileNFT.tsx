@@ -1,37 +1,29 @@
 /* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
-import React, { useContext, useState } from "react"; // React state management
+import React, { useContext } from "react"; // React state management
 import { useNFTMetadata } from "@zoralabs/nft-hooks";
-import { NFTPreview, NFTDataContext, PreviewComponents } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils.ts";
+import { NFTPreview, NFTDataContext } from "@zoralabs/nft-components";
+import { toTrimmedAddress } from "@/ethereum/utils";
 
-const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
+const ProfileNFT = (props) => {
+  const { tokenId } = props;
+  const { username } = props;
+  const { address } = props;
   let name;
-
-  const [hidden, setHidden] = useState(false);
-
   const ProfileThumb = () => {
     const { nft } = useContext(NFTDataContext);
-    console.log(nft);
     if (!nft.data?.nft) {
       return null;
     }
-    if (nft.data?.owner !== split.id && isCreation) {
-      setHidden(true);
-    }
-    console.log(`DashboardNFT.js\n   - ProfileThumb\n   - nft:\n${JSON.stringify(nft)}`);
+
     let { contentURI } = nft.data.zoraNFT;
     const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
 
     if (contentURI.match(regexIPFS)) {
       const { IPFShash } = regexIPFS.exec(contentURI).groups;
-      console.log(`DashboardNFT.js\n   - ProfileThumb\n   - IPFShash:\n${IPFShash}`);
 
       contentURI = `https://ipfs.io/ipfs/${IPFShash}`;
-      console.log(
-        `DashboardNFT.js\n   - ProfileThumb\n   - contentURI:\n${JSON.stringify(contentURI)}`
-      );
 
       return (
         <Link href={`/nft/${tokenId}`} passHref>
@@ -60,10 +52,6 @@ const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
     if (metadata.attributes) {
       const creatorAddress = nft.data.nft.creator;
       name = metadata.name;
-      console.log(`metadata: `, metadata);
-      console.log(
-        `DashboardNFT.js\n   - TitleAuthor\n   - nft.data:\n${JSON.stringify(nft.data.nft.creator)}`
-      );
 
       return (
         <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
@@ -78,18 +66,14 @@ const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
   };
 
   return (
-    <>
-      {/* {!hidden && */}
-      <div className="m-auto w-full h-full">
-        <NFTPreview id={tokenId} onClick={onClick}>
-          {/* <PreviewComponents.MediaThumbnail /> */}
-          <ProfileThumb />
-          <PreviewComponents.PricingComponent />
-        </NFTPreview>
-      </div>
-      {/* } */}
-    </>
+    <div className="m-auto w-full h-full">
+      <NFTPreview id={tokenId}>
+        {/* <PreviewComponents.MediaThumbnail /> */}
+        <ProfileThumb />
+        <TitleAuthor />
+      </NFTPreview>
+    </div>
   );
 };
 
-export default DashboardNFT;
+export default ProfileNFT;

@@ -7,7 +7,6 @@ import { SPLITS_BY_OWNER, SPLITS_BY_RECIPIENT, RECIPIENTS_BY_ID } from "./querie
  * @returns {Object} containing all split contracts owned by owner
  */
 export const getSplitRecipients = async (proxyAddress) => {
-  console.log(`Getting Split Recipients for: ${proxyAddress}...`);
   const query = await ourzSubgraph.query({
     query: RECIPIENTS_BY_ID(proxyAddress),
   });
@@ -34,14 +33,12 @@ export const getSplitRecipients = async (proxyAddress) => {
  * @returns {Object} containing all split contracts owned by owner
  */
 export const getOwnedSplits = async (ownerAddress) => {
-  console.log(`Getting owned Splits for: ${ownerAddress}...`);
   const query = await ourzSubgraph.query({
     query: SPLITS_BY_OWNER(ownerAddress),
   });
 
   const data = await query.data;
   if (data?.user?.ownedProxies) {
-    // console.log(`${ownerAddress}'s Splits:`, data.user.ownedProxies);
     return data.user.ownedProxies;
     // returns:
     //  [{
@@ -78,14 +75,12 @@ export const getOwnedSplits = async (ownerAddress) => {
  * @returns {Object} containing all split contracts claimable by recipient
  */
 export const getClaimableSplits = async (recipientAddress) => {
-  console.log(`Getting claimable Splits for: ${recipientAddress}...`);
   const query = await ourzSubgraph.query({
     query: SPLITS_BY_RECIPIENT(recipientAddress),
   });
 
   const data = await query.data;
   if (data?.user?.recipientInfo) {
-    // console.log(`${recipientAddress}'s Splits:`, data.user.recipientInfo);
     return data.user.recipientInfo;
   }
   return null;
@@ -97,21 +92,17 @@ export const getClaimableSplits = async (recipientAddress) => {
  * @returns {Object} containing all split recipients
  */
 // export const parseSplitRecipients = async (proxyAddress) => {
-//   console.log(`Parsing recipients for Split: ${proxyAddress}...`);
 
 //   const query = await ourzSubgraph.query({
 //     query: RECIPIENTS_BY_ID(proxyAddress),
 //   });
-//   console.log(`Got back this... \n`, query);
 
 //   const stringified = await query.data.ourProxies;
-//   console.log(`Stringified: ${stringified}`);
 
 //   try {
 //     const parsed = JSON.parse(stringified);
 
 //     if (parsed) {
-//       console.log(`Parsed: ${parsed}`);
 //       return parsed;
 //     }
 //   } catch (error) {

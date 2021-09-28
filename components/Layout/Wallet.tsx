@@ -13,7 +13,7 @@ function classNames(...classes) {
 const Wallet = () => {
   const { address, network, authenticate, disconnectWeb3 } = web3.useContainer();
 
-  const [signerProfile, setSignerProfile] = useState(""); // Check for user on Ourz' user profile api.
+  const [signerProfile, setSignerProfile] = useState(); // Check for user on Ourz' user profile api.
 
   useEffect(() => {
     async function getSignerProfile(signerAddress) {
@@ -41,7 +41,7 @@ const Wallet = () => {
   return address ? ( // If user is authenticated
     <div className="flex flex-col justify-center items-center md:justify-end md:flex-row lg:pr-12 md:flex-1 lg:w-0">
       <Popover className="relative bg-dark-background">
-        {({ open }) => (
+        {() => (
           <>
             <div className="hidden -my-2 -mr-2">
               <Popover.Button className="inline-flex justify-center items-center p-2 text-dark-secondary bg-dark-background hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dark-ourange">

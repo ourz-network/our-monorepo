@@ -43,7 +43,6 @@ const UserDashboard = () => {
 
   const handleClickThumbnail = (split, isOwned) => {
     setSelectedSplit(split);
-    console.log(`splitRecipients`, split.splitRecipients);
     let userInfo;
 
     split.splitRecipients.forEach((recipient, i) => {
@@ -51,7 +50,6 @@ const UserDashboard = () => {
         userInfo = recipient;
       }
     });
-    console.log(`userInfo`, userInfo);
     setUserSplitDetails(userInfo);
     setSelectedIsOwned(isOwned);
     setShowFull(true);

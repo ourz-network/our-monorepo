@@ -7,7 +7,6 @@ const MintNFTFromExistingSplit = () => {
   const [loading, setLoading] = useState(true); // Global loading state
   const { query } = useRouter();
   const { proxyAddress } = query;
-  // console.log(`proxyAddress`, proxyAddress);
   const [splitRecipients, setSplitRecipients] = useState([]);
 
   useEffect(() => {
@@ -15,7 +14,6 @@ const MintNFTFromExistingSplit = () => {
       const recipients = await getSplitRecipients(address);
       if (recipients) {
         setSplitRecipients(recipients);
-        // console.log(`Split Recipients:\n`, splitRecipients);
         setLoading(false);
       }
     }

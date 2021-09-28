@@ -8,7 +8,6 @@ import FullPageNFT from "@/components/Cards/FullPageNFT";
 import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 
 const NFTView = ({ tokenId, creator, recipients }) => {
-  console.log(`tokenId: ${tokenId}\nrecipients: ${recipients}`);
   // const [loading, setLoading] = useState(true); // Global loading state
   const { address } = web3.useContainer();
   const [firstSale, setFirstSale] = useState();
@@ -49,7 +48,6 @@ const NFTView = ({ tokenId, creator, recipients }) => {
   // useEffect(() => {
   //   async function fetchCreatorAddress(tokenId) {
   //     const creator0x = await zoraQuery.fetchCreator(tokenId)
-  //     console.log(`creator0x: `, creator0x);
   //     setCreatorAddress(creator0x)
   //     return creator0x
   //   }
@@ -61,7 +59,6 @@ const NFTView = ({ tokenId, creator, recipients }) => {
 
   // useEffect(() => {
   //   if (address) {
-  //     console.log(recipients);
   //     setOwnAccount(address == recipients);
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +104,6 @@ export async function getStaticPaths() {
       paths.push({ params: { tokenId: `${i}` } });
     }
 
-    console.log(paths);
     return { paths, fallback: true };
   }
 }
@@ -128,7 +124,6 @@ export async function getStaticProps(context) {
   const res = await getSplitRecipients(creatorAddress);
   if (res) {
     const recipients = res;
-    console.log(`resdata: `, recipients);
     return {
       props: {
         tokenId,

@@ -15,21 +15,17 @@ export default async function handler(req, res) {
     method,
   } = req;
   const loadedUsername = username; // else you get 'ReferenceError: Cannot access 'username' before initialization'
-  // console.log(`loadedUsername: `, loadedUsername);
   await connectDB();
 
   switch (method) {
     case "GET":
-      // console.log("signupApi check username req.body", username)
       try {
         if (ethers.utils.isAddress(loadedUsername)) {
           const user = await UserModel.findOne({ ethAddress: loadedUsername });
 
           if (user) {
-            console.log(`User Found For Address`, user);
             res.status(200).json({ success: true, data: user });
           } else {
-            console.log(`No User Found For Address`, user);
             res.status(404).json({ success: false, error: "No User Found" });
           }
         } else {
@@ -49,12 +45,10 @@ export default async function handler(req, res) {
           return res.status(404).json({ success: false, message: "Username Available" });
         }
       } catch (error) {
-        console.error(error);
         return res.status(500).send(`Server error`);
       }
       break;
     case "PUT":
-      // console.log("req.body:", req.body);
       try {
         const {
           userId,
@@ -76,7 +70,6 @@ export default async function handler(req, res) {
           yat,
           youtube,
         } = req.body;
-        console.log(`User Attempting Update: ${userId} name: ${name} bio: ${bio}`);
 
         const profileFields = {};
         // user.username = username;
@@ -96,19 +89,15 @@ export default async function handler(req, res) {
         if (website) profileFields.social.website = website;
         if (yat) profileFields.social.yat = yat;
         if (youtube) profileFields.social.youtube = youtube;
-        // console.log(`profileFields: `, profileFields);
         const result = await ProfileModel.findOneAndUpdate(
           { user: userId },
           { $set: profileFields },
           { new: true }
         );
         if (result) {
-          // console.log(`updatedProfile. res: `, result);
           return res.status(200).send("Success");
         }
-        // console.groupEnd();
       } catch (error) {
-        console.error(error);
         return res.status(500).send("Server Error");
       }
   }

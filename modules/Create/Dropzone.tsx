@@ -9,12 +9,9 @@ const Dropzone = (props) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
       reader.onload = () => {
         // Do whatever you want with the file contents
         const arrayBuffer = reader.result;
-        // console.log("arrayBuffer", arrayBuffer);
       };
 
       setFiles(
