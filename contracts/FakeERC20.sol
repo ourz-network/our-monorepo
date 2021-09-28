@@ -5,7 +5,6 @@ pragma solidity 0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-
 /**
  * @dev {ERC20} token, including:
  *
@@ -25,11 +24,14 @@ contract FakeERC20 is ERC20Burnable {
      * See {ERC20-constructor}.
      */
     constructor(address owner) ERC20("Fake20", "FAKE") {
-        _mint(owner, 100000000000000000000000000);
+        _mint(owner, 10000000000000000000); // 10 * (10 ** 18) totalSupply: 10, decimals: 18
+    }
+
+    function decimals() public view override returns (uint8) {
+        return 18;
     }
 
     function mint() public {
-        _mint(msg.sender, 100000000000000000000000000);
+        _mint(msg.sender, 10000000000000000000);
     }
-
 }

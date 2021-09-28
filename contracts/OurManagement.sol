@@ -4,18 +4,13 @@ pragma solidity 0.8.4;
 /**
  * @title OurManagement
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
  * & of course, @author OpenZeppelin
  */
 contract OurManagement {
-    event ProxySetup(address[] owners);
-    event AddedOwner(address owner);
-    event RemovedOwner(address owner);
-    event ChangeNickname(string newNickname);
-
     // used as origin pointer for linked list of owners
     address internal constant SENTINEL_OWNERS = address(0x1);
 
@@ -23,44 +18,10 @@ contract OurManagement {
     uint256 internal ownerCount;
     uint256 internal threshold;
 
-    function _msgSender() internal view returns (address) {
-        return msg.sender;
-    }
-
-    function checkIsOwner(address caller_) internal view {
-        require(isOwner(caller_), "Caller is not an approved owner of this Split");
-    }
-
-    modifier onlyOwners() {
-        // This is a function call as it minimized the bytecode size
-        checkIsOwner(_msgSender());
-        _;
-    }
-    /** 
-     * @dev Setup function sets initial owners of contract.
-     * @param owners_ List of Split Owners (can mint/manage auctions)
-     * @notice threshold ensures that setup function can only be called once.
-     */
-    function setupOwners(address[] memory owners_) internal {
-        require(threshold == 0, "Setup has already been completed once.");
-        // Initializing Proxy owners.
-        address currentOwner = SENTINEL_OWNERS;
-        for (uint256 i = 0; i < owners_.length; i++) {
-            address owner = owners_[i];
-            require(
-                owner != address(0) &&
-                    owner != SENTINEL_OWNERS &&
-                    owner != address(this) &&
-                    currentOwner != owner
-            );
-            require(owners[owner] == address(0));
-            owners[currentOwner] = owner;
-            currentOwner = owner;
-        }
-        owners[currentOwner] = SENTINEL_OWNERS;
-        ownerCount = owners_.length;
-        threshold = 1;
-    }
+    event ProxySetup(address[] owners);
+    event AddedOwner(address owner);
+    event RemovedOwner(address owner);
+    event NameChanged(string newName);
 
     /// @dev Allows to add a new owner
     function addOwner(address owner) public onlyOwners {
@@ -117,8 +78,9 @@ contract OurManagement {
         emit AddedOwner(newOwner);
     }
 
-    function editNickname(string calldata newNickname_) public onlyOwners {
-        emit ChangeNickname(newNickname_);
+    /// @dev for subgraph
+    function editNickname(string calldata newName_) public onlyOwners {
+        emit NameChanged(newName_);
     }
 
     function isOwner(address owner) public view returns (bool) {
@@ -138,5 +100,48 @@ contract OurManagement {
             index++;
         }
         return array;
+    }
+
+    function _msgSender() internal view returns (address) {
+        return msg.sender;
+    }
+
+    function checkIsOwner(address caller_) internal view {
+        require(
+            isOwner(caller_),
+            "Caller is not a whitelisted owner of this Split"
+        );
+    }
+
+    modifier onlyOwners() {
+        // This is a function call as it minimized the bytecode size
+        checkIsOwner(_msgSender());
+        _;
+    }
+
+    /**
+     * @dev Setup function sets initial owners of contract.
+     * @param owners_ List of Split Owners (can mint/manage auctions)
+     * @notice threshold ensures that setup function can only be called once.
+     */
+    function setupOwners(address[] memory owners_) internal {
+        require(threshold == 0, "Setup has already been completed once.");
+        // Initializing Proxy owners.
+        address currentOwner = SENTINEL_OWNERS;
+        for (uint256 i = 0; i < owners_.length; i++) {
+            address owner = owners_[i];
+            require(
+                owner != address(0) &&
+                    owner != SENTINEL_OWNERS &&
+                    owner != address(this) &&
+                    currentOwner != owner
+            );
+            require(owners[owner] == address(0));
+            owners[currentOwner] = owner;
+            currentOwner = owner;
+        }
+        owners[currentOwner] = SENTINEL_OWNERS;
+        ownerCount = owners_.length;
+        threshold = 1;
     }
 }

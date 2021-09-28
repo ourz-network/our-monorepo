@@ -1,9 +1,14 @@
 {
-    "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "strict": false,
-      "esModuleInterop": true,
-      "resolveJsonModule": true
-    }
-  }
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "strict": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "typeRoots": ["./typechain", "./node_modules/@types"],
+    "types": ["@nomiclabs/hardhat-ethers", "@nomiclabs/hardhat-waffle"]
+  },
+  "include": ["./test", "typechain", "./typechain", "./contracts", "./merkle-tree"],
+  "files": ["./hardhat.config.ts"]
+}

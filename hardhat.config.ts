@@ -1,10 +1,11 @@
-import { HardhatUserConfig } from 'hardhat/config';
-import '@nomiclabs/hardhat-ethers';
-import '@nomiclabs/hardhat-waffle';
-import '@nomiclabs/hardhat-solhint';
-import 'hardhat-typechain';
+import { HardhatUserConfig } from 'hardhat/config'
+import '@typechain/hardhat'
+import '@nomiclabs/hardhat-ethers'
+import '@nomiclabs/hardhat-waffle'
+import '@nomiclabs/hardhat-solhint'
+import 'tsconfig-paths/register'
 
-const { alchemyAPIKey, deployerPrivateKey } = require('./env.json');
+const { alchemyAPIKey, deployerPrivateKey } = require('./env.json')
 
 const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
@@ -15,24 +16,24 @@ const config: HardhatUserConfig = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 2000
-          }
-        }
+            runs: 2000,
+          },
+        },
       },
       {
-        version: "0.6.8",
+        version: '0.6.8',
         settings: {
           optimizer: {
             enabled: true,
-            runs: 2000
-          }
-        }
-      }
-    ]
+            runs: 2000,
+          },
+        },
+      },
+    ],
   },
   typechain: {
-    outDir: 'ts-types/contracts',
-    target: 'ethers-v5'
+    outDir: 'typechain',
+    target: 'ethers-v5',
   },
   networks: {
     rinkeby: {
@@ -43,7 +44,7 @@ const config: HardhatUserConfig = {
       url: `https://eth-mainnet.alchemyapi.io/v2/${alchemyAPIKey}`,
       accounts: [deployerPrivateKey],
     },
-  }
-};
+  },
+}
 
-export default config;
+export default config

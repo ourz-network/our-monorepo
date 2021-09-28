@@ -5,8 +5,10 @@ coverage/
 cache/
 artifacts/
 build/
+typechain/
 .env
 *.DS_Store
 env*
 .vscode
 package-lock.json
+scripts/deploy.ts

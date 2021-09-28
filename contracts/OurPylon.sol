@@ -8,7 +8,7 @@ import {OurIntrospector} from "./OurIntrospector.sol";
 /**
  * @title OurPylon
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
@@ -20,7 +20,7 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
         threshold = 1;
     }
 
-    /** 
+    /**
      * @dev Setup function sets initial storage of Poxy.
      * @param owners_ List of addresses that can execute transactions other than claiming funds.
      * @notice see OurManagement.sol -> setupOwners()
@@ -31,20 +31,6 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
         emit ProxySetup(owners_);
 
         // Approve Zora AH
-        // setupApprovalForAH();
-    }
-
-    /**
-     * @dev Attempts transferring entire balance of an ERC20 to corresponding Recipients
-     * @notice see OurSplitter -> massClaimERC20()
-     */ 
-    function claimERC20ForAllSplits(
-        address tokenAddress,
-        address[] calldata accounts,
-        uint256[] calldata allocations,
-        Proof[] calldata merkleProofs
-    ) external onlyOwners {
-        require(tokenAddress != address(0), "Use claimETH");
-        massClaimERC20(tokenAddress, accounts, allocations, merkleProofs);
+        // setApprovalForAH();
     }
 }

@@ -6,13 +6,20 @@ import {OurProxy} from "./OurProxy.sol";
 /**
  * @title OurFactory
  * @author Nick Adamson - nickadamson@pm.me
- * 
+ *
  * Building on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
  * & of course, @author OpenZeppelin
  */
 contract OurFactory {
+    //======== Immutable storage =========
+    address public immutable pylon;
+
+    //======== Mutable storage =========
+    /// @dev Gets set within the block, and then deleted.
+    bytes32 public merkleRoot;
+
     //======== Subgraph =========
     event ProxyCreated(
         address ourProxy,
@@ -20,13 +27,6 @@ contract OurFactory {
         string splitRecipients,
         string nickname
     );
-
-    //======== Immutable storage =========
-    address public immutable pylon;
-
-    //======== Mutable storage =========
-    /// @dev Gets set within the block, and then deleted.
-    bytes32 public merkleRoot;
 
     //======== Constructor =========
     constructor(address pylon_) {
@@ -47,7 +47,7 @@ contract OurFactory {
         delete merkleRoot;
 
         emit ProxyCreated(ourProxy, msg.sender, splitRecipients_, nickname_);
-        
+
         // call setup() to set owners
         assembly {
             if eq(

@@ -24,5 +24,4 @@ Or whatever else you can think of, it just needs to be implemented in OurMinter.
 
 Subgraph: https://thegraph.com/legacy-explorer/subgraph/nickadamson/ourzrinkebyv2
 
-
 # Critiques, ideas, and any other feedback are greatly appreciated. Open an issue, or email me: nickadamson@pm.me
