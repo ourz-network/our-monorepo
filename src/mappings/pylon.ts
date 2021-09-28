@@ -237,32 +237,25 @@ export function handleTransferETH(event: TransferETH): void {
  * @eventParam amount: total erc20s sent to recipients
  */
 export function handleTransferERC20(event: TransferERC20): void {
-  let success = event.params.success;
+  // get formatted variables
+  let proxy = event.address;
+  let proxyAddress = proxy.toHexString();
+  log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
 
-  if (success) {
-    // get formatted variables
-    let proxy = event.address;
-    let proxyAddress = proxy.toHexString();
-    log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
+  let ourProxy = OurProxy.load(proxyAddress)!;
 
-    let ourProxy = OurProxy.load(proxyAddress)!;
+  let tokenAddress = event.params.token.toHexString();
+  let amount = event.params.amount;
+  let txHash = event.transaction.hash.toHexString();
 
-    let userAddress = event.params.account.toHexString();
-    let tokenAddress = event.params.token.toHexString();
-    let amount = event.params.amount;
-    let txHash = event.transaction.hash.toHexString();
+  let transferId = `${txHash}-${proxyAddress}`;
+  let transfer = new ERC20Transfer(transferId);
+  transfer.splitProxy = ourProxy.id;
+  transfer.transactionHash = txHash;
+  transfer.contract = tokenAddress;
+  transfer.amount = amount;
 
-    let user = User.load(userAddress)!;
-
-    let transferId = `${txHash}-${userAddress}-${amount.toString()}`;
-    let transfer = new ERC20Transfer(transferId);
-    transfer.recipient = user.id;
-    transfer.transactionHash = txHash;
-    transfer.contract = tokenAddress;
-    transfer.amount = amount;
-
-    transfer.save();
-  }
+  transfer.save();
 }
 
 /**

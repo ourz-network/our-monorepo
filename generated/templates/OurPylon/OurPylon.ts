@@ -255,20 +255,12 @@ export class TransferERC20__Params {
     this._event = event;
   }
 
-  get account(): Address {
+  get token(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get token(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get success(): boolean {
-    return this._event.parameters[3].value.toBoolean();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
