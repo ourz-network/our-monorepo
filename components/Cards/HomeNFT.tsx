@@ -17,7 +17,6 @@ const HomeNFT = (props) => {
   const { tokenId } = props;
   const [metadata, setMetadata] = useState("0x00");
   const [contentURI, setContentURI] = useState();
-  console.log(metadata);
   useEffect(() => {
     async function getTokenInfo(TokenID) {
       const metadataURI = await zoraQuery.fetchMetadataURI(TokenID);
@@ -26,14 +25,11 @@ const HomeNFT = (props) => {
       const dirtyContentURI = await zoraQuery.fetchContentURI(TokenID);
       const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
       if (dirtyContentURI.match(regexIPFS)) {
-        // console.log(dirtyContentURI);
         const { IPFShash } = regexIPFS.exec(dirtyContentURI).groups;
-        // console.log(`HomeNFT.js\n   - HomeThumb\n   - IPFShash:\n${IPFShash}`);
         setContentURI(`https://ipfs.io/ipfs/${IPFShash}`);
       } else {
         setContentURI(dirtyContentURI);
       }
-      // console.log(contentURI);
     }
     if (tokenId) {
       getTokenInfo(tokenId);
@@ -51,7 +47,6 @@ const HomeNFT = (props) => {
   const [aspectRatio, setAspectRatio] = useState();
 
   const calcAspectRatio = (loadedMedia) => {
-    // console.log(`HomeNFT.js - loadedMedia:\n`, loadedMedia);
     let ratio;
     let width;
     let height;
@@ -112,7 +107,6 @@ const HomeNFT = (props) => {
         setAspectRatio("portrait-tallest");
       }
     }
-    // console.log(`#${tokenId} \n ratio :${aspectRatio}`);
   };
 
   if (metadata?.mimeType?.includes("video")) {

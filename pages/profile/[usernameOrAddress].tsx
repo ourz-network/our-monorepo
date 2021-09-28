@@ -25,7 +25,6 @@ const ProfilePage = ({
   const [loading, setLoading] = useState(!(postsToSet?.length > 1)); // Global loading state
 
   const router = useRouter();
-  // console.log(linkAddress);
   useEffect(() => {
     // Static Redirect
     if (redirectUsername) {
@@ -114,11 +113,8 @@ export async function getStaticPaths() {
       params: { usernameOrAddress: `${user.username}` },
     }));
 
-    // console.log(`[linkUsername]/\n   - getStaticPaths\n   - paths:\n`, paths);
-
     return { paths, fallback: true };
   } catch (error) {
-    // console.log(error);
     return { paths: [], fallback: true };
   }
 }
@@ -127,13 +123,11 @@ export async function getStaticPaths() {
 // eslint-disable-next-line consistent-return
 export async function getStaticProps(context) {
   const { usernameOrAddress } = context.params;
-  // console.log(`usernameOrAddress: `, usernameOrAddress);
   await connectDB();
   let linkAddress;
   let linkUsername;
   if (usernameOrAddress.length === 42) {
     linkAddress = usernameOrAddress;
-    // console.log(`linkaddress: `, usernameOrAddress);
 
     try {
       const user = await UserModel.findOne({
@@ -179,7 +173,6 @@ export async function getStaticProps(context) {
     }
   } else {
     linkUsername = usernameOrAddress;
-    // console.log(`linkusername: `, usernameOrAddress);
     try {
       const user = await UserModel.findOne({
         username_lower: linkUsername.toLowerCase(),
@@ -227,7 +220,6 @@ export async function getStaticProps(context) {
         };
       }
     } catch (error) {
-      console.log(error);
       return { notFound: true };
     }
   }

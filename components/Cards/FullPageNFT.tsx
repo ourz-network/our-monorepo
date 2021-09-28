@@ -1,7 +1,7 @@
 import Link from "next/link"; // Dynamic routing
 import { NFTE } from "@nfte/react";
 import { NFTFullPage, FullComponents } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils.ts";
+import { toTrimmedAddress } from "@/ethereum/utils";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 
@@ -27,7 +27,6 @@ const FullPageNFT = ({ creator, tokenId, ownAccount, chartData, recipients }) =>
   //   }
   //   if (tokenId) {
   //     getSplitMetadata(tokenId);
-  //     console.log(chartData);
   //     setLoading(false);
   //   }
   // }, []);

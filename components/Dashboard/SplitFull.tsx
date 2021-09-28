@@ -17,7 +17,6 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
   const [dialog, setDialog] = useState();
   const [showDialog, setShowDialog] = useState();
   const [selectedId, setSelectedId] = useState();
-  console.log("auctions", data);
 
   const refDiv = useRef(null);
 
@@ -34,9 +33,6 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
       splits: split.splitRecipients,
       proxyAddress: split.id,
     });
-    if (didClaim) {
-      console.log("success");
-    }
   };
 
   const startAnAuction = (tokenId) => {

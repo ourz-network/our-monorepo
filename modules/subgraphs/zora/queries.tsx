@@ -36,7 +36,6 @@ export const ZORA_MEDIA_BY_ID = (id) => gql`
  * @returns {gql} query with template string embedded
  */
 export const ZORA_MEDIA_BY_OWNER = (owner) => {
-  console.log(`graphProtocol queries.js owner: `, owner);
   owner = owner.toString().toLowerCase();
   return gql`
     {
@@ -58,7 +57,6 @@ export const ZORA_MEDIA_BY_OWNER = (owner) => {
  * @returns {gql} query with template string embedded
  */
 export const ZORA_MEDIA_BY_CREATOR = (creator) => {
-  console.log(`graphProtocol queries.js creator: `, creator);
   creator = creator.toString().toLowerCase();
   return gql`
     {

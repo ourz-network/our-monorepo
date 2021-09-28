@@ -1,4 +1,4 @@
-const Button = ({ key, text, isMain, onClick }) => (
+const Button = ({ text, isMain, onClick }): JSX.Element => (
   <button
     className={`${
       isMain && `mainButton`

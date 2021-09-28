@@ -59,7 +59,7 @@ const NewSplit = () => {
   // on 'Add Another'
   const onAppend = () => {
     append({ account: "", name: "", role: "", shares: 0 });
-    // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     updateChart();
   };
   const calculateOwnerShares = () => {
@@ -77,7 +77,6 @@ const NewSplit = () => {
   // createSplit.js is passed this function as a prop and used for dynamic fields onBlur event.
   const updateChart = () => {
     calculateOwnerShares();
-    // console.log(`updateChart() \ncontrolledFields: \n`, controlledFields);
 
     const newChartData = controlledFields.flatMap((split) => ({
       name: `${split.name || split.account}`,
@@ -88,16 +87,12 @@ const NewSplit = () => {
       shares: ownerData.shares,
     });
     setChartData(newChartData);
-    // console.log("updateChart() \nnewChartData: \n", chartData);
-    // console.log("updateChart() \nnewChartData: \n", JSON.stringify(chartData));
   };
 
   const onSubmit = async () => {
     setLoading(true);
     const splitData = controlledFields;
     splitData.unshift(ownerData);
-    // console.log(`splitData \n`, splitData);
-    console.log(`calling newProxy in web3..`);
     const proxyAddress = await newProxy(
       controlledFields, // received as 'splitData'
       nickname // received as 'splitData'
@@ -105,14 +100,12 @@ const NewSplit = () => {
 
     if (proxyAddress) {
       Router.push(`/create/mint/${proxyAddress}`);
-      // console.log(proxyAddress);
       // setLoading(false);
     }
   };
 
   const submitSplits = async () => {
     // handleSplits();
-    console.log(`calling onSubmit in NewSplit.....`);
     // const newProxy = await onSubmit();
     await onSubmit();
   };

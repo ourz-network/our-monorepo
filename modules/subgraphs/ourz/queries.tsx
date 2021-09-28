@@ -30,7 +30,6 @@ export const RECIPIENTS_BY_ID = (proxyAddress) => {
  * @returns {gql} query with template string embedded
  */
 export const SPLITS_BY_OWNER = (owner) => {
-  console.log(`graphProtocol queries.js owner: `, owner);
   owner = owner.toString().toLowerCase();
   return gql`
     {
@@ -72,7 +71,6 @@ export const SPLITS_BY_OWNER = (owner) => {
  * @returns {gql} query with template string embedded
  */
 export const SPLITS_BY_RECIPIENT = (recipient) => {
-  console.log(`graphProtocol queries.js recipient: `, recipient);
   recipient = recipient.toString().toLowerCase();
   return gql`
     {

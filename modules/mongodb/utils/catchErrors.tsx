@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const catchErrors = (error) => {
   let errorMsg;
 

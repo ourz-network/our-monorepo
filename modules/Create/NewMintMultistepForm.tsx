@@ -44,7 +44,6 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
 
   const next = () => {
     setCurrentStep(currentStep + 1);
-    // console.log("formData: ", formData);
   };
   const back = () => {
     setCurrentStep(currentStep - 1);
@@ -56,7 +55,6 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
         ...formData,
         splitMetadata: recipients,
       });
-      // console.log(`recipients: `, recipients);
 
       // create first sale chart data
       let newChartData = recipients.flatMap((recipient) => ({
@@ -91,7 +89,6 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
       ...formData,
       [event.target.name]: event.target.value,
     });
-    // console.log(`formData`, formData);
   };
 
   const onSubmit = async () => {
@@ -109,14 +106,12 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
       // const tokenId = await mintNFTSolo(formData); // received as 'media';
       // if (tokenId) {
       //   Router.push(`/nft/${tokenId}`);
-      //   //   console.log("minted")
       //   setLoading(false);
       // }
     }
   };
   // router.push(`/${address}/success`)
   // } catch (e) {
-  //   console.log(e)
   // }
 
   /** react-dropzone
@@ -128,7 +123,6 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
     formData.media = files[0];
     formData.mediaKind = files[0].type;
     formData.mediaPreview = files[0].preview;
-    // console.log("files: ", files);
   };
   /** onDrop()
    * creates an instance of the file as a buffer, as well as
@@ -143,8 +137,6 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
       // Takes the acceptedFile and reads it for uploading as a blob.
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
       reader.onload = () => {
         // Save the readFile to state under mediaBlob
         const arrayBuffer = reader.result;
@@ -152,7 +144,6 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
           ...formData,
           mediaBlob: arrayBuffer,
         });
-        // console.log("MultiStepForm - onDrop() \narrayBuffer: ", arrayBuffer);
       };
     });
 
