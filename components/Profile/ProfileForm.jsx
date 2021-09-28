@@ -1,3 +1,9 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-shadow */
 // tailwindUI modal that asks user if they would like to
 // create an account and set up their information like bio and social links.
 // if they decline just use server side rendering that way create is off limits.
@@ -131,7 +137,7 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
 
           // console.log(`ProfileForm update profile -  \nres :\n`, res);
           // Throw error with status code in case Fetch API req failed
-          if (res.data != "Success") {
+          if (res.data !== "Success") {
             throw new Error(res.status);
           }
 
@@ -271,33 +277,33 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                                       aria-hidden="true"
                                     >
                                       Username
-                                    </label>
-                                    <div className="flex shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
-                                        @
-                                      </span>
-                                      <input
-                                        type="text"
-                                        placeholder="username"
-                                        className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                        {...register("username", {
-                                          required: true, // JS only: <p>error message</p>
-                                          minLength: {
-                                            value: 3,
-                                          },
-                                          maxLength: {
-                                            value: 24,
-                                          },
-                                          pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
-                                          validate: {
-                                            available: async (v) => {
-                                              console.log("validate", v);
-                                              checkUsername(v);
+                                      <div className="flex shadow-sm max-w-1/2">
+                                        <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
+                                          @
+                                        </span>
+                                        <input
+                                          type="text"
+                                          placeholder="username"
+                                          className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                          {...register("username", {
+                                            required: true, // JS only: <p>error message</p>
+                                            minLength: {
+                                              value: 3,
                                             },
-                                          },
-                                        })}
-                                      />
-                                    </div>
+                                            maxLength: {
+                                              value: 24,
+                                            },
+                                            pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
+                                            validate: {
+                                              available: async (v) => {
+                                                console.log("validate", v);
+                                                checkUsername(v);
+                                              },
+                                            },
+                                          })}
+                                        />
+                                      </div>
+                                    </label>
                                   </>
                                 )}
                                 {profileDetails && (
@@ -308,52 +314,52 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                                       aria-hidden="true"
                                     >
                                       New Username
-                                    </label>
-                                    <div className="flex mb-4 shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
-                                        @
-                                      </span>
-                                      <input
-                                        type="text"
-                                        placeholder={`${user.username}`}
-                                        className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        {...register("desiredUsername", {
-                                          required: "error message", // JS only: <p>error message</p>
-                                          minLength: {
-                                            value: 3,
-                                            message: "error message", // JS only: <p>error message</p> TS only support string
-                                          },
-                                          maxLength: {
-                                            value: 24,
-                                            message: "error message", // JS only: <p>error message</p> TS only support string
-                                          },
-                                          validate: {
-                                            available: async (v) => {
-                                              console.log("validate", v);
-                                              setUser((prev) => ({
-                                                ...prev,
-                                                username: v,
-                                              }));
-                                              checkUsername(v);
+                                      <div className="flex mb-4 shadow-sm max-w-1/2">
+                                        <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
+                                          @
+                                        </span>
+                                        <input
+                                          type="text"
+                                          placeholder={`${user.username}`}
+                                          className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                          {...register("desiredUsername", {
+                                            required: "error message", // JS only: <p>error message</p>
+                                            minLength: {
+                                              value: 3,
+                                              message: "error message", // JS only: <p>error message</p> TS only support string
                                             },
-                                          },
-                                        })}
-                                      />
-                                    </div>
+                                            maxLength: {
+                                              value: 24,
+                                              message: "error message", // JS only: <p>error message</p> TS only support string
+                                            },
+                                            validate: {
+                                              available: async (v) => {
+                                                console.log("validate", v);
+                                                setUser((prev) => ({
+                                                  ...prev,
+                                                  username: v,
+                                                }));
+                                                checkUsername(v);
+                                              },
+                                            },
+                                          })}
+                                        />
+                                      </div>
+                                    </label>
                                     <div className="grid grid-cols-3 grid-flow-row-dense gap-4 w-full">
                                       {Object.keys(user).map((keyName, keyIndex) => {
                                         if (
-                                          keyName != "username" &&
-                                          keyName != "ethAddress" &&
-                                          keyName != "userId"
+                                          keyName !== "username" &&
+                                          keyName !== "ethAddress" &&
+                                          keyName !== "userId"
                                         ) {
                                           return (
                                             <div
                                               key={`${keyName}`}
                                               className={
-                                                keyName == "name" ||
-                                                keyName == "bio" ||
-                                                keyName == "website"
+                                                keyName === "name" ||
+                                                keyName === "bio" ||
+                                                keyName === "website"
                                                   ? `col-span-full w-1/2 mx-auto`
                                                   : `col-span-1 `
                                               }

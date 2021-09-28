@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import Head from "next/head";
-import ProfileHeader from "@/components/Profile/ProfileHeader";
+import { ProfileHeader } from "@/components/Profile/ProfileHeader";
 import ProfileNFT from "@/components/Cards/ProfileNFT";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 
@@ -50,7 +51,7 @@ export const Profile = ({
             {posts.map((post, i) => (
               // For each Zora post
               // Return Post component
-              <div key={i} className="flex justify-center w-full h-full">
+              <div key={post.id} className="flex justify-center w-full h-full">
                 <ProfileNFT
                   tokenId={post.id}
                   username={user ? user.username : null}

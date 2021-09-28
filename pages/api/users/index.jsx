@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-underscore-dangle */
 import connectDB from "@/modules/mongodb/utils/connectDB";
 import UserModel from "@/modules/mongodb/models/UserModel";
 import FollowModel from "@/modules/mongodb/models/FollowModel";

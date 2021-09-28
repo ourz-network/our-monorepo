@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { gql } from "@apollo/client"; // graphql query language
 
 // Collect all users and creation ids

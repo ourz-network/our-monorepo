@@ -39,8 +39,8 @@ const CreateDashboard = () => {
       {newSplit && <NewSplit />}
 
       <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-        {loading || network.name != "rinkeby" ? (
-          <p className="px-4 py-2 mx-auto mt-16 border border-dark-border animate-pulse text-dark-primary">
+        {loading || network.name !== "rinkeby" ? (
+          <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
             Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
           </p>
         ) : (
@@ -54,10 +54,10 @@ const CreateDashboard = () => {
                 <h1 className="mx-auto mt-8 text-center text-dark-primary">
                   Splits that you can mint an NFT for:
                 </h1>
-                <div className="grid w-5/6 h-full grid-cols-3 gap-8 mx-auto mt-4 auto-rows-min">
+                <div className="grid grid-cols-3 auto-rows-min gap-8 mx-auto mt-4 w-5/6 h-full">
                   {ownedSplits.map((OurProxy, i) => (
                     <SplitThumb
-                      key={i}
+                      key={OurProxy.id}
                       ownedSplit={OurProxy}
                       handleClick={() => handleClick(OurProxy.id)}
                     />

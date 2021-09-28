@@ -1,6 +1,14 @@
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 import { ethers } from "ethers";
 
+function keyDownA11y(handler) {
+  return function onKeyDown(event) {
+    if (["keydown", "keypress"].includes(event.type) && ["Enter", " "].includes(event.key)) {
+      handler();
+    }
+  };
+}
+
 const SplitThumb = ({ ownedSplit, claimableSplit, userInfo, handleClick }) => {
   if (claimableSplit) {
     const recipientsLength = claimableSplit.splitProxy.splitRecipients.length;
@@ -12,6 +20,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, userInfo, handleClick }) => {
           <div
             role="button"
             onClick={handleClick}
+            onKeyDown={keyDownA11y(handleClick)}
             tabIndex={0}
             className="flex z-10 flex-col justify-center items-baseline p-2 m-auto w-3/5 h-1/2 bg-clip-padding bg-opacity-60 rounded-xl border backdrop-filter backdrop-blur-sm lg:h-52 lg:w-60 border-dark-border text-dark-accent"
           >
@@ -40,6 +49,7 @@ const SplitThumb = ({ ownedSplit, claimableSplit, userInfo, handleClick }) => {
           <div
             role="button"
             onClick={handleClick}
+            onKeyDown={keyDownA11y(handleClick)}
             tabIndex={0}
             className="flex z-10 flex-col justify-center items-baseline p-2 m-auto w-3/5 h-1/2 bg-clip-padding bg-opacity-60 rounded-xl border backdrop-filter backdrop-blur-sm lg:h-52 lg:w-60 border-dark-border text-dark-accent"
           >

@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 // import Footer from "./Footer.js";
 import Navbar from "./Navbar";
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import axios from "axios"; // Requests
 
 export const checkForAccountID = async (web3Address) => {
@@ -7,6 +8,7 @@ export const checkForAccountID = async (web3Address) => {
     if (userProfile) {
       return userProfile._id;
     }
+    return null;
   } catch (error) {
     return null;
   }
@@ -19,6 +21,7 @@ export const checkForProfile = async (web3Address) => {
     if (userProfile) {
       return userProfile;
     }
+    return null;
   } catch (error) {
     return null;
   }

@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable consistent-return */
+/* eslint-disable default-case */
 import { ethers } from "ethers";
 import connectDB from "@/modules/mongodb/utils/connectDB";
 import UserModel from "@/modules/mongodb/models/UserModel";

@@ -13,17 +13,17 @@ const HomeNFT = (props) => {
     etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
   });
   const zoraQuery = new Zora(queryProvider, 4);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const { tokenId } = props;
   const [metadata, setMetadata] = useState("0x00");
   const [contentURI, setContentURI] = useState();
   console.log(metadata);
   useEffect(() => {
-    async function getTokenInfo(tokenId) {
-      const metadataURI = await zoraQuery.fetchMetadataURI(tokenId);
+    async function getTokenInfo(TokenID) {
+      const metadataURI = await zoraQuery.fetchMetadataURI(TokenID);
       const res = await axios.get(`${metadataURI}`);
       setMetadata(res.data);
-      const dirtyContentURI = await zoraQuery.fetchContentURI(tokenId);
+      const dirtyContentURI = await zoraQuery.fetchContentURI(TokenID);
       const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
       if (dirtyContentURI.match(regexIPFS)) {
         // console.log(dirtyContentURI);
@@ -38,7 +38,7 @@ const HomeNFT = (props) => {
     if (tokenId) {
       getTokenInfo(tokenId);
       if (contentURI) {
-        setLoading(false);
+        // setLoading(false);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
