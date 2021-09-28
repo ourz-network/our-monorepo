@@ -1,7 +1,6 @@
 {
   "Contracts": {
-    "OurPylon": "0xc72a952988B4bB52B6581468e2eff8bd8922fE7f",
-    "OurFactory": "0x973b5B3137442E49AB262942674c966Aab1781c8",
-    "OurProxy": "0xA6265255f9Dd9d5B13a4649EBE1A60f3e148B219"
+    "OurPylon": "0xD8c231B7a9a7918470A6a0CC921602f9Fc36743A",
+    "OurFactory": "0x8dd346f865E3fAf5aaAcF8f7A4A10e03cB74B5b2"
   }
 }

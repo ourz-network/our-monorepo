@@ -35,9 +35,9 @@ contract OurSplitter is OurStorage {
 
     /**======== Subgraph =========
      * ETHReceived - emits sender and value in receive() fallback
-     * WindowIncremented - emits token address, current claim window, and available value of ERC20
+     * WindowIncremented - emits current claim window, and available value of ETH
      * TransferETH - emits to address, value, and success bool
-     * TransferERC20 - emits to address, token address, total transferred amount, and success bool
+     * TransferERC20 - emits token's contract address and total transferred amount
      */
     event ETHReceived(address indexed sender, uint256 value);
     event WindowIncremented(uint256 currentWindow, uint256 fundsAvailable);

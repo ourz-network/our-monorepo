@@ -2,8 +2,6 @@
 pragma solidity 0.8.4;
 pragma experimental ABIEncoderV2;
 
-/// @us The Future Is Ourz
-
 import {OurManagement} from "./OurManagement.sol";
 import {IZora} from "./interfaces/IZora.sol";
 import {IMirror} from "./interfaces/IMirror.sol";
