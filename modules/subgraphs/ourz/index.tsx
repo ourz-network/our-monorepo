@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 // Ourz Rinkeby subgraph
 const APIURL = "https://api.thegraph.com/subgraphs/name/nickadamson/ourzrinkebyv1";

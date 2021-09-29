@@ -1,19 +1,26 @@
+import { ApolloQueryResult } from "@apollo/client";
 import ourzSubgraph from "./index"; // Apollo Client
 import { SPLITS_BY_OWNER, SPLITS_BY_RECIPIENT, RECIPIENTS_BY_ID } from "./queries"; // GraphQL Queries
+import { OurProxy, NFTContract, SplitNFT, ERC20Transfer, User, SplitRecipient } from "./types";
+
+interface Data {
+  ourProxy: OurProxy;
+  user: User;
+}
 
 /**
  * Collect Split Proxies owned by a specific address
  * @param {String} owner ethereum address
  * @returns {Object} containing all split contracts owned by owner
  */
-export const getSplitRecipients = async (proxyAddress) => {
-  const query = await ourzSubgraph.query({
+export const getSplitRecipients = async (proxyAddress: string): Promise<SplitRecipient[]> => {
+  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: RECIPIENTS_BY_ID(proxyAddress),
   });
 
-  const data = await query.data;
-  if (data?.ourProxy?.splitRecipients) {
-    return data.ourProxy.splitRecipients;
+  const { ourProxy } = query.data;
+  if (ourProxy?.splitRecipients) {
+    return ourProxy.splitRecipients;
     // returns:
     //  [{
     //    "allocation": "#",
@@ -32,14 +39,14 @@ export const getSplitRecipients = async (proxyAddress) => {
  * @param {String} ownerAddress ethereum address
  * @returns {Object} containing all split contracts owned by owner
  */
-export const getOwnedSplits = async (ownerAddress) => {
-  const query = await ourzSubgraph.query({
+export const getOwnedSplits = async (ownerAddress: string): Promise<OurProxy[]> => {
+  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: SPLITS_BY_OWNER(ownerAddress),
   });
 
-  const data = await query.data;
-  if (data?.user?.ownedProxies) {
-    return data.user.ownedProxies;
+  const { user } = query.data;
+  if (user.ownedProxies) {
+    return user.ownedProxies;
     // returns:
     //  [{
     //     "id": "0x00", // ADDRESS OF SPLIT CONTRACT
@@ -74,14 +81,14 @@ export const getOwnedSplits = async (ownerAddress) => {
  * @param {String} recipientAddress ethereum address
  * @returns {Object} containing all split contracts claimable by recipient
  */
-export const getClaimableSplits = async (recipientAddress) => {
-  const query = await ourzSubgraph.query({
+export const getClaimableSplits = async (recipientAddress: string): Promise<SplitRecipient[]> => {
+  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: SPLITS_BY_RECIPIENT(recipientAddress),
   });
 
-  const data = await query.data;
-  if (data?.user?.recipientInfo) {
-    return data.user.recipientInfo;
+  const { user } = query.data;
+  if (user.recipientInfo) {
+    return user.recipientInfo;
   }
   return null;
 };

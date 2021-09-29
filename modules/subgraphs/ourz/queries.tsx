@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { gql } from "@apollo/client"; // graphql query language
+import { gql, DocumentNode } from "@apollo/client"; // graphql query language
 
 /**
  * Returns gql query to retrieve specific Proxy's Split Recipients
  * @param {Number} proxyAddress Proxy information to retrieve
  * @returns {gql} query with template string embedded
  */
-export const RECIPIENTS_BY_ID = (proxyAddress) => {
+export const RECIPIENTS_BY_ID = (proxyAddress: string): DocumentNode => {
   proxyAddress = proxyAddress.toString().toLowerCase();
   return gql`
     {
@@ -29,7 +29,7 @@ export const RECIPIENTS_BY_ID = (proxyAddress) => {
  * @param {String} owner address
  * @returns {gql} query with template string embedded
  */
-export const SPLITS_BY_OWNER = (owner) => {
+export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
   owner = owner.toString().toLowerCase();
   return gql`
     {
@@ -70,7 +70,7 @@ export const SPLITS_BY_OWNER = (owner) => {
  * @param {String} recipient address
  * @returns {gql} query with template string embedded
  */
-export const SPLITS_BY_RECIPIENT = (recipient) => {
+export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
   recipient = recipient.toString().toLowerCase();
   return gql`
     {

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { gql } from "@apollo/client"; // graphql query language
+import { DocumentNode, gql } from "@apollo/client"; // graphql query language
 
 // Collect all users and creation ids
 // export const ZORA_CREATIONS_BY_USER = gql`
@@ -17,7 +17,7 @@ import { gql } from "@apollo/client"; // graphql query language
  * @param {Number} id post infromation to retrieve
  * @returns {gql} query with template string embedded
  */
-export const ZORA_MEDIA_BY_ID = (id) => gql`
+export const ZORA_MEDIA_BY_ID = (id: number): DocumentNode => gql`
   {
     media(id:"${id}") {
       id,
@@ -35,7 +35,7 @@ export const ZORA_MEDIA_BY_ID = (id) => gql`
  * @param {String} owner address
  * @returns {gql} query with template string embedded
  */
-export const ZORA_MEDIA_BY_OWNER = (owner) => {
+export const ZORA_MEDIA_BY_OWNER = (owner: string): DocumentNode => {
   owner = owner.toString().toLowerCase();
   return gql`
     {
@@ -56,7 +56,7 @@ export const ZORA_MEDIA_BY_OWNER = (owner) => {
  * @param {String} creator address
  * @returns {gql} query with template string embedded
  */
-export const ZORA_MEDIA_BY_CREATOR = (creator) => {
+export const ZORA_MEDIA_BY_CREATOR = (creator: string): DocumentNode => {
   creator = creator.toString().toLowerCase();
   return gql`
     {
