@@ -24,7 +24,10 @@ const Wallet = () => {
     }
 
     if (address) {
-      getSignerProfile(address);
+      getSignerProfile(address).then(
+        () => {},
+        () => {}
+      );
     }
   }, [address]);
 
@@ -35,7 +38,7 @@ const Wallet = () => {
 
   // logs user out
   const handleDeactivate = async () => {
-    await disconnectWeb3();
+    disconnectWeb3();
   };
 
   return address ? ( // If user is authenticated

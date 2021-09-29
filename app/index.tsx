@@ -34,14 +34,14 @@ export default function GlobalProvider({ children }) {
               //   color: "#fff",
               // },
             },
-            styles: {
-              cardAuctionPricing: {
-                display: "hidden",
-              },
-              cardItemInfo: {
-                display: "hidden",
-              },
-            },
+            // styles: {
+            //   cardAuctionPricing: {
+            //     display: "hidden",
+            //   },
+            //   cardItemInfo: {
+            //     display: "hidden",
+            //   },
+            // },
           }}
         >
           {children}

@@ -18,7 +18,10 @@ const MintNFTFromExistingSplit = () => {
       }
     }
     if (proxyAddress) {
-      collectSplitRecipients(proxyAddress);
+      collectSplitRecipients(proxyAddress).then(
+        () => {},
+        () => {}
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proxyAddress]);

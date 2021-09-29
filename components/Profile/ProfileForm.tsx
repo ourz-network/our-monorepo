@@ -108,11 +108,14 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
 
           if (res.data) {
             // Push to new account page
-            Router.push(`/profile/${username}`);
+            Router.push(`/profile/${username}`).then(
+              () => {},
+              () => {}
+            );
             hide();
           } else {
             // Throw error with status code in case Fetch API req failed
-            throw new Error(res.status);
+            throw new Error(res.status.toString());
           }
         }
       } catch (error) {
@@ -172,7 +175,12 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const checkAvailibility = useEffect(() => {
-    user.username === "" ? setUsernameAvailable(false) : checkUsername();
+    user.username === ""
+      ? setUsernameAvailable(false)
+      : checkUsername(user.username).then(
+          () => {},
+          () => {}
+        );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.username]);
 
@@ -283,7 +291,10 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                                             pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
                                             validate: {
                                               available: async (v) => {
-                                                checkUsername(v);
+                                                checkUsername(v).then(
+                                                  () => {},
+                                                  () => {}
+                                                );
                                               },
                                             },
                                           })}
@@ -324,7 +335,10 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                                                   ...prev,
                                                   username: v,
                                                 }));
-                                                checkUsername(v);
+                                                checkUsername(v).then(
+                                                  () => {},
+                                                  () => {}
+                                                );
                                               },
                                             },
                                           })}

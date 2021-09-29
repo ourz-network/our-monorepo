@@ -32,7 +32,10 @@ const HomeNFT = (props) => {
       }
     }
     if (tokenId) {
-      getTokenInfo(tokenId);
+      getTokenInfo(tokenId).then(
+        () => {},
+        () => {}
+      );
       if (contentURI) {
         // setLoading(false);
       }

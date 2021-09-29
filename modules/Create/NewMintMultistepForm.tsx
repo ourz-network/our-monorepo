@@ -23,7 +23,14 @@ import MintConfirm from "./MintConfirm";
  */
 
 // eslint-disable-next-line consistent-return
-const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
+const NewMintMultistepForm = ({
+  proxyAddress,
+  splitRecipients,
+}: {
+  proxyAddress: string;
+  splitRecipients: Record<string, unknown>;
+  // eslint-disable-next-line consistent-return
+}): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const Router = useRouter();
   const { address, mintZoraSplit } = web3.useContainer(); // Global State
@@ -50,7 +57,7 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
   };
 
   useEffect(() => {
-    function formatChartData(recipients) {
+    function formatChartData(recipients): void {
       setFormData({
         ...formData,
         splitMetadata: recipients,
@@ -98,7 +105,10 @@ const NewMintMultistepForm = ({ proxyAddress, splitRecipients }) => {
       // minting as Split Proxy by Owner
       const tokenId = await mintZoraSplit({ formData, proxyAddress });
       if (tokenId) {
-        Router.push(`/nft/${tokenId}`);
+        Router.push(`/nft/${tokenId}`).then(
+          () => {},
+          () => {}
+        );
         setLoading(false);
       }
     } else {

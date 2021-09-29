@@ -36,7 +36,10 @@ const UserDashboard = () => {
       setLoading(false);
     }
     if (address) {
-      collectSplits(address);
+      collectSplits(address).then(
+        () => {},
+        () => {}
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);

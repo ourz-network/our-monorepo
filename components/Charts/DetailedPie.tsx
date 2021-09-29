@@ -1,13 +1,13 @@
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer, PieProps } from "recharts";
 import { useState } from "react";
 
-const DetailedPie = (props) => {
-  const { chartData } = props;
-  const { secondaryBool } = props;
+const DetailedPie = (data): JSX.Element => {
+  const { chartData } = data;
+  const { secondaryBool } = data;
   // https://recharts.org/en-US/examples/TwoLevelPieChart
   // https://recharts.org/en-US/examples/CustomActiveShapePieChart
   // eslint-disable-next-line no-shadow
-  const renderActiveShape = (props) => {
+  const renderActiveShape = (props: PieProps) => {
     const RADIAN = Math.PI / 180;
     const {
       cx,
@@ -23,10 +23,10 @@ const DetailedPie = (props) => {
     } = props;
     const sin = Math.sin(-RADIAN * midAngle);
     const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
+    const sx = Number(cx) + (Number(outerRadius) + 10) * cos;
+    const sy = Number(cy) + (Number(outerRadius) + 10) * sin;
+    const mx = Number(cx) + (Number(outerRadius) + 30) * cos;
+    const my = Number(cy) + (Number(outerRadius) + 30) * sin;
     const ex = mx + (cos >= 0 ? 1 : -1) * 22;
     const ey = my;
     const textAnchor = cos >= 0 ? "start" : "end";
@@ -48,10 +48,10 @@ const DetailedPie = (props) => {
         <Sector
           cx={cx}
           cy={cy}
-          startAngle={startAngle - 2}
-          endAngle={endAngle + 2}
-          innerRadius={outerRadius + 5}
-          outerRadius={outerRadius + 10}
+          startAngle={Number(startAngle) - 2}
+          endAngle={Number(endAngle) + 2}
+          innerRadius={Number(outerRadius) + 5}
+          outerRadius={Number(outerRadius) + 10}
           fill={fill}
         />
         <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
@@ -59,7 +59,7 @@ const DetailedPie = (props) => {
         <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#FFFFFF">{`${
           payload.name.length <= 14
             ? payload.name
-            : payload.name.substring(0, payload.name.indexOf(" ") + 7)
+            : payload.name.substring(0, Number(payload.name.indexOf(" ")) + 7)
         }`}</text>
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}

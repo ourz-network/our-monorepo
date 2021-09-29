@@ -1,17 +1,23 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import Button from "@/components/Button";
 
-const MintUpload = (props) => {
-  const {
-    handleMedia,
-    acceptedFiles,
-    acceptedFileItems,
-    getRootProps,
-    getInputProps,
-    thumbs,
-    next,
-  } = props;
-
+const MintUpload = ({
+  handleMedia,
+  acceptedFiles,
+  acceptedFileItems,
+  getRootProps,
+  getInputProps,
+  thumbs,
+  next,
+}: {
+  handleMedia: () => void;
+  acceptedFiles: Record<string, unknown>;
+  acceptedFileItems: Record<string, unknown>;
+  getRootProps: () => void;
+  getInputProps: () => void;
+  thumbs: JSX.Element;
+  next: () => void;
+}) => {
   // Because of react-dropzone, handleChange() from createMultiStepForm must be carried out manually for this step, then we can call next().
   const submitMedia = () => {
     handleMedia();

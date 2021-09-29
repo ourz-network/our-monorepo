@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { useRouter } from "next/router";
 import { ethers } from "ethers";
-import web3 from "@/app/web3";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import DetailedPie from "@/components/Charts/DetailedPie";
+import web3 from "@/app/web3";
 
 const NewSplit = () => {
   const Router = useRouter();
@@ -99,7 +99,10 @@ const NewSplit = () => {
     );
 
     if (proxyAddress) {
-      Router.push(`/create/mint/${proxyAddress}`);
+      Router.push(`/create/mint/${proxyAddress}`).then(
+        () => {},
+        () => {}
+      );
       // setLoading(false);
     }
   };

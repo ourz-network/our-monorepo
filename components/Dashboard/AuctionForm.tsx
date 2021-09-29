@@ -23,7 +23,10 @@ const AuctionForm = ({ tokenId, split, onClick }) => {
     const auctionId = await createZoraAuction(formData);
     if (auctionId) {
       onClick();
-      Router.push(`/nft/${tokenId}`);
+      Router.push(`/nft/${tokenId}`).then(
+        () => {},
+        () => {}
+      );
     }
   };
 

@@ -16,7 +16,10 @@ const CreateDashboard = () => {
   const Router = useRouter();
 
   const handleClick = (id) => {
-    Router.push(`/create/mint/${id}`);
+    Router.push(`/create/mint/${id}`).then(
+      () => {},
+      () => {}
+    );
   };
 
   useEffect(() => {
@@ -28,7 +31,10 @@ const CreateDashboard = () => {
       setLoading(false);
     }
     if (address) {
-      collectOwnedSplits(address);
+      collectOwnedSplits(address).then(
+        () => {},
+        () => {}
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);

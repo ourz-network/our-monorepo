@@ -1,20 +1,20 @@
-import Web3Modal from "web3modal"; // Web3Modal
-import { ethers, providers, Signer } from "ethers"; // Ethers
-import { useState, useEffect, useCallback } from "react"; // State management
-import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
 import {
-  Zora,
-  constructMediaData,
-  sha256FromBuffer,
   // generateMetadata,
   constructBidShares,
+  constructMediaData,
+  sha256FromBuffer,
+  Zora,
 } from "@zoralabs/zdk"; // Zora provider
+import { ethers, providers, Signer } from "ethers"; // Ethers
 import { NFTStorage } from "nft.storage";
+import { useCallback, useEffect, useState } from "react"; // State management
+import { createContainer } from "unstated-next"; // Unstated-next containerization
+import Web3Modal from "web3modal"; // Web3Modal
 import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle tree for splits
-import factoryJSON from "@/ethereum/abis/OurFactory.json";
-import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
+import proxyJSON from "@/ethereum/abis/OurProxy.json";
+import factoryJSON from "@/ethereum/abis/OurFactory.json";
 
 // ====== Web3Modal Config ======
 const providerOptions = {
@@ -382,7 +382,7 @@ function useWeb3() {
      * If user defined splits other than their own royalties,
      * format them for merkle tree & metadata
      * */
-    const { rootHash, splitsForMeta } = await formatSplits(formData);
+    const { rootHash, splitsForMeta } = formatSplits(formData);
 
     // change
     const owners = [address];
@@ -413,7 +413,7 @@ function useWeb3() {
       const constructorArgs = ethers.utils.defaultAbiCoder.encode(["bytes32"], [rootHash]);
       const salt = ethers.utils.keccak256(constructorArgs);
       const codeHash = ethers.utils.keccak256(proxyBytecode);
-      const proxyAddress = await ethers.utils.getCreate2Address(
+      const proxyAddress = ethers.utils.getCreate2Address(
         process.env.NEXT_PUBLIC_FACTORY_4,
         salt,
         codeHash

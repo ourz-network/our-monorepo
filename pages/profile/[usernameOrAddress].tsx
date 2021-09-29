@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useEffect } from "react"; // State management
+import { useState, useEffect, FC } from "react"; // State management
 import { useRouter } from "next/router"; // Page redirects (static routing)
 import web3 from "@/app/web3";
 import zoraSubgraph from "@/modules/subgraphs/zora/index"; // GraphQL client
@@ -11,7 +11,19 @@ import UserModel from "@/modules/mongodb/models/UserModel";
 import ProfileModel from "@/modules/mongodb/models/ProfileModel";
 import FollowModel from "@/modules/mongodb/models/FollowModel";
 
-const ProfilePage = ({
+interface ProfilePageProps {
+  linkUsername: string;
+  linkAddress: string;
+  user: Record<string, unknown>;
+  profileDetails: Record<string, unknown>;
+  followersLength: number;
+  followingLength: number;
+  userFollowStats: Record<string, unknown>;
+  postsToSet: Record<string, unknown>;
+  redirectUsername: string;
+}
+
+const ProfilePage: FC<ProfilePageProps> = ({
   linkUsername,
   linkAddress,
   user,
@@ -21,14 +33,17 @@ const ProfilePage = ({
   userFollowStats,
   postsToSet,
   redirectUsername,
-}) => {
+}): JSX.Element => {
   const [loading, setLoading] = useState(!(postsToSet?.length > 1)); // Global loading state
 
   const router = useRouter();
   useEffect(() => {
     // Static Redirect
     if (redirectUsername) {
-      router.push(`/profile/${redirectUsername}`);
+      router.push(`/profile/${redirectUsername}`).then(
+        () => {},
+        () => {}
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redirectUsername]);
@@ -75,7 +90,10 @@ const ProfilePage = ({
       }
     }
     if (user || linkAddress) {
-      collectOwnedMedia();
+      collectOwnedMedia().then(
+        () => {},
+        () => {}
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, linkAddress]); // Collect owned media on load

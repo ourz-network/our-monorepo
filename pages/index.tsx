@@ -2,11 +2,12 @@ import Head from "next/head";
 import React, { useState } from "react"; // React state management
 import { Zora } from "@zoralabs/zdk";
 import { ethers } from "ethers";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
 import getPostByID from "@/modules/subgraphs/zora/functions"; // Post collection helper
 import HomeNFT from "@/components/Cards/HomeNFT";
 
-const Home = ({ postsToSet, loadMoreStartIndex }) => {
+const Home = ({ postsToSet, loadMoreStartIndex }): JSX.Element => {
   const [posts, setPosts] = useState(postsToSet); // Posts array
   const [loading, setLoading] = useState(false); // Button loading state
   const [numPosts, setNumPosts] = useState(loadMoreStartIndex); // Number of loadable posts
@@ -88,8 +89,7 @@ const Home = ({ postsToSet, loadMoreStartIndex }) => {
   );
 };
 
-// eslint-disable-next-line consistent-return
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async (context) => {
   // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
   //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
   //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -121,17 +121,15 @@ export async function getStaticProps() {
         postsToSet.push(post);
       }
     })
-  );
+  ).then();
 
-  if (completeFetch) {
-    return {
-      props: {
-        postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-        loadMoreStartIndex: 3688,
-      },
-      revalidate: 60,
-    };
-  }
-}
+  return {
+    props: {
+      postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+      loadMoreStartIndex: 3688,
+    },
+    revalidate: 60,
+  };
+};
 
 export default Home;
