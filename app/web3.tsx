@@ -6,7 +6,7 @@ import {
   sha256FromBuffer,
   Zora,
 } from "@zoralabs/zdk"; // Zora provider
-import { ethers, providers, Signer } from "ethers"; // Ethers
+import { BigNumberish, ethers, providers, Signer } from "ethers"; // Ethers
 import { NFTStorage } from "nft.storage";
 import { useCallback, useEffect, useState } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
@@ -15,7 +15,15 @@ import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import factoryJSON from "@/ethereum/abis/OurFactory.json";
+import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
+type FormValues = {
+  id: string | number;
+  account: string;
+  name: string;
+  role: string;
+  shares: number;
+};
 // ====== Web3Modal Config ======
 const providerOptions = {
   walletconnect: {
@@ -31,9 +39,13 @@ const providerOptions = {
   },
 };
 
+interface Modal extends Web3Modal {
+  connect(): Promise<providers.ExternalProvider>;
+}
+
 function useWeb3() {
   // ====== State ======
-  const [modal, setModal] = useState<Web3Modal | undefined>(undefined); // Web3Modal
+  const [modal, setModal] = useState<Modal | undefined>(undefined); // Web3Modal
   const [address, setAddress] = useState<string | undefined>(undefined); // User's ETH address
   const [network, setNetwork] = useState<providers.Network | undefined>(undefined); // Connected ChainID
   const [injectedProvider, setInjectedProvider] = useState<
@@ -64,7 +76,7 @@ function useWeb3() {
   const authenticate = async () => {
     // Initiate web3Modal
     const web3Provider = await modal.connect();
-    await web3Provider.enable();
+    // await web3Provider.enable();
 
     // Generate ethers provider
     const provider = new providers.Web3Provider(web3Provider);
@@ -99,10 +111,10 @@ function useWeb3() {
 
   // ====== Event Subscription ======
   const loadWeb3Modal = useCallback(async () => {
-    const provider: Web3Modal = await modal.connect();
-    await provider.enable();
+    const provider = (await modal.connect()) as Web3Modal;
+    // await provider.enable();
 
-    setInjectedProvider(new providers.Web3Provider(provider));
+    // setInjectedProvider(new providers.Web3Provider(provider));
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     provider.on("chainChanged", async () => {
@@ -171,7 +183,7 @@ function useWeb3() {
    * Formats for: merkleTree to use when calling OurFactory,
    * & metadata for zNFT's and Subgraph.
    */
-  const formatSplits = (formData: { [x: string]: any; id: any }[]) => {
+  const formatSplits = (formData: FormValues[]) => {
     // see https://github.com/mirror-xyz/splits
     let splitsForMerkle = []; // Required Format: [{account: '0x..', allocation: #}]
 
@@ -183,12 +195,12 @@ function useWeb3() {
 
     // change property names + add allocations for ease of use when claiming funds
     // webassembly in subgraph is tricky... hence toString() of Numbers. BigInt, more like BigBye
-    splitsForMeta = splitsForMeta.map((split) => ({
+    splitsForMeta = splitsForMeta.map((split: SplitRecipient & { account: string }) => ({
       address: split.account,
       name: split.name,
       role: split.role,
       shares: split.shares.toString(),
-      allocation: Number((split.shares * 1000000).toFixed(0)).toString(),
+      allocation: Number((Number(split.shares) * 1000000).toFixed(0)).toString(),
     }));
 
     // Format splits[] for merkle-tree. WILL NOT WORK if ENS names aren't translated to 0x0
@@ -211,12 +223,12 @@ function useWeb3() {
    *
    */
   const createCryptomedia = async (cryptomedia: {
-    title: any;
-    description: any;
-    mediaKind: any;
-    splitMetadata: any;
+    title: string;
+    description: string;
+    mediaKind: string;
+    splitMetadata: JSON;
     mediaBlob: Blob | ArrayBuffer | { valueOf(): ArrayBuffer | SharedArrayBuffer };
-    creatorBidShare: any;
+    creatorBidShare: number;
   }) => {
     // Generate metadataJSON
     // const metadata = {
@@ -333,6 +345,7 @@ function useWeb3() {
      *  uint8 curatorFeePercentage
      *  address auctionCurrency (must be 0x00 or WETH)
      */
+    const ReservePrice: BigNumberish = ethers.utils.parseUnits(reservePrice.toString(), "ether");
     const auctionTx = await proxyPylon.createZoraAuction(
       tokenId,
       // zora media rinkeby
@@ -340,7 +353,7 @@ function useWeb3() {
       duration,
       // parseUnits(`${reservePrice}`, "ether"),
       // ethers.BigNumber.from(reservePrice),
-      ethers.utils.parseUnits(`${reservePrice}`, "ether"),
+      ReservePrice,
       curator || proxyAddress,
       curatorFeePercentage || Number(0),
       auctionCurrency || "0x0000000000000000000000000000000000000000"

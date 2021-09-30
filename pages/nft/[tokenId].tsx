@@ -6,8 +6,17 @@ import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
 import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
+import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
-const NFTView = ({ tokenId, creator, recipients }) => {
+const NFTView = ({
+  tokenId,
+  creator,
+  recipients,
+}: {
+  tokenId: string;
+  creator: string;
+  recipients: string;
+}): JSX.Element => {
   // const [loading, setLoading] = useState(true); // Global loading state
   const { address } = web3.useContainer();
   const [firstSale, setFirstSale] = useState();
@@ -88,7 +97,7 @@ const NFTView = ({ tokenId, creator, recipients }) => {
 
 // Run on server build
 // eslint-disable-next-line consistent-return
-export async function getStaticPaths() {
+export async function getStaticPaths(): Promise<{ paths: any[]; fallback: boolean }> {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -109,7 +118,12 @@ export async function getStaticPaths() {
 }
 
 // Run on page load
-export async function getStaticProps(context) {
+export async function getStaticProps(
+  context
+): Promise<
+  | { props: { tokenId: any; creator: string; recipients: SplitRecipient[] }; revalidate: number }
+  | { props: { tokenId: any; creator: string; recipients?: undefined }; revalidate: number }
+> {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,

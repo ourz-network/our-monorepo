@@ -1,2 +1,2 @@
-const FAQ = () => <div>LandingPage</div>;
+const FAQ = (): JSX.Element => <div>LandingPage</div>;
 export default FAQ;

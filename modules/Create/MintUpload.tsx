@@ -17,7 +17,7 @@ const MintUpload = ({
   getInputProps: () => void;
   thumbs: JSX.Element;
   next: () => void;
-}) => {
+}): JSX.Element => {
   // Because of react-dropzone, handleChange() from createMultiStepForm must be carried out manually for this step, then we can call next().
   const submitMedia = () => {
     handleMedia();
@@ -25,7 +25,7 @@ const MintUpload = ({
   };
 
   return (
-    <div className="flex flex-row justify-evenly items-center w-full h-full bg-dark-background">
+    <div className="flex flex-col justify-evenly items-center w-full h-full md:flex-row bg-dark-background">
       <div className="flex flex-col shadow-xl lg:-mt-32" id="dropzone">
         <form>
           <div

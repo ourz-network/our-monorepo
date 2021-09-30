@@ -37,13 +37,10 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
         ownedProxies {
           id
           nickname
-          proxyOwners {
-            id
-          }
+          creator { id }
+          proxyOwners { id }
           splitRecipients {
-            user {
-              id
-            }
+            user { id }
             name
             role
             shares
@@ -53,9 +50,7 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
           }
           creations {
             tokenId
-            contract {
-              id
-            }
+            contract { id }
           }
           ETH
           needsIncremented
@@ -79,13 +74,10 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
           splitProxy {
             id
             nickname
-            proxyOwners {
-              id
-            }
+            creator { id }
+            proxyOwners { id }
             splitRecipients {
-              user {
-                id
-              }
+              user { id }
               name
               role
               shares
@@ -94,9 +86,7 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
             }
             creations {
               tokenId
-              contract {
-                id
-              }
+              contract { id }
             }
             ETH
           }

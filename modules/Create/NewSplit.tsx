@@ -1,28 +1,38 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, UseFieldArrayReturn, useForm } from "react-hook-form";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import web3 from "@/app/web3";
 
-const NewSplit = () => {
+export type FormValues = {
+  id: string | number;
+  account: string;
+  name: string;
+  role: string;
+  shares: number;
+};
+
+const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();
   const { address, newProxy } = web3.useContainer(); // Global State
 
   const [ownerData, setOwnerData] = useState({
+    id: undefined,
     account: address,
     name: "",
     role: "",
     shares: 100,
   });
 
-  const [nickname, setNickname] = useState();
+  const [nickname, setNickname] = useState<string | undefined>();
 
   const [chartData, setChartData] = useState([{ name: "Creator", shares: 100 }]);
 
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOwnerData({
       ...ownerData,
       [event.target.name]: event.target.value,
@@ -42,28 +52,35 @@ const NewSplit = () => {
    *  A bit overkill for the rest of the form, but the easiest way to achieve
    *  live-updating fields & charts, AFAIK.
    */
-  const { control, register, setValue, getValues, handleSubmit, watch } = useForm({
+
+  const { control, register, watch } = useForm({
     mode: "all",
   });
   // https://react-hook-form.com/api/usefieldarray/
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "splits",
-  });
+  const { fields, append, remove }: UseFieldArrayReturn<FieldValues, "splits", "id"> =
+    useFieldArray({
+      control,
+      name: "splits",
+    });
   // Live updates for pie chart
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const watchSplits = watch("splits");
-  const controlledFields = fields.map((field, index) => ({
-    ...field,
-    ...watchSplits[index],
-  }));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const controlledFields: FormValues[] = fields.map(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    (field: Record<"id", string | number>, index: number) => ({
+      ...field,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      ...watchSplits[index],
+    })
+  );
   // on 'Add Another'
   const onAppend = () => {
     append({ account: "", name: "", role: "", shares: 0 });
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     updateChart();
   };
   const calculateOwnerShares = () => {
-    const totalSplits = controlledFields.reduce(
+    const totalSplits: number = controlledFields.reduce(
       (accumulator, index) => accumulator + Number(index.shares),
       0
     );
@@ -90,7 +107,6 @@ const NewSplit = () => {
   };
 
   const onSubmit = async () => {
-    setLoading(true);
     const splitData = controlledFields;
     splitData.unshift(ownerData);
     const proxyAddress = await newProxy(
@@ -103,7 +119,6 @@ const NewSplit = () => {
         () => {},
         () => {}
       );
-      // setLoading(false);
     }
   };
 
@@ -131,7 +146,7 @@ const NewSplit = () => {
             </p>
           </div>
           <div className="mx-auto -my-32 w-full max-w-500px">
-            <DetailedPie chartData={chartData} secondaryBool={false} />
+            <DetailedPie chartData={chartData || null} secondaryBool={false} />
           </div>
         </div>
         <form className="justify-center -mt-1 w-full text-center">
@@ -142,7 +157,7 @@ const NewSplit = () => {
               id="splitNickname"
               name="nickname"
               placeholder="Nickname"
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNickname(e.target.value)}
             />
           </label>
           <div className="flex flex-col justify-center w-full border-b">
@@ -195,7 +210,7 @@ const NewSplit = () => {
               </li>
               {controlledFields.map((field, index) => (
                 <li
-                  key={field.id}
+                  key={index}
                   className="flex flex-nowrap justify-center pt-3 mx-auto mb-3 space-x-3 w-full border-t border-dark-border"
                 >
                   <input
@@ -203,14 +218,10 @@ const NewSplit = () => {
                     type="text"
                     placeholder="Ethereum Address 0x00..."
                     defaultValue={field.account}
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...register(
-                      `splits.${index}.account`,
-                      { required: true },
-                      {
-                        validate: (value) => ethers.utils.isAddress(value) === true,
-                      }
-                    )}
+                    {...register(`splits.${index}.account` as const, {
+                      required: true,
+                      validate: (value) => ethers.utils.isAddress(value) === true,
+                    })}
                     onBlur={updateChart}
                     className="p-3 w-1/3 h-auto text-sm border shadow border-dark-border"
                   />
@@ -219,8 +230,7 @@ const NewSplit = () => {
                     type="text"
                     placeholder="Collaborator Name / Alias"
                     defaultValue={field.name}
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...register(`splits.${index}.name`)}
+                    {...register(`splits.${index}.name` as const)}
                     onBlur={updateChart}
                     className="p-3 w-auto text-sm border shadow border-dark-border min-w-1/4"
                   />
@@ -229,15 +239,13 @@ const NewSplit = () => {
                     type="text"
                     placeholder="Role / Description"
                     defaultValue={field.role}
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...register(`splits.${index}.role`)}
+                    {...register(`splits.${index}.role` as const)}
                     onBlur={updateChart}
                     className="p-3 w-auto text-sm border shadow border-dark-border min-w-1/4"
                   />
                   <input
                     name={`splits.${index}.shares`}
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...register(`splits.${index}.shares`, {
+                    {...register(`splits.${index}.shares` as const, {
                       required: true,
                       min: 0,
                       max: 100,

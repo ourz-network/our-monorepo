@@ -5,7 +5,19 @@ import { toTrimmedAddress } from "@/ethereum/utils";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 
-const FullPageNFT = ({ creator, tokenId, ownAccount, chartData, recipients }) => {
+const FullPageNFT = ({
+  creator,
+  tokenId,
+  ownAccount,
+  chartData,
+  recipients,
+}: {
+  creator: any;
+  tokenId: any;
+  ownAccount: any;
+  chartData: any;
+  recipients: any;
+}): JSX.Element => {
   const creatorAddress = creator;
   // const [loading, setLoading] = useState(true);
 

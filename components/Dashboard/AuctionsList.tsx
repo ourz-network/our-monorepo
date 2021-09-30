@@ -2,7 +2,7 @@ import { FetchStaticData } from "@zoralabs/nft-hooks";
 import { NFTPreview } from "@zoralabs/nft-components";
 import { useRouter } from "next/router";
 
-const AuctionsList = ({ tokens }) => {
+const AuctionsList = ({ tokens }: { tokens: any[] }): JSX.Element => {
   const router = useRouter();
 
   return (

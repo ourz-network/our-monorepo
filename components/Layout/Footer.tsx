@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const Footer = () => (
+const Footer = (): JSX.Element => (
   <></>
   //   <div id="footerContainer" className="relative bottom-0 flex flex-row justify-between w-full border-2">
   //     <div id="navLeft" className="self-center p-6">

@@ -10,7 +10,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Wallet = () => {
+const Wallet = (): JSX.Element => {
   const { address, network, authenticate, disconnectWeb3 } = web3.useContainer();
 
   const [signerProfile, setSignerProfile] = useState(); // Check for user on Ourz' user profile api.
@@ -37,12 +37,12 @@ const Wallet = () => {
   };
 
   // logs user out
-  const handleDeactivate = async () => {
+  const handleDeactivate = () => {
     disconnectWeb3();
   };
 
   return address ? ( // If user is authenticated
-    <div className="flex flex-col justify-center items-center md:justify-end md:flex-row lg:pr-12 md:flex-1 lg:w-0">
+    <div className="flex justify-center items-center my-2 md:justify-end md:my-0 lg:pr-12 md:flex-1 lg:w-0">
       <Popover className="relative bg-dark-background">
         {() => (
           <>
@@ -151,7 +151,14 @@ const Wallet = () => {
         )}
       </Popover>
       <Link href="/create" passHref>
-        <Button text={network?.name === "rinkeby" ? `Create` : `Switch to Rinkeby`} isMain />
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a>
+          <Button
+            text={network?.name === "rinkeby" ? `Create` : `Switch to Rinkeby`}
+            isMain
+            onClick={undefined}
+          />
+        </a>
       </Link>
     </div>
   ) : (

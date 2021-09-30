@@ -57,7 +57,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = () => {
+const Navbar = (): JSX.Element => {
   const { address } = web3.useContainer(); // Global state
 
   return (

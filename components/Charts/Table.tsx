@@ -1,16 +1,13 @@
 import Link from "next/link";
 import { toTrimmedAddress } from "@/ethereum/utils";
 
-const Table = ({ recipients }): JSX.Element => (
+const Table = ({ recipients }: { recipients: any }): JSX.Element => (
   <>
     <div className="p-2 mb-2 border border-dark-border">
       <div className="text-xl text-center text-dark-primary">{`${recipients?.length} Split Recipients`}</div>
-      <table className="mt-2 w-full table-fixed">
+      <table className="flex-col mt-2 w-auto table-fixed">
         <thead>
           <tr>
-            <th className="w-3/12 font-normal text-center border text-dark-primary border-dark-border">
-              Recipient
-            </th>
             <th className="w-4/12 font-normal text-center border text-dark-primary border-dark-border">
               Name
             </th>
@@ -25,13 +22,15 @@ const Table = ({ recipients }): JSX.Element => (
         <tbody>
           {recipients?.map((split, i) => (
             <tr key={split.id} className={i % 2 === 0 ? `bg-dark-background` : ``}>
-              <td className="w-3/12 text-center overflow-ellipsis border text-dark-primary border-dark-border hover:underline">
+              {/* <td className="w-3/12 text-center overflow-ellipsis border text-dark-primary border-dark-border hover:underline">
                 <Link href={`/profile/${split.user.id}`} className="cursor-pointer">
                   {toTrimmedAddress(split.user.id)}
                 </Link>
-              </td>
-              <td className="text-center border text-dark-primary border-dark-border">
-                {split.name}
+              </td> */}
+              <td className="text-center border text-dark-primary border-dark-border hover:underline">
+                <Link href={`/profile/${split.user.id}`} className="cursor-pointer">
+                  {split.name}
+                </Link>
               </td>
               <td className="text-center border text-dark-primary border-dark-border">
                 {split.role}

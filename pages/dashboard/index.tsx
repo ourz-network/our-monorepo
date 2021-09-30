@@ -6,11 +6,11 @@ import { getOwnedSplits, getClaimableSplits } from "@/modules/subgraphs/ourz/fun
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
 import SplitFull from "@/components/Dashboard/SplitFull";
+import Sidebar from "@/components/Dashboard/Sidebar";
 
-const UserDashboard = () => {
+const UserDashboard = (): JSX.Element => {
   const { address, network } = web3.useContainer();
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("owned");
   const [ownedSplits, setOwnedSplits] = useState([]);
   const [claimableSplits, setClaimableSplits] = useState([]);
 
@@ -58,87 +58,95 @@ const UserDashboard = () => {
     setShowFull(true);
   };
 
-  const handleTabs = (clickedTab) => {
-    setActiveTab(clickedTab);
-  };
-
   return (
     <PageLayout>
-      <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-        {showFull && (
-          <SplitFull
-            split={selectedSplit}
-            userInfo={userSplitDetails}
-            isOwned={selectedIsOwned}
-            showFull={showFull}
-            setShowFull={setShowFull}
-          />
-        )}
+      <div className="flex w-full min-h-screen">
+        <Sidebar split={selectedSplit} showFull={showFull} />
+        <div
+          id="OLD_CONTENT"
+          className="flex flex-col w-full min-h-screen h-min bg-dark-background"
+        >
+          {showFull && (
+            <SplitFull
+              split={selectedSplit}
+              userInfo={userSplitDetails}
+              isOwned={selectedIsOwned}
+              showFull={showFull}
+              setShowFull={setShowFull}
+            />
+          )}
 
-        {(loading || network.name !== "rinkeby") && (
-          <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
-            Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
-          </p>
-        )}
-        {!loading && network.name === "rinkeby" && (
-          <>
-            {!showFull && (
-              <div className="flex justify-center mx-auto space-x-2 w-full border-b border-dark-border bg-dark-accent text-dark-secondary">
-                <Button
-                  text={`${activeTab === "recipient" ? "Show" : ""} Owned Splits`}
-                  onClick={() => handleTabs("owned")}
-                />
-                <Button
-                  text={`${activeTab === "owned" ? "Show" : ""} Claimable Splits`}
-                  onClick={() => handleTabs("recipient")}
-                />
-              </div>
-            )}
-            {activeTab === "owned" && !showFull && (
-              <>
-                <h1 className="mx-auto mt-8 text-center text-dark-primary">Owned Splits:</h1>
-                <div className="grid grid-cols-1 auto-rows-auto gap-8 mx-auto mt-4 w-full h-full min-w-screen lg:grid-cols-3">
-                  {ownedSplits.map((OurProxy, i) => (
-                    <SplitThumb
-                      key={`own-${OurProxy.id}`}
-                      ownedSplit={OurProxy}
-                      Router={Router}
-                      userInfo={userSplitDetails}
-                      handleClick={() => handleClickThumbnail(OurProxy, true)}
-                    />
-                  ))}
+          {(loading || network.name !== "rinkeby") && (
+            <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
+              Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
+            </p>
+          )}
+          {!loading && network.name === "rinkeby" && (
+            <>
+              {/* {!showFull && (
+                <div className="flex justify-center mx-auto space-x-2 w-full border-b border-dark-border bg-dark-accent text-dark-secondary">
+                  <Button
+                    text={`${activeTab === "recipient" ? "Show" : ""} Owned Splits`}
+                    onClick={() => handleTabs("owned")}
+                    isMain={undefined}
+                  />
+                  <Button
+                    text={`${activeTab === "owned" ? "Show" : ""} Claimable Splits`}
+                    onClick={() => handleTabs("recipient")}
+                    isMain={undefined}
+                  />
                 </div>
-              </>
-            )}
-            {!ownedSplits && (
-              <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
-                You will need to create a new Split first.
-              </p>
-            )}
+              )} */}
+              {ownedSplits.length > 0 && !showFull && (
+                <>
+                  <h1 className="mx-auto mt-8 text-center text-dark-primary">
+                    You are a whitelisted manager of:
+                  </h1>
+                  <div className="grid grid-cols-1 auto-rows-auto gap-8 mx-auto mt-4 w-full h-full min-w-screen lg:grid-cols-3">
+                    {ownedSplits.map((OurProxy, i) => (
+                      <SplitThumb
+                        key={`own-${OurProxy.id}`}
+                        ownedSplit={OurProxy}
+                        Router={Router}
+                        userInfo={userSplitDetails}
+                        handleClick={() => handleClickThumbnail(OurProxy, true)}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+              {ownedSplits.length === 0 && !showFull && (
+                <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
+                  You will need to create a new Split first.
+                </p>
+              )}
 
-            {activeTab === "recipient" && !showFull && (
-              <>
-                <h1 className="mx-auto mt-8 text-center text-dark-primary">Recipient of:</h1>
-                <div className="grid grid-cols-1 auto-rows-min gap-8 mx-auto mt-4 w-full h-full lg:grid-cols-3">
-                  {claimableSplits.map((OurProxy, i) => (
-                    <SplitThumb
-                      key={`rec-${OurProxy.id}`}
-                      claimableSplit={OurProxy}
-                      Router={Router}
-                      userInfo={userSplitDetails}
-                      handleClick={() => handleClickThumbnail(OurProxy.splitProxy, false)}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-            {!claimableSplits && (
-              <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
-                You are not the recipient of any Splits.
-              </p>
-            )}
-          </>
-        )}
+              {claimableSplits.length > 0 && !showFull && (
+                <>
+                  <h1 className="mx-auto mt-8 text-center text-dark-primary">
+                    You are a recipient of:
+                  </h1>
+                  <div className="grid grid-cols-1 auto-rows-min gap-8 mx-auto mt-4 w-full h-full lg:grid-cols-3">
+                    {claimableSplits.map((OurProxy, i) => (
+                      <SplitThumb
+                        key={`rec-${OurProxy.id}`}
+                        claimableSplit={OurProxy}
+                        Router={Router}
+                        userInfo={userSplitDetails}
+                        handleClick={() => handleClickThumbnail(OurProxy.splitProxy, false)}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+              {claimableSplits.length === 0 && !showFull && (
+                <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
+                  You are not the recipient of any Splits.
+                </p>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </PageLayout>
   );

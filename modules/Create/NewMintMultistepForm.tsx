@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */ // next/image not necessary for upload flow
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
@@ -12,6 +12,22 @@ import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // GraphQL 
 import MintUpload from "./MintUpload";
 import MintDetails from "./MintDetails";
 import MintConfirm from "./MintConfirm";
+
+interface MintForm {
+  media: File;
+  mediaKind: string;
+  mediaPreview: string | URL;
+  mediaBlob: string | ArrayBuffer;
+  title: string;
+  description: string;
+  creatorBidShare: number;
+  splitMetadata: string;
+  mintSuccess: boolean;
+}
+interface DropzoneFile extends File {
+  path: string;
+  preview: URL;
+}
 
 /** NewMintMultistepForm()
  * Maintains state while navigating through a multi-step form to mint an NFT.
@@ -37,15 +53,15 @@ const NewMintMultistepForm = ({
   const [firstSale, setFirstSale] = useState();
   const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    media: "",
-    mediaKind: "",
-    mediaPreview: "",
-    mediaBlob: "",
-    title: "",
-    description: "",
+  const [formData, setFormData] = useState<MintForm>({
+    media: null,
+    mediaKind: null,
+    mediaPreview: null,
+    mediaBlob: null,
+    title: null,
+    description: null,
     creatorBidShare: 10,
-    splitMetadata: "",
+    splitMetadata: null,
     mintSuccess: false,
   });
 
@@ -91,7 +107,7 @@ const NewMintMultistepForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [splitRecipients, formData.creatorBidShare]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
@@ -127,7 +143,7 @@ const NewMintMultistepForm = ({
   /** react-dropzone
    * Handles upload of images and previews throughout the steps.
    * */
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<(File & { preview: string })[] | undefined>([]);
   const handleMedia = () => {
     // eslint-disable-next-line prefer-destructuring
     formData.media = files[0];
@@ -142,8 +158,12 @@ const NewMintMultistepForm = ({
    * However, further access to the file is needed for Zora ZDK's sha256FromBuffer().
    * Reference: https://react-dropzone.js.org/ > Usage > the first 'Warning' header
    */
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
+  const onDrop: <T extends File>(
+    acceptedFiles: T[],
+    fileRejections: FileRejection[],
+    event: DropEvent
+  ) => void = useCallback((dropzoneFiles) => {
+    dropzoneFiles.forEach((file) => {
       // Takes the acceptedFile and reads it for uploading as a blob.
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
@@ -159,7 +179,7 @@ const NewMintMultistepForm = ({
 
     // Preview Thumbnails
     setFiles(
-      acceptedFiles.map((file) =>
+      dropzoneFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
         })
@@ -175,7 +195,7 @@ const NewMintMultistepForm = ({
   });
 
   // Info about upload, delete later.
-  const acceptedFileItems = acceptedFiles.map((file) => (
+  const acceptedFileItems = acceptedFiles.map((file: File & { path: string }) => (
     <li key={file.path}>
       {file.path} - {file.size} bytes - {file.type}
     </li>
@@ -183,13 +203,14 @@ const NewMintMultistepForm = ({
 
   // Mapping is not exactly necessary, only 1 file can be uploaded, but too lazy to rewrite.
   // eslint-disable-next-line array-callback-return
-  const thumbs = files.map((file) => {
+  const thumbs = files.map((file) => (
     <div className="box-border inline-flex p-5" key={file.name}>
       <div className="flex overflow-hidden min-w-0 h-96">
         <img src={file.preview} className="block w-auto h-full" alt="Preview of your upload" />
       </div>
-    </div>;
-  });
+    </div>
+  ));
+
   useEffect(
     () => () => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));

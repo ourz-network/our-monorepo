@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const catchErrors = (error) => {
+const catchErrors = ({ error }: { error: any }): any => {
   let errorMsg;
 
   if (error.response) {

@@ -7,7 +7,7 @@ import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
 import NewSplit from "@/modules/Create/NewSplit";
 
-const CreateDashboard = () => {
+const CreateDashboard = (): JSX.Element => {
   const [loading, setLoading] = useState(true); // Global loading state
   const [ownedSplits, setOwnedSplits] = useState([]);
   const [newSplit, setNewSplit] = useState(false);

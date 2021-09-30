@@ -1,2 +1,2 @@
-const Docs = () => <div>LandingPage</div>;
+const Docs = (): JSX.Element => <div>LandingPage</div>;
 export default Docs;

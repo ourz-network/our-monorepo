@@ -7,7 +7,7 @@ import ProfileModel from "@/modules/mongodb/models/ProfileModel";
 
 // const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
-export default async function handler(req, res) {
+export default async function handler(req, res): Promise<any> {
   const { method } = req;
 
   await connectDB();
@@ -28,14 +28,14 @@ export default async function handler(req, res) {
       break;
     case "POST":
       // eslint-disable-next-line no-case-declarations
-      const { ethAddress, username } = req.body;
+      const { ethAddress, desiredUsername } = req.body;
 
       try {
         let user;
         user = await UserModel.findOne({ ethAddress });
-        user = await UserModel.findOne({ username });
+        user = await UserModel.findOne({ desiredUsername });
         user = await UserModel.findOne({
-          username_lower: username?.toLowerCase(),
+          username_lower: desiredUsername?.toLowerCase(),
         });
 
         if (user) {
@@ -44,12 +44,14 @@ export default async function handler(req, res) {
 
         user = new UserModel({
           ethAddress,
-          username,
-          username_lower: username?.toLowerCase(),
+          username: desiredUsername,
+          username_lower: desiredUsername?.toLowerCase(),
         });
 
         await user.save((err) => {
           if (err) {
+            // eslint-disable-next-line no-console
+            console.log(err);
             return res.status(401).send(err);
           }
           // new UserModel({ user: user._id, social: {} }).save();

@@ -3,7 +3,15 @@ import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import Button from "@/components/Button";
 
-const AuctionForm = ({ tokenId, split, onClick }) => {
+const AuctionForm = ({
+  tokenId,
+  split,
+  onClick,
+}: {
+  tokenId: string;
+  split: string;
+  onClick: () => void;
+}): JSX.Element => {
   const { createZoraAuction } = web3.useContainer();
   const Router = useRouter();
 

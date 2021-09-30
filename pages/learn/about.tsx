@@ -1,2 +1,2 @@
-const About = () => <div>LandingPage</div>;
+const About = (): JSX.Element => <div>LandingPage</div>;
 export default About;

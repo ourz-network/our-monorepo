@@ -474,3 +474,7 @@ export type ReserveAuction = {
   // "The block number at which the auction end function was called"
   finalizedAtBlockNumber: BigInt;
 };
+
+// export type Post = {
+//   metadata: ;
+// }

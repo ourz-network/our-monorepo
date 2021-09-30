@@ -10,7 +10,17 @@ import DashboardNFT from "@/components/Cards/DashboardNFT";
 import Table from "@/components/Charts/Table";
 import web3 from "@/app/web3";
 
-const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
+const SplitFull = ({
+  split,
+  isOwned,
+  showFull,
+  setShowFull,
+}: {
+  split: any;
+  isOwned: boolean;
+  showFull: boolean;
+  setShowFull: () => void;
+}): JSX.Element => {
   const Router = useRouter();
   const { claimFunds } = web3.useContainer();
   const { data, loading, error } = useAuctions(split.id);
@@ -53,10 +63,10 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
               type="button"
               href="#"
               tabIndex="0"
-              className="absolute top-4 right-4 text-dark-primary hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
+              className="absolute top-4 right-4 text-dark-primary hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-12 lg:right-10"
               onClick={() => setShowFull(false)}
             >
-              <span className="text-ourange-400">Back</span>
+              <span className="p-2 border text-ourange-400 border-dark-border">Go Back</span>
             </button>
             {showDialog && dialog === "auction" && (
               <ActionDialog showDialog={showDialog} setShowDialog={setShowDialog}>
@@ -68,26 +78,19 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
                 />
               </ActionDialog>
             )}
-            <div className="flex justify-around w-full">
-              <div className="w-1/3">
-                <Table recipients={split.splitRecipients} />
-              </div>
-
-              <div className="p-2 w-1/2 border h-min border-dark-border">
-                <h1 className="text-xl font-bold tracking-widest text-dark-primary">
-                  {split.nickname}
-                </h1>
-                <h2 className="text-sm font-extrabold text-dark-secondary sm:pr-12">{split.id}</h2>
-                <div className="flex gap-4 items-baseline mt-4">
-                  <h4 className="text-lg font-medium whitespace-pre-wrap text-dark-primary">
-                    {split.ETH ? utils.formatEther(split.ETH) : 0} ETH unclaimed in Split.
-                  </h4>
-                  {split.ETH > 0 && <Button text="Claim" onClick={() => clickClaim()} />}
-                </div>
-                {isOwned && (
-                  <div className="flex gap-4 items-baseline p-4 mx-auto mt-8 w-min border border-dark-border">
-                    <Button text="Mint" onClick={() => Router.push(`/create/mint/${split.id}`)} />
-                    {/* <Button 
+            <div className="p-4 w-full text-center border h-min border-dark-border">
+              <h1 className="text-xl font-bold tracking-widest text-dark-primary">
+                {split.nickname}
+              </h1>
+              <h2 className="text-sm font-extrabold text-dark-secondary">{split.id}</h2>
+              <h4 className="mt-2 text-lg font-medium whitespace-pre-wrap text-dark-primary">
+                {split.ETH ? utils.formatEther(split.ETH) : 0} ETH unclaimed in Split.
+              </h4>
+              {split.ETH > 0 && <Button text="Claim" onClick={() => clickClaim()} />}
+              {isOwned && (
+                <div className="flex gap-4 items-baseline p-4 mx-auto my-4 w-min border border-dark-border">
+                  <Button text="Mint" onClick={() => Router.push(`/create/mint/${split.id}`)} />
+                  {/* <Button 
                       text="Curate"
                       onClick={''}
                     />
@@ -99,9 +102,8 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
                       text="PartyBid"
                       onClick={''}
                     /> */}
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
           <p className="mt-4 text-2xl text-center text-dark-primary">
@@ -117,7 +119,7 @@ const SplitFull = ({ split, isOwned, showFull, setShowFull }) => {
                 {split?.creations?.length > 0 ? (
                   <div
                     id="medias"
-                    className="flex flex-col gap-4 justify-evenly justify-items-center content-evenly mx-4 md:grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 max-w-auto"
+                    className="flex gap-4 justify-center justify-items-center content-evenly mx-auto space-x-4 md:grid 2xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 max-w-auto"
                   >
                     {split.creations.map((creation, i) => (
                       <div key={creation.id} className="flex justify-center w-full h-full">

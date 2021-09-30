@@ -122,7 +122,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
 };
 
 // Run on server build
-export async function getStaticPaths() {
+export async function getStaticPaths(): Promise<{ paths: any; fallback: boolean }> {
   await connectDB();
 
   try {
@@ -139,7 +139,54 @@ export async function getStaticPaths() {
 
 // Run on page load
 // eslint-disable-next-line consistent-return
-export async function getStaticProps(context) {
+export async function getStaticProps(context): Promise<
+  | {
+      props: {
+        redirectUsername: any;
+        linkAddress: any;
+        postsToSet?: undefined;
+        linkUsername?: undefined;
+        user?: undefined;
+        profileDetails?: undefined;
+        profileFollowStats?: undefined;
+        followersLength?: undefined;
+        followingLength?: undefined;
+      };
+      revalidate?: undefined;
+      notFound?: undefined;
+    }
+  | {
+      props: {
+        linkAddress: any;
+        postsToSet: any[];
+        redirectUsername?: undefined;
+        linkUsername?: undefined;
+        user?: undefined;
+        profileDetails?: undefined;
+        profileFollowStats?: undefined;
+        followersLength?: undefined;
+        followingLength?: undefined;
+      };
+      revalidate: number;
+      notFound?: undefined;
+    }
+  | {
+      props: {
+        linkUsername: any;
+        user: any;
+        profileDetails: any;
+        profileFollowStats: any;
+        followersLength: any;
+        followingLength: any;
+        postsToSet: any[];
+        redirectUsername?: undefined;
+        linkAddress?: undefined;
+      };
+      revalidate: number;
+      notFound?: undefined;
+    }
+  | { notFound: boolean; props?: undefined; revalidate?: undefined }
+> {
   const { usernameOrAddress } = context.params;
   await connectDB();
   let linkAddress;

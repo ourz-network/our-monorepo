@@ -1,40 +1,36 @@
 import Button from "@/components/Button";
 
-const MintDetails = (props) => {
+const MintDetails = (props): JSX.Element => {
   const { data, handleChange, thumbs, next, back } = props;
 
   return (
-    <div className="flex flex-row justify-evenly items-center w-full h-full bg-dark-background">
+    <div className="flex flex-col justify-evenly items-center w-full h-full md:flex-row bg-dark-background">
       <div className="flex flex-col border lg:-mt-32 border-dark-border" id="details">
         <form>
           <div className="flex flex-col px-16 py-8 border-b border-dark-border text-dark-primary">
             <p>
-              <label className="hidden" htmlFor="Title">
-                Title:
-                <input
-                  className="mb-8 outline-none text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="Enter Title"
-                  value={data.title}
-                  onChange={handleChange}
-                />
-              </label>
+              <input
+                className="visible mb-8 outline-none text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Enter Title"
+                value={data.title}
+                onChange={handleChange}
+                aria-label="title"
+              />
             </p>
             <p>
-              <label className="hidden" htmlFor="description">
-                Description:
-                <input
-                  className="px-3 pt-2 pb-4 mb-8 w-full h-auto border border-dark-border text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
-                  type="textarea"
-                  id="description"
-                  name="description"
-                  placeholder="Enter Description"
-                  value={data.description}
-                  onChange={handleChange}
-                />
-              </label>
+              <input
+                className="px-3 pt-2 pb-4 mb-8 w-full h-auto border border-dark-border text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                type="textarea"
+                id="description"
+                name="description"
+                placeholder="Enter Description"
+                value={data.description}
+                onChange={handleChange}
+                aria-label="description"
+              />
             </p>
             <p className="text-center">
               <label className="hidden" htmlFor="creatorBidShare">

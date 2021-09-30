@@ -77,7 +77,7 @@ export const ZORA_MEDIA_BY_CREATOR = (creator: string): DocumentNode => {
  * @param {Object[]} users
  * @returns {Number} max number of Zora media items
  */
-export const calculateLatestCreation = (users) => {
+export const calculateLatestCreation = (users: any[]): number => {
   // Collect all users
   const allUsers = users.users;
   const allCreationIDs = [];

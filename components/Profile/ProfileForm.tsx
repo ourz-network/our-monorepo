@@ -20,7 +20,20 @@ import web3 from "@/app/web3";
 let cancel;
 
 // This modal allows connected wallets to sign up/edit their profile
-const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, setShowModal }) => {
+const ProfileForm = ({
+  modalType,
+  User,
+  linkAddress,
+  profileDetails,
+  showModal,
+  setShowModal,
+}: {
+  modalType: any;
+  User: any;
+  linkAddress: any;
+  profileDetails: any;
+  showModal: any;
+}): JSX.Element => {
   const Router = useRouter();
 
   // Global State. Connected wallet.
@@ -98,17 +111,17 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
         if (!usernameAvailable) {
           throw new Error("Username Unavailable");
         }
-        const { username, ethAddress } = formData;
+        const { desiredUsername, ethAddress } = formData;
 
         // Request signed message
         const verifiedSignature = await verifyAPIpost(`${JSON.stringify(formData)}`);
 
         if (verifiedSignature) {
-          const res = await axios.post("/api/users", { username, ethAddress });
+          const res = await axios.post("/api/users", { desiredUsername, ethAddress });
 
           if (res.data) {
             // Push to new account page
-            Router.push(`/profile/${username}`).then(
+            Router.push(`/profile/${desiredUsername}`).then(
               () => {},
               () => {}
             );
@@ -266,85 +279,73 @@ const ProfileForm = ({ modalType, User, linkAddress, profileDetails, showModal, 
                               <div className="flex flex-col justify-items-center content-center items-center">
                                 {!profileDetails && (
                                   <>
-                                    <label
-                                      htmlFor="username"
-                                      className="hidden text-sm font-medium"
-                                      aria-hidden="true"
-                                    >
-                                      Username
-                                      <div className="flex shadow-sm max-w-1/2">
-                                        <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
-                                          @
-                                        </span>
-                                        <input
-                                          type="text"
-                                          placeholder="username"
-                                          className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                          {...register("username", {
-                                            required: true, // JS only: <p>error message</p>
-                                            minLength: {
-                                              value: 3,
+                                    <div className="flex shadow-sm max-w-1/2">
+                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
+                                        @
+                                      </span>
+                                      <input
+                                        type="text"
+                                        placeholder="username"
+                                        aria-label="username"
+                                        className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                        {...register("desiredUsername", {
+                                          required: true, // JS only: <p>error message</p>
+                                          minLength: {
+                                            value: 3,
+                                          },
+                                          maxLength: {
+                                            value: 24,
+                                          },
+                                          pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
+                                          validate: {
+                                            available: async (v) => {
+                                              await checkUsername(v).then(
+                                                () => {},
+                                                () => {}
+                                              );
                                             },
-                                            maxLength: {
-                                              value: 24,
-                                            },
-                                            pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
-                                            validate: {
-                                              available: async (v) => {
-                                                checkUsername(v).then(
-                                                  () => {},
-                                                  () => {}
-                                                );
-                                              },
-                                            },
-                                          })}
-                                        />
-                                      </div>
-                                    </label>
+                                          },
+                                        })}
+                                      />
+                                    </div>
                                   </>
                                 )}
                                 {profileDetails && (
                                   <>
-                                    <label
-                                      htmlFor="newUsername"
-                                      className="hidden text-sm font-medium"
-                                      aria-hidden="true"
-                                    >
-                                      New Username
-                                      <div className="flex mb-4 shadow-sm max-w-1/2">
-                                        <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
-                                          @
-                                        </span>
-                                        <input
-                                          type="text"
-                                          placeholder={`${user.username}`}
-                                          className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                          {...register("desiredUsername", {
-                                            required: "error message", // JS only: <p>error message</p>
-                                            minLength: {
-                                              value: 3,
-                                              message: "error message", // JS only: <p>error message</p> TS only support string
+                                    <div className="flex mb-4 shadow-sm max-w-1/2">
+                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
+                                        @
+                                      </span>
+                                      <input
+                                        type="text"
+                                        aria-label="username"
+                                        placeholder={`${user.username}`}
+                                        className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        {...register("desiredUsername", {
+                                          required: "error message", // JS only: <p>error message</p>
+                                          minLength: {
+                                            value: 3,
+                                            message: "error message", // JS only: <p>error message</p> TS only support string
+                                          },
+                                          maxLength: {
+                                            value: 24,
+                                            message: "error message", // JS only: <p>error message</p> TS only support string
+                                          },
+                                          validate: {
+                                            available: async (v) => {
+                                              setUser((prev) => ({
+                                                ...prev,
+                                                username: v,
+                                              }));
+                                              await checkUsername(v).then(
+                                                () => {},
+                                                () => {}
+                                              );
                                             },
-                                            maxLength: {
-                                              value: 24,
-                                              message: "error message", // JS only: <p>error message</p> TS only support string
-                                            },
-                                            validate: {
-                                              available: async (v) => {
-                                                setUser((prev) => ({
-                                                  ...prev,
-                                                  username: v,
-                                                }));
-                                                checkUsername(v).then(
-                                                  () => {},
-                                                  () => {}
-                                                );
-                                              },
-                                            },
-                                          })}
-                                        />
-                                      </div>
-                                    </label>
+                                          },
+                                        })}
+                                      />
+                                    </div>
                                     <div className="grid grid-cols-3 grid-flow-row-dense gap-4 w-full">
                                       {Object.keys(user).map((keyName, keyIndex) => {
                                         if (

@@ -13,7 +13,16 @@ export const Profile = ({
   loggedUserFollowStats,
   setUserFollowStats,
   posts,
-}) => (
+}: {
+  linkAddress: string;
+  profileDetails: any;
+  ownAccount: boolean;
+  loading: boolean;
+  user: any;
+  loggedUserFollowStats: any;
+  setUserFollowStats: any;
+  posts: any;
+}): JSX.Element => (
   <PageLayout>
     <Head>
       {/* Custom meta for profile */}
@@ -65,7 +74,7 @@ export const Profile = ({
         // Else, if not loading and post count !> 0, return no owned media
         <div
           id="medias"
-          className="flex place-content-center mx-auto mt-6 w-screen h-full text-center text-dark-primary"
+          className="flex place-content-center mx-auto mt-6 h-full text-center text-dark-primary"
         >
           <span>
             Empty Collection{" "}

@@ -1,8 +1,9 @@
 import { MediaConfiguration } from "@zoralabs/nft-components";
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
+import { FC } from "react";
 import web3 from "@/app/web3";
 
-export default function GlobalProvider({ children }) {
+export default function GlobalProvider({ children }: { children: FC }): JSX.Element {
   return (
     <NFTFetchConfiguration networkId={Networks.RINKEBY}>
       <web3.Provider>

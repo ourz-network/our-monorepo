@@ -70,12 +70,14 @@ module.exports = {
         xxs: "10rem",
         "33vh": "33vh",
         "50vh": "50vh",
+        "500px": "500px",
         preview: "330px",
       },
       height: {
         "75vh": "75vh",
         min: "min-content",
         preview: "330px",
+        "500px": "500px",
       },
       colors: {
         // OurOrange

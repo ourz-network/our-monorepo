@@ -10,9 +10,12 @@ export const ProfileHeader = ({
   profileDetails,
   linkAddress,
   ownAccount,
-  loggedUserFollowStats,
-  setUserFollowStats,
-}) => {
+}: {
+  user: any;
+  profileDetails: any;
+  linkAddress: any;
+  ownAccount: any;
+}): JSX.Element => {
   // https://stackoverflow.com/questions/55271855/react-material-ui-ssr-warning-prop-d-did-not-match-server-m-0-0-h-24-v-2
   //
   const [loading, setLoading] = useState(true);
@@ -23,7 +26,7 @@ export const ProfileHeader = ({
   return (
     <div
       id="userheader"
-      className="flex flex-col place-content-center place-items-center pt-8 pb-16 w-full bg-dark-background"
+      className="flex flex-col place-content-center place-items-center py-6 w-full bg-dark-background"
     >
       <div id="nameAndPic" className="flex flex-col justify-center text-xs text-center">
         <div
@@ -41,8 +44,30 @@ export const ProfileHeader = ({
             />
           )}
         </div>
+        {ownAccount ? (
+          <button
+            className="w-auto px-2 py-0.5 mx-auto mainButton border-2 my-2 text-base border-dark-border text-dark-primary"
+            onClick={() => setShowModal({ showModal: true })}
+            type="button"
+          >
+            {user?.username ? "Edit Profile" : "Create Profile"}
+          </button>
+        ) : (
+          <p className="text-xs text-dark-primary">
+            (
+            <a
+              href={`https://etherscan.io/address/${linkAddress || user.ethAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline cursor-poiner"
+            >
+              {`${toTrimmedAddress(linkAddress)}`}
+            </a>
+            )
+          </p>
+        )}
         {profileDetails?.name && !loading && (
-          <h1 className="mb-2 text-xl text-center text-dark-primary">{`${profileDetails.name}`}</h1>
+          <h1 className="my-2 text-xl text-center text-dark-primary">{`${profileDetails.name}`}</h1>
         )}
       </div>
       <div id="names" className="flex flex-col self-end mx-auto w-max space-evenly">
@@ -60,28 +85,7 @@ export const ProfileHeader = ({
           />
         )}
       </div>
-      {ownAccount ? (
-        <button
-          className="w-auto px-2 py-0.5 mx-auto mainButton border-2 my-2 text-base border-dark-border text-dark-primary"
-          onClick={() => setShowModal({ showModal: true })}
-          type="button"
-        >
-          {user?.username ? "Edit Profile" : "Create Profile"}
-        </button>
-      ) : (
-        <p className="text-xs text-dark-primary">
-          (
-          <a
-            href={`https://etherscan.io/address/${linkAddress || user.ethAddress}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline cursor-poiner"
-          >
-            {`${toTrimmedAddress(linkAddress)}`}
-          </a>
-          )
-        </p>
-      )}
+
       {profileDetails?.bio && (
         <div id="bio" className="italic text-center text-dark-primary max-w-1/3">
           {`${profileDetails.bio}`}

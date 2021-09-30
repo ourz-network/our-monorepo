@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import axios from "axios"; // Requests
 
-export const checkForAccountID = async (web3Address) => {
+export const checkForAccountID = async ({ web3Address }: { web3Address: string }): Promise<any> => {
   try {
     const res = await axios.get(`/api/users/${web3Address}`);
     const userProfile = await res.data.data;
@@ -14,7 +14,7 @@ export const checkForAccountID = async (web3Address) => {
   }
 };
 
-export const checkForProfile = async (web3Address) => {
+export const checkForProfile = async ({ web3Address }: { web3Address: string }): Promise<any> => {
   try {
     const res = await axios.get(`/api/users/${web3Address}`);
     const userProfile = await res.data.data;

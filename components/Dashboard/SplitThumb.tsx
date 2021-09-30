@@ -9,7 +9,17 @@ function keyDownA11y(handler) {
   };
 }
 
-const SplitThumb = ({ ownedSplit, claimableSplit, userInfo, handleClick }) => {
+const SplitThumb = ({
+  ownedSplit,
+  claimableSplit,
+  userInfo,
+  handleClick,
+}: {
+  ownedSplit: any;
+  claimableSplit: any;
+  userInfo: any;
+  handleClick: () => void;
+}): JSX.Element => {
   if (claimableSplit) {
     const recipientsLength = claimableSplit.splitProxy.splitRecipients.length;
     const yourRole = claimableSplit.role;

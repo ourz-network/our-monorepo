@@ -6,8 +6,15 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
 import getPostByID from "@/modules/subgraphs/zora/functions"; // Post collection helper
 import HomeNFT from "@/components/Cards/HomeNFT";
+import { Ourz20210928 } from "@/modules/subgraphs/zora/20210928";
 
-const Home = ({ postsToSet, loadMoreStartIndex }): JSX.Element => {
+const Home = ({
+  postsToSet,
+  loadMoreStartIndex,
+}: {
+  postsToSet: (Ourz20210928 & { id: number })[];
+  loadMoreStartIndex: number;
+}): JSX.Element => {
   const [posts, setPosts] = useState(postsToSet); // Posts array
   const [loading, setLoading] = useState(false); // Button loading state
   const [numPosts, setNumPosts] = useState(loadMoreStartIndex); // Number of loadable posts
@@ -112,7 +119,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   //     }
   //   }
 
-  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831];
+  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
   const completeFetch = await Promise.all(
     ourzSampleTokenIDs.map(async (id, index) => {
       // Collect post

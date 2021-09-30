@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import NewMintMultistepForm from "@/modules/Create/NewMintMultistepForm";
 import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions";
 
-const MintNFTFromExistingSplit = () => {
+const MintNFTFromExistingSplit = (): JSX.Element => {
   const [loading, setLoading] = useState(true); // Global loading state
   const { query } = useRouter();
   const { proxyAddress } = query;

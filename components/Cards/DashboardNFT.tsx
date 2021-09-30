@@ -6,7 +6,17 @@ import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { NFTPreview, NFTDataContext, PreviewComponents } from "@zoralabs/nft-components";
 import { toTrimmedAddress } from "@/ethereum/utils";
 
-const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
+const DashboardNFT = ({
+  split,
+  tokenId,
+  onClick,
+  isCreation,
+}: {
+  split: string;
+  tokenId: string;
+  onClick: () => void;
+  isCreation: boolean;
+}): JSX.Element => {
   let name;
 
   const [hidden, setHidden] = useState(false);
@@ -31,11 +41,11 @@ const DashboardNFT = ({ split, tokenId, onClick, isCreation }) => {
         <Link href={`/nft/${tokenId}`} passHref>
           <div className="p-2 w-full h-full bg-opacity-0 cursor-pointer">
             <Image
-              alt={`An image of the NFT: ${name}`}
+              alt={`An image of the NFT: ${name as string}`}
               height={330}
               width={330}
               objectFit="scale-down"
-              src={`${contentURI}`}
+              src={contentURI as string}
             />
           </div>
         </Link>

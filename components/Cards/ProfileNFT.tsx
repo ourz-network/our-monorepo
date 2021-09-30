@@ -6,10 +6,15 @@ import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { NFTPreview, NFTDataContext } from "@zoralabs/nft-components";
 import { toTrimmedAddress } from "@/ethereum/utils";
 
-const ProfileNFT = (props) => {
-  const { tokenId } = props;
-  const { username } = props;
-  const { address } = props;
+const ProfileNFT = ({
+  tokenId,
+  username,
+  address,
+}: {
+  tokenId: string;
+  username: string;
+  address: string;
+}): JSX.Element => {
   let name;
   const ProfileThumb = () => {
     const { nft } = useContext(NFTDataContext);
@@ -29,11 +34,11 @@ const ProfileNFT = (props) => {
         <Link href={`/nft/${tokenId}`} passHref>
           <div className="p-2 w-full h-full bg-opacity-0 cursor-pointer">
             <Image
-              alt={`An image of the NFT: ${name}`}
+              alt={`An image of the NFT: ${name as string}`}
               height={330}
               width={330}
               objectFit="scale-down"
-              src={`${contentURI}`}
+              src={`${contentURI as string}`}
             />
           </div>
         </Link>
@@ -66,7 +71,7 @@ const ProfileNFT = (props) => {
   };
 
   return (
-    <div className="m-auto w-full h-full">
+    <div>
       <NFTPreview id={tokenId}>
         {/* <PreviewComponents.MediaThumbnail /> */}
         <ProfileThumb />
