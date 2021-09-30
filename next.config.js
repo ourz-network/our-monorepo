@@ -2,11 +2,24 @@
 //   enabled: process.env.ANALYZE === 'true',
 // })
 // withBundleAnalyzer(
-module.exports = {
+
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   eslint: {
-    dirs: ["app", "components", "modules", "pages"],
+    dirs: ["app", "components", "hooks", "modules", "pages"],
   },
   extends: ["plugin:@next/next/recommended"],
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
   images: {
     // limit of 25 deviceSizes values
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -43,4 +56,6 @@ module.exports = {
     fs: false,
   },
 };
-// );
+// )
+
+module.exports = nextConfig;
