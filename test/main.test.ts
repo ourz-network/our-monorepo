@@ -461,6 +461,9 @@ describe('SplitProxy via Factory', () => {
                         allocs,
                         proofs
                       )
+
+                      // const gasUsed = (await claimERC20Tx.wait()).gasUsed
+                      // console.log(`Gas Used to Claim ERC20s: ${gasUsed}`)
                     })
 
                     it('and should complete transaction successfully', async () => {

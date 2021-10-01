@@ -107,9 +107,8 @@ contract OurSplitter is OurStorage {
         );
 
         uint256 ERC20Balance = IERC20(tokenAddress).balanceOf(address(this));
-        uint256 totalSent = 0;
 
-        for (uint256 i = 0; i < accounts.length; i++) {
+        for (uint256 i = 1; i < accounts.length; i++) {
             require(
                 verifyProof(
                     merkleProofs[i].merkleProof,
@@ -124,13 +123,15 @@ contract OurSplitter is OurStorage {
                 allocations[i]
             );
             transferERC20(tokenAddress, accounts[i], scaledAmount);
-            totalSent += scaledAmount;
+            // totalSent += scaledAmount;
         }
 
-        uint256 remaining = ERC20Balance - totalSent;
-        if (remaining != 0) {
-            transferERC20(tokenAddress, accounts[0], remaining);
-        }
+        transferERC20(
+            tokenAddress,
+            accounts[0],
+            IERC20(tokenAddress).balanceOf(address(this))
+        );
+
         emit TransferERC20(tokenAddress, ERC20Balance);
     }
 
