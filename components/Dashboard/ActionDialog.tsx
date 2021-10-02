@@ -55,7 +55,7 @@ const ActionDialog = ({
                   <button
                     type="button"
                     href="#"
-                    tabIndex="0"
+                    tabIndex={0}
                     className="absolute top-4 right-4 text-dark-primary hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
                     onClick={() => setShowDialog(false)}
                   >

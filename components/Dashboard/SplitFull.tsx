@@ -124,8 +124,8 @@ const SplitFull = ({
                     {split.creations.map((creation, i) => (
                       <div key={creation.id} className="flex justify-center w-full h-full">
                         <DashboardNFT
-                          tokenId={creation.tokenId}
-                          onClick={() => startAnAuction(creation.tokenId)}
+                          tokenId={creation.id}
+                          onClick={() => startAnAuction(creation.id)}
                           split={split}
                           isCreation
                         />
