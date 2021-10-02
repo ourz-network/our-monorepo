@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { NFTPreview } from "@zoralabs/nft-components";
 import { useRouter } from "next/router";
 import { FetchStaticData, MediaFetchAgent, NetworkIDs } from "@zoralabs/nft-hooks";
+import NFTMasonry from "./NFTMasonry";
 
 export const AuctionsList = () => {
   const [loading, setLoading] = useState(true);
@@ -16,11 +16,10 @@ export const AuctionsList = () => {
         const res = await FetchStaticData.fetchZoraIndexerList(fetchAgent, {
           curatorAddress: process.env.NEXT_PUBLIC_CURATORS_ID as string,
           collectionAddress: process.env.NEXT_PUBLIC_TARGET_CONTRACT_ADDRESS as string,
-          limit: 100,
-          offset: 0,
+          limit: 25,
+          offset: 75,
         });
         if (res) {
-          console.log(res);
           setTokens(res);
           setLoading(false);
         }
@@ -34,26 +33,29 @@ export const AuctionsList = () => {
   }, []);
 
   return (
-    <div css={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+    <div className="text-center flex w-full justify-center">
       {!loading ? (
-        <>
+        <div
+          className="space-x-4 space-y-4 w-full h-full px-12 mx-4 flex flex-col timeline justify-center content-center xl:grid"
+          // className="flex flex-wrap justify-center items-center gap-3 my-auto"
+          // css={{ display: "flex", flexWrap: "wrap", justifyContent: "center"}}
+        >
           {tokens &&
             tokens.map((token) => {
               const tokenInfo = FetchStaticData.getIndexerServerTokenInfo(token);
+
               return (
-                <NFTPreview
-                  initialData={token}
+                <NFTMasonry
+                  token={token}
+                  tokenInfo={tokenInfo}
                   key={tokenInfo.tokenId}
-                  id={tokenInfo.tokenId}
-                  contract={tokenInfo.tokenContract}
                   onClick={() =>
                     router.push(`/token/${tokenInfo.tokenContract}/${tokenInfo.tokenId}`)
                   }
-                  useBetaIndexer
                 />
               );
             })}
-        </>
+        </div>
       ) : (
         "Loading..."
       )}
