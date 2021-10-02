@@ -6,6 +6,48 @@ import { gql, DocumentNode } from "@apollo/client"; // graphql query language
  * @param {Number} proxyAddress Proxy information to retrieve
  * @returns {gql} query with template string embedded
  */
+export const ALL_TOKENS = (): DocumentNode => gql`
+  {
+    splitZNFTs(first: 100) {
+      id
+      creator {
+        id
+        nickname
+      }
+    }
+  }
+`;
+
+/**
+ * Returns gql query to retrieve specific Proxy's Split Recipients
+ * @param {Number} proxyAddress Proxy information to retrieve
+ * @returns {gql} query with template string embedded
+ */
+export const ALL_USER_ADDRESSES = (): DocumentNode => gql`
+  {
+    users(first: 1000) {
+      id
+    }
+  }
+`;
+/**
+ * Returns gql query to retrieve specific Proxy's Split Recipients
+ * @param {Number} proxyAddress Proxy information to retrieve
+ * @returns {gql} query with template string embedded
+ */
+export const ALL_PROXY_ADDRESSES = (): DocumentNode => gql`
+  {
+    ourProxies(first: 1000) {
+      id
+    }
+  }
+`;
+
+/**
+ * Returns gql query to retrieve specific Proxy's Split Recipients
+ * @param {Number} proxyAddress Proxy information to retrieve
+ * @returns {gql} query with template string embedded
+ */
 export const RECIPIENTS_BY_ID = (proxyAddress: string): DocumentNode => {
   proxyAddress = proxyAddress.toString().toLowerCase();
   return gql`
@@ -49,8 +91,7 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
             claimableETH
           }
           creations {
-            tokenId
-            contract { id }
+            id
           }
           ETH
           needsIncremented
@@ -85,8 +126,7 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
               ethClaimed
             }
             creations {
-              tokenId
-              contract { id }
+              id
             }
             ETH
           }
