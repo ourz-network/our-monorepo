@@ -25,11 +25,11 @@ type SplitNFT @entity {
 }
 
 type ERC20Transfer @entity {
-  "<txHash>-<userAddress>-<amount>"
+  "<txHash>-<proxyAddress>"
   id: ID!
 
-  "The recipient of the ERC20s"
-  recipient: User!
+  "The address of the Split transferring the ERC20s"
+  splitProxy: OurProxy!
 
   "The transaction hash of the transfer"
   transactionHash: String!
@@ -77,6 +77,9 @@ type OurProxy @entity {
 
   "The ERC721(s) the Proxy created"
   creations: [SplitNFT!]! @derivedFrom(field: "creator")
+
+  "The ERC20 Transfers that the Proxy has successfully distributed"
+  ERC20Transfers: [ERC20Transfer!]! @derivedFrom(field: "splitProxy")
 }
 
 type User @entity {

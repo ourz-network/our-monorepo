@@ -10,7 +10,7 @@ dataSources:
     source:
       address: "{{OurFactoryAddress}}"
       abi: OurFactory
-      startBlock: 9200000
+      startBlock: 9290000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -57,7 +57,7 @@ templates:
           handler: handleWindowIncremented
         - event: TransferETH(address,uint256,bool)
           handler: handleTransferETH
-        - event: TransferERC20(address,address,uint256,bool)
+        - event: TransferERC20(address,uint256)
           handler: handleTransferERC20
         - event: ERC721Received(address,address,uint256)
           handler: handleERC721Received

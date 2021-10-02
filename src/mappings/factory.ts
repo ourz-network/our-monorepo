@@ -112,7 +112,14 @@ export function handleProxyCreated(event: ProxyCreated): void {
             } else recipient.allocation = "0";
           }
 
-          log.debug('Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}', [`${i}`, address, name, role, shares, allocation])
+          log.debug("Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}", [
+            `${i}`,
+            address,
+            name,
+            role,
+            shares,
+            allocation,
+          ]);
 
           recipient.claimableETH = BigInt.fromI32(0);
           recipient.ethClaimed = BigInt.fromI32(0);
@@ -124,8 +131,8 @@ export function handleProxyCreated(event: ProxyCreated): void {
       }
     }
   }
-  
-  ourProxy.splitRecipients = recipients
+
+  ourProxy.splitRecipients = recipients;
   ourProxy.save();
   log.info("Created succesfully! Subgraph now monitoring contract at {}; created by {}.", [
     proxyAddress,

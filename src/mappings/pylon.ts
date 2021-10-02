@@ -13,8 +13,8 @@ import {
   WindowIncremented,
   NameChanged,
 } from "../../generated/templates/OurPylon/OurPylon";
-import { OurProxy, User, SplitNFT, SplitRecipient, ERC20Transfer } from "../../generated/schema";
-import { zeroAddress, findOrCreateUser, findOrCreateNFTContract } from "./helpers";
+import { OurProxy, User, SplitZNFT, SplitRecipient, ERC20Transfer } from "../../generated/schema";
+import { zeroAddress, findOrCreateUser } from "./helpers";
 
 /**
  * Handler called when the `ProxySetup` Event is emitted on a Proxy
@@ -144,16 +144,16 @@ export function handleETHReceived(event: ETHReceived): void {
   ourProxy.ETH = afterETH;
   ourProxy.needsIncremented = true;
 
-  let recipients = ourProxy.splitRecipients 
+  let recipients = ourProxy.splitRecipients;
   for (let i = 0; i < ourProxy.splitRecipients.length; i++) {
-    let recipientId = recipients[i]
+    let recipientId = recipients[i];
     let recipient = SplitRecipient.load(recipientId)!;
 
     let allocationString = recipient.allocation;
     let allocation = BigInt.fromString(allocationString);
-    
-    let scaledAmount = value.times(allocation)
-    let hundredMillion = BigInt.fromI32(100000000)
+
+    let scaledAmount = value.times(allocation);
+    let hundredMillion = BigInt.fromI32(100000000);
 
     let recipientAllocation = scaledAmount.div(hundredMillion);
 
@@ -162,10 +162,7 @@ export function handleETHReceived(event: ETHReceived): void {
 
     recipient.claimableETH = newClaimable;
     recipient.save();
-    log.debug("Recipient {} now has {} ETH available to claim.", [
-      recipient.id,
-      newClaimable.toString()
-    ]);
+    log.debug("Recipient {} now has {} ETH available to claim.", [recipient.id, newClaimable.toString()]);
   }
 
   ourProxy.save();
@@ -240,32 +237,25 @@ export function handleTransferETH(event: TransferETH): void {
  * @eventParam amount: total erc20s sent to recipients
  */
 export function handleTransferERC20(event: TransferERC20): void {
-  let success = event.params.success;
+  // get formatted variables
+  let proxy = event.address;
+  let proxyAddress = proxy.toHexString();
+  log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
 
-  if (success) {
-    // get formatted variables
-    let proxy = event.address;
-    let proxyAddress = proxy.toHexString();
-    log.info("Handling Event: TransferERC20 at {}...", [proxyAddress]);
+  let ourProxy = OurProxy.load(proxyAddress)!;
 
-    let ourProxy = OurProxy.load(proxyAddress)!;
+  let tokenAddress = event.params.token.toHexString();
+  let amount = event.params.amount;
+  let txHash = event.transaction.hash.toHexString();
 
-    let userAddress = event.params.account.toHexString();
-    let tokenAddress = event.params.token.toHexString();
-    let amount = event.params.amount;
-    let txHash = event.transaction.hash.toHexString();
+  let transferId = `${txHash}-${proxyAddress}`;
+  let transfer = new ERC20Transfer(transferId);
+  transfer.splitProxy = ourProxy.id;
+  transfer.transactionHash = txHash;
+  transfer.contract = tokenAddress;
+  transfer.amount = amount;
 
-    let user = User.load(userAddress)!;
-
-    let transferId = `${txHash}-${userAddress}-${amount.toString()}`;
-    let transfer = new ERC20Transfer(transferId);
-    transfer.recipient = user.id;
-    transfer.transactionHash = txHash;
-    transfer.contract = tokenAddress;
-    transfer.amount = amount;
-
-    transfer.save();
-  }
+  transfer.save();
 }
 
 /**
@@ -284,18 +274,12 @@ export function handleERC721Received(event: ERC721Received): void {
   let tokenId = event.params.tokenId.toString();
   let transactionHash = event.transaction.hash.toHexString();
 
-  // find/create entity instances
-  let nftContract = findOrCreateNFTContract(contract);
-
   // if the 'from' address is 0x00, the token was just Created, so create new SplitNFT
   if (from == zeroAddress) {
-    let id = `${tokenId}-${contract}`;
-    let splitNFT = new SplitNFT(id);
-    splitNFT.tokenId = tokenId;
-    splitNFT.contract = nftContract.id;
-    splitNFT.creator = ourProxy.id;
-    splitNFT.transactionHash = transactionHash;
-    splitNFT.save();
+    let newZNFT = new SplitZNFT(tokenId);
+    newZNFT.creator = ourProxy.id;
+    newZNFT.transactionHash = transactionHash;
+    newZNFT.save();
   }
 }
 

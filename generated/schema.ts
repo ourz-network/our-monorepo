@@ -133,7 +133,7 @@ export class ERC20Transfer extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("recipient", Value.fromString(""));
+    this.set("splitProxy", Value.fromString(""));
     this.set("transactionHash", Value.fromString(""));
     this.set("contract", Value.fromString(""));
     this.set("amount", Value.fromBigInt(BigInt.zero()));
@@ -165,13 +165,13 @@ export class ERC20Transfer extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get recipient(): string {
-    let value = this.get("recipient");
+  get splitProxy(): string {
+    let value = this.get("splitProxy");
     return value!.toString();
   }
 
-  set recipient(value: string) {
-    this.set("recipient", Value.fromString(value));
+  set splitProxy(value: string) {
+    this.set("splitProxy", Value.fromString(value));
   }
 
   get transactionHash(): string {
@@ -349,6 +349,15 @@ export class OurProxy extends Entity {
 
   set creations(value: Array<string>) {
     this.set("creations", Value.fromStringArray(value));
+  }
+
+  get ERC20Transfers(): Array<string> {
+    let value = this.get("ERC20Transfers");
+    return value!.toStringArray();
+  }
+
+  set ERC20Transfers(value: Array<string>) {
+    this.set("ERC20Transfers", Value.fromStringArray(value));
   }
 }
 
