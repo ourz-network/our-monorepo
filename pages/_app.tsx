@@ -1,5 +1,5 @@
 import "../styles/reset.css";
-import "../styles/globals.css";
+import "../styles/Globals.css";
 import "tailwindcss/tailwind.css";
 
 import type { AppProps } from "next/app";
