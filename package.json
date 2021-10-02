@@ -13,14 +13,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@assemblyscript/loader": "^0.19.16",
+    "@assemblyscript/loader": "^0.19.17",
     "@graphprotocol/graph-ts": "^0.22.1",
-    "assemblyscript": "^0.19.16",
+    "assemblyscript": "^0.19.17",
     "assemblyscript-json": "^1.1.0"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.22.1",
-    "@types/react": "^17.0.24",
+    "@graphprotocol/graph-cli": "^0.22.2",
+    "@types/react": "^17.0.26",
     "husky": "^7.0.2",
     "mustache": "^4.2.0",
     "prettier": "^2.4.1"
