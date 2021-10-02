@@ -10,6 +10,7 @@ import connectDB from "@/modules/mongodb/utils/connectDB";
 import UserModel from "@/modules/mongodb/models/UserModel";
 import ProfileModel from "@/modules/mongodb/models/ProfileModel";
 import FollowModel from "@/modules/mongodb/models/FollowModel";
+import { getAllProfilePaths } from "@/modules/subgraphs/ourz/functions";
 
 interface ProfilePageProps {
   linkUsername: string;
@@ -124,13 +125,17 @@ const ProfilePage: FC<ProfilePageProps> = ({
 // Run on server build
 export async function getStaticPaths(): Promise<{ paths: any; fallback: boolean }> {
   await connectDB();
+  const addresses = await getAllProfilePaths();
+  const paths: { params: { usernameOrAddress: string } }[] = [];
+  addresses.forEach((address) => paths.push({ params: { usernameOrAddress: address } }));
 
   try {
     const allUsers = await UserModel.find().populate("user");
-    const paths = allUsers.map((user) => ({
-      params: { usernameOrAddress: `${user.username}` },
-    }));
-
+    allUsers.forEach((user) =>
+      paths.push({
+        params: { usernameOrAddress: `${user.username}` },
+      })
+    );
     return { paths, fallback: true };
   } catch (error) {
     return { paths: [], fallback: true };
