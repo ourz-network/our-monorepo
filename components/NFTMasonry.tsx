@@ -176,7 +176,6 @@ const NFTMasonry = ({
             loop
             playsInline
             onLoadedMetadata={(metadata) => calcAspectRatio(metadata)}
-            alt={tokenInfo.metadata.name}
           >
             <source src={media.contentURI} />
           </video>
