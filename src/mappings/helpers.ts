@@ -1,7 +1,7 @@
 import { BigInt, Address, JSONValue, JSONValueKind, BigDecimal, ByteArray } from "@graphprotocol/graph-ts";
 import { ProxyCreated } from "../../generated/OurFactory/OurFactory";
 import { ERC721Received, ETHReceived } from "../../generated/templates/OurPylon/OurPylon";
-import { OurProxy, User, NFTContract, SplitRecipient } from "../../generated/schema";
+import { OurProxy, User, SplitRecipient } from "../../generated/schema";
 
 export const zeroAddress = "0x0000000000000000000000000000000000000000";
 
@@ -21,21 +21,6 @@ export function findOrCreateUser(id: string): User {
   return user as User;
 }
 
-/**
- * Find or Create a User entity with `id` and return it
- * @param id
- */
-export function findOrCreateNFTContract(contractAddress: string): NFTContract {
-  let id = `${contractAddress}`;
-  let nftContract = NFTContract.load(id);
-
-  if (nftContract == null) {
-    nftContract = new NFTContract(id);
-    nftContract.save();
-  }
-
-  return nftContract as NFTContract;
-}
 
 /**
  * Make sure the given JSONValue is an array of strings and returns

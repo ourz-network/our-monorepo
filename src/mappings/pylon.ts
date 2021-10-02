@@ -13,8 +13,8 @@ import {
   WindowIncremented,
   NameChanged,
 } from "../../generated/templates/OurPylon/OurPylon";
-import { OurProxy, User, SplitNFT, SplitRecipient, ERC20Transfer } from "../../generated/schema";
-import { zeroAddress, findOrCreateUser, findOrCreateNFTContract } from "./helpers";
+import { OurProxy, User, SplitZNFT, SplitRecipient, ERC20Transfer } from "../../generated/schema";
+import { zeroAddress, findOrCreateUser } from "./helpers";
 
 /**
  * Handler called when the `ProxySetup` Event is emitted on a Proxy
@@ -274,18 +274,12 @@ export function handleERC721Received(event: ERC721Received): void {
   let tokenId = event.params.tokenId.toString();
   let transactionHash = event.transaction.hash.toHexString();
 
-  // find/create entity instances
-  let nftContract = findOrCreateNFTContract(contract);
-
   // if the 'from' address is 0x00, the token was just Created, so create new SplitNFT
   if (from == zeroAddress) {
-    let id = `${tokenId}-${contract}`;
-    let splitNFT = new SplitNFT(id);
-    splitNFT.tokenId = tokenId;
-    splitNFT.contract = nftContract.id;
-    splitNFT.creator = ourProxy.id;
-    splitNFT.transactionHash = transactionHash;
-    splitNFT.save();
+    let newZNFT = new SplitZNFT(tokenId);
+    newZNFT.creator = ourProxy.id;
+    newZNFT.transactionHash = transactionHash;
+    newZNFT.save();
   }
 }
 

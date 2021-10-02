@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext.String"]
+    "lib": ["ESNext.String"],
+    "target": "es6",
+    "module": "commonjs",
+    "strict": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
   }
 }

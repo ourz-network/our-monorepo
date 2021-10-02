@@ -1,21 +1,6 @@
-type NFTContract @entity {
-  "The Contract Address"
-  id: ID!
-
-  "All of the NFTs from the contract that were created by Split Proxies"
-  splitNFTs: [SplitNFT!]! @derivedFrom(field: "contract")
-}
-
-type SplitNFT @entity {
-  # ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
-  "<tokenId>-<contractAddress>"
-  id: ID!
-
+type SplitZNFT @entity {
   "The tokenId of the ERC-721"
-  tokenId: String!
-
-  "The ERC-721 contract's address"
-  contract: NFTContract!
+  id: ID!
 
   "The creator of the ERC-721"
   creator: OurProxy!
@@ -76,7 +61,7 @@ type OurProxy @entity {
   splitRecipients: [SplitRecipient!]!
 
   "The ERC721(s) the Proxy created"
-  creations: [SplitNFT!]! @derivedFrom(field: "creator")
+  creations: [SplitZNFT!]! @derivedFrom(field: "creator")
 
   "The ERC20 Transfers that the Proxy has successfully distributed"
   ERC20Transfers: [ERC20Transfer!]! @derivedFrom(field: "splitProxy")
