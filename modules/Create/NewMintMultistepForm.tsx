@@ -23,7 +23,23 @@ interface MintForm {
   creatorBidShare: number;
   splitMetadata: string;
   mintSuccess: boolean;
+  editionInfo: {
+    isEdition: boolean;
+    name: string;
+    symbol: string;
+    description: string;
+    animation_url: string;
+    image_url: string;
+    editionSize: number;
+  };
+  auctionInfo: {
+    mintAndAuction: boolean;
+    reservePrice: number;
+    duration: number;
+    auctionCurrency: string;
+  };
 }
+
 interface DropzoneFile extends File {
   path: string;
   preview: URL;
@@ -63,6 +79,21 @@ const NewMintMultistepForm = ({
     creatorBidShare: 10,
     splitMetadata: null,
     mintSuccess: false,
+    editionInfo: {
+      isEdition: false,
+      name: null,
+      symbol: null,
+      description: null,
+      animation_url: null,
+      image_url: null,
+      editionSize: 0,
+    },
+    auctionInfo: {
+      mintAndAuction: false,
+      reservePrice: 1,
+      duration: 0,
+      auctionCurrency: "0x0000000000000000000000000000000000000000",
+    },
   });
 
   const next = () => {
