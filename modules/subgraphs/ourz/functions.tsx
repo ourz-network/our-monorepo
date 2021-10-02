@@ -1,12 +1,51 @@
 import { ApolloQueryResult } from "@apollo/client";
 import ourzSubgraph from "./index"; // Apollo Client
-import { SPLITS_BY_OWNER, SPLITS_BY_RECIPIENT, RECIPIENTS_BY_ID } from "./queries"; // GraphQL Queries
-import { OurProxy, NFTContract, SplitNFT, ERC20Transfer, User, SplitRecipient } from "./types";
+import {
+  ALL_TOKENS,
+  SPLITS_BY_OWNER,
+  SPLITS_BY_RECIPIENT,
+  RECIPIENTS_BY_ID,
+  ALL_USER_ADDRESSES,
+  ALL_PROXY_ADDRESSES,
+} from "./queries"; // GraphQL Queries
+import { OurProxy, NFTContract, SplitZNFT, ERC20Transfer, User, SplitRecipient } from "./types";
 
 interface Data {
-  ourProxy: OurProxy;
-  user: User;
+  ourProxy?: OurProxy;
+  ourProxies?: OurProxy[];
+  user?: User;
+  users?: User[];
+  splitZNFT?: SplitZNFT;
+  splitZNFTs?: SplitZNFT[];
 }
+
+export const getAllProfilePaths = async (): Promise<string[]> => {
+  const queryUsers = await ourzSubgraph.query({
+    query: ALL_USER_ADDRESSES(),
+  });
+  const queryProxies = await ourzSubgraph.query({
+    query: ALL_PROXY_ADDRESSES(),
+  });
+
+  const addresses: string[] = [];
+  if (queryUsers.data && queryProxies.data) {
+    const { users } = queryUsers.data;
+    const { ourProxies } = queryProxies.data;
+
+    await users.map((user) => addresses.push(user.id));
+    await ourProxies.map((proxy) => addresses.push(proxy.id));
+  }
+  return addresses;
+};
+
+export const getAllOurzTokens = async (): Promise<SplitZNFT[]> => {
+  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+    query: ALL_TOKENS(),
+  });
+
+  const { splitZNFTs } = query.data;
+  return splitZNFTs;
+};
 
 /**
  * Collect Split Proxies owned by a specific address
@@ -40,7 +79,7 @@ export const getSplitRecipients = async (proxyAddress: string): Promise<SplitRec
  * @returns {Object} containing all split contracts owned by owner
  */
 export const getOwnedSplits = async (ownerAddress: string): Promise<OurProxy[]> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const query = await ourzSubgraph.query({
     query: SPLITS_BY_OWNER(ownerAddress),
   });
 

@@ -5,8 +5,9 @@ import { Zora } from "@zoralabs/zdk";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
-import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
-import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
+import { getSplitRecipients, getAllOurzTokens } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
+import { SplitRecipient, SplitZNFT } from "@/modules/subgraphs/ourz/types";
+import ourzSubgraph from "@/modules/subgraphs/ourz";
 
 const NFTView = ({
   tokenId,
@@ -98,23 +99,25 @@ const NFTView = ({
 // Run on server build
 // eslint-disable-next-line consistent-return
 export async function getStaticPaths(): Promise<{ paths: any[]; fallback: boolean }> {
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-    infura: process.env.NEXT_PUBLIC_INFURA_ID,
-    alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-    pocket: process.env.NEXT_PUBLIC_POKT_ID,
-    etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-  });
-  const zoraQuery = new Zora(queryProvider, 4);
-  const unburned = await zoraQuery.fetchTotalMedia();
-  const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
+  // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
+  //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+  //   pocket: process.env.NEXT_PUBLIC_POKT_ID,
+  //   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+  // });
+  // const zoraQuery = new Zora(queryProvider, 4);
+  // const unburned = await zoraQuery.fetchTotalMedia();
+  // const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
+  const ourTokens: SplitZNFT[] = await getAllOurzTokens();
+  const extras = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
   const paths = [];
-  if (maxSupply) {
-    for (let i = maxSupply; i >= maxSupply - 2; i -= 1) {
-      paths.push({ params: { tokenId: `${i}` } });
-    }
-
-    return { paths, fallback: true };
+  for (let i = ourTokens.length - 1; i >= 0; i -= 1) {
+    paths.push({ params: { tokenId: `${ourTokens[i].id}` } });
   }
+  for (let i = extras.length - 1; i >= 0; i -= 1) {
+    paths.push({ params: { tokenId: `${extras[i]}` } });
+  }
+  return { paths, fallback: true };
 }
 
 // Run on page load

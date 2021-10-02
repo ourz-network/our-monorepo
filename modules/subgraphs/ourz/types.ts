@@ -7,22 +7,15 @@ export type NFTContract = {
   splitNFTs: SplitNFT[];
 };
 
-export type SplitNFT = {
-  // <tokenId>-<contractAddress>
-  // ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
-  id: string;
+export type SplitZNFT = {
+  // "The tokenId of the ERC-721";
+  id: !ID;
 
-  // "The tokenId of the ERC-721"
-  tokenId: string;
+  // "The creator of the ERC-721";
+  creator: !OurProxy;
 
-  // "The ERC-721 contract's address"
-  contract: NFTContract;
-
-  // "The creator of the ERC-721"
-  creator: OurProxy;
-
-  // "The transaction hash the ERC-721 was originally logged in this subgraph"
-  transactionHash: string;
+  // "The transaction hash the ERC-721 was originally logged in this subgraph";
+  transactionHash: !string;
 };
 
 export type ERC20Transfer = {

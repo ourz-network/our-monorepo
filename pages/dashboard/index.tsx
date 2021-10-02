@@ -18,7 +18,6 @@ const UserDashboard = (): JSX.Element => {
   const [selectedSplit, setSelectedSplit] = useState();
   const [userSplitDetails, setUserSplitDetails] = useState();
   const [selectedIsOwned, setSelectedIsOwned] = useState();
-
   const Router = useRouter();
 
   useEffect(() => {
