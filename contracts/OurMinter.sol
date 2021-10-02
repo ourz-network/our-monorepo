@@ -26,17 +26,17 @@ import {IERC721} from "./interfaces/IERC721.sol";
 contract OurMinter is OurManagement {
     /// @notice RINKEBY ADDRESSES
     address public constant _zoraMedia =
-        0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
+        0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7;
     address public constant _zoraMarket =
-        0x85e946e1Bd35EC91044Dc83A5DdAB2B6A262ffA6;
+        0xE5BFAB544ecA83849c53464F85B7164375Bdaac1;
     address public constant _zoraAH =
-        0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
+        0xE468cE99444174Bd3bBBEd09209577d25D1ad673;
     address public constant _zoraEditions =
-        0x5d6E1357Acc8BF654979f3b24fdef8C5549A491e;
+        0xEf7a8fF7FC585FA1Fe3062455B628bfC657e2cD5;
     address public constant _mirrorCrowdfund =
-        0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
+        0x45Bd6a721582bc7C61562A6Cd4590c391899a759;
     address public constant _partyBid =
-        0xB725682D5AdadF8dfD657f8e7728744C0835ECd9;
+        0xAba3506DDF718278632B245ad0d86BB81070BA47;
 
     //======== Subgraph =========
     event EditionMinted(uint256 editionId, uint256 editionSize);
