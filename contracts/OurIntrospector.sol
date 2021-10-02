@@ -23,7 +23,6 @@ contract OurIntrospector is
 {
     //======== ERC721 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC721/IERC721Receiver.sol
-    event ERC721Received(address operator, address from, uint256 tokenId);
 
     function onERC721Received(
         address operator_,
@@ -31,24 +30,11 @@ contract OurIntrospector is
         uint256 tokenId_,
         bytes calldata
     ) external override returns (bytes4) {
-        emit ERC721Received(operator_, from_, tokenId_);
         return 0x150b7a02;
     }
 
     //======== IERC1155 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC1155/IERC1155Receiver.sol
-    event ERC1155Received(
-        address operator,
-        address from,
-        uint256 id,
-        uint256 value
-    );
-    event Batch1155Received(
-        address operator,
-        address from,
-        uint256[] ids,
-        uint256[] values
-    );
 
     function onERC1155Received(
         address operator,
@@ -57,7 +43,6 @@ contract OurIntrospector is
         uint256 value,
         bytes calldata
     ) external override returns (bytes4) {
-        emit ERC1155Received(operator, from, id, value);
         return 0xf23a6e61;
     }
 
@@ -68,7 +53,6 @@ contract OurIntrospector is
         uint256[] calldata values,
         bytes calldata
     ) external override returns (bytes4) {
-        emit Batch1155Received(operator, from, ids, values);
         return 0xbc197c81;
     }
 

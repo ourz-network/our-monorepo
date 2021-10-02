@@ -40,12 +40,15 @@ interface IZora {
         bytes32 metadataHash;
     }
 
-    event TokenURIUpdated(uint256 indexed _tokenId, address owner, string _uri);
-    event TokenMetadataURIUpdated(
-        uint256 indexed _tokenId,
-        address owner,
-        string _uri
-    );
+    /**
+     * @dev See {IERC721Enumerable-totalSupply}.
+     */
+    function totalSupply() external returns (uint256);
+
+    /**
+     * @dev See {IERC721Enumerable-tokenByIndex}.
+     */
+    function tokenByIndex(uint256 index) external returns (uint256);
 
     // /**
     //  * @notice Return the metadata URI for a piece of media given the token URI
