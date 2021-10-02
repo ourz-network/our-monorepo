@@ -126,7 +126,7 @@ const NFTMasonry = ({
   const container = (child) => (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
-      className={`transition-shadow ${aspectRatio} m-auto landingPage-item shadow-deep cursor-hover`}
+      className={`m-auto transition-shadow ${aspectRatio} landingPage-item shadow-deep cursor-hover`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onClick={() => onClick()}
@@ -154,14 +154,14 @@ const NFTMasonry = ({
   if (json?.mimeType?.includes("video")) {
     console.log("VIDEO", tokenInfo.tokenId);
     const child = (
-      <div className="flex flex-col max-w-lg w-full h-full cursor-pointer xl:h-full">
+      <div className="flex flex-col w-full max-w-lg h-full cursor-pointer xl:h-full">
         <div className="object-cover relative w-full h-full bg-transparent">
           {isHover && (
-            <div className="z-20 bg-black bg-opacity-75 text-white w-full absolute bottom-0 flex justify-between items-center">
+            <div className="flex absolute bottom-0 z-20 justify-between items-center w-full text-white bg-black bg-opacity-75">
               <div className="w-1/2 text-xl text-center overflow-ellipsis">
                 {tokenInfo.metadata.name}
               </div>
-              <div className="w-1/2 my-2 space-y-1 text-center flex-col items-center">
+              <div className="flex-col items-center my-2 space-y-1 w-1/2 text-center">
                 <div className="">#{tokenInfo.tokenId}</div>
                 {zNFTData?.data?.nft?.owner && (
                   <div className="text-xs">{toTrimmedAddress(zNFTData.data.nft.owner)}</div>
@@ -176,7 +176,7 @@ const NFTMasonry = ({
             loop
             playsInline
             onLoadedMetadata={(metadata) => calcAspectRatio(metadata)}
-            // alt={metadata?.name.toString()}
+            alt={tokenInfo.metadata.name}
           >
             <source src={media.contentURI} />
           </video>
@@ -188,14 +188,14 @@ const NFTMasonry = ({
 
   if (json?.mimeType?.includes("image")) {
     const child = (
-      <div className="flex flex-col cursor-pointer justify-center">
+      <div className="flex flex-col justify-center cursor-pointer">
         <div className="object-cover relative bg-transparent">
           {isHover && (
-            <div className="z-20 bg-black bg-opacity-75 text-white w-full absolute bottom-0 flex justify-between items-center">
+            <div className="flex absolute bottom-0 z-20 justify-between items-center w-full text-white bg-black bg-opacity-75">
               <div className="w-1/2 text-xl text-center overflow-ellipsis">
                 {tokenInfo.metadata.name}
               </div>
-              <div className="w-1/2 my-2 space-y-1 text-center flex-col items-center">
+              <div className="flex-col items-center my-2 space-y-1 w-1/2 text-center">
                 <div className="">#{tokenInfo.tokenId}</div>
                 {zNFTData?.data?.nft?.owner && (
                   <div className="text-xs">{toTrimmedAddress(zNFTData.data.nft.owner)}</div>
@@ -204,7 +204,7 @@ const NFTMasonry = ({
             </div>
           )}
           <img
-            alt={metadata?.name?.toString() || null}
+            alt={tokenInfo.metadata.name}
             src={media?.contentURI || null}
             className="w-full h-full"
             onLoad={(loadedMedia) => {
