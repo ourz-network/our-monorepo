@@ -1,4 +1,6 @@
 import "../styles/reset.css";
+import "../styles/Globals.css";
+import "tailwindcss/tailwind.css";
 
 import type { AppProps } from "next/app";
 import { css } from "@emotion/css";
