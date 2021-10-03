@@ -39,7 +39,14 @@ contract OurMinter is OurManagement {
         0xB725682D5AdadF8dfD657f8e7728744C0835ECd9;
 
     //======== Subgraph =========
-    event EditionMinted(uint256 editionId, uint256 editionSize);
+    event ZNFTMinted(uint256 tokenId);
+    event EditionCreated(uint256 editionId, uint256 editionSize);
+
+    function getID() private returns (uint256 id) {
+        id = IZora(_zoraMedia).tokenByIndex(
+            IZora(_zoraMedia).totalSupply() - 1
+        );
+    }
 
     /**======== IZora =========
      * @notice Various functions allowing a Split to interact with Zora Protocol
@@ -55,6 +62,7 @@ contract OurMinter is OurManagement {
         IZora.BidShares calldata bidShares
     ) external onlyOwners {
         IZora(_zoraMedia).mint(mediaData, bidShares);
+        emit ZNFTMinted(getID());
     }
 
     /** Media
@@ -67,6 +75,7 @@ contract OurMinter is OurManagement {
         IZora.EIP712Signature calldata sig
     ) external onlyOwners {
         IZora(_zoraMedia).mintWithSig(creator, mediaData, bidShares, sig);
+        emit ZNFTMinted(getID());
     }
 
     /** Media
@@ -217,7 +226,7 @@ contract OurMinter is OurManagement {
             _royaltyBPS
         );
 
-        emit EditionMinted(editionId, _editionSize);
+        emit EditionCreated(editionId, _editionSize);
     }
 
     /** NFT-Editions
@@ -267,8 +276,10 @@ contract OurMinter is OurManagement {
         uint256 reservePrice
     ) external onlyOwners {
         IZora(_zoraMedia).mint(mediaData, bidShares);
-        uint256 index = IERC721(_zoraMedia).totalSupply() - 1;
-        uint256 tokenId_ = IERC721(_zoraMedia).tokenByIndex(index);
+
+        uint256 tokenId_ = getID();
+        emit ZNFTMinted(tokenId_);
+
         IZora(_zoraAH).createAuction(
             tokenId_,
             _zoraMedia,
