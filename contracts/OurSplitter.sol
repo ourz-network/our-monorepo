@@ -122,11 +122,11 @@ contract OurSplitter is OurStorage {
                 ERC20Balance,
                 allocations[i]
             );
-            transferERC20(tokenAddress, accounts[i], scaledAmount);
+            attemptERC20Transfer(tokenAddress, accounts[i], scaledAmount);
             // totalSent += scaledAmount;
         }
 
-        transferERC20(
+        attemptERC20Transfer(
             tokenAddress,
             accounts[0],
             IERC20(tokenAddress).balanceOf(address(this))
@@ -213,6 +213,7 @@ contract OurSplitter is OurStorage {
         return claimed[getClaimHash(window, account)];
     }
 
+    /// @notice same as claimETHForAllWindows() but marked private for use in incrementThenClaimAll()
     function claimAll(
         address account,
         uint256 percentageAllocation,
@@ -310,7 +311,7 @@ contract OurSplitter is OurStorage {
      * @notice A rogue owner could easily bypass countermeasures. Provided as last resort,
      * in case Proxy receives ERC20.
      */
-    function transferERC20(
+    function attemptERC20Transfer(
         address tokenAddress,
         address splitRecipient,
         uint256 allocatedAmount

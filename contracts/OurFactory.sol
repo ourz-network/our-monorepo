@@ -48,6 +48,7 @@ contract OurFactory {
 
         emit ProxyCreated(ourProxy, msg.sender, splitRecipients_, nickname_);
 
+        // call setup() to set Owners of Split
         // call setup() to set owners
         assembly {
             if eq(

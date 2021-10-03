@@ -42,6 +42,7 @@ contract OurMinter is OurManagement {
     event ZNFTMinted(uint256 tokenId);
     event EditionCreated(uint256 editionId, uint256 editionSize);
 
+    /// @dev calculates tokenID of newly minted ZNFT
     function getID() private returns (uint256 id) {
         id = IZora(_zoraMedia).tokenByIndex(
             IZora(_zoraMedia).totalSupply() - 1
@@ -57,7 +58,7 @@ contract OurMinter is OurManagement {
     /** Media
      * @notice Mint new Zora NFT for Split Contract.
      */
-    function mintZora(
+    function mintZNFT(
         IZora.MediaData calldata mediaData,
         IZora.BidShares calldata bidShares
     ) external onlyOwners {
@@ -68,7 +69,7 @@ contract OurMinter is OurManagement {
     /** Media
      * @notice EIP-712 mintWithSig. Mints new new Zora NFT for a creator on behalf of split contract.
      */
-    function mintZoraWithSig(
+    function mintZNFTWithSig(
         address creator,
         IZora.MediaData calldata mediaData,
         IZora.BidShares calldata bidShares,
@@ -81,7 +82,7 @@ contract OurMinter is OurManagement {
     /** Media
      * @notice Update the token URIs for a Zora NFT owned by Split Contract
      */
-    function updateZoraMediaURIs(
+    function updateZNFTURIs(
         uint256 tokenId,
         string calldata tokenURI,
         string calldata metadataURI
@@ -93,7 +94,7 @@ contract OurMinter is OurManagement {
     /** Media
      * @notice Update the token URI
      */
-    function updateZoraMediaTokenURI(uint256 tokenId, string calldata tokenURI)
+    function updateZNFTTokenURI(uint256 tokenId, string calldata tokenURI)
         external
         onlyOwners
     {
@@ -103,17 +104,16 @@ contract OurMinter is OurManagement {
     /** Media
      * @notice Update the token metadata uri
      */
-    function updateZoraMediaMetadataURI(
-        uint256 tokenId,
-        string calldata metadataURI
-    ) external {
+    function updateZNFTMetadataURI(uint256 tokenId, string calldata metadataURI)
+        external
+    {
         IZora(_zoraMedia).updateTokenMetadataURI(tokenId, metadataURI);
     }
 
     /** Market
      * @notice Update zora/core/market bidShares (NOT zora/auctionHouse)
      */
-    function setZoraMarketBidShares(
+    function setZMarketBidShares(
         uint256 tokenId,
         IZora.BidShares calldata bidShares
     ) external {
@@ -123,7 +123,7 @@ contract OurMinter is OurManagement {
     /** Market
      * @notice Update zora/core/market ask
      */
-    function setZoraMarketAsk(uint256 tokenId, IZora.Ask calldata ask)
+    function setZMarketAsk(uint256 tokenId, IZora.Ask calldata ask)
         external
         onlyOwners
     {
@@ -133,17 +133,17 @@ contract OurMinter is OurManagement {
     /** Market
      * @notice Remove zora/core/market ask
      */
-    function removeZoraMarketAsk(uint256 tokenId) external onlyOwners {
+    function removeZMarketAsk(uint256 tokenId) external onlyOwners {
         IZora(_zoraMarket).removeAsk(tokenId);
     }
 
     /** Market
      * @notice Accept zora/core/market bid
      */
-    function acceptZoraMarketBid(
-        uint256 tokenId,
-        IZora.Bid calldata expectedBid
-    ) external onlyOwners {
+    function acceptZMarketBid(uint256 tokenId, IZora.Bid calldata expectedBid)
+        external
+        onlyOwners
+    {
         IZora(_zoraMarket).acceptBid(tokenId, expectedBid);
     }
 
@@ -176,7 +176,7 @@ contract OurMinter is OurManagement {
     /** AuctionHouse
      * @notice Approves an Auction proposal that requested the Split be the curator
      */
-    function setZoraAuctionApproval(uint256 auctionId, bool approved)
+    function setZAuctionApproval(uint256 auctionId, bool approved)
         external
         onlyOwners
     {
@@ -186,7 +186,7 @@ contract OurMinter is OurManagement {
     /** AuctionHouse
      * @notice Set an Auction's reserve price
      */
-    function setZoraAuctionReservePrice(uint256 auctionId, uint256 reservePrice)
+    function setZAuctionReservePrice(uint256 auctionId, uint256 reservePrice)
         external
         onlyOwners
     {
@@ -196,7 +196,7 @@ contract OurMinter is OurManagement {
     /** AuctionHouse
      * @notice Cancel an Auction before any bids have been placed
      */
-    function cancelZoraAuction(uint256 auctionId) external onlyOwners {
+    function cancelZAuction(uint256 auctionId) external onlyOwners {
         IZora(_zoraAH).cancelAuction(auctionId);
     }
 
@@ -364,13 +364,13 @@ contract OurMinter is OurManagement {
      * @dev In case non-Zora ERC721 gets stuck in Account.
      * @notice safeTransferFrom(address from, address to, uint256 tokenId)
      */
-    function untrustedSafeTransfer721(
+    function untrustedSafeTransferERC721(
         address tokenContract_,
         address newOwner_,
         uint256 tokenId_
     ) external onlyOwners {
         IERC721(tokenContract_).safeTransferFrom(
-            address(msg.sender),
+            address(this),
             newOwner_,
             tokenId_
         );
@@ -381,7 +381,7 @@ contract OurMinter is OurManagement {
      * @dev sets approvals for non-Zora ERC721 contract
      * @notice setApprovalForAll(address operator, bool approved)
      */
-    function untrustedSetApproval721(
+    function untrustedSetApprovalERC721(
         address tokenContract_,
         address operator_,
         bool approved_
@@ -394,7 +394,7 @@ contract OurMinter is OurManagement {
      * @dev burns non-Zora ERC721 that Split contract owns/isApproved
      * @notice setApprovalForAll(address operator, bool approved)
      */
-    function untrustedBurn721(address tokenContract_, uint256 tokenId_)
+    function untrustedBurnERC721(address tokenContract_, uint256 tokenId_)
         external
         onlyOwners
     {
