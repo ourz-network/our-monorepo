@@ -317,47 +317,35 @@ contract OurMinter is OurManagement {
 
     //======== /IMirror =========
 
-    /**======== IPartyBid =========
-     * @notice Starts a Party Bid
-     * @dev see IPartyBid.sol
-     */
-    function startSplitParty(
-        address marketWrapper,
-        address nftContract,
-        uint256 tokenId,
-        uint256 auctionId,
-        string memory name,
-        string memory symbol
-    ) external onlyOwners {
-        IPartyBid(_partyBid).startParty(
-            marketWrapper,
-            nftContract,
-            tokenId,
-            auctionId,
-            name,
-            symbol
-        );
-    }
+    // /**======== IPartyBid =========
+    //  * @notice Starts a Party Bid
+    //  * @dev see IPartyBid.sol
+    //  */
+    // function startSplitParty(
+    //     address marketWrapper,
+    //     address nftContract,
+    //     uint256 tokenId,
+    //     uint256 auctionId,
+    //     string memory name,
+    //     string memory symbol
+    // ) external onlyOwners {
+    //     IPartyBid(_partyBid).startParty(
+    //         marketWrapper,
+    //         nftContract,
+    //         tokenId,
+    //         auctionId,
+    //         name,
+    //         symbol
+    //     );
+    // }
 
-    //======== /IPartyBid =========
+    // //======== /IPartyBid =========
 
     /**======== IERC721 =========
-     * NOTE: Althought OurMinter.sol is generally implemented to work with Zora (or Mirror),
-     * the functions below allow a Split to work with any ERC-721 spec'd platform
+     * NOTE: Althought OurMinter.sol is generally implemented to work with Zora,
+     * the functions below allow a Split to work with any ERC-721 spec'd platform (except minting)
      * @dev see IERC721.sol
      */
-
-    /**
-     * NOTE: Marked as >> untrusted << Use caution when supplying tokenContract_
-     * this should be changed if you know you will be using a different protocol.
-     * @dev mint non-Zora ERC721 with one parameter, eg Foundation.app. See IERC721.sol
-     * @dev mint(string contentURI/IPFSHash || address to_ || etc...)
-     */
-    //   function untrustedMint721(address tokenContract_, string contentURI_ || address to_ || etc...)
-    //       external
-    //   {
-    //       IERC721(tokenContract_).mint(contentURI_ || address to_ || etc...);
-    //   }
 
     /**
      * NOTE: Marked as >> untrusted << Use caution when supplying tokenContract_
@@ -400,5 +388,24 @@ contract OurMinter is OurManagement {
     {
         IERC721(tokenContract_).burn(tokenId_);
     }
+
     //======== /IERC721 =========
+
+    /**
+     * NOTE: Marked as >> untrusted << Use caution when interacting with external contracts. For advanced users only
+     * @dev allows a Split Contract to call functions of any other contract
+     * @notice This function is added for 'future-proofing' capabilities and will not be implemented into the
+     *         OURZ frontend. In the interest of securing the Split's funds, the value is hardcoded
+     *         to zero. The intent is to support the use of custom creator contracts.
+     */
+    function untrustedExecuteTransaction(address to, bytes memory data)
+        external
+        onlyOwners
+        returns (bool success)
+    {
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            success := call(gas(), to, 0, add(data, 0x20), mload(data), 0, 0)
+        }
+    }
 }
