@@ -1,10 +1,8 @@
 /* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
-import React, { useContext, useState } from "react"; // React state management
-import { useNFTMetadata } from "@zoralabs/nft-hooks";
+import React, { useContext } from "react"; // React state management
 import { NFTPreview, NFTDataContext, PreviewComponents } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils";
 
 const DashboardNFT = ({
   split,
@@ -12,14 +10,14 @@ const DashboardNFT = ({
   onClick,
   isCreation,
 }: {
-  split: string;
-  tokenId: string;
+  split: OurProxy;
+  tokenId: number;
   onClick: () => void;
   isCreation: boolean;
 }): JSX.Element => {
   let name;
 
-  const [hidden, setHidden] = useState(false);
+  // const [hidden, setHidden] = useState(false);
 
   const ProfileThumb = () => {
     const { nft } = useContext(NFTDataContext);
@@ -27,7 +25,7 @@ const DashboardNFT = ({
       return null;
     }
     if (nft.data?.owner !== split.id && isCreation) {
-      setHidden(true);
+      // setHidden(true);
     }
     let { contentURI } = nft.data.zoraNFT;
     const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
@@ -53,29 +51,29 @@ const DashboardNFT = ({
     }
   };
 
-  const TitleAuthor = () => {
-    const { nft } = useContext(NFTDataContext);
-    const { error, metadata } = useNFTMetadata(nft.data?.nft?.metadataURI, {
-      allowInvalid: true,
-    });
-    if (!nft.data?.nft?.metadataURI) {
-      return null;
-    }
-    if (metadata.attributes) {
-      const creatorAddress = nft.data.nft.creator;
-      name = metadata.name;
+  // const TitleAuthor = () => {
+  //   const { nft } = useContext(NFTDataContext);
+  //   const { error, metadata } = useNFTMetadata(nft.data?.nft?.metadataURI, {
+  //     allowInvalid: true,
+  //   });
+  //   if (!nft.data?.nft?.metadataURI) {
+  //     return null;
+  //   }
+  //   if (metadata.attributes) {
+  //     const creatorAddress = nft.data.nft.creator;
+  //     name = metadata.name;
 
-      return (
-        <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
-          <div className="text-bold">{metadata.name}</div>
-          <div className="text-right">
-            by: <Link href={`/profile/${creatorAddress}`}>{toTrimmedAddress(creatorAddress)}</Link>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
+  //     return (
+  //       <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
+  //         <div className="text-bold">{metadata.name}</div>
+  //         <div className="text-right">
+  //           by: <Link href={`/profile/${creatorAddress}`}>{toTrimmedAddress(creatorAddress)}</Link>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   return (
     <>

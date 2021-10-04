@@ -6,15 +6,7 @@ import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { NFTPreview, NFTDataContext } from "@zoralabs/nft-components";
 import { toTrimmedAddress } from "@/ethereum/utils";
 
-const ProfileNFT = ({
-  tokenId,
-  username,
-  address,
-}: {
-  tokenId: string;
-  username: string;
-  address: string;
-}): JSX.Element => {
+const ProfileNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
   let name;
   const ProfileThumb = () => {
     const { nft } = useContext(NFTDataContext);
@@ -48,7 +40,7 @@ const ProfileNFT = ({
 
   const TitleAuthor = () => {
     const { nft } = useContext(NFTDataContext);
-    const { error, metadata } = useNFTMetadata(nft.data?.nft?.metadataURI, {
+    const { metadata } = useNFTMetadata(nft.data?.nft?.metadataURI, {
       allowInvalid: true,
     });
     if (!nft.data?.nft?.metadataURI) {

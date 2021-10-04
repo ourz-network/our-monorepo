@@ -1,24 +1,15 @@
-export type NFTContract = {
-  // "The Contract Address"
+export interface SplitZNFT {
+  // "The tokenId of the ERC-721";
   id: string;
 
-  // "All of the NFTs from the contract that were created by Split Proxies"
-  // @derivedFrom(field: "contract")
-  splitNFTs: SplitNFT[];
-};
-
-export type SplitZNFT = {
-  // "The tokenId of the ERC-721";
-  id: !ID;
-
   // "The creator of the ERC-721";
-  creator: !OurProxy;
+  creator: OurProxy;
 
   // "The transaction hash the ERC-721 was originally logged in this subgraph";
-  transactionHash: !string;
-};
+  transactionHash: string;
+}
 
-export type ERC20Transfer = {
+export interface ERC20Transfer {
   // "<txHash>-<proxyAddress>"
   id: string;
 
@@ -33,9 +24,9 @@ export type ERC20Transfer = {
 
   // "The amount of ERC20s Transferred"
   amount: BigInt;
-};
+}
 
-export type OurProxy = {
+export interface OurProxy {
   // "The address of the Proxy"
   id: string;
 
@@ -76,9 +67,9 @@ export type OurProxy = {
   // "The ERC20 Transfers that the Proxy has successfully distributed"
   // @derivedFrom(field: "splitProxy")
   ERC20Transfers: ERC20Transfer[];
-};
+}
 
-export type User = {
+export interface User {
   // "Ethereum Address"
   id: string;
 
@@ -96,9 +87,9 @@ export type User = {
   // "Splits that this address is a recipient of"
   // @derivedFrom(field: "user")
   recipientInfo: SplitRecipient[];
-};
+}
 
-export type SplitRecipient = {
+export interface SplitRecipient {
   // "`${proxyAddress}-${userAddress}`"
   id: string;
 
@@ -125,4 +116,4 @@ export type SplitRecipient = {
 
   // "Total amount of ETH claimed from this Split"
   ethClaimed: BigInt;
-};
+}

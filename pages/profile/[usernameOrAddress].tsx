@@ -1,22 +1,24 @@
 /* eslint-disable no-underscore-dangle */
 import { useState, useEffect, FC } from "react"; // State management
 import { useRouter } from "next/router"; // Page redirects (static routing)
+import { GetStaticProps } from "next";
 import web3 from "@/app/web3";
 import zoraSubgraph from "@/modules/subgraphs/zora/index"; // GraphQL client
 import getPostByID from "@/modules/subgraphs/zora/functions"; // Post retrieval function
 import { ZORA_MEDIA_BY_OWNER } from "@/modules/subgraphs/zora/queries"; // Retrieval query
 import { Profile } from "@/components/Profile/Profile";
 import connectDB from "@/modules/mongodb/utils/connectDB";
-import UserModel from "@/modules/mongodb/models/UserModel";
-import ProfileModel from "@/modules/mongodb/models/ProfileModel";
-import FollowModel from "@/modules/mongodb/models/FollowModel";
+import { UserModel } from "@/modules/mongodb/models/UserModel";
+import { ProfileModel } from "@/modules/mongodb/models/ProfileModel";
+import { FollowModel } from "@/modules/mongodb/models/FollowModel";
 import { getAllProfilePaths } from "@/modules/subgraphs/ourz/functions";
+import { IUser, IProfile } from "@/modules/mongodb/models/types";
 
 interface ProfilePageProps {
   linkUsername: string;
   linkAddress: string;
-  user: Record<string, unknown>;
-  profileDetails: Record<string, unknown>;
+  user: IUser;
+  profileDetails: IProfile;
   followersLength: number;
   followingLength: number;
   userFollowStats: Record<string, unknown>;
@@ -34,7 +36,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   userFollowStats,
   postsToSet,
   redirectUsername,
-}): JSX.Element => {
+}: ProfilePageProps): JSX.Element => {
   const [loading, setLoading] = useState(!(postsToSet?.length > 1)); // Global loading state
 
   const router = useRouter();
@@ -130,7 +132,7 @@ export async function getStaticPaths(): Promise<{ paths: any; fallback: boolean 
   addresses.forEach((address) => paths.push({ params: { usernameOrAddress: address } }));
 
   try {
-    const allUsers = await UserModel.find().populate("user");
+    const allUsers: IUser[] = await UserModel.find().populate("user");
     allUsers.forEach((user) =>
       paths.push({
         params: { usernameOrAddress: `${user.username}` },
@@ -144,54 +146,7 @@ export async function getStaticPaths(): Promise<{ paths: any; fallback: boolean 
 
 // Run on page load
 // eslint-disable-next-line consistent-return
-export async function getStaticProps(context): Promise<
-  | {
-      props: {
-        redirectUsername: any;
-        linkAddress: any;
-        postsToSet?: undefined;
-        linkUsername?: undefined;
-        user?: undefined;
-        profileDetails?: undefined;
-        profileFollowStats?: undefined;
-        followersLength?: undefined;
-        followingLength?: undefined;
-      };
-      revalidate?: undefined;
-      notFound?: undefined;
-    }
-  | {
-      props: {
-        linkAddress: any;
-        postsToSet: any[];
-        redirectUsername?: undefined;
-        linkUsername?: undefined;
-        user?: undefined;
-        profileDetails?: undefined;
-        profileFollowStats?: undefined;
-        followersLength?: undefined;
-        followingLength?: undefined;
-      };
-      revalidate: number;
-      notFound?: undefined;
-    }
-  | {
-      props: {
-        linkUsername: any;
-        user: any;
-        profileDetails: any;
-        profileFollowStats: any;
-        followersLength: any;
-        followingLength: any;
-        postsToSet: any[];
-        redirectUsername?: undefined;
-        linkAddress?: undefined;
-      };
-      revalidate: number;
-      notFound?: undefined;
-    }
-  | { notFound: boolean; props?: undefined; revalidate?: undefined }
-> {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { usernameOrAddress } = context.params;
   await connectDB();
   let linkAddress;
@@ -293,6 +248,6 @@ export async function getStaticProps(context): Promise<
       return { notFound: true };
     }
   }
-}
+};
 
 export default ProfilePage;

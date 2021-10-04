@@ -6,16 +6,17 @@ import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // Post ret
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
 import NewSplit from "@/modules/Create/NewSplit";
+import { OurProxy } from "@/modules/subgraphs/ourz/types";
 
 const CreateDashboard = (): JSX.Element => {
   const [loading, setLoading] = useState(true); // Global loading state
-  const [ownedSplits, setOwnedSplits] = useState([]);
+  const [ownedSplits, setOwnedSplits] = useState<OurProxy[] | undefined>([]);
   const [newSplit, setNewSplit] = useState(false);
   const { address, network } = web3.useContainer();
 
   const Router = useRouter();
 
-  const handleClick = (id) => {
+  const handleClick = (id: string) => {
     Router.push(`/create/mint/${id}`).then(
       () => {},
       () => {}
@@ -60,11 +61,11 @@ const CreateDashboard = (): JSX.Element => {
                   Splits that you can mint an NFT for:
                 </h1>
                 <div className="grid grid-cols-3 auto-rows-min gap-8 mx-auto mt-4 w-5/6 h-full">
-                  {ownedSplits.map((OurProxy, i) => (
+                  {ownedSplits.map((ourProxy) => (
                     <SplitThumb
-                      key={OurProxy.id}
-                      ownedSplit={OurProxy}
-                      handleClick={() => handleClick(OurProxy.id)}
+                      key={ourProxy.id}
+                      ownedSplit={ourProxy}
+                      handleClick={() => handleClick(ourProxy.id)}
                     />
                   ))}
                 </div>

@@ -16,29 +16,29 @@ import { useRouter } from "next/router";
 import catchErrors from "@/modules/mongodb/utils/catchErrors";
 // import userUpdate from "@/modules/mongodb/utils/userActions";
 import web3 from "@/app/web3";
+import { IProfile, IUser } from "@/modules/mongodb/models/types";
 
 let cancel;
 
 // This modal allows connected wallets to sign up/edit their profile
 const ProfileForm = ({
-  modalType,
   User,
   linkAddress,
   profileDetails,
   showModal,
   setShowModal,
 }: {
-  modalType: any;
-  User: any;
-  linkAddress: any;
-  profileDetails: any;
-  showModal: any;
+  User: IUser;
+  linkAddress: string;
+  profileDetails: IProfile;
+  showModal: boolean;
+  setShowModal;
 }): JSX.Element => {
   const Router = useRouter();
 
   // Global State. Connected wallet.
   const { address, verifyAPIpost } = web3.useContainer();
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const cancelButtonRef = useRef(null); // TailwindUI
 
@@ -111,7 +111,8 @@ const ProfileForm = ({
         if (!usernameAvailable) {
           throw new Error("Username Unavailable");
         }
-        const { desiredUsername, ethAddress } = formData;
+        const { desiredUsername, ethAddress }: { desiredUsername: string; ethAddress: string } =
+          formData;
 
         // Request signed message
         const verifiedSignature = await verifyAPIpost(`${JSON.stringify(formData)}`);
@@ -132,13 +133,13 @@ const ProfileForm = ({
           }
         }
       } catch (error) {
-        const errorMsg = catchErrors(error);
-        setErrorMsg(errorMsg);
+        const ErrorMsg = catchErrors(error);
+        setErrorMsg(ErrorMsg);
       }
 
       // Else edit account details
     } else {
-      const { username } = formData;
+      const { username }: { username: string } = formData;
       try {
         // Request signed message
         const verifiedSignature = await verifyAPIpost(`${JSON.stringify(formData)}`);
@@ -148,22 +149,23 @@ const ProfileForm = ({
 
           // Throw error with status code in case Fetch API req failed
           if (res.data !== "Success") {
-            throw new Error(res.status);
+            throw new Error(res.status.toString());
           }
 
           hide(); // calls hide() if successful
           Router.reload();
         }
       } catch (error) {
-        const errorMsg = catchErrors(error);
-        setErrorMsg(errorMsg);
+        const ErrorMsg = catchErrors(error);
+        setErrorMsg(ErrorMsg);
       }
     }
   };
 
-  const checkUsername = async (desiredUsername) => {
+  const checkUsername = async (desiredUsername: string) => {
     setUsernameLoading(true);
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       cancel && cancel();
 
       const { CancelToken } = axios;
@@ -187,25 +189,25 @@ const ProfileForm = ({
   };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const checkAvailibility = useEffect(() => {
-    user.username === ""
-      ? setUsernameAvailable(false)
-      : checkUsername(user.username).then(
-          () => {},
-          () => {}
-        );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.username]);
+  // const checkAvailibility = useEffect(() => {
+  //   user.username === ""
+  //     ? setUsernameAvailable(false)
+  //     : checkUsername(user.username).then(
+  //         () => {},
+  //         () => {}
+  //       );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user.username]);
 
-  const registerUser = async () => {
-    try {
-      const { username } = user;
-      const res = await axios.post(`/api/signup`, { address, username });
-      hide();
-    } catch (error) {
-      const errorMsg = catchErrors(error);
-    }
-  };
+  // const registerUser = async () => {
+  //   try {
+  //     const { username } = user;
+  //     const res = await axios.post(`/api/signup`, { address, username });
+  //     hide();
+  //   } catch (error) {
+  //     const errorMsg = catchErrors(error);
+  //   }
+  // };
 
   return (
     <>
@@ -290,12 +292,9 @@ const ProfileForm = ({
                                         className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
                                         {...register("desiredUsername", {
                                           required: true, // JS only: <p>error message</p>
-                                          minLength: {
-                                            value: 3,
-                                          },
-                                          maxLength: {
-                                            value: 24,
-                                          },
+                                          minLength: 3,
+                                          maxLength: 24,
+
                                           pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
                                           validate: {
                                             available: async (v) => {

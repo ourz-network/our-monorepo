@@ -4,6 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import { toTrimmedAddress } from "@/ethereum/utils";
 import ProfileForm from "@/components/Profile/ProfileForm";
+import { IProfile, IUser } from "@/modules/mongodb/models/types";
 
 export const ProfileHeader = ({
   user,
@@ -11,10 +12,10 @@ export const ProfileHeader = ({
   linkAddress,
   ownAccount,
 }: {
-  user: any;
-  profileDetails: any;
-  linkAddress: any;
-  ownAccount: any;
+  user: IUser;
+  profileDetails: IProfile;
+  linkAddress: string;
+  ownAccount: boolean;
 }): JSX.Element => {
   // https://stackoverflow.com/questions/55271855/react-material-ui-ssr-warning-prop-d-did-not-match-server-m-0-0-h-24-v-2
   //

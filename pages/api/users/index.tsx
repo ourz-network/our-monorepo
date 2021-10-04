@@ -7,7 +7,7 @@ import ProfileModel from "@/modules/mongodb/models/ProfileModel";
 
 // const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
-export default async function handler(req, res): Promise<any> {
+export default async function handler(req: Request, res: Response): Promise<any> {
   const { method } = req;
 
   await connectDB();

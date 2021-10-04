@@ -8,7 +8,7 @@ const AuctionsList = ({ tokens }: { tokens: any[] }): JSX.Element => {
   return (
     <div className="flex flex-wrap justify-center">
       {tokens &&
-        tokens.map((token, i) => {
+        tokens.map((token) => {
           const tokenInfo = FetchStaticData.getIndexerServerTokenInfo(token);
           return (
             <NFTPreview
@@ -16,7 +16,7 @@ const AuctionsList = ({ tokens }: { tokens: any[] }): JSX.Element => {
               initialData={token}
               id={tokenInfo.tokenId}
               contract={tokenInfo.tokenContract}
-              onClick={(evt) => router.push(`/nft/${tokenInfo.tokenId}`)}
+              onClick={() => router.push(`/nft/${tokenInfo.tokenId}`)}
               useBetaIndexer
             />
           );

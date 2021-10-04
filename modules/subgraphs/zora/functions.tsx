@@ -5,18 +5,18 @@ import zoraSubgraph from "./index"; // Apollo Client
 import { ZORA_MEDIA_BY_ID } from "./queries"; // GraphQL Queries
 import {
   Media,
-  User,
-  Ask,
-  Bid,
-  InactiveBid,
-  InactiveAsk,
-  Currency,
-  Transfer,
-  URIUpdate,
-  ReserveAuctionBid,
-  ReserveAuction,
+  // User,
+  // Ask,
+  // Bid,
+  // InactiveBid,
+  // InactiveAsk,
+  // Currency,
+  // Transfer,
+  // URIUpdate,
+  // ReserveAuctionBid,
+  // ReserveAuction,
 } from "./types";
-import { Ourz20210928 } from "./20210928";
+import { Ourz20210928 } from "@/modules/Create/types/20210928";
 
 interface Data {
   media: Media;

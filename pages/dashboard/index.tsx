@@ -1,27 +1,25 @@
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react"; // State management
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import { getOwnedSplits, getClaimableSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
-import Button from "@/components/Button";
 import SplitFull from "@/components/Dashboard/SplitFull";
 import Sidebar from "@/components/Dashboard/Sidebar";
+import { OurProxy, SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
 const UserDashboard = (): JSX.Element => {
   const { address, network } = web3.useContainer();
   const [loading, setLoading] = useState(true);
-  const [ownedSplits, setOwnedSplits] = useState([]);
-  const [claimableSplits, setClaimableSplits] = useState([]);
+  const [ownedSplits, setOwnedSplits] = useState<OurProxy[] | null>([]);
+  const [claimableSplits, setClaimableSplits] = useState<SplitRecipient[] | null>([]);
 
-  const [showFull, setShowFull] = useState();
-  const [selectedSplit, setSelectedSplit] = useState();
-  const [userSplitDetails, setUserSplitDetails] = useState();
-  const [selectedIsOwned, setSelectedIsOwned] = useState();
-  const Router = useRouter();
+  const [showFull, setShowFull] = useState(false);
+  const [selectedSplit, setSelectedSplit] = useState<OurProxy | null>();
+  const [userSplitDetails, setUserSplitDetails] = useState<SplitRecipient | undefined>();
+  const [selectedIsOwned, setSelectedIsOwned] = useState(false);
 
   useEffect(() => {
-    async function collectSplits(ethAddress) {
+    async function collectSplits(ethAddress: string) {
       const owned = await getOwnedSplits(ethAddress);
       if (owned) {
         setOwnedSplits(owned);
@@ -43,11 +41,11 @@ const UserDashboard = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  const handleClickThumbnail = (split, isOwned) => {
+  const handleClickThumbnail = (split: OurProxy, isOwned: boolean) => {
     setSelectedSplit(split);
-    let userInfo;
+    let userInfo: SplitRecipient;
 
-    split.splitRecipients.forEach((recipient, i) => {
+    split.splitRecipients.forEach((recipient) => {
       if (recipient.user.id === address.toLowerCase()) {
         userInfo = recipient;
       }
@@ -68,7 +66,6 @@ const UserDashboard = (): JSX.Element => {
           {showFull && (
             <SplitFull
               split={selectedSplit}
-              userInfo={userSplitDetails}
               isOwned={selectedIsOwned}
               showFull={showFull}
               setShowFull={setShowFull}
@@ -102,13 +99,12 @@ const UserDashboard = (): JSX.Element => {
                     You are a whitelisted manager of:
                   </h1>
                   <div className="grid grid-cols-1 auto-rows-auto gap-8 mx-auto mt-4 w-full h-full min-w-screen lg:grid-cols-3">
-                    {ownedSplits.map((OurProxy, i) => (
+                    {ownedSplits.map((ourProxy) => (
                       <SplitThumb
-                        key={`own-${OurProxy.id}`}
-                        ownedSplit={OurProxy}
-                        Router={Router}
+                        key={`own-${ourProxy.id}`}
+                        ownedSplit={ourProxy}
                         userInfo={userSplitDetails}
-                        handleClick={() => handleClickThumbnail(OurProxy, true)}
+                        handleClick={() => handleClickThumbnail(ourProxy, true)}
                       />
                     ))}
                   </div>
@@ -126,13 +122,12 @@ const UserDashboard = (): JSX.Element => {
                     You are a recipient of:
                   </h1>
                   <div className="grid grid-cols-1 auto-rows-min gap-8 mx-auto mt-4 w-full h-full lg:grid-cols-3">
-                    {claimableSplits.map((OurProxy, i) => (
+                    {claimableSplits.map((ourProxy) => (
                       <SplitThumb
-                        key={`rec-${OurProxy.id}`}
-                        claimableSplit={OurProxy}
-                        Router={Router}
+                        key={`rec-${ourProxy.id}`}
+                        claimableSplit={ourProxy}
                         userInfo={userSplitDetails}
-                        handleClick={() => handleClickThumbnail(OurProxy.splitProxy, false)}
+                        handleClick={() => handleClickThumbnail(ourProxy.splitProxy, false)}
                       />
                     ))}
                   </div>

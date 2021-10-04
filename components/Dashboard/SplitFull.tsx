@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/router";
 
 import { utils } from "ethers";
@@ -7,39 +7,37 @@ import Button from "@/components/Button";
 import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
 import DashboardNFT from "@/components/Cards/DashboardNFT";
-import Table from "@/components/Charts/Table";
 import web3 from "@/app/web3";
+import { OurProxy } from "@/modules/subgraphs/ourz/types";
 
 const SplitFull = ({
   split,
   isOwned,
-  showFull,
   setShowFull,
 }: {
-  split: any;
+  split: OurProxy;
   isOwned: boolean;
-  showFull: boolean;
-  setShowFull: () => void;
+  setShowFull: Dispatch<SetStateAction<boolean>>;
 }): JSX.Element => {
   const Router = useRouter();
   const { claimFunds } = web3.useContainer();
-  const { data, loading, error } = useAuctions(split.id);
-  const [dialog, setDialog] = useState();
-  const [showDialog, setShowDialog] = useState();
-  const [selectedId, setSelectedId] = useState();
+  const { data } = useAuctions(split.id);
+  const [dialog, setDialog] = useState<string | undefined>();
+  const [showDialog, setShowDialog] = useState<boolean | undefined>();
+  const [selectedId, setSelectedId] = useState<number | undefined>();
 
   const refDiv = useRef(null);
 
-  const hide = () => {
-    setShowFull(false);
-  };
+  // const hide = () => {
+  //   setShowFull(false);
+  // };
 
-  const handleClickClose = () => {
-    hide();
-  };
+  // const handleClickClose = () => {
+  //   hide();
+  // };
 
   const clickClaim = async () => {
-    const didClaim = await claimFunds({
+    await claimFunds({
       splits: split.splitRecipients,
       proxyAddress: split.id,
     });
@@ -62,7 +60,7 @@ const SplitFull = ({
             <button
               type="button"
               href="#"
-              tabIndex="0"
+              tabIndex={0}
               className="absolute top-4 right-4 text-dark-primary hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-12 lg:right-10"
               onClick={() => setShowFull(false)}
             >
@@ -84,12 +82,18 @@ const SplitFull = ({
               </h1>
               <h2 className="text-sm font-extrabold text-dark-secondary">{split.id}</h2>
               <h4 className="mt-2 text-lg font-medium whitespace-pre-wrap text-dark-primary">
-                {split.ETH ? utils.formatEther(split.ETH) : 0} ETH unclaimed in Split.
+                {utils.formatEther(split.ETH.toString()) || 0} ETH unclaimed in Split.
               </h4>
-              {split.ETH > 0 && <Button text="Claim" onClick={() => clickClaim()} />}
+              {Number(split.ETH.toString()) > 0 && (
+                <Button isMain={false} text="Claim" onClick={() => clickClaim()} />
+              )}
               {isOwned && (
                 <div className="flex gap-4 items-baseline p-4 mx-auto my-4 w-min border border-dark-border">
-                  <Button text="Mint" onClick={() => Router.push(`/create/mint/${split.id}`)} />
+                  <Button
+                    isMain={false}
+                    text="Mint"
+                    onClick={() => Router.push(`/create/mint/${split.id}`)}
+                  />
                   {/* <Button 
                       text="Curate"
                       onClick={''}

@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 // Zora Mainnet subgraph
 // const APIURL = "https://api.thegraph.com/subgraphs/name/ourzor8a/zora-v1"

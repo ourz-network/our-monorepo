@@ -4,8 +4,9 @@ import React, { useState, useEffect } from "react"; // React state management
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
 import axios from "axios";
+import { Ourz20210928 } from "@/modules/Create/types/20210928";
 
-const HomeNFT = (props) => {
+const HomeNFT = (tokenId: number | string) => {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -14,9 +15,8 @@ const HomeNFT = (props) => {
   });
   const zoraQuery = new Zora(queryProvider, 4);
   // const [loading, setLoading] = useState(true);
-  const { tokenId } = props;
-  const [metadata, setMetadata] = useState("0x00");
-  const [contentURI, setContentURI] = useState();
+  const [metadata, setMetadata] = useState<Ourz20210928 | undefined>();
+  const [contentURI, setContentURI] = useState<string | undefined>();
   useEffect(() => {
     async function getTokenInfo(TokenID) {
       const metadataURI = await zoraQuery.fetchMetadataURI(TokenID);
@@ -47,7 +47,7 @@ const HomeNFT = (props) => {
    * For Landing Page: hide posts until they are loaded
    * and then set classname of "`orientation`-`ratio`"
    */
-  const [aspectRatio, setAspectRatio] = useState();
+  const [aspectRatio, setAspectRatio] = useState("");
 
   const calcAspectRatio = (loadedMedia) => {
     let ratio;
@@ -132,7 +132,6 @@ const HomeNFT = (props) => {
                   loop
                   playsInline
                   onLoadedMetadata={calcAspectRatio}
-                  alt={`NFT ${tokenId} Thumbnail`}
                 >
                   <source src={contentURI} />
                 </video>

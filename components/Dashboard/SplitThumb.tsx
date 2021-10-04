@@ -1,5 +1,6 @@
 import { Networks, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 import { ethers } from "ethers";
+import { SplitRecipient, OurProxy } from "@/modules/subgraphs/ourz/types";
 
 function keyDownA11y(handler) {
   return function onKeyDown(event) {
@@ -15,9 +16,9 @@ const SplitThumb = ({
   userInfo,
   handleClick,
 }: {
-  ownedSplit: any;
-  claimableSplit: any;
-  userInfo: any;
+  ownedSplit: OurProxy;
+  claimableSplit: SplitRecipient;
+  userInfo: SplitRecipient;
   handleClick: () => void;
 }): JSX.Element => {
   if (claimableSplit) {
@@ -42,7 +43,7 @@ const SplitThumb = ({
               <br />
               Role: {yourRole}
               <br />
-              {ethers.utils.formatEther(userInfo?.claimableETH || 0)} ETH unclaimed.
+              {ethers.utils.formatEther(userInfo?.claimableETH.toString() || 0)} ETH unclaimed.
             </p>
           </div>
         </div>

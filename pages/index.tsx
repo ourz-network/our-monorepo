@@ -1,12 +1,10 @@
 import Head from "next/head";
 import React, { useState } from "react"; // React state management
-import { Zora } from "@zoralabs/zdk";
-import { ethers } from "ethers";
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
 import getPostByID from "@/modules/subgraphs/zora/functions"; // Post collection helper
 import HomeNFT from "@/components/Cards/HomeNFT";
-import { Ourz20210928 } from "@/modules/subgraphs/zora/20210928";
+import { Ourz20210928 } from "@/modules/Create/types/20210928";
 
 const Home = ({
   postsToSet,
@@ -59,14 +57,14 @@ const Home = ({
           <>
             <div className="mx-auto w-full h-full max-w-11/12 xl:mx-16">
               <div className="space-x-4 space-y-4 w-full h-full timeline xl:grid">
-                {posts.map((post, i) => (
+                {posts.map((post) => (
                   // For each Zora post
                   // Return Post component
                   <HomeNFT key={post.id} tokenId={post.id} />
                 ))}
               </div>
             </div>
-            {posts && posts.length >= 0 && posts[posts.length - 1]?.id !== "0" ? (
+            {posts && posts.length >= 0 && posts[posts.length - 1]?.id !== 0 ? (
               // If there remain posts that can be loaded, display button
               <button
                 onClick={() => collectMore()}
@@ -96,7 +94,7 @@ const Home = ({
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
   //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
   //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -120,8 +118,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   //   }
 
   const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
-  const completeFetch = await Promise.all(
-    ourzSampleTokenIDs.map(async (id, index) => {
+  await Promise.all(
+    ourzSampleTokenIDs.map(async (id) => {
       // Collect post
       const post = await getPostByID(id);
       if (post != null) {

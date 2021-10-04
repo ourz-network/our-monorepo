@@ -1,24 +1,20 @@
-import Link from "next/link"; // Dynamic routing
 import { NFTE } from "@nfte/react";
 import { NFTFullPage, FullComponents } from "@zoralabs/nft-components";
-import { toTrimmedAddress } from "@/ethereum/utils";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
+import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
 const FullPageNFT = ({
-  creator,
   tokenId,
   ownAccount,
   chartData,
   recipients,
 }: {
-  creator: any;
-  tokenId: any;
-  ownAccount: any;
+  tokenId: number;
+  ownAccount: boolean;
   chartData: any;
-  recipients: any;
+  recipients: SplitRecipient[];
 }): JSX.Element => {
-  const creatorAddress = creator;
   // const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
@@ -55,7 +51,7 @@ const FullPageNFT = ({
   <NFTE contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7" tokenId="${tokenId}"/>`;
 
   return (
-    <NFTFullPage id={tokenId}>
+    <NFTFullPage id={tokenId.toString()}>
       <div className="object-contain py-1 border-b border-dark-border bg-dark-accent min-h-33vh">
         <FullComponents.MediaFull />
       </div>
@@ -98,7 +94,10 @@ const FullPageNFT = ({
             </h1>
             <div className="flex justify center">
               <div className="mx-auto min-w-nfte">
-                <NFTE contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7" tokenId={tokenId} />
+                <NFTE
+                  contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7"
+                  tokenId={tokenId.toString()}
+                />
               </div>
             </div>
             <div className="flex flex-col justify-center mt-2 w-full">

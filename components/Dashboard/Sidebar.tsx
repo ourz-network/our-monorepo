@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Link from "next/link";
-import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
+import { OurProxy, SplitRecipient } from "@/modules/subgraphs/ourz/types";
 import Table from "@/components/Charts/Table";
 import { toTrimmedAddress } from "@/ethereum/utils";
 
-const Sidebar = ({
-  split,
-  showFull,
-}: {
-  split: Record<string, any>[];
-  showFull: boolean;
-}): JSX.Element => {
+const Sidebar = ({ split, showFull }: { split: OurProxy; showFull: boolean }): JSX.Element => {
   const [recipientInfo, setRecipientInfo] = useState<SplitRecipient[] | undefined>();
 
   useEffect(() => {
@@ -31,7 +25,7 @@ const Sidebar = ({
               <Table recipients={recipientInfo} />
             </div>
             <div id="details">
-              {ethers.utils.formatEther(split.ETH || 0)} ETH unclaimed in Split
+              {ethers.utils.formatEther(split.ETH.toString() || 0)} ETH unclaimed in Split
               <div id="owners" className="my-2">
                 <p className="font-bold">Owners:</p>
                 {split?.proxyOwners.map((owner) => (

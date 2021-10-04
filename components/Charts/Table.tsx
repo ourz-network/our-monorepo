@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { toTrimmedAddress } from "@/ethereum/utils";
+import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
-const Table = ({ recipients }: { recipients: any }): JSX.Element => (
+const Table = ({ recipients }: { recipients: SplitRecipient[] }): JSX.Element => (
   <>
     <div className="p-2 mb-2 border border-dark-border">
       <div className="text-xl text-center text-dark-primary">{`${recipients?.length} Split Recipients`}</div>
@@ -27,10 +28,8 @@ const Table = ({ recipients }: { recipients: any }): JSX.Element => (
                   {toTrimmedAddress(split.user.id)}
                 </Link>
               </td> */}
-              <td className="text-center border text-dark-primary border-dark-border hover:underline">
-                <Link href={`/profile/${split.user.id}`} className="cursor-pointer">
-                  {split.name}
-                </Link>
+              <td className="text-center border cursor-pointer text-dark-primary border-dark-border hover:underline">
+                <Link href={`/profile/${split.user.id}`}>{split.name}</Link>
               </td>
               <td className="text-center border text-dark-primary border-dark-border">
                 {split.role}

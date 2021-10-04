@@ -2,14 +2,15 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import Button from "@/components/Button";
+import { OurProxy } from "@/modules/subgraphs/ourz/types";
 
 const AuctionForm = ({
   tokenId,
   split,
   onClick,
 }: {
-  tokenId: string;
-  split: string;
+  tokenId: number;
+  split: OurProxy;
   onClick: () => void;
 }): JSX.Element => {
   const { createZoraAuction } = web3.useContainer();
@@ -46,15 +47,15 @@ const AuctionForm = ({
         <form className="flex flex-col space-y-6" onSubmit={(e) => onSubmit(e)}>
           <label htmlFor="reservePrice" className="text-sm font-medium text-dark-primary">
             Reserve Price in ETH
-            <input type="text" placeholder={formData.reservePrice} />
+            <input type="text" placeholder={formData.reservePrice.toString()} />
           </label>
           <label htmlFor="duration" className="text-sm font-medium text-dark-primary">
             Duration in Seconds
-            <input type="text" placeholder={formData.duration} />
+            <input type="text" placeholder={formData.duration.toString()} />
           </label>
 
           <div className="flex justify-between w-full">
-            <Button text="Cancel" onClick={onClick} />
+            <Button isMain={false} text="Cancel" onClick={onClick} />
             <button
               type="submit"
               className="inline-flex justify-center items-center px-4 py-1 text-base font-light whitespace-nowrap transition-all text-dark-accent bg-dark-primary"

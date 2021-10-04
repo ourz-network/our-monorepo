@@ -34,6 +34,7 @@ async function connectDB(): Promise<any> {
       useCreateIndex: true,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
   }
   cached.conn = await cached.promise;

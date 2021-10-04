@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import NewMintMultistepForm from "@/modules/Create/NewMintMultistepForm";
+import NewMintMultistepForm from "@/modules/Create/Mint/MultistepForm";
 import { getSplitRecipients } from "@/modules/subgraphs/ourz/functions";
+import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
 const MintNFTFromExistingSplit = (): JSX.Element => {
   const [loading, setLoading] = useState(true); // Global loading state
   const { query } = useRouter();
   const { proxyAddress } = query;
-  const [splitRecipients, setSplitRecipients] = useState([]);
+  const [splitRecipients, setSplitRecipients] = useState<SplitRecipient[] | undefined>([]);
 
   useEffect(() => {
     async function collectSplitRecipients(address) {

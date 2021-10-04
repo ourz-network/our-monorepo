@@ -1,13 +1,11 @@
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react"; // State management
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
-import web3 from "@/app/web3";
+import { GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
 import { getSplitRecipients, getAllOurzTokens } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient, SplitZNFT } from "@/modules/subgraphs/ourz/types";
-import ourzSubgraph from "@/modules/subgraphs/ourz";
 
 const NFTView = ({
   tokenId,
@@ -16,15 +14,12 @@ const NFTView = ({
 }: {
   tokenId: string;
   creator: string;
-  recipients: string;
+  recipients: SplitRecipient[];
 }): JSX.Element => {
-  // const [loading, setLoading] = useState(true); // Global loading state
-  const { address } = web3.useContainer();
-  const [firstSale, setFirstSale] = useState();
-  const [secondarySales, setSecondarySales] = useState();
+  const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
 
   useEffect(() => {
-    function formatChartData(Recipients) {
+    function formatChartData(Recipients: SplitRecipient[]) {
       // create first sale chart data
       const newChartData = Recipients.flatMap((recipient) => ({
         name: `${recipient.name || recipient.user.id}`,
@@ -32,21 +27,6 @@ const NFTView = ({
       }));
 
       setFirstSale(newChartData);
-
-      // // edit for secondary sales chart data
-      // newChartData = newChartData.map((recipient) => ({
-      //   name: recipient.name,
-      //   shares:
-      //     Number(recipient.shares) *
-      //     (Number(formData.creatorBidShare) / 100).toFixed(4),
-      // }));
-
-      // newChartData.push({
-      //   name: "Owner",
-      //   shares: 100 - Number(formData.creatorBidShare),
-      // });
-
-      // setSecondarySales(newChartData);
     }
 
     if (recipients) {
@@ -54,36 +34,12 @@ const NFTView = ({
     }
   }, [recipients]);
 
-  // const [ownAccount, setOwnAccount] = useState(false);
-  // useEffect(() => {
-  //   async function fetchCreatorAddress(tokenId) {
-  //     const creator0x = await zoraQuery.fetchCreator(tokenId)
-  //     setCreatorAddress(creator0x)
-  //     return creator0x
-  //   }
-  //   if (tokenId) {
-  //     setCreatorAddress(fetchCreatorAddress(tokenId))
-  //     setLoading(false);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (address) {
-  //     setOwnAccount(address == recipients);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [address]);
-
   return (
     <PageLayout>
       <div
         id="pagecontainer"
         className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
       >
-        {/* {loading && 
-          <p className="mx-auto text-center text-dark-primary"> 
-            one moment please...
-          </p>} */}
         <FullPageNFT
           tokenId={tokenId}
           ownAccount
@@ -121,12 +77,7 @@ export async function getStaticPaths(): Promise<{ paths: any[]; fallback: boolea
 }
 
 // Run on page load
-export async function getStaticProps(
-  context
-): Promise<
-  | { props: { tokenId: any; creator: string; recipients: SplitRecipient[] }; revalidate: number }
-  | { props: { tokenId: any; creator: string; recipients?: undefined }; revalidate: number }
-> {
+export const getStaticProps: GetStaticProps = async (context) => {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -136,7 +87,7 @@ export async function getStaticProps(
   const zoraQuery = new Zora(queryProvider, 4);
 
   const { tokenId } = context.params;
-  const creatorAddress = await zoraQuery.fetchCreator(tokenId);
+  const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
 
   const res = await getSplitRecipients(creatorAddress);
   if (res) {
@@ -154,6 +105,6 @@ export async function getStaticProps(
     props: { tokenId, creator: creatorAddress },
     revalidate: 45,
   };
-}
+};
 
 export default NFTView;
