@@ -25,29 +25,20 @@ import {IERC721} from "./interfaces/IERC721.sol";
  */
 contract OurMinter is OurManagement {
     /// @notice RINKEBY ADDRESSES
-    address public constant _zoraMedia =
+    address public constant ZORA_MEDIA =
         0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
-    address public constant _zoraMarket =
+    address public constant ZORA_MARKET =
         0x85e946e1Bd35EC91044Dc83A5DdAB2B6A262ffA6;
-    address public constant _zoraAH =
+    address public constant ZORA_AH =
         0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
-    address public constant _zoraEditions =
+    address public constant ZORA_EDITIONS =
         0x5d6E1357Acc8BF654979f3b24fdef8C5549A491e;
-    address public constant _mirrorCrowdfund =
+    address public constant MIRROR_CROWDFUND =
         0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
-    address public constant _partyBid =
-        0xB725682D5AdadF8dfD657f8e7728744C0835ECd9;
 
     //======== Subgraph =========
     event ZNFTMinted(uint256 tokenId);
     event EditionCreated(uint256 editionId, uint256 editionSize);
-
-    /// @dev calculates tokenID of newly minted ZNFT
-    function getID() private returns (uint256 id) {
-        id = IZora(_zoraMedia).tokenByIndex(
-            IZora(_zoraMedia).totalSupply() - 1
-        );
-    }
 
     /**======== IZora =========
      * @notice Various functions allowing a Split to interact with Zora Protocol
@@ -62,8 +53,8 @@ contract OurMinter is OurManagement {
         IZora.MediaData calldata mediaData,
         IZora.BidShares calldata bidShares
     ) external onlyOwners {
-        IZora(_zoraMedia).mint(mediaData, bidShares);
-        emit ZNFTMinted(getID());
+        IZora(ZORA_MEDIA).mint(mediaData, bidShares);
+        emit ZNFTMinted(_getID());
     }
 
     /** Media
@@ -75,8 +66,8 @@ contract OurMinter is OurManagement {
         IZora.BidShares calldata bidShares,
         IZora.EIP712Signature calldata sig
     ) external onlyOwners {
-        IZora(_zoraMedia).mintWithSig(creator, mediaData, bidShares, sig);
-        emit ZNFTMinted(getID());
+        IZora(ZORA_MEDIA).mintWithSig(creator, mediaData, bidShares, sig);
+        emit ZNFTMinted(_getID());
     }
 
     /** Media
@@ -87,8 +78,8 @@ contract OurMinter is OurManagement {
         string calldata tokenURI,
         string calldata metadataURI
     ) external onlyOwners {
-        IZora(_zoraMedia).updateTokenURI(tokenId, tokenURI);
-        IZora(_zoraMedia).updateTokenMetadataURI(tokenId, metadataURI);
+        IZora(ZORA_MEDIA).updateTokenURI(tokenId, tokenURI);
+        IZora(ZORA_MEDIA).updateTokenMetadataURI(tokenId, metadataURI);
     }
 
     /** Media
@@ -98,7 +89,7 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
-        IZora(_zoraMedia).updateTokenURI(tokenId, tokenURI);
+        IZora(ZORA_MEDIA).updateTokenURI(tokenId, tokenURI);
     }
 
     /** Media
@@ -107,7 +98,7 @@ contract OurMinter is OurManagement {
     function updateZNFTMetadataURI(uint256 tokenId, string calldata metadataURI)
         external
     {
-        IZora(_zoraMedia).updateTokenMetadataURI(tokenId, metadataURI);
+        IZora(ZORA_MEDIA).updateTokenMetadataURI(tokenId, metadataURI);
     }
 
     /** Market
@@ -117,7 +108,7 @@ contract OurMinter is OurManagement {
         uint256 tokenId,
         IZora.BidShares calldata bidShares
     ) external {
-        IZora(_zoraMarket).setBidShares(tokenId, bidShares);
+        IZora(ZORA_MARKET).setBidShares(tokenId, bidShares);
     }
 
     /** Market
@@ -127,14 +118,14 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
-        IZora(_zoraMarket).setAsk(tokenId, ask);
+        IZora(ZORA_MARKET).setAsk(tokenId, ask);
     }
 
     /** Market
      * @notice Remove zora/core/market ask
      */
     function removeZMarketAsk(uint256 tokenId) external onlyOwners {
-        IZora(_zoraMarket).removeAsk(tokenId);
+        IZora(ZORA_MARKET).removeAsk(tokenId);
     }
 
     /** Market
@@ -144,7 +135,7 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
-        IZora(_zoraMarket).acceptBid(tokenId, expectedBid);
+        IZora(ZORA_MARKET).acceptBid(tokenId, expectedBid);
     }
 
     /** AuctionHouse
@@ -162,7 +153,7 @@ contract OurMinter is OurManagement {
         uint8 curatorFeePercentage,
         address auctionCurrency
     ) external onlyOwners {
-        IZora(_zoraAH).createAuction(
+        IZora(ZORA_AH).createAuction(
             tokenId,
             tokenContract,
             duration,
@@ -180,7 +171,7 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
-        IZora(_zoraAH).setAuctionApproval(auctionId, approved);
+        IZora(ZORA_AH).setAuctionApproval(auctionId, approved);
     }
 
     /** AuctionHouse
@@ -190,43 +181,43 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
-        IZora(_zoraAH).setAuctionReservePrice(auctionId, reservePrice);
+        IZora(ZORA_AH).setAuctionReservePrice(auctionId, reservePrice);
     }
 
     /** AuctionHouse
      * @notice Cancel an Auction before any bids have been placed
      */
     function cancelZAuction(uint256 auctionId) external onlyOwners {
-        IZora(_zoraAH).cancelAuction(auctionId);
+        IZora(ZORA_AH).cancelAuction(auctionId);
     }
 
     /** NFT-Editions
      * @notice Creates a new edition contract as a factory with a deterministic address
      */
     function createZoraEdition(
-        string memory _name,
-        string memory _symbol,
-        string memory _description,
-        string memory _animationUrl,
-        bytes32 _animationHash,
-        string memory _imageUrl,
-        bytes32 _imageHash,
-        uint256 _editionSize,
-        uint256 _royaltyBPS
+        string memory name,
+        string memory symbol,
+        string memory description,
+        string memory animationUrl,
+        bytes32 animationHash,
+        string memory imageUrl,
+        bytes32 imageHash,
+        uint256 editionSize,
+        uint256 royaltyBPS
     ) external onlyOwners {
-        uint256 editionId = IZora(_zoraEditions).createEdition(
-            _name,
-            _symbol,
-            _description,
-            _animationUrl,
-            _animationHash,
-            _imageUrl,
-            _imageHash,
-            _editionSize,
-            _royaltyBPS
+        uint256 editionId = IZora(ZORA_EDITIONS).createEdition(
+            name,
+            symbol,
+            description,
+            animationUrl,
+            animationHash,
+            imageUrl,
+            imageHash,
+            editionSize,
+            royaltyBPS
         );
 
-        emit EditionCreated(editionId, _editionSize);
+        emit EditionCreated(editionId, editionSize);
     }
 
     /** NFT-Editions
@@ -242,27 +233,27 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
-        IZora(_zoraEditions).setApprovedMinter(minter, allowed);
+        IZora(ZORA_EDITIONS).setApprovedMinter(minter, allowed);
     }
 
     /** NFT-Editions
       @dev Allows for updates of edition urls by the owner of the edition.
            Only URLs can be updated (data-uris are supported), hashes cannot be updated.
      */
-    function setEditionURLs(
-        string memory _imageUrl,
-        string memory _animationUrl
-    ) external onlyOwners {
-        IZora(_zoraEditions).updateEditionURLs(_imageUrl, _animationUrl);
+    function setEditionURLs(string memory imageUrl, string memory animationUrl)
+        external
+        onlyOwners
+    {
+        IZora(ZORA_EDITIONS).updateEditionURLs(imageUrl, animationUrl);
     }
 
     /** QoL
      * @notice Approve the Zora Auction House to manage Split's ERC-721s
      * @dev Called internally in Proxy's Constructo
      */
-
-    function setApprovalForAH() internal {
-        IERC721(_zoraMedia).setApprovalForAll(_zoraAH, true);
+    /* solhint-disable ordering */
+    function _setApprovalForAH() internal {
+        IERC721(ZORA_MEDIA).setApprovalForAll(ZORA_AH, true);
     }
 
     /** QoL
@@ -275,14 +266,14 @@ contract OurMinter is OurManagement {
         uint256 duration,
         uint256 reservePrice
     ) external onlyOwners {
-        IZora(_zoraMedia).mint(mediaData, bidShares);
+        IZora(ZORA_MEDIA).mint(mediaData, bidShares);
 
-        uint256 tokenId_ = getID();
+        uint256 tokenId_ = _getID();
         emit ZNFTMinted(tokenId_);
 
-        IZora(_zoraAH).createAuction(
+        IZora(ZORA_AH).createAuction(
             tokenId_,
-            _zoraMedia,
+            ZORA_MEDIA,
             duration,
             reservePrice,
             payable(address(this)),
@@ -292,6 +283,7 @@ contract OurMinter is OurManagement {
     }
 
     //======== /IZora =========
+    /* solhint-enable ordering */
 
     /**======== IMirror =========
      * @notice Create a Crowdfund
@@ -305,7 +297,7 @@ contract OurMinter is OurManagement {
         uint256 fundingCap,
         uint256 operatorPercent
     ) external onlyOwners {
-        IMirror(_mirrorCrowdfund).createCrowdfund(
+        IMirror(MIRROR_CROWDFUND).createCrowdfund(
             name,
             symbol,
             operator,
@@ -407,5 +399,12 @@ contract OurMinter is OurManagement {
         assembly {
             success := call(gas(), to, 0, add(data, 0x20), mload(data), 0, 0)
         }
+    }
+
+    /// @dev calculates tokenID of newly minted ZNFT
+    function _getID() private returns (uint256 id) {
+        id = IZora(ZORA_MEDIA).tokenByIndex(
+            IZora(ZORA_MEDIA).totalSupply() - 1
+        );
     }
 }

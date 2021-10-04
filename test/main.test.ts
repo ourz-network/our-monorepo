@@ -38,7 +38,7 @@ const NULL_BYTES = '0x0000000000000000000000000000000000000000000000000000000000
 describe('SplitProxy via Factory', () => {
   console.log(
     'NOTICE: If tests are failing...' +
-      '\n Go to OurPylon.sol and comment out setApprovalForAH().' +
+      '\n Go to OurPylon.sol and comment out _setApprovalForAH().' +
       "This repo's tests have not had Zora local tests integrated."
   )
 

@@ -25,11 +25,11 @@ contract OurIntrospector is
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC721/IERC721Receiver.sol
 
     function onERC721Received(
-        address operator_,
-        address from_,
-        uint256 tokenId_,
+        address,
+        address,
+        uint256,
         bytes calldata
-    ) external override returns (bytes4) {
+    ) external pure override returns (bytes4) {
         return 0x150b7a02;
     }
 
@@ -37,27 +37,29 @@ contract OurIntrospector is
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC1155/IERC1155Receiver.sol
 
     function onERC1155Received(
-        address operator,
-        address from,
-        uint256 id,
-        uint256 value,
+        address,
+        address,
+        uint256,
+        uint256,
         bytes calldata
-    ) external override returns (bytes4) {
+    ) external pure override returns (bytes4) {
         return 0xf23a6e61;
     }
 
     function onERC1155BatchReceived(
-        address operator,
-        address from,
-        uint256[] calldata ids,
-        uint256[] calldata values,
+        address,
+        address,
+        uint256[] calldata,
+        uint256[] calldata,
         bytes calldata
-    ) external override returns (bytes4) {
+    ) external pure override returns (bytes4) {
         return 0xbc197c81;
     }
 
     //======== IERC777 =========
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/token/ERC777/IERC777Recipient.sol
+    //sol
+    // solhint-disable-next-line ordering
     event ERC777Received(
         address operator,
         address from,

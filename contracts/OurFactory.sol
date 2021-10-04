@@ -49,7 +49,7 @@ contract OurFactory {
         emit ProxyCreated(ourProxy, msg.sender, splitRecipients_, nickname_);
 
         // call setup() to set Owners of Split
-        // call setup() to set owners
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             if eq(
                 call(gas(), ourProxy, 0, add(data, 0x20), mload(data), 0, 0),

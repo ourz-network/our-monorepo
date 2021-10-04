@@ -17,9 +17,9 @@ contract OurStorage {
     address internal _pylon;
 
     /// @notice RINKEBY ADDRESS
-    address public constant weth = 0xc778417E063141139Fce010982780140Aa0cD5Ab;
+    address public constant WETH = 0xc778417E063141139Fce010982780140Aa0cD5Ab;
 
     uint256[] public balanceForWindow;
-    mapping(bytes32 => bool) internal claimed;
-    uint256 internal depositedInWindow;
+    mapping(bytes32 => bool) internal _claimed;
+    uint256 internal _depositedInWindow;
 }

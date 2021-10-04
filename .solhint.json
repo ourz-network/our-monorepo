@@ -1,6 +1,21 @@
 {
+  "extends": "solhint:recommended",
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "code-complexity": ["error",3],
+    "compiler-version": "off",
+    "function-max-lines": ["error",50],
+    "func-param-name-mixedcase": "error",
+    "func-visibility": [
+      "error",
+      {
+        "ignoreConstructors": true
+      }
+    ],
+    "modifier-name-mixedcase": "error",
+    "ordering": "error",
+    "prettier/prettier": "error",
+    "private-vars-leading-underscore": ["error",{"strict":true}],
+    "reason-string": "off"
   }
 }
