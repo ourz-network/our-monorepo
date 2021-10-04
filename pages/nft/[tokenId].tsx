@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react"; // State management
+import { useEffect, useState } from "react"; // State management
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
-import { getSplitRecipients, getAllOurzTokens } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
+import { getAllOurzTokens, getSplitRecipients } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient, SplitZNFT } from "@/modules/subgraphs/ourz/types";
 
 const NFTView = ({
   tokenId,
-  creator,
   recipients,
-}: {
+}: // creator,
+{
   tokenId: string;
-  creator: string;
   recipients: SplitRecipient[];
+  // creator: string;
 }): JSX.Element => {
+  const [loading, setLoading] = useState(true); // Global loading state
   const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const NFTView = ({
       }));
 
       setFirstSale(newChartData);
+      setLoading(false);
     }
 
     if (recipients) {
@@ -35,35 +37,38 @@ const NFTView = ({
   }, [recipients]);
 
   return (
-    <PageLayout>
-      <div
-        id="pagecontainer"
-        className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
-      >
-        <FullPageNFT
-          tokenId={tokenId}
-          ownAccount
-          chartData={firstSale}
-          recipients={recipients}
-          creator={creator}
-        />
-      </div>
-    </PageLayout>
+    !loading && (
+      <PageLayout>
+        <div
+          id="pagecontainer"
+          className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
+        >
+          <FullPageNFT
+            tokenId={tokenId}
+            ownAccount
+            chartData={firstSale}
+            recipients={recipients || null}
+          />
+        </div>
+      </PageLayout>
+    )
   );
 };
 
 // Run on server build
 // eslint-disable-next-line consistent-return
-export async function getStaticPaths(): Promise<{ paths: any[]; fallback: boolean }> {
-  // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-  //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
-  //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-  //   pocket: process.env.NEXT_PUBLIC_POKT_ID,
-  //   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-  // });
-  // const zoraQuery = new Zora(queryProvider, 4);
-  // const unburned = await zoraQuery.fetchTotalMedia();
-  // const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
+export const getStaticPaths: GetStaticPaths = async () => {
+  /*
+   * const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+   *   infura: process.env.NEXT_PUBLIC_INFURA_ID,
+   *   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+   *   pocket: process.env.NEXT_PUBLIC_POKT_ID,
+   *   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+   * });
+   * const zoraQuery = new Zora(queryProvider, 4);
+   * const unburned = await zoraQuery.fetchTotalMedia();
+   * const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
+   */
   const ourTokens: SplitZNFT[] = await getAllOurzTokens();
   const extras = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
   const paths = [];
@@ -74,7 +79,7 @@ export async function getStaticPaths(): Promise<{ paths: any[]; fallback: boolea
     paths.push({ params: { tokenId: `${extras[i]}` } });
   }
   return { paths, fallback: true };
-}
+};
 
 // Run on page load
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -95,14 +100,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return {
       props: {
         tokenId,
-        creator: creatorAddress,
         recipients,
       },
       revalidate: 45,
     };
   }
   return {
-    props: { tokenId, creator: creatorAddress },
+    props: { tokenId, recipients: null },
     revalidate: 45,
   };
 };

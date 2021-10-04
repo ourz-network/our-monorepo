@@ -1,20 +1,21 @@
-/* eslint-disable no-shadow */
+/* eslint-disable */
 /* eslint-disable consistent-return */
 /* eslint-disable default-case */
 import { ethers } from "ethers";
+import type { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "@/modules/mongodb/utils/connectDB";
-import UserModel from "@/modules/mongodb/models/UserModel";
-// import FollowModel from "@/modules/mongodb/models/FollowModel";
-import ProfileModel from "@/modules/mongodb/models/ProfileModel";
+import { IProfile, ProfileModel } from "@/modules/mongodb/models/ProfileModel";
+import { IUser, UserModel } from "@/modules/mongodb/models/UserModel";
 
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
-export default async function handler(req: Request, res: Response) {
+/* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse> => {
   const {
     query: { username },
     method,
   } = req;
-  const loadedUsername = username; // else you get 'ReferenceError: Cannot access 'username' before initialization'
+  const loadedUsername = username as string; // else you get 'ReferenceError: Cannot access 'username' before initialization'
   await connectDB();
 
   switch (method) {
@@ -52,8 +53,6 @@ export default async function handler(req: Request, res: Response) {
       try {
         const {
           userId,
-          address,
-          username,
           name,
           bio,
           discord,
@@ -71,11 +70,11 @@ export default async function handler(req: Request, res: Response) {
           youtube,
         } = req.body;
 
-        const profileFields = {};
+        const profileFields: IProfile = {};
         // user.username = username;
         if (name) profileFields.name = name;
         if (bio) profileFields.bio = bio;
-        profileFields.social = {};
+        // profileFields.social = {};
         if (discord) profileFields.social.discord = discord;
         if (galleryso) profileFields.social.galleryso = galleryso;
         if (github) profileFields.social.github = github;
@@ -101,4 +100,4 @@ export default async function handler(req: Request, res: Response) {
         return res.status(500).send("Server Error");
       }
   }
-}
+};

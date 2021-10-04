@@ -39,4 +39,33 @@ const ProfileSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.models.Profile || mongoose.model("Profile", ProfileSchema);
+export interface IProfile {
+  _id: string;
+  user: string;
+
+  name: string;
+
+  bio: string;
+
+  social: {
+    discord: string;
+    galleryso: string;
+    github: string;
+    instagram: string;
+    lazy: string;
+    linktree: string;
+    showtime: string;
+    tiktok: string;
+    twitch: string;
+    twitter: string;
+    website: string;
+    yat: string;
+    youtube: string;
+  };
+}
+export type ProfileType = IProfile & mongoose.Document;
+
+export const ProfileModel =
+  mongoose.models.Profile || mongoose.model<IProfile>("Profile", ProfileSchema);
+
+// module.exports = mongoose.models.Profile || mongoose.model("Profile", ProfileSchema);

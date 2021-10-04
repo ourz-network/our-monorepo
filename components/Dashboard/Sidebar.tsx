@@ -19,7 +19,7 @@ const Sidebar = ({ split, showFull }: { split: OurProxy; showFull: boolean }): J
           <div className="text-center text-dark-primary">
             <div id="info" className="mb-8 space-y-2">
               {split.nickname}
-              {split?.role && `Your role: ${role}`}
+              {/* {split?.role && `Your role: ${role as string}`} */}
             </div>
             <div id="recipients" className="mx-2 w-preview">
               <Table recipients={recipientInfo} />

@@ -1,4 +1,4 @@
-import React, { useState, useRef, Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 import { utils } from "ethers";
@@ -28,13 +28,17 @@ const SplitFull = ({
 
   const refDiv = useRef(null);
 
-  // const hide = () => {
-  //   setShowFull(false);
-  // };
+  /*
+   * const hide = () => {
+   *   setShowFull(false);
+   * };
+   */
 
-  // const handleClickClose = () => {
-  //   hide();
-  // };
+  /*
+   * const handleClickClose = () => {
+   *   hide();
+   * };
+   */
 
   const clickClaim = async () => {
     await claimFunds({
@@ -59,7 +63,7 @@ const SplitFull = ({
           >
             <button
               type="button"
-              href="#"
+              // href="#"
               tabIndex={0}
               className="absolute top-4 right-4 text-dark-primary hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-12 lg:right-10"
               onClick={() => setShowFull(false)}
@@ -70,7 +74,6 @@ const SplitFull = ({
               <ActionDialog showDialog={showDialog} setShowDialog={setShowDialog}>
                 <AuctionForm
                   tokenId={selectedId}
-                  setShowDialog={setShowDialog}
                   split={split}
                   onClick={() => setShowDialog(false)}
                 />
@@ -125,7 +128,7 @@ const SplitFull = ({
                     id="medias"
                     className="flex gap-4 justify-center justify-items-center content-evenly mx-auto space-x-4 md:grid 2xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 max-w-auto"
                   >
-                    {split.creations.map((creation, i) => (
+                    {split.creations.map((creation) => (
                       <div key={creation.id} className="flex justify-center w-full h-full">
                         <DashboardNFT
                           tokenId={creation.id}
@@ -151,9 +154,9 @@ const SplitFull = ({
                   <React.Fragment key={auction.id}>
                     <DashboardNFT
                       key={auction.id}
-                      tokenId={auction.tokenId}
-                      onClick={(evt) =>
-                        Router.push(`/nft/${auction.tokenContract}/${auction.tokenId}`)
+                      tokenId={auction.tokenId as string}
+                      onClick={() =>
+                        Router.push(`/nft/${auction.tokenContract}/${auction.tokenId as string}`)
                       }
                       split={split}
                       isCreation={false}

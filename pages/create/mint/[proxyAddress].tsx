@@ -27,7 +27,14 @@ const MintNFTFromExistingSplit = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proxyAddress]);
 
-  return <NewMintMultistepForm proxyAddress={proxyAddress} splitRecipients={splitRecipients} />;
+  return (
+    !loading && (
+      <NewMintMultistepForm
+        proxyAddress={proxyAddress as string}
+        splitRecipients={splitRecipients}
+      />
+    )
+  );
 };
 
 export default MintNFTFromExistingSplit;

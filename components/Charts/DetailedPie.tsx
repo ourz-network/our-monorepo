@@ -1,9 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, PieProps } from "recharts";
 import { useState } from "react";
 
-const DetailedPie = (data): JSX.Element => {
-  const { chartData } = data;
-  const { secondaryBool } = data;
+const DetailedPie = ({
+  chartData,
+  secondaryBool,
+}: {
+  chartData: {
+    name: string;
+    shares: number;
+  }[];
+  secondaryBool: boolean;
+}): JSX.Element => {
+  // const { chartData } = data;
+  // const { secondaryBool } = data;
   // https://recharts.org/en-US/examples/TwoLevelPieChart
   // https://recharts.org/en-US/examples/CustomActiveShapePieChart
   // eslint-disable-next-line no-shadow
@@ -58,8 +70,8 @@ const DetailedPie = (data): JSX.Element => {
         <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
         <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#FFFFFF">{`${
           payload.name.length <= 14
-            ? payload.name
-            : payload.name.substring(0, Number(payload.name.indexOf(" ")) + 7)
+            ? (payload.name as string)
+            : (payload.name.substring(0, Number(payload.name.indexOf(" ")) + 7) as string)
         }`}</text>
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
@@ -68,7 +80,7 @@ const DetailedPie = (data): JSX.Element => {
           textAnchor={textAnchor}
           fill="#B2B2B2"
         >
-          {`${percent.toFixed(6)}Ξ`}
+          {`${percent.toFixed(6) as string}Ξ`}
         </text>
       </g>
     );
@@ -101,7 +113,7 @@ const DetailedPie = (data): JSX.Element => {
           endAngle={!secondaryBool ? 360 : -180}
         >
           {chartData.map((entry, index) => (
-            <Cell key={`cell-${entry}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
       </PieChart>

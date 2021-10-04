@@ -1,13 +1,12 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable */
+import { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "@/modules/mongodb/utils/connectDB";
-import UserModel from "@/modules/mongodb/models/UserModel";
-import FollowModel from "@/modules/mongodb/models/FollowModel";
-import ProfileModel from "@/modules/mongodb/models/ProfileModel";
+import { IProfile, ProfileModel } from "@/modules/mongodb/models/ProfileModel";
+import { IUser, UserModel } from "@/modules/mongodb/models/UserModel";
 
 // const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
-
-export default async function handler(req: Request, res: Response): Promise<any> {
+/* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse> => {
   const { method } = req;
 
   await connectDB();
@@ -28,10 +27,11 @@ export default async function handler(req: Request, res: Response): Promise<any>
       break;
     case "POST":
       // eslint-disable-next-line no-case-declarations
-      const { ethAddress, desiredUsername } = req.body;
+      const { ethAddress, desiredUsername }: { ethAddress: string; desiredUsername: string } =
+        req.body;
 
       try {
-        let user;
+        let user: UserType;
         user = await UserModel.findOne({ ethAddress });
         user = await UserModel.findOne({ desiredUsername });
         user = await UserModel.findOne({
@@ -48,23 +48,27 @@ export default async function handler(req: Request, res: Response): Promise<any>
           username_lower: desiredUsername?.toLowerCase(),
         });
 
-        await user.save((err) => {
+        user.save((err) => {
           if (err) {
             // eslint-disable-next-line no-console
             console.log(err);
             return res.status(401).send(err);
           }
           // new UserModel({ user: user._id, social: {} }).save();
-          new ProfileModel({
+          const usersProfile = new ProfileModel({
             user: user._id,
             followers: [],
             following: [],
-          }).save();
-          new FollowModel({
-            user: user._id,
-            followers: [],
-            following: [],
-          }).save();
+          });
+          usersProfile.save().then(
+            () => {},
+            () => {}
+          );
+          // await new FollowModel({
+          //   user: user._id,
+          //   followers: [],
+          //   following: [],
+          // }).save();
         });
         res.status(201).json({ success: true, data: user });
       } catch (error) {
@@ -75,4 +79,4 @@ export default async function handler(req: Request, res: Response): Promise<any>
       res.status(400).json({ success: false });
       break;
   }
-}
+};

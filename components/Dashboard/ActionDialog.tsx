@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 const ActionDialog = ({
@@ -6,9 +6,9 @@ const ActionDialog = ({
   showDialog,
   setShowDialog,
 }: {
-  children: Array<any>;
+  children: ReactNode;
   showDialog: boolean;
-  setShowDialog: () => void;
+  setShowDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element => {
   const [open, setOpen] = useState(!!showDialog);
 
@@ -54,7 +54,7 @@ const ActionDialog = ({
                 <div className="flex overflow-hidden relative items-center px-4 pt-14 pb-8 w-full border shadow-2xl bg-dark-background border-dark-border sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                   <button
                     type="button"
-                    href="#"
+                    // href="#"
                     tabIndex={0}
                     className="absolute top-4 right-4 text-dark-primary hover:text-dark-secondary sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
                     onClick={() => setShowDialog(false)}

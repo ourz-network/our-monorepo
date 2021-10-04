@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
@@ -46,13 +49,13 @@ const ProfileNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
     if (!nft.data?.nft?.metadataURI) {
       return null;
     }
-    if (metadata.attributes) {
+    if (metadata?.attributes) {
       const creatorAddress = nft.data.nft.creator;
-      name = metadata.name;
+      name = metadata?.name;
 
       return (
         <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
-          <div className="text-bold">{metadata.name}</div>
+          <div className="text-bold">{metadata?.name}</div>
           <div className="text-right">
             by: <Link href={`/profile/${creatorAddress}`}>{toTrimmedAddress(creatorAddress)}</Link>
           </div>

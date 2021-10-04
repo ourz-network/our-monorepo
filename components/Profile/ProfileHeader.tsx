@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import makeBlockie from "ethereum-blockies-base64"; // Ethereum avatar
-import axios from "axios";
 import Image from "next/image";
 import { toTrimmedAddress } from "@/ethereum/utils";
-import ProfileForm from "@/components/Profile/ProfileForm";
-import { IProfile, IUser } from "@/modules/mongodb/models/types";
+import ProfileFormModal from "@/components/Profile/ProfileFormModal";
+import { IProfile } from "@/modules/mongodb/models/ProfileModel";
+import { IUser } from "@/modules/mongodb/models/UserModel";
 
 export const ProfileHeader = ({
   user,
@@ -17,8 +17,10 @@ export const ProfileHeader = ({
   linkAddress: string;
   ownAccount: boolean;
 }): JSX.Element => {
-  // https://stackoverflow.com/questions/55271855/react-material-ui-ssr-warning-prop-d-did-not-match-server-m-0-0-h-24-v-2
-  //
+  /*
+   * https://stackoverflow.com/questions/55271855/react-material-ui-ssr-warning-prop-d-did-not-match-server-m-0-0-h-24-v-2
+   *
+   */
   const [loading, setLoading] = useState(true);
   useEffect(() => setLoading(false), []);
 
@@ -77,7 +79,7 @@ export const ProfileHeader = ({
           <h3>{user?.username && `@${user.username}`}</h3>
         </div>
         {showModal && (
-          <ProfileForm
+          <ProfileFormModal
             modalType={user?.username ? "editProfile" : "signUp"}
             User={user}
             profileDetails={profileDetails}

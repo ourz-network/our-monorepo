@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
 import React, { useContext } from "react"; // React state management
 import { NFTPreview, NFTDataContext, PreviewComponents } from "@zoralabs/nft-components";
+import { OurProxy } from "@/modules/subgraphs/ourz/types";
 
 const DashboardNFT = ({
   split,
@@ -11,7 +13,7 @@ const DashboardNFT = ({
   isCreation,
 }: {
   split: OurProxy;
-  tokenId: number;
+  tokenId: string;
   onClick: () => void;
   isCreation: boolean;
 }): JSX.Element => {
@@ -27,7 +29,7 @@ const DashboardNFT = ({
     if (nft.data?.owner !== split.id && isCreation) {
       // setHidden(true);
     }
-    let { contentURI } = nft.data.zoraNFT;
+    let { contentURI }: { contentURI: string } = nft.data.zoraNFT;
     const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
 
     if (contentURI.match(regexIPFS)) {
@@ -43,7 +45,7 @@ const DashboardNFT = ({
               height={330}
               width={330}
               objectFit="scale-down"
-              src={contentURI as string}
+              src={contentURI}
             />
           </div>
         </Link>

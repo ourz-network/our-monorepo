@@ -1,5 +1,5 @@
 import { NFTE } from "@nfte/react";
-import { NFTFullPage, FullComponents } from "@zoralabs/nft-components";
+import { FullComponents, NFTFullPage } from "@zoralabs/nft-components";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
@@ -10,34 +10,41 @@ const FullPageNFT = ({
   chartData,
   recipients,
 }: {
-  tokenId: number;
+  tokenId: string;
   ownAccount: boolean;
-  chartData: any;
+  chartData: {
+    name: string;
+    shares: number;
+  }[];
   recipients: SplitRecipient[];
 }): JSX.Element => {
   // const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   async function getSplitMetadata(tokenId) {
-  //     const metadataURI = await zoraQuery.fetchMetadataURI(tokenId);
-  //     const res = await axios.get(metadataURI);
-  //     const metadata = await res.data;
-  //     if (metadata?.attributes) {
-  //       const newChartData = metadata.attributes.flatMap((split) => ({
-  //         name: `${split.name}`,
-  //         shares: Number(split.shares),
-  //         address: `${split.address}`,
-  //         role: `${split.role}`,
-  //       }));
-  //       setChartData(newChartData);
-  //     }
+  /*
+   * useEffect(() => {
+   *   async function getSplitMetadata(tokenId) {
+   *     const metadataURI = await zoraQuery.fetchMetadataURI(tokenId);
+   *     const res = await axios.get(metadataURI);
+   *     const metadata = await res.data;
+   *     if (metadata?.attributes) {
+   *       const newChartData = metadata.attributes.flatMap((split) => ({
+   *         name: `${split.name}`,
+   *         shares: Number(split.shares),
+   *         address: `${split.address}`,
+   *         role: `${split.role}`,
+   *       }));
+   *       setChartData(newChartData);
+   *     }
+   */
 
-  //   }
-  //   if (tokenId) {
-  //     getSplitMetadata(tokenId);
-  //     setLoading(false);
-  //   }
-  // }, []);
+  /*
+   *   }
+   *   if (tokenId) {
+   *     getSplitMetadata(tokenId);
+   *     setLoading(false);
+   *   }
+   * }, []);
+   */
 
   // let chartData;
 

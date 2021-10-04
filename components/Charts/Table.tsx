@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { toTrimmedAddress } from "@/ethereum/utils";
 import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
 const Table = ({ recipients }: { recipients: SplitRecipient[] }): JSX.Element => (

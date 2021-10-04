@@ -20,4 +20,16 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.models.User || mongoose.model("User", UserSchema);
+export interface IUser {
+  _id: string;
+  // Minimum Requirements
+  ethAddress: string;
+  username: string;
+  username_lower: string;
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type UserType = IUser & mongoose.Document<any, any, IUser>;
+
+export const UserModel = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
+
+// module.exports = mongoose.models.User || mongoose.model < IUser >("User", UserSchema);

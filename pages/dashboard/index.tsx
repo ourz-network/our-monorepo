@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react"; // State management
+import { useEffect, useState } from "react"; // State management
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import { getOwnedSplits, getClaimableSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
+import { getClaimableSplits, getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
 import Sidebar from "@/components/Dashboard/Sidebar";

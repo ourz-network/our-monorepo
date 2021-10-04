@@ -1,5 +1,4 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-multi-assign */
+/* eslint-disable */
 import mongoose from "mongoose";
 
 const { MONGODB_URI } = process.env;
@@ -19,7 +18,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function connectDB(): Promise<any> {
+async function connectDB(): Promise<typeof mongoose> {
   if (cached.conn) {
     return cached.conn;
   }
@@ -34,7 +33,6 @@ async function connectDB(): Promise<any> {
       useCreateIndex: true,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
   }
   cached.conn = await cached.promise;

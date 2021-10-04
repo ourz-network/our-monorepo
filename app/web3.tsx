@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
 import {
   // generateMetadata,
@@ -16,6 +20,7 @@ import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import factoryJSON from "@/ethereum/abis/OurFactory.json";
 import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
+import { FormSplitRecipient } from "@/modules/Create/types/types";
 
 type FormValues = {
   id: string | number;
@@ -260,7 +265,7 @@ function useWeb3() {
     // Save fileUrl and metadataUrl
     const mediaUrl = `https://${mediaCID}.ipfs.dweb.link`;
     const metadataUrl = `https://${metadataCID}.ipfs.dweb.link`;
-    const status = await storage.status(mediaCID);
+    // const status = await storage.status(mediaCID);
 
     // if (cryptomedia.mediaKind.includes("image")) {
     //   const arweaveMedia = await axios.post(`https://ipfs2arweave.com/permapin/${mediaCID}`);
@@ -390,7 +395,7 @@ function useWeb3() {
     return -1;
   };
 
-  const newProxy = async (formData: any, nickname: any) => {
+  const newProxy = async (formData: FormSplitRecipient[], nickname: string) => {
     /** Step 1)
      * If user defined splits other than their own royalties,
      * format them for merkle tree & metadata
@@ -439,17 +444,25 @@ function useWeb3() {
     return -1;
   };
 
-  const claimFunds = async ({ splits, proxyAddress }) => {
+  const claimFunds = async ({
+    splits,
+    proxyAddress,
+  }: {
+    splits: SplitRecipient[];
+    proxyAddress: string;
+  }) => {
     // Format splits[] for merkle-tree. WILL NOT WORK if ENS names aren't translated to 0x0
     // keep address and allocation
     let splitsForMerkle = splits.map(
       ({ name, role, shares, __typename, ...keepAttrs }) => keepAttrs
     );
     // Change 'address' -> 'account'
-    splitsForMerkle = splitsForMerkle.map((split: { user: { id: any }; allocation: any }) => ({
-      account: split.user.id,
-      allocation: Number(split.allocation),
-    }));
+    splitsForMerkle = splitsForMerkle.map(
+      (split: { user: { id: string }; allocation: string }) => ({
+        account: split.user.id,
+        allocation: Number(split.allocation),
+      })
+    );
 
     const signersSplit = splitsForMerkle.find(
       (split: { account: string }) => split.account === address.toString().toLowerCase()
@@ -467,6 +480,7 @@ function useWeb3() {
 
     if (windowReceipt) {
       const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const claimReceipt = await claimTx.wait();
     }
 

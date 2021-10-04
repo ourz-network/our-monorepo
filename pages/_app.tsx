@@ -1,16 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import "../styles/globals.css";
-import { ReactNode } from "react";
+import { AppProps } from "next/dist/shared/lib/router/router";
 import GlobalProvider from "../app/index";
 
-function MyApp({
-  Component,
-  pageProps,
-}: {
-  Component: React.Component;
-  pageProps: React.PropsWithChildren<ReactNode>;
-}): JSX.Element {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <GlobalProvider>
       <Component {...pageProps} />

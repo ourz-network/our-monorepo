@@ -62,7 +62,7 @@ export interface OurProxy {
 
   // "The ERC721(s) the Proxy created"
   // @derivedFrom(field: "creator")
-  creations: SplitNFT[];
+  creations: SplitZNFT[];
 
   // "The ERC20 Transfers that the Proxy has successfully distributed"
   // @derivedFrom(field: "splitProxy")

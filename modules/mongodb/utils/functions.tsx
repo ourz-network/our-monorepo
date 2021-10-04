@@ -1,23 +1,23 @@
 /* eslint-disable no-underscore-dangle */
 import axios from "axios"; // Requests
+import { IUser } from "@/modules/mongodb/models/UserModel";
 
-export const checkForAccountID = async ({ web3Address }: { web3Address: string }): Promise<any> => {
-  try {
-    const res = await axios.get(`/api/users/${web3Address}`);
-    const userProfile = await res.data.data;
-    if (userProfile) {
-      return userProfile._id;
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
-};
+interface Response {
+  data: Data;
+}
 
-export const checkForProfile = async ({ web3Address }: { web3Address: string }): Promise<any> => {
+interface Data {
+  data: IUser;
+}
+
+export default async function checkForProfile({
+  web3Address,
+}: {
+  web3Address: string;
+}): Promise<IUser> {
   try {
-    const res = await axios.get(`/api/users/${web3Address}`);
-    const userProfile = await res.data.data;
+    const res = await axios.get<Response["data"]>(`/api/users/${web3Address}`);
+    const userProfile = res.data.data;
     if (userProfile) {
       return userProfile;
     }
@@ -25,4 +25,4 @@ export const checkForProfile = async ({ web3Address }: { web3Address: string }):
   } catch (error) {
     return null;
   }
-};
+}

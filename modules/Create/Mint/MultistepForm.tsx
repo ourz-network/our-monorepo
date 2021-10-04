@@ -5,7 +5,6 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
-import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
 
 import { MintForm } from "../types/types";
@@ -16,12 +15,8 @@ import MintUpload from "./2Upload";
 import MintDetails from "./3Details";
 import MintConfirm from "./4Confirm";
 
-interface DropzoneFile extends File {
-  path: string;
-  preview: URL;
-}
-
-/** NewMintMultistepForm()
+/**
+ * NewMintMultistepForm()
  * Maintains state while navigating through a multi-step form to mint an NFT.
  * There is likely a *much* better way to compartmentalize all these moving parts.
  * The basic gist of it is that this container keeps all form's info in state,
@@ -39,7 +34,7 @@ const NewMintMultistepForm = ({
   splitRecipients: SplitRecipient[];
   // eslint-disable-next-line consistent-return
 }): JSX.Element => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const Router = useRouter();
   const { address, mintZoraSplit } = web3.useContainer(); // Global State
   const [firstSale, setFirstSale] = useState();
@@ -122,7 +117,7 @@ const NewMintMultistepForm = ({
   };
 
   const onSubmit = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     if (proxyAddress) {
       // minting as Split Proxy by Owner
@@ -132,24 +127,30 @@ const NewMintMultistepForm = ({
           () => {},
           () => {}
         );
-        setLoading(false);
+        // setLoading(false);
       }
     } else {
-      // minting as connected web3Wallet
-      // const tokenId = await mintNFTSolo(mintForm); // received as 'media';
-      // if (tokenId) {
-      //   Router.push(`/nft/${tokenId}`);
-      //   setLoading(false);
-      // }
+      /*
+       * minting as connected web3Wallet
+       * const tokenId = await mintNFTSolo(mintForm); // received as 'media';
+       * if (tokenId) {
+       *   Router.push(`/nft/${tokenId}`);
+       *   setLoading(false);
+       * }
+       */
     }
   };
-  // router.push(`/${address}/success`)
-  // } catch (e) {
-  // }
+  /*
+   * router.push(`/${address}/success`)
+   * } catch (e) {
+   * }
+   */
 
-  /** react-dropzone
+  /**
+   * react-dropzone
    * Handles upload of images and previews throughout the steps.
-   * */
+   *
+   */
   const [files, setFiles] = useState<(File & { preview: string })[] | undefined>([]);
   const handleMedia = () => {
     // eslint-disable-next-line prefer-destructuring
@@ -157,7 +158,8 @@ const NewMintMultistepForm = ({
     mintForm.media.mimeType = files[0].type;
     mintForm.media.preview = files[0].preview;
   };
-  /** onDrop()
+  /**
+   * onDrop()
    * creates an instance of the file as a buffer, as well as
    * creating preview thumbnails for the rest of the upload process.
    * When a user drag'n'drops (or selects via explorer/finder prompt) a file,

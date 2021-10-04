@@ -71,31 +71,3 @@ export const ZORA_MEDIA_BY_CREATOR = (creator: string): DocumentNode => {
     }
   `;
 };
-
-/**
- * Calculates maximum number of Zora media items
- * @param {Object[]} users
- * @returns {Number} max number of Zora media items
- */
-export const calculateLatestCreation = (users: any[]): number => {
-  // Collect all users
-  const allUsers = users.users;
-  const allCreationIDs = [];
-
-  // For each user
-  // eslint-disable-next-line no-restricted-syntax
-  for (const user of allUsers) {
-    // If user has creations
-    if (user.creations && user.creations.length > 0) {
-      // For each creation
-      // eslint-disable-next-line no-restricted-syntax
-      for (const creation of user.creations) {
-        // Push creation ID (cast to int) to allCreationIDs
-        // eslint-disable-next-line radix
-        allCreationIDs.push(parseInt(creation.id));
-      }
-    }
-  }
-  // Return max creation ID
-  return Math.max(...allCreationIDs);
-};

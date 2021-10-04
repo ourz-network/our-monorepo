@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image";
 import React, { useState, useEffect } from "react"; // React state management
@@ -6,7 +8,12 @@ import { Zora } from "@zoralabs/zdk";
 import axios from "axios";
 import { Ourz20210928 } from "@/modules/Create/types/20210928";
 
-const HomeNFT = (tokenId: number | string) => {
+interface NextImageOnLoad {
+  naturalWidth: number;
+  naturalHeight: number;
+}
+
+const HomeNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
   const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
@@ -49,17 +56,19 @@ const HomeNFT = (tokenId: number | string) => {
    */
   const [aspectRatio, setAspectRatio] = useState("");
 
-  const calcAspectRatio = (loadedMedia) => {
+  const calcAspectRatio = (
+    loadedMedia: NextImageOnLoad | React.SyntheticEvent<HTMLVideoElement, Event>
+  ): void => {
     let ratio;
     let width;
     let height;
 
-    if (loadedMedia.naturalWidth) {
+    if (loadedMedia?.naturalWidth) {
       // Photo
       width = loadedMedia.naturalWidth;
       height = loadedMedia.naturalHeight;
       ratio = width / height;
-    } else if (loadedMedia.target) {
+    } else if (loadedMedia?.target) {
       // Video
       width = Number(loadedMedia.target.videoWidth);
       height = Number(loadedMedia.target.videoHeight);
@@ -131,7 +140,7 @@ const HomeNFT = (tokenId: number | string) => {
                   controls={false}
                   loop
                   playsInline
-                  onLoadedMetadata={calcAspectRatio}
+                  onLoadedMetadata={(loadedMedia) => calcAspectRatio(loadedMedia)}
                 >
                   <source src={contentURI} />
                 </video>

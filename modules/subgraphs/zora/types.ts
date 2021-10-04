@@ -2,79 +2,79 @@ import BytesLike from "ethers";
 
 export type Media = {
   // "The tokenId on the Zora Media Contract"
-  id: string;
+  id?: string;
 
   // "The transaction hash the media was created at"
-  transactionHash: string;
+  transactionHash?: string;
 
   // "The current owner of the Media"
-  owner: User;
+  owner?: User;
 
   // "The creator of the Media"
-  creator: User;
+  creator?: User;
 
   // "The previous owner of the Zora Media's Market"
-  prevOwner: User;
+  prevOwner?: User;
 
   // "The approved user of the Media"
-  approved: User;
+  approved?: User;
 
   // "The sha256 hash of the media's content"
-  contentHash: BytesLike.Bytes;
+  contentHash?: BytesLike.Bytes;
 
   // "The sha256 hash of the media's metadata"
-  metadataHash: BytesLike.Bytes;
+  metadataHash?: BytesLike.Bytes;
 
   // "The uri of the content"
-  contentURI: string;
+  contentURI?: string;
 
   // "The uri of the metadata"
-  metadataURI: string;
+  metadataURI?: string;
 
   // "The bid share for the current owner of the Media"
-  ownerBidShare: BigInt;
+  ownerBidShare?: BigInt;
 
   // "The bid share for the creator of the Media"
-  creatorBidShare: BigInt;
+  creatorBidShare?: BigInt;
 
   // "The bid share for the previous owner of the Media's market"
-  prevOwnerBidShare: BigInt;
+  prevOwnerBidShare?: BigInt;
 
   // "The timestamp of the block the Media was minted in"
-  createdAtTimestamp: BigInt;
+  createdAtTimestamp?: BigInt;
 
   // "The number of the block the Media was minted in"
-  createdAtBlockNumber: BigInt;
+  createdAtBlockNumber?: BigInt;
 
   // "The timestamp of the block the Media was burned in"
-  burnedAtTimeStamp: BigInt;
+  burnedAtTimeStamp?: BigInt;
 
   // "The number of the block the Media was burned in"
-  burnedAtBlockNumber: BigInt;
+  burnedAtBlockNumber?: BigInt;
 
   // "The current Ask of the Media"
-  // @derivedFrom(field: "media")
-  currentAsk: Ask;
+  // @derivedFrom(field?: "media")
+  currentAsk?: Ask;
 
   // "The current Bids on the Media"
-  // @derivedFrom(field: "media")
-  currentBids: Bid[];
+  // @derivedFrom(field?: "media")
+  currentBids?: Bid[];
 
   // "The InactiveAsks of the Media"
-  // @derivedFrom(field: "media")
-  inactiveAsks: InactiveAsk[];
+  // @derivedFrom(field?: "media")
+  inactiveAsks?: InactiveAsk[];
 
   // "The InactiveBids of the Media"
-  // @derivedFrom(field: "media")
-  inactiveBids: InactiveBid[];
+  // @derivedFrom(field?: "media")
+  inactiveBids?: InactiveBid[];
 
   // "The transfers of the Media"
-  // @derivedFrom(field: "media")
-  transfers: Transfer[];
+  // @derivedFrom(field?: "media")
+  transfers?: Transfer[];
 
   // "The ReserveAuctions of the Media"
-  // @derivedFrom(field: "media")
-  reserveAuctions: ReserveAuction[];
+  // @derivedFrom(field?: "media")
+  reserveAuctions?: ReserveAuction[];
 };
 
 export type User = {

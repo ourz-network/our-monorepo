@@ -1,6 +1,6 @@
 import { Ourz20210928 } from "@/modules/Create/types/20210928";
 
-export interface SplitRecipient {
+export interface FormSplitRecipient {
   id: string | number;
   account: string;
   name: string;

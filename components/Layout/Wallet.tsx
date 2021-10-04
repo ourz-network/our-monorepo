@@ -1,10 +1,11 @@
 /* eslint-disable no-shadow */
 import Link from "next/link"; // Dynamic routing
-import { useEffect, useState, Fragment } from "react"; // State management, Fragment for TailwindUI
+import { Fragment, useEffect, useState } from "react"; // State management, Fragment for TailwindUI
 import { Popover, Transition } from "@headlessui/react"; // TailwindUI
 import web3 from "@/app/web3"; // Global state
-import { checkForProfile } from "@/modules/mongodb/utils/functions";
+import checkForProfile from "@/modules/mongodb/utils/functions";
 import Button from "@/components/Button";
+import { IUser } from "@/modules/mongodb/models/UserModel";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -13,11 +14,11 @@ function classNames(...classes) {
 const Wallet = (): JSX.Element => {
   const { address, network, authenticate, disconnectWeb3 } = web3.useContainer();
 
-  const [signerProfile, setSignerProfile] = useState(); // Check for user on Ourz' user profile api.
+  const [signerProfile, setSignerProfile] = useState<IUser | undefined>(null); // Check for user on Ourz' user profile api.
 
   useEffect(() => {
-    async function getSignerProfile(signerAddress) {
-      const profile = await checkForProfile(signerAddress);
+    async function getSignerProfile(signerAddress: string) {
+      const profile = await checkForProfile({ web3Address: signerAddress });
       if (profile) {
         setSignerProfile(profile);
       }

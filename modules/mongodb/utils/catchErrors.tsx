@@ -1,23 +1,24 @@
-/* eslint-disable no-console */
-const catchErrors = ({ error }: { error: any }): any => {
+/* eslint-disable */
+
+const catchErrors = ({ error }: { error: unknown }): string => {
   let errorMsg;
 
-  if (error.response) {
+  if (error?.response) {
     // If the request was made and the server not responded with a status code in the range of 2xx
 
-    errorMsg = error.response.data;
+    errorMsg = error?.response.data;
 
-    console.error(errorMsg);
-  } else if (error.request) {
+    // console.error(errorMsg);
+  } else if (error?.request) {
     // if the request was made and no response was recevied from server
-    errorMsg = error.request;
+    errorMsg = error?.request;
 
-    console.error(errorMsg);
+    // console.error(errorMsg);
   } else {
     // if something else happened while making the request
-    errorMsg = error.message;
+    errorMsg = error?.message;
 
-    console.error(errorMsg);
+    // console.error(errorMsg);
   }
   return errorMsg;
 };

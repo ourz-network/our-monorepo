@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import Button from "@/components/Button";
@@ -16,6 +16,7 @@ const AuctionForm = ({
   const { createZoraAuction } = web3.useContainer();
   const Router = useRouter();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formData, setFormData] = useState({
     proxyAddress: split.id,
     tokenId,
@@ -27,7 +28,7 @@ const AuctionForm = ({
     auctionCurrency: "0x0000000000000000000000000000000000000000",
   });
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const auctionId = await createZoraAuction(formData);
     if (auctionId) {

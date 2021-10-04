@@ -140,28 +140,3 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
     }
   `;
 };
-
-/**
- * Calculates maximum number of Zora media items
- * @param {Object[]} users
- * @returns {Number} max number of Zora media items
- */
-// export const calculateLatestCreation = (users) => {
-//   // Collect all users
-//   const allUsers = users.users;
-//   let allCreationIDs = [];
-
-//   // For each user
-//   for (const user of allUsers) {
-//     // If user has creations
-//     if (user.creations && user.creations.length > 0) {
-//       // For each creation
-//       for (const creation of user.creations) {
-//         // Push creation ID (cast to int) to allCreationIDs
-//         allCreationIDs.push(parseInt(creation.id));
-//       }
-//     }
-//   }
-//   // Return max creation ID
-//   return Math.max(...allCreationIDs);
-// };

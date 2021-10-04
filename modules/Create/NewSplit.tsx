@@ -4,10 +4,10 @@
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { FieldValues, useFieldArray, UseFieldArrayReturn, useForm } from "react-hook-form";
+import { FieldValues, UseFieldArrayReturn, useFieldArray, useForm } from "react-hook-form";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import web3 from "@/app/web3";
-import { SplitRecipient } from "./types/types";
+import { FormSplitRecipient } from "./types/types";
 
 const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();
@@ -59,7 +59,7 @@ const NewSplit: React.FC = (): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const watchSplits = watch("splits");
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const controlledFields: SplitRecipient[] = fields.map(
+  const controlledFields: FormSplitRecipient[] = fields.map(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     (field: Record<"id", string | number>, index: number) => ({
       ...field,
@@ -116,8 +116,10 @@ const NewSplit: React.FC = (): JSX.Element => {
   };
 
   const submitSplits = async () => {
-    // handleSplits();
-    // const newProxy = await onSubmit();
+    /*
+     * handleSplits();
+     * const newProxy = await onSubmit();
+     */
     await onSubmit();
   };
 

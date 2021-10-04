@@ -8,7 +8,7 @@ import {
   ALL_USER_ADDRESSES,
   ALL_PROXY_ADDRESSES,
 } from "./queries"; // GraphQL Queries
-import { OurProxy, NFTContract, SplitZNFT, ERC20Transfer, User, SplitRecipient } from "./types";
+import { OurProxy, SplitZNFT, User, SplitRecipient } from "./types";
 
 interface Data {
   ourProxy?: OurProxy;
@@ -19,11 +19,13 @@ interface Data {
   splitZNFTs?: SplitZNFT[];
 }
 
+// const Subgraph = ourzSubgraph
+
 export const getAllProfilePaths = async (): Promise<string[]> => {
-  const queryUsers = await ourzSubgraph.query({
+  const queryUsers: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: ALL_USER_ADDRESSES(),
   });
-  const queryProxies = await ourzSubgraph.query({
+  const queryProxies: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: ALL_PROXY_ADDRESSES(),
   });
 
@@ -32,8 +34,8 @@ export const getAllProfilePaths = async (): Promise<string[]> => {
     const { users } = queryUsers.data;
     const { ourProxies } = queryProxies.data;
 
-    await users.map((user) => addresses.push(user.id));
-    await ourProxies.map((proxy) => addresses.push(proxy.id));
+    users.map((user) => addresses.push(user.id));
+    ourProxies.map((proxy) => addresses.push(proxy.id));
   }
   return addresses;
 };
@@ -79,7 +81,7 @@ export const getSplitRecipients = async (proxyAddress: string): Promise<SplitRec
  * @returns {Object} containing all split contracts owned by owner
  */
 export const getOwnedSplits = async (ownerAddress: string): Promise<OurProxy[]> => {
-  const query = await ourzSubgraph.query({
+  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: SPLITS_BY_OWNER(ownerAddress),
   });
 

@@ -2,15 +2,15 @@ import Head from "next/head";
 import React, { useState } from "react"; // React state management
 import { GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
-import getPostByID from "@/modules/subgraphs/zora/functions"; // Post collection helper
+import { getPostByID } from "@/modules/subgraphs/zora/functions"; // Post collection helper
 import HomeNFT from "@/components/Cards/HomeNFT";
-import { Ourz20210928 } from "@/modules/Create/types/20210928";
+import { Media } from "@/modules/subgraphs/zora/types";
 
 const Home = ({
   postsToSet,
   loadMoreStartIndex,
 }: {
-  postsToSet: (Ourz20210928 & { id: number })[];
+  postsToSet: Media[];
   loadMoreStartIndex: number;
 }): JSX.Element => {
   const [posts, setPosts] = useState(postsToSet); // Posts array
@@ -27,7 +27,7 @@ const Home = ({
     }
     setNumPosts(numPosts - 24); // Update number of loadable posts count
 
-    const newPosts = [];
+    const newPosts: Media[] = [];
     const completeFetch = await Promise.all(
       idsToSearch.map(async (id) => {
         // Collect post
@@ -58,13 +58,17 @@ const Home = ({
             <div className="mx-auto w-full h-full max-w-11/12 xl:mx-16">
               <div className="space-x-4 space-y-4 w-full h-full timeline xl:grid">
                 {posts.map((post) => (
-                  // For each Zora post
-                  // Return Post component
-                  <HomeNFT key={post.id} tokenId={post.id} />
+                  /*
+                   * For each Zora post
+                   * Return Post component
+                   */
+                  <div key={post.id}>
+                    <HomeNFT tokenId={post.id} />
+                  </div>
                 ))}
               </div>
             </div>
-            {posts && posts.length >= 0 && posts[posts.length - 1]?.id !== 0 ? (
+            {posts && posts.length >= 0 && posts[posts.length - 1]?.id !== "0" ? (
               // If there remain posts that can be loaded, display button
               <button
                 onClick={() => collectMore()}
@@ -107,15 +111,17 @@ export const getStaticProps: GetStaticProps = async () => {
   // const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned));
 
   // const requests = [];
-  const postsToSet = [];
-  // if (maxSupply) {
-  //   for (let i = maxSupply; i >= 3700; i--) {
-  //     // Collect post
-  //     const post = await getPostByID(i);
-  //     if (post != null) {
-  //       postsToSet.push(post);
-  //     }
-  //   }
+  const postsToSet: Media[] = [];
+  /*
+   * if (maxSupply) {
+   *   for (let i = maxSupply; i >= 3700; i--) {
+   *     // Collect post
+   *     const post = await getPostByID(i);
+   *     if (post != null) {
+   *       postsToSet.push(post);
+   *     }
+   *   }
+   */
 
   const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
   await Promise.all(
@@ -130,7 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+      postsToSet: JSON.parse(JSON.stringify(postsToSet)) as Media[],
       loadMoreStartIndex: 3688,
     },
     revalidate: 60,

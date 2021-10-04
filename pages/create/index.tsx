@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react"; // State management
+import { useEffect, useState } from "react"; // State management
 import PageLayout from "@/components/Layout/PageLayout";
 import web3 from "@/app/web3";
 import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // Post retrieval function

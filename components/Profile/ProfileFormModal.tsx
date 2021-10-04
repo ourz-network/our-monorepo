@@ -4,24 +4,55 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-shadow */
-// tailwindUI modal that asks user if they would like to
-// create an account and set up their information like bio and social links.
-// if they decline just use server side rendering that way create is off limits.
+/*
+ * tailwindUI modal that asks user if they would like to
+ * create an account and set up their information like bio and social links.
+ * if they decline just use server side rendering that way create is off limits.
+ */
 
-import React, { Fragment, useState, useEffect, useRef } from "react";
-import axios from "axios";
+import React, { Fragment, useRef, useState } from "react";
+import axios, { CancelTokenStatic } from "axios";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import catchErrors from "@/modules/mongodb/utils/catchErrors";
 // import userUpdate from "@/modules/mongodb/utils/userActions";
 import web3 from "@/app/web3";
-import { IProfile, IUser } from "@/modules/mongodb/models/types";
+import { IProfile } from "@/modules/mongodb/models/ProfileModel";
+import { IUser } from "@/modules/mongodb/models/UserModel";
 
-let cancel;
+let cancel: CancelTokenStatic;
+
+interface ProfileForm extends IProfile {
+  username: string;
+  desiredUsername: string;
+  ethAddress: string;
+}
+
+interface ProfileKeys {
+  keyName:
+    | "ethAddress"
+    | "userId"
+    | "name"
+    | "bio"
+    | "website"
+    | "twitter"
+    | "instagram"
+    | "discord"
+    | "github"
+    | "linktree"
+    | "yat"
+    | "galleryso"
+    | "lazy"
+    | "showtime"
+    | "tiktok"
+    | "twitch"
+    | "youtube"
+    | "desiredUsername";
+}
 
 // This modal allows connected wallets to sign up/edit their profile
-const ProfileForm = ({
+const ProfileFormModal = ({
   User,
   linkAddress,
   profileDetails,
@@ -32,24 +63,24 @@ const ProfileForm = ({
   linkAddress: string;
   profileDetails: IProfile;
   showModal: boolean;
-  setShowModal;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element => {
   const Router = useRouter();
 
   // Global State. Connected wallet.
   const { address, verifyAPIpost } = web3.useContainer();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const cancelButtonRef = useRef(null); // TailwindUI
 
-  const [usernameLoading, setUsernameLoading] = useState(false);
+  // const [usernameLoading, setUsernameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
 
   // Modal/Prompt State for TailwindUI in this component
   const [open, setOpen] = useState(!!showModal);
   const hide = () => {
     setOpen(false);
-    setShowModal({ showModal: false });
+    setShowModal(false);
   };
 
   // UserProfile stored to state. This collects the MongoDB document and web3 address
@@ -74,7 +105,6 @@ const ProfileForm = ({
     youtube: (profileDetails?.social && profileDetails?.social?.youtube) || "",
   });
 
-  //
   const {
     register,
     handleSubmit,
@@ -104,7 +134,7 @@ const ProfileForm = ({
     mode: "all",
   });
 
-  const onSubmit = async (formData) => {
+  const onSubmit = async (formData: ProfileForm) => {
     // If no account is found for the address...
     if (!profileDetails) {
       try {
@@ -163,14 +193,14 @@ const ProfileForm = ({
   };
 
   const checkUsername = async (desiredUsername: string) => {
-    setUsernameLoading(true);
+    // setUsernameLoading(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,  @typescript-eslint/no-unused-expressions
       cancel && cancel();
 
       const { CancelToken } = axios;
 
-      const res = await axios.get(`/api/users/${desiredUsername}`, {
+      await axios.get(`/api/users/${desiredUsername}`, {
         cancelToken: new CancelToken((canceler) => {
           cancel = canceler;
         }),
@@ -185,29 +215,33 @@ const ProfileForm = ({
       setUsernameAvailable(true);
       setUser((prev) => ({ ...prev, username: desiredUsername }));
     }
-    setUsernameLoading(false);
+    // setUsernameLoading(false);
   };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const checkAvailibility = useEffect(() => {
-  //   user.username === ""
-  //     ? setUsernameAvailable(false)
-  //     : checkUsername(user.username).then(
-  //         () => {},
-  //         () => {}
-  //       );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user.username]);
+  /*
+   * const checkAvailibility = useEffect(() => {
+   *   user.username === ""
+   *     ? setUsernameAvailable(false)
+   *     : checkUsername(user.username).then(
+   *         () => {},
+   *         () => {}
+   *       );
+   *   // eslint-disable-next-line react-hooks/exhaustive-deps
+   * }, [user.username]);
+   */
 
-  // const registerUser = async () => {
-  //   try {
-  //     const { username } = user;
-  //     const res = await axios.post(`/api/signup`, { address, username });
-  //     hide();
-  //   } catch (error) {
-  //     const errorMsg = catchErrors(error);
-  //   }
-  // };
+  /*
+   * const registerUser = async () => {
+   *   try {
+   *     const { username } = user;
+   *     const res = await axios.post(`/api/signup`, { address, username });
+   *     hide();
+   *   } catch (error) {
+   *     const errorMsg = catchErrors(error);
+   *   }
+   * };
+   */
 
   return (
     <>
@@ -331,7 +365,7 @@ const ProfileForm = ({
                                             message: "error message", // JS only: <p>error message</p> TS only support string
                                           },
                                           validate: {
-                                            available: async (v) => {
+                                            available: async (v: string) => {
                                               setUser((prev) => ({
                                                 ...prev,
                                                 username: v,
@@ -346,7 +380,7 @@ const ProfileForm = ({
                                       />
                                     </div>
                                     <div className="grid grid-cols-3 grid-flow-row-dense gap-4 w-full">
-                                      {Object.keys(user).map((keyName, keyIndex) => {
+                                      {Object.keys(user).map((keyName: ProfileKeys["keyName"]) => {
                                         if (
                                           keyName !== "username" &&
                                           keyName !== "ethAddress" &&
@@ -373,10 +407,13 @@ const ProfileForm = ({
                                               <input
                                                 type="text"
                                                 placeholder={
-                                                  user[keyName] ? `${user[keyName]}` : `${keyName}`
+                                                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                                  user[keyName] !== null
+                                                    ? `${user[keyName] as string}`
+                                                    : `${keyName}`
                                                 }
                                                 className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                                {...register(`${keyName}`)}
+                                                {...register(keyName)}
                                               />
                                             </div>
                                           );
@@ -425,4 +462,4 @@ const ProfileForm = ({
   );
 };
 
-export default ProfileForm;
+export default ProfileFormModal;

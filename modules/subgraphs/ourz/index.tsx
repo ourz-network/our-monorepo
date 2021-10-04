@@ -4,7 +4,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 const APIURL = "https://api.thegraph.com/subgraphs/name/nickadamson/ourzrinkebyv1";
 
 // Create client
-const ourzSubgraph: ApolloClient = new ApolloClient({
+const ourzSubgraph = new ApolloClient({
   uri: APIURL,
   cache: new InMemoryCache(),
 });

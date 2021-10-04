@@ -6,56 +6,54 @@ import { Fragment } from "react"; // State management, Fragment for TailwindUI
 import web3 from "@/app/web3"; // Global State
 import Wallet from "./Wallet";
 
-const learn = [
-  {
-    name: "FAQ",
-    description: "Having trouble? Get answers to common questions.",
-    href: "#",
-    icon: (
-      // support-icon heroicon
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Documentation",
-    description: "For Developers",
-    href: "#",
-    icon: (
-      // document-search
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
-        />
-      </svg>
-    ),
-  },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+/*
+ * const learn = [
+ *   {
+ *     name: "FAQ",
+ *     description: "Having trouble? Get answers to common questions.",
+ *     href: "#",
+ *     icon: (
+ *       // support-icon heroicon
+ *       <svg
+ *         xmlns="http://www.w3.org/2000/svg"
+ *         className="w-6 h-6"
+ *         fill="none"
+ *         viewBox="0 0 24 24"
+ *         stroke="currentColor"
+ *       >
+ *         <path
+ *           strokeLinecap="round"
+ *           strokeLinejoin="round"
+ *           strokeWidth={2}
+ *           d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
+ *         />
+ *       </svg>
+ *     ),
+ *   },
+ *   {
+ *     name: "Documentation",
+ *     description: "For Developers",
+ *     href: "#",
+ *     icon: (
+ *       // document-search
+ *       <svg
+ *         xmlns="http://www.w3.org/2000/svg"
+ *         className="w-6 h-6"
+ *         fill="none"
+ *         viewBox="0 0 24 24"
+ *         stroke="currentColor"
+ *       >
+ *         <path
+ *           strokeLinecap="round"
+ *           strokeLinejoin="round"
+ *           strokeWidth={2}
+ *           d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
+ *         />
+ *       </svg>
+ *     ),
+ *   },
+ * ];
+ */
 
 const Navbar = (): JSX.Element => {
   const { address } = web3.useContainer(); // Global state

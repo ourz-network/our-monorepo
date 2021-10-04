@@ -3,10 +3,10 @@
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 
-const PageLayout = (props): JSX.Element => (
+const PageLayout = ({ children }: { children: ReactNode }): JSX.Element => (
   <div className="mx-auto w-full h-screen min-h-screen">
     <Navbar />
-    {props.children}
+    {children}
     {/* <Footer /> */}
   </div>
 );
