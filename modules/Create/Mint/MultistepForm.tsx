@@ -6,39 +6,15 @@ import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getOwnedSplits } from "@/modules/subgraphs/ourz/functions"; // GraphQL client
+import { SplitRecipient } from "@/modules/subgraphs/ourz/types";
+
+import { MintForm } from "../types/types";
 
 // Steps 1-4:
-// import MintSelectSplit from "./MintSelectSplit";
-import MintUpload from "./MintUpload";
-import MintDetails from "./MintDetails";
-import MintConfirm from "./MintConfirm";
-
-interface MintForm {
-  media: File;
-  mediaKind: string;
-  mediaPreview: string | URL;
-  mediaBlob: string | ArrayBuffer;
-  title: string;
-  description: string;
-  creatorBidShare: number;
-  splitMetadata: string;
-  mintSuccess: boolean;
-  editionInfo: {
-    isEdition: boolean;
-    name: string;
-    symbol: string;
-    description: string;
-    animation_url: string;
-    image_url: string;
-    editionSize: number;
-  };
-  auctionInfo: {
-    mintAndAuction: boolean;
-    reservePrice: number;
-    duration: number;
-    auctionCurrency: string;
-  };
-}
+import SelectMintKind from "./1SelectMintKind";
+import MintUpload from "./2Upload";
+import MintDetails from "./3Details";
+import MintConfirm from "./4Confirm";
 
 interface DropzoneFile extends File {
   path: string;
@@ -59,8 +35,8 @@ const NewMintMultistepForm = ({
   proxyAddress,
   splitRecipients,
 }: {
-  proxyAddress: string;
-  splitRecipients: Record<string, unknown>;
+  proxyAddress: string | string[];
+  splitRecipients: SplitRecipient[];
   // eslint-disable-next-line consistent-return
 }): JSX.Element => {
   const [loading, setLoading] = useState(false);
@@ -69,27 +45,27 @@ const NewMintMultistepForm = ({
   const [firstSale, setFirstSale] = useState();
   const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<MintForm>({
-    media: null,
-    mediaKind: null,
-    mediaPreview: null,
-    mediaBlob: null,
-    title: null,
-    description: null,
-    creatorBidShare: 10,
-    splitMetadata: null,
-    mintSuccess: false,
-    editionInfo: {
-      isEdition: false,
-      name: null,
-      symbol: null,
+  const [mintForm, setFormData] = useState<MintForm>({
+    mintKind: "1/1",
+    media: {
+      file: null,
+      mimeType: null,
+      preview: null,
+      blob: null,
+    },
+    metadata: {
+      name: null, // title
       description: null,
+      split_recipients: null,
+      version: "Ourz20210928",
+      mimeType: "",
+      symbol: null,
       animation_url: null,
       image_url: null,
       editionSize: 0,
     },
+    creatorBidShare: 10,
     auctionInfo: {
-      mintAndAuction: false,
       reservePrice: 1,
       duration: 0,
       auctionCurrency: "0x0000000000000000000000000000000000000000",
@@ -104,9 +80,9 @@ const NewMintMultistepForm = ({
   };
 
   useEffect(() => {
-    function formatChartData(recipients): void {
+    function formatChartData(recipients: SplitRecipient[]): void {
       setFormData({
-        ...formData,
+        ...mintForm,
         splitMetadata: recipients,
       });
 
@@ -121,12 +97,12 @@ const NewMintMultistepForm = ({
       // edit for secondary sales chart data
       newChartData = newChartData.map((recipient) => ({
         name: recipient.name,
-        shares: Number(recipient.shares) * (Number(formData.creatorBidShare) / 100).toFixed(4),
+        shares: Number(recipient.shares) * Number((mintForm.creatorBidShare / 100).toFixed(4)),
       }));
 
       newChartData.push({
         name: "Owner",
-        shares: 100 - Number(formData.creatorBidShare),
+        shares: 100 - mintForm.creatorBidShare,
       });
 
       setSecondarySales(newChartData);
@@ -136,11 +112,11 @@ const NewMintMultistepForm = ({
       formatChartData(splitRecipients);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [splitRecipients, formData.creatorBidShare]);
+  }, [splitRecipients, mintForm.creatorBidShare]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
-      ...formData,
+      ...mintForm,
       [event.target.name]: event.target.value,
     });
   };
@@ -150,7 +126,7 @@ const NewMintMultistepForm = ({
 
     if (proxyAddress) {
       // minting as Split Proxy by Owner
-      const tokenId = await mintZoraSplit({ formData, proxyAddress });
+      const tokenId = await mintZoraSplit({ formData: mintForm, proxyAddress });
       if (tokenId) {
         Router.push(`/nft/${tokenId}`).then(
           () => {},
@@ -160,7 +136,7 @@ const NewMintMultistepForm = ({
       }
     } else {
       // minting as connected web3Wallet
-      // const tokenId = await mintNFTSolo(formData); // received as 'media';
+      // const tokenId = await mintNFTSolo(mintForm); // received as 'media';
       // if (tokenId) {
       //   Router.push(`/nft/${tokenId}`);
       //   setLoading(false);
@@ -177,9 +153,9 @@ const NewMintMultistepForm = ({
   const [files, setFiles] = useState<(File & { preview: string })[] | undefined>([]);
   const handleMedia = () => {
     // eslint-disable-next-line prefer-destructuring
-    formData.media = files[0];
-    formData.mediaKind = files[0].type;
-    formData.mediaPreview = files[0].preview;
+    mintForm.media.file = files[0];
+    mintForm.media.mimeType = files[0].type;
+    mintForm.media.preview = files[0].preview;
   };
   /** onDrop()
    * creates an instance of the file as a buffer, as well as
@@ -202,8 +178,11 @@ const NewMintMultistepForm = ({
         // Save the readFile to state under mediaBlob
         const arrayBuffer = reader.result;
         setFormData({
-          ...formData,
-          mediaBlob: arrayBuffer,
+          ...mintForm,
+          media: {
+            ...mintForm.media,
+            blob: arrayBuffer,
+          },
         });
       };
     });
@@ -254,6 +233,12 @@ const NewMintMultistepForm = ({
     case 1:
       return (
         <PageLayout>
+          <SelectMintKind mintForm={mintForm} setFormData={setFormData} next={next} />
+        </PageLayout>
+      );
+    case 2:
+      return (
+        <PageLayout>
           <MintUpload
             handleMedia={handleMedia}
             acceptedFiles={acceptedFiles}
@@ -266,11 +251,11 @@ const NewMintMultistepForm = ({
           />
         </PageLayout>
       );
-    case 2:
+    case 3:
       return (
         <PageLayout>
           <MintDetails
-            data={formData}
+            mintForm={mintForm}
             handleChange={handleChange}
             thumbs={thumbs}
             next={next}
@@ -278,12 +263,12 @@ const NewMintMultistepForm = ({
           />
         </PageLayout>
       );
-    case 3:
+    case 4:
       return (
         <PageLayout>
           <MintConfirm
             address={address}
-            formData={formData}
+            mintForm={mintForm}
             firstSale={firstSale}
             secondarySales={secondarySales}
             proxyAddress={proxyAddress}

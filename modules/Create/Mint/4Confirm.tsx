@@ -1,10 +1,11 @@
 import React from "react";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Button from "@/components/Button";
+import { MintForm } from "../types/types";
 
 const MintConfirm = ({
   address,
-  formData,
+  mintForm,
   firstSale,
   secondarySales,
   proxyAddress,
@@ -13,11 +14,11 @@ const MintConfirm = ({
   onSubmit,
 }: {
   address: string;
-  formData: Record<string, unknown>;
+  mintForm: MintForm;
   firstSale: string;
   secondarySales: string;
   proxyAddress: string;
-  thumbs: JSX.Element;
+  thumbs: JSX.Element[];
   back: () => void;
   onSubmit: () => void;
 }): JSX.Element => (
@@ -25,7 +26,7 @@ const MintConfirm = ({
     <div className="flex flex-col content-center place-content-stretch w-full min-h-full bg-dark-background">
       <div className="flex flex-col justify-center w-full h-full">
         <p className="py-4 text-lg text-center border-b border-dark-border text-dark-primary">
-          Minting Zora NFT &lsquo;{`${formData.title}`}&rsquo; for{" "}
+          Minting Zora NFT &lsquo;{`${mintForm.metadata.name}`}&rsquo; for{" "}
           {proxyAddress ? `Split Contract @ ${proxyAddress}` : `${address}`}
         </p>
         <div
@@ -55,13 +56,13 @@ const MintConfirm = ({
         >
           <div className="flex flex-row justify-center mx-auto mt-5 wrap">{thumbs}</div>
           <p className="m-auto mb-2 h-auto text-lg italic text-center text-dark-secondary">
-            Media Kind: {formData.mediaKind}
+            Media Kind: {mintForm.media.mimeType}
             <br />
-            Title: {formData.title}
+            Title: {mintForm.metadata.name}
             <br />
-            Description: {formData.description}
+            Description: {mintForm.metadata.description}
             <br />
-            {formData.creatorBidShare}% Royalty on Future Sales.
+            {mintForm.creatorBidShare}% Royalty on Future Sales.
           </p>
           <div className="flex justify-center p-4 mx-auto space-x-6 w-auto border border-dark-border">
             <Button isMain={false} text="Back" onClick={back} />

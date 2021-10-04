@@ -7,14 +7,7 @@ import React, { useEffect, useState } from "react";
 import { FieldValues, useFieldArray, UseFieldArrayReturn, useForm } from "react-hook-form";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import web3 from "@/app/web3";
-
-export type FormValues = {
-  id: string | number;
-  account: string;
-  name: string;
-  role: string;
-  shares: number;
-};
+import { SplitRecipient } from "./types/types";
 
 const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();
@@ -66,7 +59,7 @@ const NewSplit: React.FC = (): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const watchSplits = watch("splits");
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const controlledFields: FormValues[] = fields.map(
+  const controlledFields: SplitRecipient[] = fields.map(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     (field: Record<"id", string | number>, index: number) => ({
       ...field,

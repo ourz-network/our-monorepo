@@ -11,12 +11,13 @@ const MintUpload = ({
   next,
 }: {
   handleMedia: () => void;
-  acceptedFiles: Record<string, unknown>;
-  acceptedFileItems: Record<string, unknown>;
+  acceptedFiles: File[];
+  acceptedFileItems: JSX.Element[];
   getRootProps: () => void;
   getInputProps: () => void;
-  thumbs: JSX.Element;
+  thumbs: JSX.Element[];
   next: () => void;
+  back: () => void;
 }): JSX.Element => {
   // Because of react-dropzone, handleChange() from createMultiStepForm must be carried out manually for this step, then we can call next().
   const submitMedia = () => {

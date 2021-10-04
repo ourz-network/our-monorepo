@@ -17,6 +17,9 @@ export interface Ourz20210928 {
    * The description of the media
    */
   description: string;
+  /**
+   * The title of the collection this NFT belongs to, if any
+   */
   collection_title?: string;
   /**
    * The mimeType of the media
