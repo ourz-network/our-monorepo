@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { MintForm } from "@/types/CreateModule";
+import { MintForm } from "@/utils/CreateModule";
 
 const MintDetails = ({
   mintForm,
@@ -30,6 +30,21 @@ const MintDetails = ({
               aria-label="title"
             />
           </p>
+          {mintForm.mintKind === "Edition" && (
+            <p>
+              <input
+                className="visible mb-8 outline-none text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Enter Symbol (XMPL)"
+                maxLength={4}
+                value={mintForm.metadata.symbol}
+                onChange={handleChange}
+                aria-label="symbol"
+              />
+            </p>
+          )}
           <p>
             <input
               className="px-3 pt-2 pb-4 mb-8 w-full h-auto border border-dark-border text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"

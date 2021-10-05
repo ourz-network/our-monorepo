@@ -5,9 +5,9 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
-import { SplitRecipient } from "@/types/OurzSubgraph";
+import { SplitRecipient } from "@/utils/OurzSubgraph";
 
-import { MintForm } from "@/types/CreateModule";
+import { MintForm } from "@/utils/CreateModule";
 
 // Steps 1-4:
 import SelectMintKind from "./1SelectMintKind";
@@ -113,6 +113,13 @@ const NewMintMultistepForm = ({
     setFormData({
       ...mintForm,
       [event.target.name]: event.target.value,
+    });
+  };
+
+  const setMintKind = (Kind: MintForm["mintKind"]): void => {
+    setFormData({
+      ...mintForm,
+      mintKind: Kind,
     });
   };
 
@@ -235,7 +242,7 @@ const NewMintMultistepForm = ({
     case 1:
       return (
         <PageLayout>
-          <SelectMintKind mintForm={mintForm} setFormData={setFormData} next={next} />
+          <SelectMintKind mintForm={mintForm} setMintKind={setMintKind} next={next} />
         </PageLayout>
       );
     case 2:

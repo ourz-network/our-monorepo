@@ -1,7 +1,7 @@
 import React from "react";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Button from "@/components/Button";
-import { MintForm } from "@/types/CreateModule";
+import { MintForm } from "@/utils/CreateModule";
 
 const MintConfirm = ({
   address,
@@ -64,6 +64,14 @@ const MintConfirm = ({
             <br />
             {mintForm.creatorBidShare}% Royalty on Future Sales.
           </p>
+          {/* 
+          <div className="">
+          
+          mintForm.mintKind === '1/1 Auction'
+            auction here
+          
+          </div> 
+          */}
           <div className="flex justify-center p-4 mx-auto space-x-6 w-auto border border-dark-border">
             <Button isMain={false} text="Back" onClick={back} />
             <Button isMain={false} text="Next" onClick={onSubmit} />
