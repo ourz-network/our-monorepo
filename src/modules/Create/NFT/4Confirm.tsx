@@ -1,7 +1,7 @@
 import React from "react";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Button from "@/components/Button";
-import { MintForm } from "../types/types";
+import { MintForm } from "@/types/CreateModule";
 
 const MintConfirm = ({
   address,

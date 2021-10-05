@@ -10,7 +10,7 @@
  */
 const nextConfig = {
   eslint: {
-    dirs: ["src"],
+    dirs: ["src/app", "src/common", "src/modules", "src/pages", "src/utils/index.ts"],
   },
   extends: ["plugin:@next/next/recommended"],
   typescript: {

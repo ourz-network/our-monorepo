@@ -7,7 +7,7 @@ import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
 import { SplitRecipient } from "@/types/OurzSubgraph";
 
-import { MintForm } from "../types/types";
+import { MintForm } from "@/types/CreateModule";
 
 // Steps 1-4:
 import SelectMintKind from "./1SelectMintKind";

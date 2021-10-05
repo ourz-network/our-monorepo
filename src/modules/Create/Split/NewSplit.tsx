@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { FieldValues, UseFieldArrayReturn, useFieldArray, useForm } from "react-hook-form";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import web3 from "@/app/web3";
-import { FormSplitRecipient } from "../types/types";
+import { FormSplitRecipient } from "@/types/CreateModule";
 
 const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();

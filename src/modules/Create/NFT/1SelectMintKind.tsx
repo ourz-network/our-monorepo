@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from "react";
 import Button from "@/components/Button";
-import { MintForm } from "../types/types";
+import { MintForm } from "@/types/CreateModule";
 
 function keyDownA11y(handler) {
   return function onKeyDown(event) {

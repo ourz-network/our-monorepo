@@ -18,7 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "declaration": true,
-    "declarationDir": "src/common/types/",
+    "declarationDir": "src/types/",
     "emitDeclarationOnly": true,
     "incremental": true,
     "noUnusedLocals": false,
@@ -40,6 +40,6 @@
     "preserveConstEnums": true,
     "removeComments": false
   },
-  "exclude": [".github", ".next", ".husky", ".vscode", "node_modules"],
+  "exclude": [".github", ".next", ".husky", ".vscode", "node_modules", "src/types/**/*.*"],
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
 }
