@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import makeBlockie from "ethereum-blockies-base64"; // Ethereum avatar
 import Image from "next/image";
 import { toTrimmedAddress } from "@/utils/index";
-import ProfileFormModal from "@/components/Profile/ProfileFormModal";
+import ProfileFormModal from "@/modules/Profile/ProfileFormModal";
 import { IProfile } from "@/mongodb/models/ProfileModel";
 import { IUser } from "@/mongodb/models/UserModel";
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import Head from "next/head";
-import { ProfileHeader } from "@/components/Profile/ProfileHeader";
+import { ProfileHeader } from "@/modules/Profile/ProfileHeader";
 import ProfileNFT from "@/components/Cards/ProfileNFT";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import { IProfile } from "@/mongodb/models/ProfileModel";
