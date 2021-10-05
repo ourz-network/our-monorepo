@@ -1,0 +1,40 @@
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import NewMintMultistepForm from "@/Create/NFT/MultistepForm";
+import { getSplitRecipients } from "@/subgraphs/ourz/functions";
+import { SplitRecipient } from "@/types/OurzSubgraph";
+
+const MintNFTFromExistingSplit = (): JSX.Element => {
+  const [loading, setLoading] = useState(true); // Global loading state
+  const { query } = useRouter();
+  const { proxyAddress } = query;
+  const [splitRecipients, setSplitRecipients] = useState<SplitRecipient[] | undefined>([]);
+
+  useEffect(() => {
+    async function collectSplitRecipients(address) {
+      const recipients = await getSplitRecipients(address);
+      if (recipients) {
+        setSplitRecipients(recipients);
+        setLoading(false);
+      }
+    }
+    if (proxyAddress) {
+      collectSplitRecipients(proxyAddress).then(
+        () => {},
+        () => {}
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [proxyAddress]);
+
+  return (
+    !loading && (
+      <NewMintMultistepForm
+        proxyAddress={proxyAddress as string}
+        splitRecipients={splitRecipients}
+      />
+    )
+  );
+};
+
+export default MintNFTFromExistingSplit;

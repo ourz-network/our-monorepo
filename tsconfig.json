@@ -1,31 +1,45 @@
 {
   "compilerOptions": {
-    "target": "ES2016" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */,
-    "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
-    "allowJs": true /* Allow javascript files to be compiled. */,
-    "checkJs": true /* Report errors in .js files. */,
-    "strict": false /* Enable all strict type-checking options. */,
-    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-    "moduleResolution": "node",
-    "declaration": true,
-    "jsx": "preserve",
-    "baseUrl": ".",
-    "resolveJsonModule": true,
+    // nextjs
+    "target": "ES2016",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
     "skipLibCheck": true,
-    "noEmit": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
+    "jsx": "preserve",
+    // other
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "declarationDir": "src/common/types/",
+    "emitDeclarationOnly": true,
     "incremental": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "paths": {
-      "@/app/*": ["app/*"],
-      "@/components/*": ["components/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/ethereum/*": ["modules/ethereum/*"],
-      "@/modules/*": ["modules/*"],
-      "@/pages/*": ["pages/*"]
-    }
+      "@/app/*": ["src/app/*"],
+      "@/common/*": ["src/common/*"],
+      "@/components/*": ["src/common/components/*"],
+      "@/hooks/*": ["src/common/hooks/*"],
+      "@/modules/*": ["src/modules/*"],
+      "@/Create/*": ["src/modules/Create/*"],
+      "@/ethereum/*": ["src/modules/ethereum/*"],
+      "@/mongodb/*": ["src/modules/mongodb/*"],
+      "@/subgraphs/*": ["src/modules/subgraphs/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"]
+    },
+    "preserveConstEnums": true,
+    "removeComments": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src"],
-  "exclude": ["node_modules"]
+  "exclude": [".github", ".next", ".husky", ".vscode", "node_modules"],
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
 }

@@ -1,13 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src/",
     "paths": {
-      "@/app/*": ["app/*"],
-      "@/components/*": ["components/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/ethereum/*": ["modules/ethereum/*"],
-      "@/modules/*": ["modules/*"],
-      "@/pages/*": ["pages/*"]
+      "@/app/*": ["src/app/*"],
+      "@/common/*": ["src/common/*"],
+      "@/components/*": ["src/common/components/*"],
+      "@/hooks/*": ["src/common/hooks/*"],
+      "@/modules/*": ["src/modules/*"],
+      "@/Create/*": ["src/modules/Create/*"],
+      "@/ethereum/*": ["src/modules/ethereum/*"],
+      "@/mongodb/*": ["src/modules/mongodb/*"],
+      "@/subgraphs/*": ["src/modules/subgraphs/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"]
     }
   }
 }
