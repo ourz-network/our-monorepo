@@ -1,8 +1,8 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
-import web3 from "@/app/web3";
 import Button from "@/components/Button";
 import { OurProxy } from "@/utils/OurzSubgraph";
+import { createZoraAuction } from "@/modules/ethereum/OurPylon";
 
 const AuctionForm = ({
   tokenId,
@@ -13,7 +13,6 @@ const AuctionForm = ({
   split: OurProxy;
   onClick: () => void;
 }): JSX.Element => {
-  const { createZoraAuction } = web3.useContainer();
   const Router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

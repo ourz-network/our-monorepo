@@ -5,6 +5,7 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
+import { mintZoraSplit } from "@/ethereum/OurPylon";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
 
 import { MintForm } from "@/utils/CreateModule";
@@ -36,7 +37,7 @@ const NewMintMultistepForm = ({
 }): JSX.Element => {
   // const [loading, setLoading] = useState(false);
   const Router = useRouter();
-  const { address, mintZoraSplit } = web3.useContainer(); // Global State
+  const { address } = web3.useContainer(); // Global State
   const [firstSale, setFirstSale] = useState();
   const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);

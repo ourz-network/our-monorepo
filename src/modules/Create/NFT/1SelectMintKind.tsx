@@ -2,16 +2,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import { MintForm } from "@/utils/CreateModule";
-
-function keyDownA11y(handler) {
-  return function onKeyDown(event) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (["keydown", "keypress"].includes(event.type) && ["Enter", " "].includes(event.key)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      handler();
-    }
-  };
-}
+import { keyDownA11y } from "@/utils/index";
 
 const SelectMintKind = ({
   mintForm,

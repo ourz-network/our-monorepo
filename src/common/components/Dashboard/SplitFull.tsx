@@ -9,6 +9,7 @@ import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
 import DashboardNFT from "@/components/Cards/DashboardNFT";
 import { OurProxy } from "@/utils/OurzSubgraph";
+import { claimFunds } from "@/modules/ethereum/OurPylon";
 
 const SplitFull = ({
   split,
@@ -20,7 +21,6 @@ const SplitFull = ({
   setShowFull: Dispatch<SetStateAction<boolean>>;
 }): JSX.Element => {
   const Router = useRouter();
-  const { claimFunds } = web3.useContainer();
   const { data } = useAuctions(split.id);
   const [dialog, setDialog] = useState<string | undefined>();
   const [showDialog, setShowDialog] = useState<boolean | undefined>();

@@ -8,10 +8,11 @@ import { FieldValues, UseFieldArrayReturn, useFieldArray, useForm } from "react-
 import DetailedPie from "@/components/Charts/DetailedPie";
 import web3 from "@/app/web3";
 import { FormSplitRecipient } from "@/utils/CreateModule";
+import { newProxy } from "@/modules/ethereum/OurPylon";
 
 const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();
-  const { address, newProxy } = web3.useContainer(); // Global State
+  const { address } = web3.useContainer(); // Global State
 
   const [ownerData, setOwnerData] = useState({
     id: undefined,

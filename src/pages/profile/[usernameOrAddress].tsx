@@ -4,7 +4,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router"; // Page redirects (static routing)
 import web3 from "@/app/web3";
 import { getPostsByOwner } from "@/subgraphs/zora/functions"; // Post retrieval function
-import { Profile } from "@/components/Profile/Profile";
+import { Profile } from "@/modules/Profile/Profile";
 import connectDB from "@/mongodb/utils/connectDB";
 import { getAllProfilePaths } from "@/subgraphs/ourz/functions";
 import { Media } from "@/utils/ZoraSubgraph";

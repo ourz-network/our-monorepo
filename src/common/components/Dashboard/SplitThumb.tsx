@@ -1,13 +1,6 @@
 import { ethers } from "ethers";
 import { SplitRecipient, OurProxy } from "@/utils/OurzSubgraph";
-
-function keyDownA11y(handler: () => void) {
-  return function onKeyDown(event: React.KeyboardEvent) {
-    if (["keydown", "keypress"].includes(event.type) && ["Enter", " "].includes(event.key)) {
-      handler();
-    }
-  };
-}
+import { keyDownA11y } from "@/utils/index";
 
 const SplitThumb = ({
   ownedSplit,

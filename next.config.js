@@ -1,6 +1,6 @@
-// const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: process.env.ANALYZE === 'true',
-// })
+// const withBundleAnalyzer = require("@next/bundle-analyzer")({
+//   enabled: process.env.ANALYZE === "true",
+// });
 // withBundleAnalyzer(
 
 // @ts-check
@@ -56,6 +56,6 @@ const nextConfig = {
     fs: false,
   },
 };
-// )
+// );
 
 module.exports = nextConfig;

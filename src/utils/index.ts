@@ -29,3 +29,11 @@ export function tsFormat(value: string) {
 }
 
 /* NFTE @contextart/nfte */
+
+export function keyDownA11y(handler: () => void) {
+  return function onKeyDown(event: React.KeyboardEvent) {
+    if (["keydown", "keypress"].includes(event.type) && ["Enter", " "].includes(event.key)) {
+      handler();
+    }
+  };
+}

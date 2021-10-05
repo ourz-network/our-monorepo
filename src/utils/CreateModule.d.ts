@@ -1,7 +1,6 @@
 import { Ourz20210928 } from "./20210928";
 
 export interface FormSplitRecipient {
-  id: string | number;
   account: string;
   name: string;
   role: string;
