@@ -1,18 +1,19 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react"; // State management
+import { providers } from "ethers";
 import PageLayout from "@/components/Layout/PageLayout";
 import web3 from "@/app/web3";
 import { getOwnedSplits } from "@/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
 import NewSplit from "@/Create/Split/NewSplit";
-import { OurProxy } from "@/types/OurzSubgraph";
+import { OurProxy } from "@/utils/OurzSubgraph";
 
 const CreateDashboard = (): JSX.Element => {
   const [loading, setLoading] = useState(true); // Global loading state
   const [ownedSplits, setOwnedSplits] = useState<OurProxy[] | undefined>([]);
   const [newSplit, setNewSplit] = useState(false);
-  const { address, network } = web3.useContainer();
+  const { address, network }: { address: string; network: providers.Network } = web3.useContainer();
 
   const Router = useRouter();
 
@@ -45,7 +46,7 @@ const CreateDashboard = (): JSX.Element => {
       {newSplit && <NewSplit />}
 
       <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-        {loading || network.name !== "rinkeby" ? (
+        {loading || network?.name !== "rinkeby" ? (
           <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
             Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
           </p>

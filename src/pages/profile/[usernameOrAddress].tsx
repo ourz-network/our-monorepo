@@ -7,7 +7,7 @@ import { getPostsByOwner } from "@/subgraphs/zora/functions"; // Post retrieval 
 import { Profile } from "@/components/Profile/Profile";
 import connectDB from "@/mongodb/utils/connectDB";
 import { getAllProfilePaths } from "@/subgraphs/ourz/functions";
-import { Media } from "@/types/ZoraSubgraph";
+import { Media } from "@/utils/ZoraSubgraph";
 import { IProfile, ProfileModel } from "@/mongodb/models/ProfileModel";
 import { IUser, UserModel } from "@/mongodb/models/UserModel";
 import { addressLength } from "@/utils/index";

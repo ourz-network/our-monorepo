@@ -19,8 +19,8 @@ import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import factoryJSON from "@/ethereum/abis/OurFactory.json";
-import { SplitRecipient } from "@/types/OurzSubgraph";
-import { FormSplitRecipient } from "@/types/CreateModule";
+import { SplitRecipient } from "@/utils/OurzSubgraph";
+import { FormSplitRecipient } from "@/utils/CreateModule";
 
 type FormValues = {
   id: string | number;

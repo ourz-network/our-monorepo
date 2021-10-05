@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { SplitRecipient, OurProxy } from "@/types/OurzSubgraph";
+import { SplitRecipient, OurProxy } from "@/utils/OurzSubgraph";
 
 function keyDownA11y(handler: () => void) {
   return function onKeyDown(event: React.KeyboardEvent) {

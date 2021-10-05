@@ -4,7 +4,7 @@ import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Dynamic routing
 import React, { useContext } from "react"; // React state management
 import { NFTPreview, NFTDataContext, PreviewComponents } from "@zoralabs/nft-components";
-import { OurProxy } from "@/types/OurzSubgraph";
+import { OurProxy } from "@/utils/OurzSubgraph";
 
 const DashboardNFT = ({
   split,

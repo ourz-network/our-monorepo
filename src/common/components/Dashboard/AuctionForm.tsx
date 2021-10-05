@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import Button from "@/components/Button";
-import { OurProxy } from "@/types/OurzSubgraph";
+import { OurProxy } from "@/utils/OurzSubgraph";
 
 const AuctionForm = ({
   tokenId,

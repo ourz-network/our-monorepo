@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Link from "next/link";
-import { OurProxy, SplitRecipient } from "@/types/OurzSubgraph";
+import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
 import Table from "@/components/Charts/Table";
 import { toTrimmedAddress } from "@/utils/index";
 

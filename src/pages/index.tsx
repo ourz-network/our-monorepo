@@ -4,7 +4,7 @@ import { GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getPostByID } from "@/subgraphs/zora/functions"; // Post collection helper
 import HomeNFT from "@/components/Cards/HomeNFT";
-import { Media } from "@/types/ZoraSubgraph";
+import { Media } from "@/utils/ZoraSubgraph";
 
 const Home = ({
   postsToSet,
@@ -58,13 +58,9 @@ const Home = ({
             <div className="mx-auto w-full h-full max-w-11/12 xl:mx-16">
               <div className="space-x-4 space-y-4 w-full h-full timeline xl:grid">
                 {posts.map((post) => (
-                  /*
-                   * For each Zora post
-                   * Return Post component
-                   */
-                  <div key={post.id}>
-                    <HomeNFT tokenId={post.id} />
-                  </div>
+                  // For each Zora post, Return Post component
+                  // eslint-disable-next-line react/jsx-key
+                  <HomeNFT tokenId={post.id} />
                 ))}
               </div>
             </div>

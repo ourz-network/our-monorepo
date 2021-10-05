@@ -5,7 +5,7 @@ import { getClaimableSplits, getOwnedSplits } from "@/subgraphs/ourz/functions";
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
 import Sidebar from "@/components/Dashboard/Sidebar";
-import { OurProxy, SplitRecipient } from "@/types/OurzSubgraph";
+import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
 
 const UserDashboard = (): JSX.Element => {
   const { address, network } = web3.useContainer();

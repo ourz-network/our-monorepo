@@ -5,7 +5,7 @@ import ProfileNFT from "@/components/Cards/ProfileNFT";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import { IProfile } from "@/mongodb/models/ProfileModel";
 import { IUser } from "@/mongodb/models/UserModel";
-import { Media } from "@/types/ZoraSubgraph";
+import { Media } from "@/utils/ZoraSubgraph";
 
 export const Profile = ({
   linkAddress,

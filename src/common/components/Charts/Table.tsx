@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SplitRecipient } from "@/types/OurzSubgraph";
+import { SplitRecipient } from "@/utils/OurzSubgraph";
 
 const Table = ({ recipients }: { recipients: SplitRecipient[] }): JSX.Element => (
   <>

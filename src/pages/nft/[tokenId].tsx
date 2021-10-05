@@ -5,7 +5,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
 import { getAllOurzTokens, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
-import { SplitRecipient, SplitZNFT } from "@/types/OurzSubgraph";
+import { SplitRecipient, SplitZNFT } from "@/utils/OurzSubgraph";
 
 const NFTView = ({
   tokenId,

@@ -123,7 +123,10 @@ const HomeNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
 
   if (metadata?.mimeType?.includes("video")) {
     return (
-      <div className={`transition-shadow ${aspectRatio} landingPage-item shadow-deep cursor-hover`}>
+      <div
+        key={tokenId}
+        className={`transition-shadow ${aspectRatio} landingPage-item shadow-deep cursor-hover`}
+      >
         <div className="flex flex-col w-full h-full cursor-pointer xl:h-full">
           <Link
             href={{
@@ -154,6 +157,7 @@ const HomeNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
   if (metadata?.mimeType?.includes("image")) {
     return (
       <div
+        key={tokenId}
         className={`border transition-shadow ${aspectRatio} landingPage-item shadow-deep border-dark-accent cursor-hover`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">

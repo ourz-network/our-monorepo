@@ -72,6 +72,12 @@ module.exports = {
         preview: "330px",
         "500px": "500px",
       },
+      width: {
+        "75vh": "75vh",
+        min: "min-content",
+        preview: "330px",
+        "500px": "500px",
+      },
       colors: {
         // OurOrange
         "ourange-50": "#FFC0AC",

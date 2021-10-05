@@ -8,7 +8,7 @@ import Button from "@/components/Button";
 import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
 import DashboardNFT from "@/components/Cards/DashboardNFT";
-import { OurProxy } from "@/types/OurzSubgraph";
+import { OurProxy } from "@/utils/OurzSubgraph";
 
 const SplitFull = ({
   split,

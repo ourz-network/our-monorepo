@@ -2,7 +2,7 @@ import { NFTE } from "@nfte/react";
 import { FullComponents, NFTFullPage } from "@zoralabs/nft-components";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
-import { SplitRecipient } from "@/types/OurzSubgraph";
+import { SplitRecipient } from "@/utils/OurzSubgraph";
 
 const FullPageNFT = ({
   tokenId,
