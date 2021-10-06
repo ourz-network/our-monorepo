@@ -9,6 +9,7 @@ const MintUpload = ({
   getInputProps,
   thumbs,
   next,
+  back,
 }: {
   handleMedia: () => void;
   acceptedFiles: File[];
@@ -51,20 +52,21 @@ const MintUpload = ({
               Max file size: 100MB.
             </p>
           </div>
-          {acceptedFiles.length > 0 ? (
-            <div className="flex justify-end py-2 border-r border-b border-l border-dark-border">
-              <div className="mr-12 w-min border shadow-md border-dark-border">
-                <Button
-                  isMain={false}
-                  text="Next"
-                  // className="place-self-end px-4 py-2 m-3 text-base font-semibold border shadow-md bg-dark-background hover:bg-green-100 hover:cursor-pointer"
-                  onClick={submitMedia}
-                />
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
+          <div className="flex justify-evenly py-2 border-r border-b border-l border-dark-border">
+            {/* <div className="mx-auto space-x-2 shadow-md border-dark-border"> */}
+            <Button isMain={false} text="Back" onClick={back} />
+            {acceptedFiles.length > 0 ? (
+              <Button
+                isMain={false}
+                text="Next"
+                // className="place-self-end px-4 py-2 m-3 text-base font-semibold border shadow-md bg-dark-background hover:bg-green-100 hover:cursor-pointer"
+                onClick={submitMedia}
+              />
+            ) : (
+              <div className="hidden" />
+            )}
+          </div>
+          {/* </div> */}
         </form>
       </div>
       <div className="flex flex-col shadow-xl lg:-mt-32" id="preview">

@@ -1,6 +1,8 @@
+import { MediaData } from "@zoralabs/zdk";
 import { Ourz20210928 } from "./20210928";
 
 export interface FormSplitRecipient {
+  id: unknown;
   account: string;
   name: string;
   role: string;
@@ -11,10 +13,12 @@ export interface ZNFTEdition {
   name: string;
   symbol: string;
   description: string;
-  animation_url: string;
-  image_url: string;
-  editionSize: number;
-  royaltyBPS: number;
+  animationUrl?: string;
+  animationHash: BytesLike;
+  imageUrl?: string;
+  imageHash: BytesLike;
+  editionSize: BigNumberish;
+  royaltyBPS: BigNumberish;
 }
 
 export interface MintForm {
@@ -27,7 +31,7 @@ export interface MintForm {
   };
   metadata: Ourz20210928 | ZNFTEdition;
   creatorBidShare: number;
-  splitMetadata?: SplitRecipient[];
+  splitMetadata?: FormSplitRecipient[];
   auctionInfo?: {
     reservePrice: number;
     duration: number;

@@ -1,5 +1,7 @@
 export const addressLength = 42;
 
+export const zeroAddress = "0x0000000000000000000000000000000000000000";
+
 /* NFTE @contextart/nfte */
 
 export function toTrimmedAddress(value: string) {

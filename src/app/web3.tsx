@@ -1,5 +1,5 @@
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
-import { BigNumberish, ethers, Signer } from "ethers"; // Ethers
+import { BigNumber, BigNumberish, ethers, Signer } from "ethers"; // Ethers
 import { useCallback, useEffect, useState } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import Web3Modal, { providers } from "web3modal"; // Web3Modal
@@ -93,23 +93,39 @@ function useWeb3() {
     // }
 
     provider?.on("chainChanged", (chainId: number) => {
-      const network = ethers.providers.getNetwork(chainId);
+      // chainId: '0x1' = mainnet, '0x4' = rinkeby, etc
+      // must convert from BigNumber
+      const network = ethers.providers.getNetwork(
+        Number(BigNumber.from(chainId.toString()).toString())
+      );
+
       setNetwork(network);
-      // setInjectedProvider(new ethers.providers.Web3Provider(provider));
+
+      // eslint-disable-next-line no-console
+      console.log(
+        `Detected Web3 Network Change...\nNow connected to ${network.name}, Chain #${network.chainId}`
+      );
     });
 
     provider?.on("accountsChanged", (accounts: string[]) => {
+      setSigner(injectedProvider?.getSigner());
+      setAddress(accounts[0]);
+
       // eslint-disable-next-line no-console
-      console.log("Web3 Accounts Changed:\n", accounts);
-      // setAddress(undefined);
-      // setSigner(undefined);
-      // setInjectedProvider(new ethers.providers.Web3Provider(provider));
+      console.log(`Detected Web3 Account Change...\nNow connected to signer: ${accounts[0]}`);
     });
 
     provider?.on("disconnect", (error: { code: number; message: string }) => {
-      // eslint-disable-next-line no-console
-      console.log(`Web3 Disconnected - Message:\n`, error);
       disconnectWeb3();
+
+      // eslint-disable-next-line no-console
+      console.log(
+        `Web3 Disconnected${
+          error.message && error.code
+            ? `\nError Message: Code #${error.code}\n${error.message}`
+            : ""
+        }`
+      );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modal, setInjectedProvider]);

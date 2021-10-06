@@ -5,7 +5,7 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout";
-import { mintZoraSplit } from "@/ethereum/OurPylon";
+import { createZoraEdition, mintZora } from "@/ethereum/OurPylon";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
 
 import { MintForm } from "@/utils/CreateModule";
@@ -31,18 +31,18 @@ const NewMintMultistepForm = ({
   proxyAddress,
   splitRecipients,
 }: {
-  proxyAddress: string | string[];
+  proxyAddress: string;
   splitRecipients: SplitRecipient[];
   // eslint-disable-next-line consistent-return
 }): JSX.Element => {
   // const [loading, setLoading] = useState(false);
   const Router = useRouter();
-  const { address } = web3.useContainer(); // Global State
+  const { address, signer, network } = web3.useContainer(); // Global State
   const [firstSale, setFirstSale] = useState();
   const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);
-  const [mintForm, setFormData] = useState<MintForm>({
-    mintKind: "1/1",
+  const [mintForm, setFormData] = useState({
+    mintKind: null,
     media: {
       file: null,
       mimeType: null,
@@ -76,7 +76,7 @@ const NewMintMultistepForm = ({
   };
 
   useEffect(() => {
-    function formatChartData(recipients: SplitRecipient[]): void {
+    function formatChartData(recipients: SplitRecipient[]) {
       setFormData({
         ...mintForm,
         splitMetadata: recipients,
@@ -117,19 +117,31 @@ const NewMintMultistepForm = ({
     });
   };
 
-  const setMintKind = (Kind: MintForm["mintKind"]): void => {
+  const handleMetadataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...mintForm,
-      mintKind: Kind,
+      metadata: {
+        ...mintForm.metadata,
+        [event.target.name]: event.target.value,
+      },
     });
+  };
+
+  const setMintKind = (Kind: MintForm["mintKind"]) => {
+    mintForm.mintKind = Kind;
   };
 
   const onSubmit = async () => {
     // setLoading(true);
 
-    if (proxyAddress) {
+    if (proxyAddress && signer && network?.chainId === 4 && mintForm.mintKind === "1/1") {
       // minting as Split Proxy by Owner
-      const tokenId = await mintZoraSplit({ formData: mintForm, proxyAddress });
+      const tokenId = await mintZora({
+        signer,
+        networkId: network.chainId,
+        proxyAddress,
+        mintForm,
+      });
       if (tokenId) {
         Router.push(`/nft/${tokenId}`).then(
           () => {},
@@ -137,7 +149,14 @@ const NewMintMultistepForm = ({
         );
         // setLoading(false);
       }
-    } else {
+    } else if (
+      proxyAddress &&
+      signer &&
+      network?.chainId === 4 &&
+      mintForm.mintKind === "Edition"
+    ) {
+      console.log(`mintForm.metadata: `, mintForm.metadata);
+      await createZoraEdition({ signer, networkId: network.chainId, proxyAddress, mintForm });
       /*
        * minting as connected web3Wallet
        * const tokenId = await mintNFTSolo(mintForm); // received as 'media';
@@ -243,7 +262,7 @@ const NewMintMultistepForm = ({
     case 1:
       return (
         <PageLayout>
-          <SelectMintKind mintForm={mintForm} setMintKind={setMintKind} next={next} />
+          <SelectMintKind mintForm={mintForm} setMintKind={setMintKind} next={next} back={back} />
         </PageLayout>
       );
     case 2:
@@ -266,7 +285,7 @@ const NewMintMultistepForm = ({
         <PageLayout>
           <MintDetails
             mintForm={mintForm}
-            handleChange={handleChange}
+            handleChange={handleMetadataChange}
             thumbs={thumbs}
             next={next}
             back={back}

@@ -4,42 +4,70 @@ import {
   constructMediaData,
   sha256FromBuffer,
   Zora,
+  MediaData,
+  BidShares,
 } from "@zoralabs/zdk"; // Zora provider
 import { NFTStorage } from "nft.storage";
-import { useState } from "react";
-import { ethers, BigNumberish } from "ethers";
+import { ethers, BigNumberish, Signer, Contract, providers, BigNumber } from "ethers";
+import { Hash } from "crypto";
 import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle tree for splits
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import factoryJSON from "@/ethereum/abis/OurFactory.json";
+import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
-import { FormSplitRecipient, MintForm } from "@/utils/CreateModule";
+import { FormSplitRecipient, MintForm, ZNFTEdition } from "@/utils/CreateModule";
+import { zeroAddress } from "@/utils/index";
 
-// // Relocate these
-// // Create instances of Zora Contracts (from ZDK) for querying and txs
-// useEffect(() => {
-//   function getZoraQuery() {
-//     const ZoraQuery = new Zora(injectedProvider, 4);
-//     setZoraQuery(ZoraQuery);
-//   }
-//   function getZora() {
-//     const zoraInstance = new Zora(signer, 4);
-//     setZora(zoraInstance);
-//   }
+// ourz
+const factoryABI = factoryJSON.abi;
+const pylonABI = pylonJSON.abi;
+const proxyBytecode = proxyJSON.bytecode;
 
-//   if (injectedProvider) {
-//     getZoraQuery();
-//   }
-//   if (signer) {
-//     getZora();
-//   }
-// }, [signer, injectedProvider]);
+const initializeOurFactoryWSigner = ({ signer }: { signer: Signer }): Contract =>
+  new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_4 as string, factoryABI, signer);
+
+const initializeOurPylonWSigner = ({ signer }: { signer: Signer }): Contract =>
+  new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_4 as string, pylonABI, signer);
+
+const initializeOurProxyAsPylonWSigner = ({
+  proxyAddress,
+  signer,
+}: {
+  proxyAddress: string;
+  signer: Signer;
+}): Contract =>
+  new ethers.Contract(
+    proxyAddress, // rinkeby
+    pylonABI,
+    signer
+  );
+
+// zora
+const editionABI = editionJSON.abi;
+
+const initializeZoraEditionsWSigner = ({ signer }: { signer: Signer }): Contract =>
+  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_4 as string, editionABI, signer);
+
+export function getZoraQuery({
+  injectedProvider,
+  networkId,
+}: {
+  injectedProvider: providers.Web3Provider;
+  networkId: number;
+}): Zora {
+  return new Zora(injectedProvider, networkId);
+}
+
+function getZora({ signer, networkId }: { signer: Signer; networkId: number }): Zora {
+  return new Zora(signer, networkId);
+}
 
 /** Format data received from react-hook-form
  * Formats for: merkleTree to use when calling OurFactory,
  * & metadata for zNFT's and Subgraph.
  */
-export const formatSplits = (formData: FormSplitRecipient[]) => {
+const formatSplits = (formData: FormSplitRecipient[]) => {
   // see https://github.com/mirror-xyz/splits
   let splitsForMerkle = []; // Required Format: [{account: '0x..', allocation: #}]
 
@@ -51,7 +79,7 @@ export const formatSplits = (formData: FormSplitRecipient[]) => {
 
   // change property names + add allocations for ease of use when claiming funds
   // webassembly in subgraph is tricky... hence toString() of Numbers. BigInt, more like BigBye
-  splitsForMeta = splitsForMeta.map((split: SplitRecipient & { account: string }) => ({
+  splitsForMeta = splitsForMeta.map((split) => ({
     address: split.account,
     name: split.name,
     role: split.role,
@@ -65,7 +93,7 @@ export const formatSplits = (formData: FormSplitRecipient[]) => {
   // Change 'address' -> 'account'
   splitsForMerkle = splitsForMerkle.map((split) => ({
     account: split.address,
-    allocation: Number(split.allocation),
+    allocation: BigNumber.from(split.allocation),
   }));
 
   // Create Merkle Tree for Split
@@ -75,176 +103,290 @@ export const formatSplits = (formData: FormSplitRecipient[]) => {
   return { rootHash, splitsForMeta };
 };
 
-export const newProxy = async (formData: FormSplitRecipient[], nickname: string) => {
+export const newProxy = async ({
+  signer,
+  address,
+  owners,
+  formData,
+  nickname,
+}: {
+  signer: Signer;
+  address: string;
+  owners?: string[];
+  formData: FormSplitRecipient[];
+  nickname: string;
+}): Promise<string> => {
   /** Step 1)
    * If user defined splits other than their own royalties,
    * format them for merkle tree & metadata
    * */
   const { rootHash, splitsForMeta } = formatSplits(formData);
 
-  // change
-  const owners = [address];
-  // change
+  // init contracts
+  const FACTORY_WRITE = initializeOurFactoryWSigner({ signer });
+  const PYLON_WRITE = initializeOurPylonWSigner({ signer });
 
-  // init contract
-  const factoryABI = factoryJSON.abi; // RINKEBY
-  const factoryWrite = new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_4, factoryABI, signer);
+  // get deployment data to setup owners
+  let deployData: string;
+  if (owners) {
+    // multiple owners
+    deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [owners]);
+  } else {
+    // signer is sole owner
+    deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [address]);
+  }
 
-  const pylonABI = pylonJSON.abi;
-  const pylonWrite = new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_4, pylonABI, signer);
+  // determine address of new proxy
+  const constructorArgs = ethers.utils.defaultAbiCoder.encode(["bytes32"], [rootHash]);
+  const salt = ethers.utils.keccak256(constructorArgs);
+  const codeHash = ethers.utils.keccak256(proxyBytecode);
+  const proxyAddress = ethers.utils.getCreate2Address(
+    process.env.NEXT_PUBLIC_FACTORY_4 as string,
+    salt,
+    codeHash
+  );
 
-  const deployData = pylonWrite.interface.encodeFunctionData("setup", [owners]);
-
-  if (splitsForMeta && rootHash) {
-    // Make transaction
-    const proxyTx = await factoryWrite.createSplit(
+  // Make transaction
+  if (splitsForMeta && rootHash && deployData) {
+    const proxyTx = await FACTORY_WRITE.createSplit(
       rootHash,
       deployData,
       JSON.stringify(splitsForMeta),
       nickname
     );
 
-    const proxyReceipt = await proxyTx.wait();
-
-    // determine address of new proxy
-    const proxyBytecode = proxyJSON.bytecode;
-    const constructorArgs = ethers.utils.defaultAbiCoder.encode(["bytes32"], [rootHash]);
-    const salt = ethers.utils.keccak256(constructorArgs);
-    const codeHash = ethers.utils.keccak256(proxyBytecode);
-    const proxyAddress = ethers.utils.getCreate2Address(
-      process.env.NEXT_PUBLIC_FACTORY_4,
-      salt,
-      codeHash
-    );
-
+    // wait for transaction confirmation
+    const proxyReceipt = await proxyTx.wait(2);
     if (proxyReceipt) {
       return proxyAddress;
     }
   }
-  return -1;
+  return "error";
 };
 
-/** Prepare Media for minting on Zora, storing on IPFS and Arweave
- *
- */
-export const createCryptomedia = async (cryptomedia: {
-  title: string;
-  description: string;
-  mediaKind: string;
-  splitMetadata: JSON;
-  mediaBlob: Blob | ArrayBuffer | { valueOf(): ArrayBuffer | SharedArrayBuffer };
-  creatorBidShare: number;
-}) => {
+// Prepare Media for minting on Zora, storing on IPFS and Arweave
+export const createCryptomedia = async (
+  mintForm: MintForm
+): Promise<{
+  cryptomedia:
+    | Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">
+    | MediaData;
+  bidShares?: BidShares;
+}> => {
   // Generate metadataJSON
+  const metadataJSON = JSON.stringify(mintForm.metadata); // unordered
   // const metadata = {
   //   version: "zora-20210101",
-  //   name: cryptomedia.title,
-  //   description: cryptomedia.description,
-  //   mimeType: cryptomedia.mediaKind,
+  //   name: mintForm.title,
+  //   description: mintForm.description,
+  //   mimeType: mintForm.mediaKind,
   // };
   // const metadataJSON = generateMetadata(metadata.version, metadata)
-  const metadata = {
-    version: "zora-20210604",
-    name: cryptomedia.title,
-    description: cryptomedia.description,
-    mimeType: cryptomedia.mediaKind,
-    external_url: "www.ourz.network",
-    attributes: cryptomedia.splitMetadata,
-  };
-  const metadataJSON = JSON.stringify(metadata); // unordered
 
   // Upload files to nft.storage
-  // Or other IPFS pinning service
   const endpoint = "https://api.nft.storage" as unknown as URL; // the default
   const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY}`;
-
   const storage = new NFTStorage({ endpoint, token });
+
   // Collect mediaCID and metadataCID from nft.storage
-  const mediaCID = await storage.storeBlob(cryptomedia.mediaBlob);
+  const mediaCID = await storage.storeBlob(mintForm.media.blob as unknown as Blob);
   const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);
+
   // Save fileUrl and metadataUrl
   const mediaUrl = `https://${mediaCID}.ipfs.dweb.link`;
   const metadataUrl = `https://${metadataCID}.ipfs.dweb.link`;
-  // const status = await storage.status(mediaCID);
 
-  // if (cryptomedia.mediaKind.includes("image")) {
+  // arweave??
+  // if (mintForm.mediaKind.includes("image")) {
   //   const arweaveMedia = await axios.post(`https://ipfs2arweave.com/permapin/${mediaCID}`);
   //   if (arweaveMedia) {
   //   }
   // }
 
   // Generate content hashes
-  const contentHash = sha256FromBuffer(Buffer.from(cryptomedia.mediaBlob));
+  const contentHash = sha256FromBuffer(Buffer.from(mintForm.media.blob as ArrayBuffer));
   const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
 
-  // Construct mediaData object
-  const mediaData = constructMediaData(mediaUrl, metadataUrl, contentHash, metadataHash);
+  if (mintForm.mintKind === ("1/1" || "1/1 Auction")) {
+    // Construct mediaData object
+    const cryptomedia = constructMediaData(mediaUrl, metadataUrl, contentHash, metadataHash);
 
-  /** Construct bidShares object
-   * Note: this is for future royalties on NFT sale,
-   * which is > then < divided up via splits.
-   */
-  const bidShares = constructBidShares(
-    Number(cryptomedia.creatorBidShare),
-    100 - Number(cryptomedia.creatorBidShare),
-    0 // Previous owner share. Always 0 when minting
-  );
+    /** Construct bidShares object
+     * Note: this is for future royalties on NFT sale,
+     * which is > then < divided up via splits.
+     */
+    const bidShares = constructBidShares(
+      Number(mintForm.creatorBidShare),
+      100 - Number(mintForm.creatorBidShare),
+      0 // Previous owner share. Always 0 when minting
+    );
 
-  return { mediaData, bidShares };
+    return { cryptomedia, bidShares };
+  }
+  const { mimeType } = mintForm.media;
+
+  // still image
+  if (
+    mimeType.includes(".jpg") ||
+    mimeType.includes(".jpeg") ||
+    mimeType.includes(".jfif") ||
+    mimeType.includes(".pjpeg") ||
+    mimeType.includes(".pjp")
+  ) {
+    const cryptomedia = {
+      // animationUrl: metadataUrl,
+      // animationHash: metadataHash,
+      animationUrl: " ",
+      animationHash: zeroAddress,
+      imageUrl: mediaUrl,
+      imageHash: contentHash,
+    };
+    return { cryptomedia };
+
+    // animated image
+  }
+  if (mimeType.startsWith("image")) {
+    const cryptomedia = {
+      animationUrl: mediaUrl,
+      animationHash: contentHash,
+      imageUrl: mediaUrl,
+      imageHash: contentHash,
+      // imageUrl: metadataUrl,
+      // imageHash: metadataHash,
+    };
+    return { cryptomedia };
+  }
+  const cryptomedia = {
+    animationUrl: mediaUrl,
+    animationHash: contentHash,
+    imageUrl: " ",
+    imageHash: zeroAddress,
+    // imageUrl: metadataUrl,
+    // imageHash: metadataHash,
+  };
+
+  return { cryptomedia };
 };
 
-export const mintZoraSplit = async ({ formData, proxyAddress }) => {
+export const mintZora = async ({
+  signer,
+  networkId,
+  soloAddress,
+  proxyAddress,
+  mintForm,
+}: {
+  signer: Signer;
+  networkId: number;
+  soloAddress?: string;
+  proxyAddress?: string;
+  mintForm: MintForm;
+}): Promise<number> => {
   // Upload file to IPFS
-  const cryptomedia = formData;
-  const { mediaData, bidShares } = await createCryptomedia(cryptomedia);
-
-  // init Proxy instance as OurPylon, so owner can call Mint
-  const pylonABI = pylonJSON.abi;
-  const proxyPylon = new ethers.Contract(
-    proxyAddress, // rinkeby
-    pylonABI,
-    signer
-  );
+  const { cryptomedia, bidShares } = await createCryptomedia(mintForm);
 
   // Mint to Zora Protocol
-  if (mediaData && bidShares) {
-    // Make transaction
-    const mintTx = await proxyPylon.mintZora(mediaData, bidShares);
+  if (cryptomedia && bidShares) {
+    if (!proxyAddress && soloAddress) {
+      const zora = getZora({ signer, networkId }); // minting for EOA
 
-    // Wait for Tx to process
-    const mintReceipt = await mintTx.wait();
+      const mintTx = await zora.mint(cryptomedia as MediaData, bidShares); // Make transaction
 
-    if (mintReceipt) {
-      const tokenId = parseInt(mintReceipt.events[0].topics[3], 16);
-      return tokenId;
+      const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+
+      if (mintReceipt.events) {
+        return parseInt(mintReceipt.events[0].topics[3], 16);
+      }
+    } else if (proxyAddress && !soloAddress) {
+      const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer }); // minting for a Split Proxy
+
+      const mintTx = await PROXY_WRITE.mintZora(cryptomedia, bidShares); // Make transaction
+
+      const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+
+      if (mintReceipt.events) {
+        return parseInt(mintReceipt.events[0].topics[3], 16);
+      }
     }
-    return -1;
   }
   return -1;
 };
 
-// export const mintZoraSolo = async ({ formData }) => {
-//   // Upload file to IPFS
-//   const cryptomedia = formData;
-//   const { mediaData, bidShares } = await createCryptomedia(cryptomedia);
+export const createZoraEdition = async ({
+  signer,
+  networkId,
+  soloAddress,
+  proxyAddress,
+  mintForm,
+}: {
+  signer: Signer;
+  networkId: number;
+  soloAddress?: string;
+  proxyAddress?: string;
+  mintForm: MintForm;
+  // eslint-disable-next-line consistent-return
+}) => {
+  // Upload file to IPFS
+  const {
+    cryptomedia,
+  }: {
+    cryptomedia: Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">;
+  } = await createCryptomedia(mintForm);
+  const metadata = mintForm.metadata as ZNFTEdition;
+  console.log(metadata);
 
-//   // Mint to Zora Protocol
-//   if (mediaData && bidShares) {
-//     // Make transaction
-//     const mintTx = await zora.mint(mediaData, bidShares);
+  if (proxyAddress && !soloAddress) {
+    const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+    console.log(
+      metadata.name,
+      metadata.symbol,
+      metadata.description,
+      cryptomedia.animationUrl,
+      cryptomedia.animationHash,
+      cryptomedia.imageUrl,
+      cryptomedia.imageHash,
+      metadata.editionSize,
+      mintForm.creatorBidShare * 100
+    );
 
-//     // Wait for Tx to process
-//     const mintReceipt = await mintTx.wait();
-
-//     if (mintReceipt) {
-//       const tokenId = parseInt(mintReceipt.events[0].topics[3], 16);
-//       return tokenId;
-//     }
-//   }
-//   return -1;
-// };
+    const mintTx = await PROXY_WRITE.createZoraEdition(
+      metadata.name,
+      metadata.symbol,
+      metadata.description,
+      cryptomedia.animationUrl ? cryptomedia.animationUrl : "x",
+      cryptomedia.animationHash,
+      cryptomedia.imageUrl ? cryptomedia.imageUrl : "x",
+      cryptomedia.imageHash,
+      metadata.editionSize,
+      mintForm.creatorBidShare * 100
+    );
+    const mintReceipt = await mintTx.wait(2);
+    if (mintReceipt) {
+      console.log(mintReceipt);
+      return "a";
+    }
+  } else {
+    const zora = initializeZoraEditionsWSigner({ signer });
+    const mintTx = await zora.createEdition(
+      metadata.name,
+      metadata.symbol,
+      metadata.description,
+      cryptomedia.animationUrl,
+      cryptomedia.animationHash,
+      cryptomedia.imageUrl,
+      cryptomedia.imageHash,
+      metadata.editionSize,
+      mintForm.creatorBidShare * 100
+    );
+    const mintReceipt = await mintTx.wait(2);
+    if (mintReceipt) {
+      console.log(mintReceipt);
+      return "a";
+    }
+  }
+};
 
 export const createZoraAuction = async ({
+  signer,
   proxyAddress,
   tokenId,
   tokenContract,
@@ -253,14 +395,19 @@ export const createZoraAuction = async ({
   curator,
   curatorFeePercentage,
   auctionCurrency,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  tokenId: string;
+  tokenContract: string;
+  duration: number;
+  reservePrice: number;
+  curator: string;
+  curatorFeePercentage: number;
+  auctionCurrency: string;
 }) => {
   // init Proxy instance as OurPylon, so owner can call Mint
-  const pylonABI = pylonJSON.abi;
-  const proxyPylon = new ethers.Contract(
-    proxyAddress, // rinkeby
-    pylonABI,
-    signer
-  );
+  const proxyPylon = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 
   /** Make transaction
    *  uint256 tokenId
@@ -286,7 +433,7 @@ export const createZoraAuction = async ({
   );
 
   // Wait for Tx to process
-  const auctionReceipt = await auctionTx.wait();
+  const auctionReceipt = await auctionTx.wait(2);
 
   if (auctionReceipt) {
     const auctionId = parseInt(auctionReceipt.events[3].topics[1], 16);
@@ -296,58 +443,54 @@ export const createZoraAuction = async ({
 };
 
 export const claimFunds = async ({
-  splits,
+  signer,
+  address,
   proxyAddress,
+  needsIncremented,
+  splits,
 }: {
-  splits: SplitRecipient[];
+  signer: Signer;
+  address: string;
   proxyAddress: string;
-}) => {
+  needsIncremented: boolean;
+  splits: (SplitRecipient & { __typename: string })[];
+}): Promise<boolean> => {
   // Format splits[] for merkle-tree. WILL NOT WORK if ENS names aren't translated to 0x0
   // keep address and allocation
-  let splitsForMerkle = splits.map(({ name, role, shares, __typename, ...keepAttrs }) => keepAttrs);
-  // Change 'address' -> 'account'
-  splitsForMerkle = splitsForMerkle.map((split: { user: { id: string }; allocation: string }) => ({
-    account: split.user.id,
-    allocation: Number(split.allocation),
-  }));
+  const splitsForMerkle = splits
+    .map(({ name, role, shares, __typename, ...keepAttrs }) => keepAttrs)
+    .map((split: { user: { id: string }; allocation: string }) => ({
+      // Change 'address' -> 'account'
+      account: split.user.id,
+      allocation: BigNumber.from(split.allocation),
+    }));
 
+  // find users account & allocation to retreive proof
   const signersSplit = splitsForMerkle.find(
-    (split: { account: string }) => split.account === address.toString().toLowerCase()
+    (split) => split.account === address.toString().toLowerCase()
   );
+  if (!signersSplit) {
+    return false;
+  }
   const { account, allocation } = signersSplit;
 
   // Create Merkle Tree for Split and then get proof
   const tree = new BalanceTree(splitsForMerkle);
   const proof = tree.getProof(account, allocation);
 
-  const pylonABI = pylonJSON.abi;
-  const proxyWrite = new ethers.Contract(proxyAddress, pylonABI, signer);
-  const windowTx = await proxyWrite.incrementWindow();
-  const windowReceipt = await windowTx.wait();
+  // claim funds with proof
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 
-  if (windowReceipt) {
-    const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const claimReceipt = await claimTx.wait();
+  if (needsIncremented) {
+    const claimTx = await PROXY_WRITE.incrementThenClaimAll(account, allocation, proof);
+    const claimReceipt = await claimTx.wait(2);
+
+    if (claimReceipt) return true;
+  } else {
+    const claimTx = await PROXY_WRITE.claimETHForAllWindows(account, allocation, proof);
+    const claimReceipt = await claimTx.wait(2);
+
+    if (claimReceipt) return true;
   }
-
-  // try to claim without incrementing window, if ethers errors estimating gas, increment window then claim
-  // try {
-  //   const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
-  //   const claimReceipt = await claimTx.wait();
-
-  //   if (claimReceipt) {
-  //   }
-  // } catch (error) {
-  //   const windowTx = await proxyWrite.incrementWindow();
-  //   const windowReceipt = await windowTx.wait();
-
-  //   if (windowReceipt) {
-  //     const claimTx = await proxyWrite.claimETHForAllWindows(account, allocation, proof);
-  //     const claimReceipt = await claimTx.wait();
-
-  //     if (claimReceipt) {
-  //     }
-  //   }
-  // }
+  return false;
 };
