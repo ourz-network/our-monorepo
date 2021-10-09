@@ -110,21 +110,21 @@ const NewMintMultistepForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [splitRecipients, mintForm.creatorBidShare]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...mintForm,
-      [event.target.name]: event.target.value,
-    });
+  const setMintKind = (Kind: MintForm["mintKind"]) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      mintKind: Kind,
+    }));
   };
 
   const handleMetadataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...mintForm,
+    setFormData((prevState) => ({
+      ...prevState,
       metadata: {
-        ...mintForm.metadata,
+        ...prevState.metadata,
         [event.target.name]: event.target.value,
       },
-    });
+    }));
   };
 
   const setMintKind = (Kind: MintForm["mintKind"]) => {

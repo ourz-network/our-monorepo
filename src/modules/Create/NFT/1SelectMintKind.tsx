@@ -14,7 +14,7 @@ const SelectMintKind = ({
   setMintKind: (Kind: MintForm["mintKind"]) => void;
   next: () => void;
 }): JSX.Element => {
-  const [kind, setKind] = useState<MintForm["mintKind"]>();
+  const [kind, setKind] = useState<MintForm["mintKind"]>(mintForm.mintKind);
   const Router = useRouter();
 
   function onClick(Kind: MintForm["mintKind"]): void {
