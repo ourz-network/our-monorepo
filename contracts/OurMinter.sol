@@ -316,7 +316,8 @@ contract OurMinter is OurManagement {
 
     /**======== IERC721 =========
      * NOTE: Althought OurMinter.sol is generally implemented to work with Zora,
-     * the functions below allow a Split to work with any ERC-721 spec'd platform (except minting)
+     *       the functions below allow a Split to work with any ERC-721 spec'd platform;
+     *       (except for minting, @dev 's see untrustedExecuteTransaction() below)
      * @dev see IERC721.sol
      */
 
@@ -364,12 +365,14 @@ contract OurMinter is OurManagement {
 
     //======== /IERC721 =========
 
+    //======== PROCEEED WITH CAUTION =========
     /**
-     * NOTE: Marked as >> untrusted << Use caution when interacting with external contracts. For advanced users only
-     * @dev allows a Split Contract to call functions of any other contract
+     * NOTE: Marked as >> untrusted << Avoid interacting with contracts you do not trust entirely.
+     * @dev allows a Split Contract to call (non-payable) functions of any other contract
      * @notice This function is added for 'future-proofing' capabilities and will not be implemented into the
-     *         OURZ frontend. In the interest of securing the Split's funds, the value is hardcoded
-     *         to zero. The intent is to support the use of custom creator contracts.
+     *         OURZ frontend. The intent is to support the use of custom ERC721 creator contracts.
+     * @notice In the interest of securing the Split's funds for Recipients from a rogue owner(OurManagement.sol),
+     *         the msg.value is hardcoded to zero.
      */
     function untrustedExecuteTransaction(address to, bytes memory data)
         external
@@ -381,6 +384,8 @@ contract OurMinter is OurManagement {
             success := call(gas(), to, 0, add(data, 0x20), mload(data), 0, 0)
         }
     }
+
+    //======== /PROCEEED WITH CAUTION =========
 
     /// @dev calculates tokenID of newly minted ZNFT
     function _getID() private returns (uint256 id) {
