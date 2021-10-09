@@ -20,7 +20,7 @@ const MintDetails = ({
         <div className="flex flex-col px-16 py-8 border-b border-dark-border text-dark-primary">
           <p>
             <input
-              className="visible mb-8 outline-none text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+              className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
               type="text"
               id="title"
               name="name"
@@ -33,7 +33,7 @@ const MintDetails = ({
           {mintForm.mintKind === "Edition" && (
             <p>
               <input
-                className="visible mb-8 outline-none text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
                 type="text"
                 id="symbol"
                 name="symbol"
@@ -47,7 +47,7 @@ const MintDetails = ({
           )}
           <p>
             <input
-              className="px-3 pt-2 pb-4 mb-8 w-full h-auto border border-dark-border text-primary bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+              className="px-3 pt-2 pb-4 mb-8 w-full h-auto border border-dark-border bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
               type="textarea"
               id="description"
               name="description"
@@ -57,7 +57,7 @@ const MintDetails = ({
               aria-label="description"
             />
           </p>
-          <p className="text-center">
+          <div className="text-center">
             <label className="hidden" htmlFor="creatorBidShare">
               Royalty Percentage
               <div className="flex mx-auto mt-2 w-min">
@@ -75,7 +75,7 @@ const MintDetails = ({
                 </span>
               </div>
             </label>
-          </p>
+          </div>
         </div>
         <div className="flex flex-row justify-between py-2 mx-12">
           <Button isMain={false} text="Back" onClick={back} />

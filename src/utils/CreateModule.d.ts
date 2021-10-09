@@ -24,17 +24,15 @@ export interface ZNFTEdition {
 export interface MintForm {
   mintKind: "1/1" | "1/1 Auction" | "Edition";
   media: {
-    file: File;
+    file: File | null;
     mimeType: string;
     preview: string | URL;
-    blob: string | ArrayBuffer;
+    blob: string | ArrayBuffer | null;
   };
   metadata: Ourz20210928 | ZNFTEdition;
   creatorBidShare: number;
-  splitMetadata?: FormSplitRecipient[];
   auctionInfo?: {
     reservePrice: number;
     duration: number;
-    auctionCurrency: string;
   };
 }

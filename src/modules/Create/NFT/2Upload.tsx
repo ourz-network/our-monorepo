@@ -4,7 +4,6 @@ import Button from "@/components/Button";
 const MintUpload = ({
   handleMedia,
   acceptedFiles,
-  acceptedFileItems,
   getRootProps,
   getInputProps,
   thumbs,
@@ -13,14 +12,12 @@ const MintUpload = ({
 }: {
   handleMedia: () => void;
   acceptedFiles: File[];
-  acceptedFileItems: JSX.Element[];
   getRootProps: () => void;
   getInputProps: () => void;
   thumbs: JSX.Element[];
   next: () => void;
   back: () => void;
 }): JSX.Element => {
-  // Because of react-dropzone, handleChange() from createMultiStepForm must be carried out manually for this step, then we can call next().
   const submitMedia = () => {
     handleMedia();
     next();
@@ -73,7 +70,6 @@ const MintUpload = ({
         <p className="pb-2 text-center text-dark-primary">Preview</p>
         <div className="flex flex-col items-center p-5 border border-dark-border min-h-preview min-w-preview text-dark-secondary">
           {thumbs}
-          <p className="text-xs italic text-center">{acceptedFileItems}</p>
         </div>
       </div>
     </div>

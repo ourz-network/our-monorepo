@@ -207,7 +207,7 @@ export const createCryptomedia = async (
   const contentHash = sha256FromBuffer(Buffer.from(mintForm.media.blob as ArrayBuffer));
   const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
 
-  if (mintForm.mintKind === ("1/1" || "1/1 Auction")) {
+  if (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction") {
     // Construct mediaData object
     const cryptomedia = constructMediaData(mediaUrl, metadataUrl, contentHash, metadataHash);
 
@@ -280,10 +280,9 @@ export const mintZora = async ({
   soloAddress?: string;
   proxyAddress?: string;
   mintForm: MintForm;
-}): Promise<number> => {
+}): Promise<number | null> => {
   // Upload file to IPFS
   const { cryptomedia, bidShares } = await createCryptomedia(mintForm);
-
   // Mint to Zora Protocol
   if (cryptomedia && bidShares) {
     if (!proxyAddress && soloAddress) {
@@ -299,16 +298,35 @@ export const mintZora = async ({
     } else if (proxyAddress && !soloAddress) {
       const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer }); // minting for a Split Proxy
 
-      const mintTx = await PROXY_WRITE.mintZora(cryptomedia, bidShares); // Make transaction
+      if (mintForm.mintKind === "1/1") {
+        const mintTx = await PROXY_WRITE.mintZora(cryptomedia, bidShares); // Make transaction
 
-      const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+        const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
 
-      if (mintReceipt.events) {
-        return parseInt(mintReceipt.events[0].topics[3], 16);
+        if (mintReceipt.events) {
+          return parseInt(mintReceipt.events[0].topics[3], 16);
+        }
+      } else if (mintForm.mintKind === "1/1 Auction" && mintForm.auctionInfo) {
+        const { auctionInfo } = mintForm;
+        const ReservePrice = ethers.utils.parseUnits(auctionInfo.reservePrice.toString(), "ether");
+        const Duration = 60 * 60 * auctionInfo.duration;
+
+        const mintTx = await PROXY_WRITE.mintToAuctionForETH(
+          cryptomedia,
+          bidShares,
+          Duration,
+          ReservePrice
+        ); // Make transaction
+
+        const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+
+        if (mintReceipt.events) {
+          return parseInt(mintReceipt.events[0].topics[3], 16);
+        }
       }
     }
   }
-  return -1;
+  return null;
 };
 
 export const createZoraEdition = async ({
@@ -332,21 +350,9 @@ export const createZoraEdition = async ({
     cryptomedia: Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">;
   } = await createCryptomedia(mintForm);
   const metadata = mintForm.metadata as ZNFTEdition;
-  console.log(metadata);
 
   if (proxyAddress && !soloAddress) {
     const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
-    console.log(
-      metadata.name,
-      metadata.symbol,
-      metadata.description,
-      cryptomedia.animationUrl,
-      cryptomedia.animationHash,
-      cryptomedia.imageUrl,
-      cryptomedia.imageHash,
-      metadata.editionSize,
-      mintForm.creatorBidShare * 100
-    );
 
     const mintTx = await PROXY_WRITE.createZoraEdition(
       metadata.name,
@@ -409,15 +415,6 @@ export const createZoraAuction = async ({
   // init Proxy instance as OurPylon, so owner can call Mint
   const proxyPylon = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 
-  /** Make transaction
-   *  uint256 tokenId
-   *  address tokenContract
-   *  uint256 duration (time in seconds)
-   *  uint256 reservePrice
-   *  address curator (0x00 or owner address if no curator)
-   *  uint8 curatorFeePercentage
-   *  address auctionCurrency (must be 0x00 or WETH)
-   */
   const ReservePrice: BigNumberish = ethers.utils.parseUnits(reservePrice.toString(), "ether");
   const auctionTx = await proxyPylon.createZoraAuction(
     tokenId,

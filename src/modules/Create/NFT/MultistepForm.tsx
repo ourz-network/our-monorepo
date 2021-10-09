@@ -41,30 +41,28 @@ const NewMintMultistepForm = ({
   const [firstSale, setFirstSale] = useState();
   const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);
-  const [mintForm, setFormData] = useState({
-    mintKind: null,
+  const [mintForm, setFormData] = useState<MintForm>({
+    mintKind: "1/1",
     media: {
       file: null,
-      mimeType: null,
-      preview: null,
-      blob: null,
+      mimeType: "",
+      preview: "",
+      blob: "",
     },
     metadata: {
-      name: null, // title
-      description: null,
-      split_recipients: null,
+      name: "", // title
+      description: "",
+      split_recipients: splitRecipients,
       version: "Ourz20210928",
       mimeType: "",
-      symbol: null,
-      animation_url: null,
-      image_url: null,
+      symbol: "",
+      animation_url: "",
       editionSize: 0,
     },
     creatorBidShare: 10,
     auctionInfo: {
       reservePrice: 1,
-      duration: 0,
-      auctionCurrency: "0x0000000000000000000000000000000000000000",
+      duration: 1,
     },
   });
 
@@ -77,10 +75,13 @@ const NewMintMultistepForm = ({
 
   useEffect(() => {
     function formatChartData(recipients: SplitRecipient[]) {
-      setFormData({
-        ...mintForm,
-        splitMetadata: recipients,
-      });
+      // setFormData({
+      //   ...mintForm,
+      //   metadata: {
+      //     ...mintForm.metadata,
+      //     split_recipients: recipients,
+      //   },
+      // });
 
       // create first sale chart data
       let newChartData = recipients.flatMap((recipient) => ({
@@ -104,11 +105,11 @@ const NewMintMultistepForm = ({
       setSecondarySales(newChartData);
     }
 
-    if (splitRecipients) {
+    if (splitRecipients && mintForm.creatorBidShare) {
       formatChartData(splitRecipients);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [splitRecipients, mintForm.creatorBidShare]);
+  }, [splitRecipients]);
 
   const setMintKind = (Kind: MintForm["mintKind"]) => {
     setFormData((prevState) => ({
@@ -127,14 +128,23 @@ const NewMintMultistepForm = ({
     }));
   };
 
-  const setMintKind = (Kind: MintForm["mintKind"]) => {
-    mintForm.mintKind = Kind;
+  const setAuctionInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      auctionInfo: {
+        ...prevState.auctionInfo,
+        [event.target.name]: event.target.value,
+      },
+    }));
   };
 
   const onSubmit = async () => {
-    // setLoading(true);
-
-    if (proxyAddress && signer && network?.chainId === 4 && mintForm.mintKind === "1/1") {
+    if (
+      proxyAddress &&
+      signer &&
+      network?.chainId === 4 &&
+      (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction")
+    ) {
       // minting as Split Proxy by Owner
       const tokenId = await mintZora({
         signer,
@@ -155,7 +165,6 @@ const NewMintMultistepForm = ({
       network?.chainId === 4 &&
       mintForm.mintKind === "Edition"
     ) {
-      console.log(`mintForm.metadata: `, mintForm.metadata);
       await createZoraEdition({ signer, networkId: network.chainId, proxyAddress, mintForm });
       /*
        * minting as connected web3Wallet
@@ -178,12 +187,17 @@ const NewMintMultistepForm = ({
    * Handles upload of images and previews throughout the steps.
    *
    */
-  const [files, setFiles] = useState<(File & { preview: string })[] | undefined>([]);
+  const [files, setFiles] = useState<(File & { preview: string })[]>([]);
   const handleMedia = () => {
-    // eslint-disable-next-line prefer-destructuring
-    mintForm.media.file = files[0];
-    mintForm.media.mimeType = files[0].type;
-    mintForm.media.preview = files[0].preview;
+    setFormData((prevState) => ({
+      ...prevState,
+      media: {
+        ...prevState.media,
+        file: files[0],
+        mimeType: files[0].type,
+        preview: files[0].preview,
+      },
+    }));
   };
   /**
    * onDrop()
@@ -206,13 +220,13 @@ const NewMintMultistepForm = ({
       reader.onload = () => {
         // Save the readFile to state under mediaBlob
         const arrayBuffer = reader.result;
-        setFormData({
-          ...mintForm,
+        setFormData((prevState) => ({
+          ...prevState,
           media: {
-            ...mintForm.media,
+            ...prevState.media,
             blob: arrayBuffer,
           },
-        });
+        }));
       };
     });
 
@@ -232,13 +246,6 @@ const NewMintMultistepForm = ({
     accept: "image/*, video/*, audio/*, text/plain",
     onDrop,
   });
-
-  // Info about upload, delete later.
-  const acceptedFileItems = acceptedFiles.map((file: File & { path: string }) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes - {file.type}
-    </li>
-  ));
 
   // Mapping is not exactly necessary, only 1 file can be uploaded, but too lazy to rewrite.
   // eslint-disable-next-line array-callback-return
@@ -262,7 +269,7 @@ const NewMintMultistepForm = ({
     case 1:
       return (
         <PageLayout>
-          <SelectMintKind mintForm={mintForm} setMintKind={setMintKind} next={next} back={back} />
+          <SelectMintKind mintForm={mintForm} setMintKind={setMintKind} next={next} />
         </PageLayout>
       );
     case 2:
@@ -271,7 +278,6 @@ const NewMintMultistepForm = ({
           <MintUpload
             handleMedia={handleMedia}
             acceptedFiles={acceptedFiles}
-            acceptedFileItems={acceptedFileItems}
             getRootProps={getRootProps}
             getInputProps={getInputProps}
             thumbs={thumbs}
@@ -296,11 +302,13 @@ const NewMintMultistepForm = ({
       return (
         <PageLayout>
           <MintConfirm
-            address={address}
+            address={address as string}
             mintForm={mintForm}
             firstSale={firstSale}
             secondarySales={secondarySales}
             proxyAddress={proxyAddress}
+            setMintKind={setMintKind}
+            setAuctionInfo={setAuctionInfo}
             thumbs={thumbs}
             back={back}
             onSubmit={onSubmit}

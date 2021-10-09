@@ -19,7 +19,7 @@ const MintNFTFromExistingSplit = (): JSX.Element => {
       }
     }
     if (proxyAddress) {
-      collectSplitRecipients(proxyAddress).then(
+      collectSplitRecipients(proxyAddress as string).then(
         () => {},
         () => {}
       );
@@ -27,13 +27,10 @@ const MintNFTFromExistingSplit = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    !loading && (
-      <NewMintMultistepForm
-        proxyAddress={proxyAddress as string}
-        splitRecipients={splitRecipients}
-      />
-    )
+  return !loading ? (
+    <NewMintMultistepForm proxyAddress={proxyAddress as string} splitRecipients={splitRecipients} />
+  ) : (
+    <div className="w-screen h-screen bg-dark-background" />
   );
 };
 

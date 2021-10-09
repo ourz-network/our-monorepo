@@ -8,7 +8,7 @@ import {
   ALL_USER_ADDRESSES,
   ALL_PROXY_ADDRESSES,
 } from "./queries"; // GraphQL Queries
-import { OurProxy, SplitZNFT, User, SplitRecipient } from "../../../types/OurzSubgraph";
+import { OurProxy, SplitZNFT, User, SplitRecipient } from "@/types/OurzSubgraph";
 
 interface Data {
   ourProxy?: OurProxy;
