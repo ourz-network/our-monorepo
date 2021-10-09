@@ -314,30 +314,6 @@ contract OurMinter is OurManagement {
 
     //======== /IMirror =========
 
-    // /**======== IPartyBid =========
-    //  * @notice Starts a Party Bid
-    //  * @dev see IPartyBid.sol
-    //  */
-    // function startSplitParty(
-    //     address marketWrapper,
-    //     address nftContract,
-    //     uint256 tokenId,
-    //     uint256 auctionId,
-    //     string memory name,
-    //     string memory symbol
-    // ) external onlyOwners {
-    //     IPartyBid(_partyBid).startParty(
-    //         marketWrapper,
-    //         nftContract,
-    //         tokenId,
-    //         auctionId,
-    //         name,
-    //         symbol
-    //     );
-    // }
-
-    // //======== /IPartyBid =========
-
     /**======== IERC721 =========
      * NOTE: Althought OurMinter.sol is generally implemented to work with Zora,
      * the functions below allow a Split to work with any ERC-721 spec'd platform (except minting)
