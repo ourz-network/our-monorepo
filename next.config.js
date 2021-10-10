@@ -1,6 +1,6 @@
-// const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: process.env.ANALYZE === 'true',
-// })
+// const withBundleAnalyzer = require("@next/bundle-analyzer")({
+//   enabled: process.env.ANALYZE === "true",
+// });
 // withBundleAnalyzer(
 
 // @ts-check
@@ -10,7 +10,7 @@
  */
 const nextConfig = {
   eslint: {
-    dirs: ["app", "components", "hooks", "modules", "pages"],
+    dirs: ["src/app", "src/common", "src/modules", "src/pages", "src/utils/index.ts"],
   },
   extends: ["plugin:@next/next/recommended"],
   typescript: {
@@ -56,6 +56,6 @@ const nextConfig = {
     fs: false,
   },
 };
-// )
+// );
 
 module.exports = nextConfig;

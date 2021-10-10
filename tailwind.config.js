@@ -1,12 +1,5 @@
 module.exports = {
-  purge: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./modules/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./public/**/*.{js,ts,jsx,tsx}",
-    "./styles/**/*.{js,ts,jsx,tsx}",
-  ],
+  purge: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class", // 'false' or 'media'/'class'
   theme: {
     container: {
@@ -74,6 +67,12 @@ module.exports = {
         preview: "330px",
       },
       height: {
+        "75vh": "75vh",
+        min: "min-content",
+        preview: "330px",
+        "500px": "500px",
+      },
+      width: {
         "75vh": "75vh",
         min: "min-content",
         preview: "330px",
