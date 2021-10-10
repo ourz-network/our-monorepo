@@ -35,7 +35,7 @@ const NFTView = ({
     }
   }, [recipients]);
 
-  return (
+  return !loading ? (
     <PageLayout>
       <div
         id="pagecontainer"
@@ -49,6 +49,8 @@ const NFTView = ({
         />
       </div>
     </PageLayout>
+  ) : (
+    <div className="w-screen h-screen bg-dark-background" />
   );
 };
 
