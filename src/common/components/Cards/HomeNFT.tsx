@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react"; // React state management
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
 import axios from "axios";
+import { useNFTMetadata } from "@zoralabs/nft-hooks";
 import { Ourz20210928 } from "@/Create/types/20210928";
 
 interface NextImageOnLoad {
@@ -22,15 +23,17 @@ const HomeNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
   });
   const zoraQuery = new Zora(queryProvider, 4);
   // const [loading, setLoading] = useState(true);
-  const [metadata, setMetadata] = useState<Ourz20210928 | undefined>();
+  const [metadataURI, setMetadataURI] = useState();
   const [contentURI, setContentURI] = useState<string | undefined>();
+
+  const { error, metadata } = useNFTMetadata(metadataURI);
   useEffect(() => {
     async function getTokenInfo(TokenID) {
-      const metadataURI = await zoraQuery.fetchMetadataURI(TokenID);
-      const res = await axios.get(`${metadataURI}`);
-      setMetadata(res.data);
+      setMetadataURI(await zoraQuery.fetchMetadataURI(TokenID));
+
       const dirtyContentURI = await zoraQuery.fetchContentURI(TokenID);
       const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
+
       if (dirtyContentURI.match(regexIPFS)) {
         const { IPFShash } = regexIPFS.exec(dirtyContentURI).groups;
         setContentURI(`https://ipfs.io/ipfs/${IPFShash}`);
@@ -154,40 +157,40 @@ const HomeNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
       </div>
     );
   }
-  if (metadata?.mimeType?.includes("image")) {
-    return (
-      <div
-        key={tokenId}
-        className={`border transition-shadow ${aspectRatio} landingPage-item shadow-deep border-dark-accent cursor-hover`}
-      >
-        <div className="flex flex-col w-full h-full xl:h-full">
-          <Link
-            href={{
-              pathname: "/nft/[tokenId]",
-              query: { tokenId },
-            }}
-            passHref
-          >
-            <div className="object-cover relative w-full h-full bg-transparent">
-              {contentURI && (
-                <Image
-                  alt={`NFT ${tokenId} Thumbnail`}
-                  layout="fill"
-                  objectFit="contain"
-                  quality={65}
-                  src={contentURI}
-                  placeholder="empty"
-                  className="w-full h-full"
-                  onLoadingComplete={(loadedMedia) => calcAspectRatio(loadedMedia)}
-                />
-              )}
-            </div>
-          </Link>
-        </div>
+  // if (metadata?.mimeType?.includes("image")) {
+  return (
+    <div
+      key={tokenId}
+      className={`border transition-shadow ${aspectRatio} landingPage-item shadow-deep border-dark-accent cursor-hover`}
+    >
+      <div className="flex flex-col w-full h-full xl:h-full">
+        <Link
+          href={{
+            pathname: "/nft/[tokenId]",
+            query: { tokenId },
+          }}
+          passHref
+        >
+          <div className="object-cover relative w-full h-full bg-transparent">
+            {contentURI && (
+              <Image
+                alt={`NFT ${tokenId} Thumbnail`}
+                layout="fill"
+                objectFit="contain"
+                quality={65}
+                src={contentURI}
+                placeholder="empty"
+                className="w-full h-full"
+                onLoadingComplete={(loadedMedia) => calcAspectRatio(loadedMedia)}
+              />
+            )}
+          </div>
+        </Link>
       </div>
-    );
-  }
-  return null;
+    </div>
+  );
 };
+// return null;
+// };
 
 export default HomeNFT;

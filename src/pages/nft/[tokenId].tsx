@@ -10,8 +10,7 @@ import { SplitRecipient, SplitZNFT } from "@/utils/OurzSubgraph";
 const NFTView = ({
   tokenId,
   recipients,
-}: // creator,
-{
+}: {
   tokenId: string;
   recipients: SplitRecipient[];
   // creator: string;
@@ -37,21 +36,19 @@ const NFTView = ({
   }, [recipients]);
 
   return (
-    !loading && (
-      <PageLayout>
-        <div
-          id="pagecontainer"
-          className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
-        >
-          <FullPageNFT
-            tokenId={tokenId}
-            ownAccount
-            chartData={firstSale}
-            recipients={recipients || null}
-          />
-        </div>
-      </PageLayout>
-    )
+    <PageLayout>
+      <div
+        id="pagecontainer"
+        className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
+      >
+        <FullPageNFT
+          tokenId={tokenId}
+          ownAccount
+          chartData={firstSale}
+          recipients={recipients || null}
+        />
+      </div>
+    </PageLayout>
   );
 };
 
