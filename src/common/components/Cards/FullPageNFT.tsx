@@ -18,36 +18,6 @@ const FullPageNFT = ({
   }[];
   recipients: SplitRecipient[];
 }): JSX.Element => {
-  // const [loading, setLoading] = useState(true);
-
-  /*
-   * useEffect(() => {
-   *   async function getSplitMetadata(tokenId) {
-   *     const metadataURI = await zoraQuery.fetchMetadataURI(tokenId);
-   *     const res = await axios.get(metadataURI);
-   *     const metadata = await res.data;
-   *     if (metadata?.attributes) {
-   *       const newChartData = metadata.attributes.flatMap((split) => ({
-   *         name: `${split.name}`,
-   *         shares: Number(split.shares),
-   *         address: `${split.address}`,
-   *         role: `${split.role}`,
-   *       }));
-   *       setChartData(newChartData);
-   *     }
-   */
-
-  /*
-   *   }
-   *   if (tokenId) {
-   *     getSplitMetadata(tokenId);
-   *     setLoading(false);
-   *   }
-   * }, []);
-   */
-
-  // let chartData;
-
   const jsCodeSnippet = `<div className='nft-embed'></div>
   <script
         async

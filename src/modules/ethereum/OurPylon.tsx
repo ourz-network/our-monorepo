@@ -193,8 +193,8 @@ export const createCryptomedia = async (
   const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);
 
   // Save fileUrl and metadataUrl
-  const mediaUrl = `https://${mediaCID}.ipfs.dweb.link`;
-  const metadataUrl = `https://${metadataCID}.ipfs.dweb.link`;
+  const mediaUrl = `https://ipfs.io/ipfs/${mediaCID}`;
+  const metadataUrl = `https://ipfs.io/ipfs/${metadataCID}`;
 
   // arweave??
   // if (mintForm.mediaKind.includes("image")) {

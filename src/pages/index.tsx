@@ -60,7 +60,7 @@ const Home = ({
                 {posts.map((post) => (
                   // For each Zora post, Return Post component
                   // eslint-disable-next-line react/jsx-key
-                  <HomeNFT tokenId={post.id} />
+                  <HomeNFT key={post.id} post={post} />
                 ))}
               </div>
             </div>
