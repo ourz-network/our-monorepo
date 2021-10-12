@@ -24,7 +24,6 @@ const FullPageNFT = ({
   recipients: SplitRecipient[];
   post: Media & { metadata: Ourz20210928 };
 }): JSX.Element => {
-  console.log("fpnft : ", post);
   const jsCodeSnippet = `<div className='nft-embed'></div>
   <script
         async
@@ -48,16 +47,29 @@ import Link from 'next/link';
             className="object-contain max-w-full max-h-full cont"
           />
         )}
+        {post?.metadata?.mimeType?.includes("video") && (
+          <video muted autoPlay controls={false} loop playsInline>
+            <source src={post.contentURI} />
+          </video>
+        )}
       </div>
       <div className="p-6 mx-auto mb-16 max-w-11/12 xl:max-w-5/6">
         {" "}
         {/* border-b border-l border-r shadow-xl */}
         <div className="flex flex-col content-center mb-6 w-full xl:flex-row">
           <div className="flex flex-col xl:w-7/12">
-            <FullComponents.MediaInfo />
-            <FullComponents.AuctionInfo />
-            <div className="self-end my-2">
-              <FullComponents.PlaceOfferButton />
+            {/* <FullComponents.MediaInfo /> */}
+            <div className="flex flex-col justify-between md:flex-row">
+              {post?.metadata && (
+                <div className="flex flex-col justify-between h-full">
+                  <p className="text-2xl text-dark-primary">{`${post.metadata.name}`}</p>
+                  <p className="whitespace-pre-wrap break-words text-dark-primary">{`${post.metadata.description}`}</p>
+                </div>
+              )}
+              <FullComponents.AuctionInfo />
+              <div className="self-end my-2">
+                <FullComponents.PlaceOfferButton />
+              </div>
             </div>
             <FullComponents.BidHistory />
             <div className="my-2">

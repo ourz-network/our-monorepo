@@ -225,7 +225,6 @@ export const createCryptomedia = async (
       })),
     };
     const metadataJSON = JSON.stringify(metadata); // unordered
-    console.log(metadataJSON);
 
     // Upload files to nft.storage
     const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);

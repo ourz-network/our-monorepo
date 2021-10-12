@@ -95,7 +95,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const zoraQuery = new Zora(queryProvider, 4);
 
   const { tokenId } = context.params;
-  console.log(tokenId);
+
   const post = await getPostByID(Number(tokenId));
   const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
 

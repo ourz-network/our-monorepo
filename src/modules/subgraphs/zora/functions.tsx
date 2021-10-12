@@ -17,8 +17,8 @@ import {
   // URIUpdate,
   // ReserveAuctionBid,
   // ReserveAuction,
-} from "./ZoraSubgraph.ts";
-import { Ourz20210928 } from "@/Create/types/20210928.ts";
+} from "./ZoraSubgraph";
+import { Ourz20210928 } from "@/Create/types/20210928";
 
 interface Data {
   media?: Media;
