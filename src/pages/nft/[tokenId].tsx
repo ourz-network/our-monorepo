@@ -101,7 +101,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const res = await getSplitRecipients(creatorAddress);
   if (res && post) {
-    // console.log(post);
     const recipients = res;
     return {
       props: {

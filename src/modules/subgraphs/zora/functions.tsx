@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 import { ApolloQueryResult } from "@apollo/client";
 import axios, { AxiosResponse } from "axios"; // Requests
@@ -55,14 +54,16 @@ const fetchMetadata = async (metadataURI: string): Promise<Ourz20210928> => {
 };
 
 const createPost = async (media: Media, metadata: Ourz20210928): Promise<Media | null> => {
-  console.log(metadata);
   // Only show posts with MimeType
   if (!metadata.mimeType) {
-    console.log(`aborted`);
+    // eslint-disable-next-line no-console
+    console.log(`Aborted: No MimeType`);
     return;
   }
 
   // if (metadata?.external_url !== "www.ourz.network") {
+  // eslint-disable-next-line no-console
+  // console.log(`Aborted: Not Ourz`);
   //   return;
   // }
 
@@ -101,6 +102,7 @@ export const getPostByID = async (id: number): Promise<Media & { metadata: Ourz2
         return post;
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(`getPostByID() Error: `, error);
     }
   }
@@ -133,6 +135,7 @@ export const getPostsByOwner = async (
             posts.push(post);
           }
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
         }
       })
@@ -163,6 +166,7 @@ export const getPostsByCreator = async (
             posts.push(post);
           }
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(error);
         }
       })
