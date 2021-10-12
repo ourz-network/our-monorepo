@@ -15,7 +15,7 @@ interface NextImageOnLoad {
   naturalHeight: number;
 }
 
-const HomeNFT = ({ post }: { post: Media & Ourz20210928 }): JSX.Element => {
+const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.Element => {
   const tokenId = post.id;
 
   /**       ---  Dual-axis Masonry Layout  ---

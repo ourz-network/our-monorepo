@@ -55,14 +55,16 @@ const fetchMetadata = async (metadataURI: string): Promise<Ourz20210928> => {
 };
 
 const createPost = async (media: Media, metadata: Ourz20210928): Promise<Media | null> => {
+  console.log(metadata);
   // Only show posts with MimeType
   if (!metadata.mimeType) {
+    console.log(`aborted`);
     return;
   }
 
-  if (metadata?.external_url !== "www.ourz.network") {
-    return;
-  }
+  // if (metadata?.external_url !== "www.ourz.network") {
+  //   return;
+  // }
 
   const post: Media & Ourz20210928 = { metadata, ...media };
 
@@ -81,7 +83,7 @@ const createPost = async (media: Media, metadata: Ourz20210928): Promise<Media |
  * @param {Number} id post number
  * @returns {Object} containing Zora media details
  */
-export const getPostByID = async (id: number): Promise<Media> => {
+export const getPostByID = async (id: number): Promise<Media & { metadata: Ourz20210928 }> => {
   // Collect post
   const query: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_ID(id),
@@ -109,7 +111,9 @@ export const getPostByID = async (id: number): Promise<Media> => {
  * @param {Number} id post number
  * @returns {Object} containing Zora media details
  */
-export const getPostsByOwner = async (owner: string): Promise<Media[]> => {
+export const getPostsByOwner = async (
+  owner: string
+): Promise<Media & { metadata: Ourz20210928 }[]> => {
   // Collect post
   const query: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_OWNER(owner),
@@ -137,7 +141,9 @@ export const getPostsByOwner = async (owner: string): Promise<Media[]> => {
   }
 };
 
-export const getPostsByCreator = async (creator: string): Promise<Media[]> => {
+export const getPostsByCreator = async (
+  creator: string
+): Promise<Media & { metadata: Ourz20210928 }[]> => {
   // Collect post
   const query: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_CREATOR(creator),

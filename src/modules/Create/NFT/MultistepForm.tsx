@@ -45,7 +45,6 @@ const NewMintMultistepForm = ({
     mintKind: "1/1",
     media: {
       file: null,
-      mimeType: "",
       preview: "",
       blob: "",
     },
@@ -55,9 +54,6 @@ const NewMintMultistepForm = ({
       split_recipients: splitRecipients,
       version: "Ourz20210928",
       mimeType: "",
-      symbol: "",
-      animation_url: "",
-      editionSize: 0,
     },
     creatorBidShare: 10,
     auctionInfo: {
@@ -194,8 +190,11 @@ const NewMintMultistepForm = ({
       media: {
         ...prevState.media,
         file: files[0],
-        mimeType: files[0].type,
         preview: files[0].preview,
+      },
+      metadata: {
+        ...prevState.metadata,
+        mimeType: files[0].type,
       },
     }));
   };

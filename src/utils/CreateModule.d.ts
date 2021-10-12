@@ -11,7 +11,7 @@ export interface FormSplitRecipient {
 
 export interface ZNFTEdition {
   name: string;
-  symbol: string;
+  symbol?: string;
   description: string;
   animationUrl?: string;
   animationHash: BytesLike;
@@ -25,7 +25,6 @@ export interface MintForm {
   mintKind: "1/1" | "1/1 Auction" | "Edition";
   media: {
     file: File | null;
-    mimeType: string;
     preview: string | URL;
     blob: string | ArrayBuffer | null;
   };

@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react"; // State management
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router"; // Page redirects (static routing)
 import web3 from "@/app/web3";
-import { getPostsByOwner } from "@/subgraphs/zora/functions"; // Post retrieval function
+import { getPostsByCreator, getPostsByOwner } from "@/subgraphs/zora/functions"; // Post retrieval function
 import { Profile } from "@/modules/Profile/Profile";
 import connectDB from "@/mongodb/utils/connectDB";
 import { getAllProfilePaths } from "@/subgraphs/ourz/functions";
@@ -11,13 +11,14 @@ import { Media } from "@/utils/ZoraSubgraph";
 import { IProfile, ProfileModel } from "@/mongodb/models/ProfileModel";
 import { IUser, UserModel } from "@/mongodb/models/UserModel";
 import { addressLength } from "@/utils/index";
+import { Ourz20210928 } from "@/utils/20210928";
 
 interface ProfilePageProps {
   redirectUsername: string;
   usernameOrAddress: string;
   user: IUser;
   profileDetails: IProfile;
-  posts: Media[];
+  posts: Media & { metadata: Ourz20210928 };
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({
@@ -154,7 +155,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!user) {
     // fetch posts
     const ownedMedia: Media[] = await getPostsByOwner(usernameOrAddress as string);
-    const posts: Media[] = ownedMedia.reverse();
+    const createdMedia: Media[] = await getPostsByCreator(usernameOrAddress as string);
+    const posts: Media[] = [...ownedMedia.reverse(), ...createdMedia.reverse()];
     return {
       props: {
         usernameOrAddress,
@@ -165,7 +167,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   // fetch posts
   const ownedMedia: Media[] = await getPostsByOwner(user.ethAddress);
-  const posts: Media[] = ownedMedia.reverse();
+  const createdMedia: Media[] = await getPostsByCreator(user.ethAddress);
+  const posts: Media[] = [...ownedMedia.reverse(), ...createdMedia.reverse()];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const profileDetails: IProfile = await ProfileModel.findOne({ user: user._id });
   return {

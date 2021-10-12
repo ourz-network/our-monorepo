@@ -10,7 +10,7 @@ const Home = ({
   postsToSet,
   loadMoreStartIndex,
 }: {
-  postsToSet: Media[];
+  postsToSet: Media & { metadata: Ourz20210928 }[];
   loadMoreStartIndex: number;
 }): JSX.Element => {
   const [posts, setPosts] = useState(postsToSet); // Posts array
@@ -132,7 +132,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      postsToSet: JSON.parse(JSON.stringify(postsToSet)) as Media[],
+      postsToSet: JSON.parse(JSON.stringify(postsToSet)),
       loadMoreStartIndex: 3688,
     },
     revalidate: 60,

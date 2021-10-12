@@ -21,7 +21,7 @@ const Table = ({ recipients }: { recipients: SplitRecipient[] }): JSX.Element =>
         </thead>
         <tbody>
           {recipients?.map((split, i) => (
-            <tr key={split.id} className={i % 2 === 0 ? `bg-dark-background` : ``}>
+            <tr key={`${split.user.id}`} className={i % 2 === 0 ? `bg-dark-background` : ``}>
               {/* <td className="w-3/12 text-center overflow-ellipsis border text-dark-primary border-dark-border hover:underline">
                 <Link href={`/profile/${split.user.id}`} className="cursor-pointer">
                   {toTrimmedAddress(split.user.id)}

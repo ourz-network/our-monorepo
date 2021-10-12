@@ -173,16 +173,6 @@ export const createCryptomedia = async (
     | MediaData;
   bidShares?: BidShares;
 }> => {
-  // Generate metadataJSON
-  const metadataJSON = JSON.stringify(mintForm.metadata); // unordered
-  // const metadata = {
-  //   version: "zora-20210101",
-  //   name: mintForm.title,
-  //   description: mintForm.description,
-  //   mimeType: mintForm.mediaKind,
-  // };
-  // const metadataJSON = generateMetadata(metadata.version, metadata)
-
   // Upload files to nft.storage
   const endpoint = "https://api.nft.storage" as unknown as URL; // the default
   const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY}`;
@@ -190,11 +180,9 @@ export const createCryptomedia = async (
 
   // Collect mediaCID and metadataCID from nft.storage
   const mediaCID = await storage.storeBlob(mintForm.media.blob as unknown as Blob);
-  const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);
 
   // Save fileUrl and metadataUrl
   const mediaUrl = `https://ipfs.io/ipfs/${mediaCID}`;
-  const metadataUrl = `https://ipfs.io/ipfs/${metadataCID}`;
 
   // arweave??
   // if (mintForm.mediaKind.includes("image")) {
@@ -205,9 +193,45 @@ export const createCryptomedia = async (
 
   // Generate content hashes
   const contentHash = sha256FromBuffer(Buffer.from(mintForm.media.blob as ArrayBuffer));
-  const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
 
   if (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction") {
+    // Generate metadataJSON
+    // const metadata = {
+    //   name: mintForm.metadata.name,
+    //   description: mintForm.metadata.description,
+    //   split_recipients: mintForm.metadata.split_recipients.map((recipient: SplitRecipient) => ({
+    //     account: recipient?.user.id,
+    //     name: recipient?.name,
+    //     role: recipient?.role,
+    //     shares: recipient?.shares,
+    //     allocation: recipient?.allocation,
+    //   })),
+    //   version: mintForm.metadata.version || "Ourz20210928",
+    //   mimeType: mintForm.metadata.mimeType,
+    // };
+
+    const metadata = {
+      name: mintForm.metadata.name,
+      description: mintForm.metadata.description,
+      mimeType: mintForm.metadata.mimeType,
+      external_url: `www.ourz.network`,
+      version: "zora-20210604",
+      attributes: mintForm.metadata.split_recipients.map((recipient: SplitRecipient) => ({
+        account: recipient?.user.id,
+        name: recipient?.name,
+        role: recipient?.role,
+        shares: recipient?.shares,
+        allocation: recipient?.allocation,
+      })),
+    };
+    const metadataJSON = JSON.stringify(metadata); // unordered
+    console.log(metadataJSON);
+
+    // Upload files to nft.storage
+    const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);
+    const metadataUrl = `https://ipfs.io/ipfs/${metadataCID}`;
+    const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
+
     // Construct mediaData object
     const cryptomedia = constructMediaData(mediaUrl, metadataUrl, contentHash, metadataHash);
 
@@ -223,7 +247,7 @@ export const createCryptomedia = async (
 
     return { cryptomedia, bidShares };
   }
-  const { mimeType } = mintForm.media;
+  const { mimeType } = mintForm.metadata;
 
   // still image
   if (

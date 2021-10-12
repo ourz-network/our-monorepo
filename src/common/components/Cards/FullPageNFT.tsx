@@ -1,14 +1,19 @@
 import { NFTE } from "@nfte/react";
 import { FullComponents, NFTFullPage } from "@zoralabs/nft-components";
+import Image from "next/image";
+import Link from "next/link";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
+import { Ourz20210928 } from "@/utils/20210928";
+import { Media } from "@/utils/ZoraSubgraph";
 
 const FullPageNFT = ({
   tokenId,
   ownAccount,
   chartData,
   recipients,
+  post,
 }: {
   tokenId: string;
   ownAccount: boolean;
@@ -17,20 +22,32 @@ const FullPageNFT = ({
     shares: number;
   }[];
   recipients: SplitRecipient[];
+  post: Media & { metadata: Ourz20210928 };
 }): JSX.Element => {
+  console.log("fpnft : ", post);
   const jsCodeSnippet = `<div className='nft-embed'></div>
   <script
         async
         src='https://nfte.app/api/embed.js?contract=0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7&tokenId=${tokenId}'>
   </script>`; // mainnet REPLACE
   const reactCodeSnippet = `import { NFTE } from '@nfte/react';
+import Link from 'next/link';
         
   <NFTE contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7" tokenId="${tokenId}"/>`;
 
   return (
-    <NFTFullPage id={tokenId.toString()}>
-      <div className="object-contain py-1 border-b border-dark-border bg-dark-accent min-h-33vh">
-        <FullComponents.MediaFull />
+    <NFTFullPage id={tokenId}>
+      <div className="flex object-contain p-8 border-b max-h-75vh border-dark-border bg-dark-accent min-h-33vh">
+        {/* <FullComponents.MediaFull /> */}
+
+        {post?.metadata?.mimeType?.includes("image") && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            alt={`NFT #${post.id} Thumbnail`}
+            src={post.contentURI}
+            className="object-contain max-w-full max-h-full cont"
+          />
+        )}
       </div>
       <div className="p-6 mx-auto mb-16 max-w-11/12 xl:max-w-5/6">
         {" "}
@@ -71,10 +88,7 @@ const FullPageNFT = ({
             </h1>
             <div className="flex justify center">
               <div className="mx-auto min-w-nfte">
-                <NFTE
-                  contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7"
-                  tokenId={tokenId.toString()}
-                />
+                <NFTE contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7" tokenId={tokenId} />
               </div>
             </div>
             <div className="flex flex-col justify-center mt-2 w-full">

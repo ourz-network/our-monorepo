@@ -6,13 +6,18 @@ import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
 import { getAllOurzTokens, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient, SplitZNFT } from "@/utils/OurzSubgraph";
+import { getPostByID } from "@/modules/subgraphs/zora/functions";
+import { Ourz20210928 } from "@/utils/20210928";
+import { Media } from "@/utils/ZoraSubgraph";
 
 const NFTView = ({
   tokenId,
   recipients,
+  post,
 }: {
   tokenId: string;
   recipients: SplitRecipient[];
+  post: Media & { metadata: Ourz20210928 };
   // creator: string;
 }): JSX.Element => {
   const [loading, setLoading] = useState(true); // Global loading state
@@ -46,6 +51,7 @@ const NFTView = ({
           ownAccount
           chartData={firstSale}
           recipients={recipients || null}
+          post={post}
         />
       </div>
     </PageLayout>
@@ -89,21 +95,25 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const zoraQuery = new Zora(queryProvider, 4);
 
   const { tokenId } = context.params;
+  console.log(tokenId);
+  const post = await getPostByID(Number(tokenId));
   const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
 
   const res = await getSplitRecipients(creatorAddress);
-  if (res) {
+  if (res && post) {
+    // console.log(post);
     const recipients = res;
     return {
       props: {
         tokenId,
         recipients,
+        post,
       },
       revalidate: 45,
     };
   }
   return {
-    props: { tokenId, recipients: null },
+    props: { tokenId, recipients: null, post },
     revalidate: 45,
   };
 };

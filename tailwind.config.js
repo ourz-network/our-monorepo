@@ -41,6 +41,7 @@ module.exports = {
         "3/4": "75%",
         xxs: "10rem",
         "90vh": "90vh",
+        "75vh": "75vh",
         "50vh": "50vh",
         "500px": "500px",
       },

@@ -105,7 +105,6 @@ export interface Contributor {
    * Shares represented as a BigInt; (shares * 1,000,000)
    */
   allocation: string;
-  [k: string]: unknown;
 }
 export interface Attribute {
   /**
