@@ -36,7 +36,7 @@ import Link from 'next/link';
 
   return (
     <NFTFullPage id={tokenId}>
-      <div className="flex object-contain p-8 border-b max-h-75vh border-dark-border bg-dark-accent min-h-33vh">
+      <div className="flex object-contain justify-center p-8 border-b max-h-75vh border-dark-border bg-dark-accent min-h-33vh">
         {/* <FullComponents.MediaFull /> */}
 
         {post?.metadata?.mimeType?.includes("image") && (

@@ -93,7 +93,7 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
     return (
       <div
         key={tokenId}
-        className={`transition-shadow ${aspectRatio} landingPage-item shadow-deep cursor-hover`}
+        className={`transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep`}
       >
         <div className="flex flex-col w-full h-full cursor-pointer xl:h-full">
           <Link
@@ -125,7 +125,7 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
   if (post?.metadata?.mimeType?.includes("image")) {
     return (
       <div
-        className={`border transition-shadow ${aspectRatio} landingPage-item shadow-deep border-dark-accent cursor-hover`}
+        className={`border transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep border-dark-accent`}
       >
         <div className="flex flex-col w-full h-full xl:h-full">
           <Link
@@ -141,10 +141,11 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
                   alt={`NFT #${tokenId} Thumbnail`}
                   layout="fill"
                   objectFit="contain"
-                  quality={65}
+                  quality={60}
                   src={post.contentURI}
                   placeholder="empty"
                   className="w-full h-full"
+                  sizes="50vw"
                   onLoadingComplete={(loadedMedia) => calcAspectRatio(loadedMedia)}
                 />
               )}
@@ -155,6 +156,7 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
     );
   }
 
+  // eslint-disable-next-line no-console
   console.log("Error Displaying Post.\n", post);
   return <></>;
 };

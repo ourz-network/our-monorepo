@@ -119,7 +119,9 @@ export const getStaticProps: GetStaticProps = async () => {
    *   }
    */
 
-  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
+  const ourzSampleTokenIDs = [
+    3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
+  ];
   await Promise.all(
     ourzSampleTokenIDs.map(async (id) => {
       // Collect post
@@ -133,7 +135,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-      loadMoreStartIndex: 3688,
+      loadMoreStartIndex: 3889,
     },
     revalidate: 60,
   };
