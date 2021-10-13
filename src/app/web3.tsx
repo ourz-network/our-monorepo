@@ -83,14 +83,9 @@ function useWeb3() {
 
   // ====== Event Subscription ======
   const loadWeb3Modal = useCallback(async () => {
-    const provider: Web3Modal = await modal?.connect();
-    // await provider.enable();
+    const provider: ethers.providers.ExternalProvider = await modal?.connect();
 
-    // setInjectedProvider(new providers.Web3Provider(provider));
-
-    // if (!provider) {
-    //   return;
-    // }
+    setInjectedProvider(new ethers.providers.Web3Provider(provider));
 
     provider?.on("chainChanged", (chainId: number) => {
       // chainId: '0x1' = mainnet, '0x4' = rinkeby, etc
@@ -100,7 +95,6 @@ function useWeb3() {
       );
 
       setNetwork(network);
-
       // eslint-disable-next-line no-console
       console.log(
         `Detected Web3 Network Change...\nNow connected to ${network.name}, Chain #${network.chainId}`
@@ -108,7 +102,6 @@ function useWeb3() {
     });
 
     provider?.on("accountsChanged", (accounts: string[]) => {
-      setSigner(injectedProvider?.getSigner());
       setAddress(accounts[0]);
 
       // eslint-disable-next-line no-console
@@ -139,6 +132,11 @@ function useWeb3() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadWeb3Modal]);
+
+  useEffect(() => {
+    setSigner(injectedProvider?.getSigner());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [injectedProvider]);
 
   // ====== Sign Message Via Metamask ======
   const verifyAPIpost = async (message: string) => {
