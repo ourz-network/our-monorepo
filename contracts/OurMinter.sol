@@ -38,7 +38,16 @@ contract OurMinter is OurManagement {
 
     //======== Subgraph =========
     event ZNFTMinted(uint256 tokenId);
-    event EditionCreated(address editionAddress, uint256 editionSize);
+    event EditionCreated(
+        address editionAddress,
+        string name,
+        string symbol,
+        string description,
+        string animationUrl,
+        string imageUrl,
+        uint256 editionSize,
+        uint256 royaltyBPS
+    );
 
     /**======== IZora =========
      * @notice Various functions allowing a Split to interact with Zora Protocol
@@ -220,9 +229,18 @@ contract OurMinter is OurManagement {
 
         address editionAddress = IZora(ZORA_EDITIONS).getEditionAtId(editionId);
 
-        IZORA(editionAddress).setApprovedMinter(msg.sender, true);
+        IZora(editionAddress).setApprovedMinter(msg.sender, true);
 
-        emit EditionCreated(editionAddress, editionSize);
+        emit EditionCreated(
+            editionAddress,
+            name,
+            symbol,
+            description,
+            animationUrl,
+            imageUrl,
+            editionSize,
+            royaltyBPS
+        );
     }
 
     /** NFT-Editions
