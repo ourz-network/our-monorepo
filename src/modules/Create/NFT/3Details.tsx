@@ -31,19 +31,33 @@ const MintDetails = ({
             />
           </p>
           {mintForm.mintKind === "Edition" && (
-            <p>
-              <input
-                className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
-                type="text"
-                id="symbol"
-                name="symbol"
-                placeholder="Enter Symbol (XMPL)"
-                maxLength={4}
-                value={mintForm.metadata.symbol}
-                onChange={handleChange}
-                aria-label="symbol"
-              />
-            </p>
+            <>
+              <p>
+                <input
+                  className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                  type="text"
+                  id="symbol"
+                  name="symbol"
+                  placeholder="Enter Symbol (XMPL)"
+                  maxLength={4}
+                  value={mintForm.metadata.symbol}
+                  onChange={handleChange}
+                  aria-label="symbol"
+                />
+              </p>
+              <p>
+                <input
+                  className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                  type="number"
+                  id="symbol"
+                  name="Edition Size"
+                  placeholder="Max Supply"
+                  value={mintForm.metadata.editionSize}
+                  onChange={handleChange}
+                  aria-label="Edition Size"
+                />
+              </p>
+            </>
           )}
           <p>
             <input
