@@ -243,31 +243,37 @@ contract OurMinter is OurManagement {
         );
     }
 
+   
+
     /** NFT-Editions
-      @param minter address to set approved minting status for
-      @param allowed boolean if that address is allowed to mint
-      @dev Sets the approved minting status of the given address.
-           This requires that msg.sender is the owner of the given edition id.
-           If the ZeroAddress (address(0x0)) is set as a minter,
-           anyone will be allowed to mint.
-           This setup is similar to setApprovalForAll in the ERC721 spec.
+     * @param editionAddress the address of the Edition Contract to call
+     * @param minter address to set approved minting status for
+     * @param allowed boolean if that address is allowed to mint
+     * @dev Sets the approved minting status of the given address.
+     *      This requires that msg.sender is the owner of the given edition id.
+     *      If the ZeroAddress (address(0x0)) is set as a minter,
+     *      anyone will be allowed to mint.
+     *      This setup is similar to setApprovalForAll in the ERC721 spec.
      */
-    function setEditionMinter(address minter, bool allowed)
-        external
-        onlyOwners
-    {
-        IZora(ZORA_EDITIONS).setApprovedMinter(minter, allowed);
+    function setEditionMinter(
+        address editionAddress,
+        address minter,
+        bool allowed
+    ) external onlyOwners {
+        IZora(editionAddress).setApprovedMinter(minter, allowed);
     }
 
     /** NFT-Editions
-      @dev Allows for updates of edition urls by the owner of the edition.
-           Only URLs can be updated (data-uris are supported), hashes cannot be updated.
+     * @param editionAddress the address of the Edition Contract to call
+     * @dev Allows for updates of edition urls by the owner of the edition.
+     *      Only URLs can be updated (data-uris are supported), hashes cannot be updated.
      */
-    function setEditionURLs(string memory imageUrl, string memory animationUrl)
-        external
-        onlyOwners
-    {
-        IZora(ZORA_EDITIONS).updateEditionURLs(imageUrl, animationUrl);
+    function updateEditionURLs(
+        address editionAddress,
+        string memory imageUrl,
+        string memory animationUrl
+    ) external onlyOwners {
+        IZora(editionAddress).updateEditionURLs(imageUrl, animationUrl);
     }
 
     /** QoL
