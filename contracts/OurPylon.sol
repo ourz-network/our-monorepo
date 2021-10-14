@@ -31,6 +31,6 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
         emit ProxySetup(owners_);
 
         // Approve Zora AH
-        // setApprovalForAH();
+        // _setApprovalForAH();
     }
 }

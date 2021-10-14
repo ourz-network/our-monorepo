@@ -38,7 +38,7 @@ const NULL_BYTES = '0x0000000000000000000000000000000000000000000000000000000000
 describe('SplitProxy via Factory', () => {
   console.log(
     'NOTICE: If tests are failing...' +
-      '\n Go to OurPylon.sol and comment out setApprovalForAH().' +
+      '\n Go to OurPylon.sol and comment out _setApprovalForAH().' +
       "This repo's tests have not had Zora local tests integrated."
   )
 
@@ -461,6 +461,9 @@ describe('SplitProxy via Factory', () => {
                         allocs,
                         proofs
                       )
+
+                      // const gasUsed = (await claimERC20Tx.wait()).gasUsed
+                      // console.log(`Gas Used to Claim ERC20s: ${gasUsed}`)
                     })
 
                     it('and should complete transaction successfully', async () => {

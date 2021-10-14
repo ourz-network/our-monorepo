@@ -24,12 +24,14 @@ contract OurProxy is OurStorage {
         merkleRoot = IOurFactory(msg.sender).merkleRoot();
     }
 
+    // solhint-disable-next-line no-complex-fallback
     fallback() external payable {
-        address _impl = pylon();
+        address impl = pylon();
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             let ptr := mload(0x40)
             calldatacopy(ptr, 0, calldatasize())
-            let result := delegatecall(gas(), _impl, ptr, calldatasize(), 0, 0)
+            let result := delegatecall(gas(), impl, ptr, calldatasize(), 0, 0)
             let size := returndatasize()
             returndatacopy(ptr, 0, size)
 

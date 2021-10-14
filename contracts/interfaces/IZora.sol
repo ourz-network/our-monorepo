@@ -11,6 +11,7 @@ pragma solidity 0.8.4;
  * @dev to allow for the implementation of 'untrusted' universal functions in Minter.sol.
  * @dev They will work with Zora, with the additional benefit of working with other protocols.
  */
+/* solhint-disable private-vars-leading-underscore, ordering */
 interface IZora {
     /**
      * @title Interface for Decimal
@@ -40,12 +41,15 @@ interface IZora {
         bytes32 metadataHash;
     }
 
-    event TokenURIUpdated(uint256 indexed _tokenId, address owner, string _uri);
-    event TokenMetadataURIUpdated(
-        uint256 indexed _tokenId,
-        address owner,
-        string _uri
-    );
+    /**
+     * @dev See {IERC721Enumerable-totalSupply}.
+     */
+    function totalSupply() external returns (uint256);
+
+    /**
+     * @dev See {IERC721Enumerable-tokenByIndex}.
+     */
+    function tokenByIndex(uint256 index) external returns (uint256);
 
     // /**
     //  * @notice Return the metadata URI for a piece of media given the token URI
@@ -323,6 +327,7 @@ interface IZora {
     /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
     /// @param _editionSize Total size of the edition (number of possible editions)
     /// @param _royaltyBPS BPS amount of royalty
+
     function createEdition(
         string memory _name,
         string memory _symbol,
@@ -357,6 +362,13 @@ interface IZora {
         external
         returns (uint256);
 
+    /** 
+     Get edition given the created ID
+    @param editionId id of edition to get contract for
+     @return address of SingleEditionMintable Edition NFT contract
+    */
+    function getEditionAtId(uint256 editionId) external view returns (address);
+
     /**
       @param minter address to set approved minting status for
       @param allowed boolean if that address is allowed to mint
@@ -377,3 +389,4 @@ interface IZora {
         string memory _animationUrl
     ) external;
 }
+/* solhint-enable private-vars-leading-underscore, ordering */
