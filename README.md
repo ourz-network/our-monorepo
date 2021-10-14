@@ -6,18 +6,24 @@
 
 ## **Do not consider them safe for mainnet yet.**
 
+Create a .env.json with your Etherscan & Alchemy API Keys, as well as a private key for an EOA with rinkeby ETH. (Metamask -> ... -> Account Details -> Export Private Key.)
 <br/>
-`npm i`
+`yarn install`
 <br/>
-`npm run test`
+`yarn tsc`
 <br/>
+`yarn test`
+<br/>
+
+
+
 https://discord.gg/GmmaBszDTK is the discord if you need help
 ---
 
 # our-contracts
 
 Basically a SplitProxy can be the Creator of an NFT now. And receive royalties.
-Or be a Curator, and approve Auction House proposals. Or start a crowdfund or PartyDAO.
+Or be a Curator, and approve Auction House proposals. Or start a crowdfund.
 Or whatever else you can think of, it just needs to be implemented in OurMinter.
 
 <br/>
