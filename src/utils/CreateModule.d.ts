@@ -11,21 +11,22 @@ export interface FormSplitRecipient {
 
 export interface ZNFTEdition {
   name: string;
-  symbol: string;
+  symbol?: string;
   description: string;
   animationUrl?: string;
   animationHash: BytesLike;
   imageUrl?: string;
   imageHash: BytesLike;
-  editionSize: BigNumberish;
-  royaltyBPS: BigNumberish;
+  editionSize: number;
+  royaltyBPS: number;
+  salePrice: number;
+  publicMint: bool;
 }
 
 export interface MintForm {
   mintKind: "1/1" | "1/1 Auction" | "Edition";
   media: {
     file: File | null;
-    mimeType: string;
     preview: string | URL;
     blob: string | ArrayBuffer | null;
   };

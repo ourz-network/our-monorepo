@@ -1,14 +1,19 @@
 import { NFTE } from "@nfte/react";
 import { FullComponents, NFTFullPage } from "@zoralabs/nft-components";
+import Image from "next/image";
+import Link from "next/link";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
+import { Ourz20210928 } from "@/utils/20210928";
+import { Media } from "@/utils/ZoraSubgraph";
 
 const FullPageNFT = ({
   tokenId,
   ownAccount,
   chartData,
   recipients,
+  post,
 }: {
   tokenId: string;
   ownAccount: boolean;
@@ -17,60 +22,54 @@ const FullPageNFT = ({
     shares: number;
   }[];
   recipients: SplitRecipient[];
+  post: Media & { metadata: Ourz20210928 };
 }): JSX.Element => {
-  // const [loading, setLoading] = useState(true);
-
-  /*
-   * useEffect(() => {
-   *   async function getSplitMetadata(tokenId) {
-   *     const metadataURI = await zoraQuery.fetchMetadataURI(tokenId);
-   *     const res = await axios.get(metadataURI);
-   *     const metadata = await res.data;
-   *     if (metadata?.attributes) {
-   *       const newChartData = metadata.attributes.flatMap((split) => ({
-   *         name: `${split.name}`,
-   *         shares: Number(split.shares),
-   *         address: `${split.address}`,
-   *         role: `${split.role}`,
-   *       }));
-   *       setChartData(newChartData);
-   *     }
-   */
-
-  /*
-   *   }
-   *   if (tokenId) {
-   *     getSplitMetadata(tokenId);
-   *     setLoading(false);
-   *   }
-   * }, []);
-   */
-
-  // let chartData;
-
   const jsCodeSnippet = `<div className='nft-embed'></div>
   <script
         async
         src='https://nfte.app/api/embed.js?contract=0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7&tokenId=${tokenId}'>
   </script>`; // mainnet REPLACE
   const reactCodeSnippet = `import { NFTE } from '@nfte/react';
+import Link from 'next/link';
         
   <NFTE contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7" tokenId="${tokenId}"/>`;
 
   return (
-    <NFTFullPage id={tokenId.toString()}>
-      <div className="object-contain py-1 border-b border-dark-border bg-dark-accent min-h-33vh">
-        <FullComponents.MediaFull />
+    <NFTFullPage id={tokenId}>
+      <div className="flex object-contain justify-center p-8 border-b max-h-75vh border-dark-border bg-dark-accent min-h-33vh">
+        {/* <FullComponents.MediaFull /> */}
+
+        {post?.metadata?.mimeType?.includes("image") && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            alt={`NFT #${post.id} Thumbnail`}
+            src={post.contentURI}
+            className="object-contain max-w-full max-h-full cont"
+          />
+        )}
+        {post?.metadata?.mimeType?.includes("video") && (
+          <video muted autoPlay controls={false} loop playsInline>
+            <source src={post.contentURI} />
+          </video>
+        )}
       </div>
       <div className="p-6 mx-auto mb-16 max-w-11/12 xl:max-w-5/6">
         {" "}
         {/* border-b border-l border-r shadow-xl */}
         <div className="flex flex-col content-center mb-6 w-full xl:flex-row">
           <div className="flex flex-col xl:w-7/12">
-            <FullComponents.MediaInfo />
-            <FullComponents.AuctionInfo />
-            <div className="self-end my-2">
-              <FullComponents.PlaceOfferButton />
+            {/* <FullComponents.MediaInfo /> */}
+            <div className="flex flex-col justify-between md:flex-row">
+              {post?.metadata && (
+                <div className="flex flex-col justify-between h-full">
+                  <p className="text-2xl text-dark-primary">{`${post.metadata.name}`}</p>
+                  <p className="whitespace-pre-wrap break-words text-dark-primary">{`${post.metadata.description}`}</p>
+                </div>
+              )}
+              <FullComponents.AuctionInfo />
+              <div className="self-end my-2">
+                <FullComponents.PlaceOfferButton />
+              </div>
             </div>
             <FullComponents.BidHistory />
             <div className="my-2">
@@ -101,10 +100,7 @@ const FullPageNFT = ({
             </h1>
             <div className="flex justify center">
               <div className="mx-auto min-w-nfte">
-                <NFTE
-                  contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7"
-                  tokenId={tokenId.toString()}
-                />
+                <NFTE contract="0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7" tokenId={tokenId} />
               </div>
             </div>
             <div className="flex flex-col justify-center mt-2 w-full">

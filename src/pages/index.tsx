@@ -10,7 +10,7 @@ const Home = ({
   postsToSet,
   loadMoreStartIndex,
 }: {
-  postsToSet: Media[];
+  postsToSet: Media & { metadata: Ourz20210928 }[];
   loadMoreStartIndex: number;
 }): JSX.Element => {
   const [posts, setPosts] = useState(postsToSet); // Posts array
@@ -60,7 +60,7 @@ const Home = ({
                 {posts.map((post) => (
                   // For each Zora post, Return Post component
                   // eslint-disable-next-line react/jsx-key
-                  <HomeNFT tokenId={post.id} />
+                  <HomeNFT key={post.id} post={post} />
                 ))}
               </div>
             </div>
@@ -119,7 +119,9 @@ export const getStaticProps: GetStaticProps = async () => {
    *   }
    */
 
-  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
+  const ourzSampleTokenIDs = [
+    3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
+  ];
   await Promise.all(
     ourzSampleTokenIDs.map(async (id) => {
       // Collect post
@@ -132,8 +134,8 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      postsToSet: JSON.parse(JSON.stringify(postsToSet)) as Media[],
-      loadMoreStartIndex: 3688,
+      postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+      loadMoreStartIndex: 3889,
     },
     revalidate: 60,
   };

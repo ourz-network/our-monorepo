@@ -21,9 +21,7 @@ const Sidebar = ({ split, showFull }: { split: OurProxy; showFull: boolean }): J
               {split.nickname}
               {/* {split?.role && `Your role: ${role as string}`} */}
             </div>
-            <div id="recipients" className="mx-2 w-preview">
-              <Table recipients={recipientInfo} />
-            </div>
+            <Table recipients={recipientInfo} />
             <div id="details">
               {ethers.utils.formatEther(split.ETH.toString() || 0)} ETH unclaimed in Split
               <div id="owners" className="my-2">

@@ -4,12 +4,16 @@ import { MintForm } from "@/utils/CreateModule";
 const MintDetails = ({
   mintForm,
   handleChange,
+  setBidShare,
+  setPublicMint,
   thumbs,
   next,
   back,
 }: {
   mintForm: MintForm;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setBidShare: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setPublicMint: (event: React.ChangeEvent<HTMLInputElement>) => void;
   thumbs: JSX.Element[];
   next: () => void;
   back: () => void;
@@ -31,19 +35,61 @@ const MintDetails = ({
             />
           </p>
           {mintForm.mintKind === "Edition" && (
-            <p>
-              <input
-                className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
-                type="text"
-                id="symbol"
-                name="symbol"
-                placeholder="Enter Symbol (XMPL)"
-                maxLength={4}
-                value={mintForm.metadata.symbol}
-                onChange={handleChange}
-                aria-label="symbol"
-              />
-            </p>
+            <>
+              <p>
+                <input
+                  className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                  type="text"
+                  id="symbol"
+                  name="symbol"
+                  placeholder="Enter Symbol (XMPL)"
+                  maxLength={4}
+                  value={mintForm.metadata.symbol}
+                  onChange={handleChange}
+                  aria-label="symbol"
+                />
+              </p>
+              <p>
+                <input
+                  className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                  type="number"
+                  id="edition size"
+                  name="Edition Size"
+                  placeholder="Max Supply"
+                  value={mintForm.metadata.editionSize}
+                  onChange={handleChange}
+                  aria-label="Edition Size"
+                />
+              </p>
+              <p>
+                <input
+                  className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                  type="number"
+                  id="symbol"
+                  name="Sale Price"
+                  placeholder="Price in ETH, ex: 0.1"
+                  value={mintForm.metadata.salePrice}
+                  onChange={handleChange}
+                  aria-label="Sale Price"
+                />
+                If price is 0, minting will be paused.
+              </p>
+              <p>
+                <input
+                  className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                  type="checkbox"
+                  id="Allow Public Mint"
+                  name="Public Mint"
+                  placeholder="Max Supply"
+                  value={mintForm.metadata.publicMint}
+                  onChange={setPublicMint}
+                  aria-label="Allow Public Mint"
+                />
+                Check this box if you want anyone to be able to mint.
+                <br />
+                Uncheck if you&apos;d like to use a whitelist.
+              </p>
+            </>
           )}
           <p>
             <input
@@ -58,23 +104,24 @@ const MintDetails = ({
             />
           </p>
           <div className="text-center">
-            <label className="hidden" htmlFor="creatorBidShare">
-              Royalty Percentage
-              <div className="flex mx-auto mt-2 w-min">
+            <div className="flex visible flex-col mx-auto mt-2 w-min">
+              Creator Royalty:
+              <div className="flex">
                 <input
                   className="w-14 outline-none bg-dark-background focus:outline-none focus:border-transparent"
                   type="number"
-                  placeholder="%"
+                  placeholder="10"
                   id="creatorBidShare"
                   name="creatorBidShare"
-                  value={mintForm.creatorBidShare}
-                  onChange={handleChange}
+                  defaultValue={mintForm.creatorBidShare}
+                  onChange={setBidShare}
+                  aria-label="roaylty percentage"
                 />
                 <span className="inline-flex items-center px-3 text-sm border text-dark-secondary border-dark-border md bg-dark-background">
                   %
                 </span>
               </div>
-            </label>
+            </div>
           </div>
         </div>
         <div className="flex flex-row justify-between py-2 mx-12">

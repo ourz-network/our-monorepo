@@ -45,7 +45,6 @@ const NewMintMultistepForm = ({
     mintKind: "1/1",
     media: {
       file: null,
-      mimeType: "",
       preview: "",
       blob: "",
     },
@@ -55,9 +54,6 @@ const NewMintMultistepForm = ({
       split_recipients: splitRecipients,
       version: "Ourz20210928",
       mimeType: "",
-      symbol: "",
-      animation_url: "",
-      editionSize: 0,
     },
     creatorBidShare: 10,
     auctionInfo: {
@@ -118,6 +114,23 @@ const NewMintMultistepForm = ({
     }));
   };
 
+  const setBidShare = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      creatorBidShare: event.target.value,
+    }));
+  };
+
+  const setPublicMint = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      metadata: {
+        ...prevState.metadata,
+        publicMint: event.target.checked,
+      },
+    }));
+  };
+
   const handleMetadataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -165,7 +178,18 @@ const NewMintMultistepForm = ({
       network?.chainId === 4 &&
       mintForm.mintKind === "Edition"
     ) {
-      await createZoraEdition({ signer, networkId: network.chainId, proxyAddress, mintForm });
+      const editionAddress = await createZoraEdition({
+        signer,
+        networkId: network.chainId,
+        proxyAddress,
+        mintForm,
+      });
+      if (editionAddress) {
+        Router.push(`/nft/edition/${editionAddress}`).then(
+          () => {},
+          () => {}
+        );
+      }
       /*
        * minting as connected web3Wallet
        * const tokenId = await mintNFTSolo(mintForm); // received as 'media';
@@ -194,8 +218,11 @@ const NewMintMultistepForm = ({
       media: {
         ...prevState.media,
         file: files[0],
-        mimeType: files[0].type,
         preview: files[0].preview,
+      },
+      metadata: {
+        ...prevState.metadata,
+        mimeType: files[0].type,
       },
     }));
   };
@@ -292,6 +319,8 @@ const NewMintMultistepForm = ({
           <MintDetails
             mintForm={mintForm}
             handleChange={handleMetadataChange}
+            setBidShare={setBidShare}
+            setPublicMint={setPublicMint}
             thumbs={thumbs}
             next={next}
             back={back}

@@ -75,8 +75,8 @@ const Navbar = (): JSX.Element => {
                     />
                   </div> */}
                   <Link href="/" passHref>
-                    <a className="flex mb-3 text-xl font-medium tracking-widest text-dark-primary md:mb-0 lg:pl-12 md:pr-12 hover:text-ourange-500 hover:animate-pulse">
-                      <p className="">
+                    <a className="flex mb-3md:mb-0 lg:pl-12 md:pr-12">
+                      <p className="text-3xl font-bold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
                         {/* "text-2xl font-bold leading-3 tracking-widest uppercase" */}
                         OURZ
                       </p>

@@ -5,7 +5,7 @@ const Table = ({ recipients }: { recipients: SplitRecipient[] }): JSX.Element =>
   <>
     <div className="p-2 mb-2 border border-dark-border">
       <div className="text-xl text-center text-dark-primary">{`${recipients?.length} Split Recipients`}</div>
-      <table className="flex-col mt-2 w-auto table-fixed">
+      <table className="flex-col mx-auto mt-2 w-auto table-fixed">
         <thead>
           <tr>
             <th className="w-4/12 font-normal text-center border text-dark-primary border-dark-border">
@@ -21,7 +21,7 @@ const Table = ({ recipients }: { recipients: SplitRecipient[] }): JSX.Element =>
         </thead>
         <tbody>
           {recipients?.map((split, i) => (
-            <tr key={split.id} className={i % 2 === 0 ? `bg-dark-background` : ``}>
+            <tr key={`${split.user.id}`} className={i % 2 === 0 ? `bg-dark-background` : ``}>
               {/* <td className="w-3/12 text-center overflow-ellipsis border text-dark-primary border-dark-border hover:underline">
                 <Link href={`/profile/${split.user.id}`} className="cursor-pointer">
                   {toTrimmedAddress(split.user.id)}

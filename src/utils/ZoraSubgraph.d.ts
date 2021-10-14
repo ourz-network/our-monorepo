@@ -2,7 +2,7 @@ import BytesLike from "ethers";
 
 export type Media = {
   // "The tokenId on the Zora Media Contract"
-  id?: string;
+  id: string;
 
   // "The transaction hash the media was created at"
   transactionHash?: string;

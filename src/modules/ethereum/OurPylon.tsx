@@ -156,7 +156,7 @@ export const newProxy = async ({
     );
 
     // wait for transaction confirmation
-    const proxyReceipt = await proxyTx.wait(2);
+    const proxyReceipt = await proxyTx.wait();
     if (proxyReceipt) {
       return proxyAddress;
     }
@@ -173,16 +173,6 @@ export const createCryptomedia = async (
     | MediaData;
   bidShares?: BidShares;
 }> => {
-  // Generate metadataJSON
-  const metadataJSON = JSON.stringify(mintForm.metadata); // unordered
-  // const metadata = {
-  //   version: "zora-20210101",
-  //   name: mintForm.title,
-  //   description: mintForm.description,
-  //   mimeType: mintForm.mediaKind,
-  // };
-  // const metadataJSON = generateMetadata(metadata.version, metadata)
-
   // Upload files to nft.storage
   const endpoint = "https://api.nft.storage" as unknown as URL; // the default
   const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY}`;
@@ -190,11 +180,9 @@ export const createCryptomedia = async (
 
   // Collect mediaCID and metadataCID from nft.storage
   const mediaCID = await storage.storeBlob(mintForm.media.blob as unknown as Blob);
-  const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);
 
   // Save fileUrl and metadataUrl
-  const mediaUrl = `https://${mediaCID}.ipfs.dweb.link`;
-  const metadataUrl = `https://${metadataCID}.ipfs.dweb.link`;
+  const mediaUrl = `https://ipfs.io/ipfs/${mediaCID}`;
 
   // arweave??
   // if (mintForm.mediaKind.includes("image")) {
@@ -205,9 +193,44 @@ export const createCryptomedia = async (
 
   // Generate content hashes
   const contentHash = sha256FromBuffer(Buffer.from(mintForm.media.blob as ArrayBuffer));
-  const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
 
   if (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction") {
+    // Generate metadataJSON
+    // const metadata = {
+    //   name: mintForm.metadata.name,
+    //   description: mintForm.metadata.description,
+    //   split_recipients: mintForm.metadata.split_recipients.map((recipient: SplitRecipient) => ({
+    //     account: recipient?.user.id,
+    //     name: recipient?.name,
+    //     role: recipient?.role,
+    //     shares: recipient?.shares,
+    //     allocation: recipient?.allocation,
+    //   })),
+    //   version: mintForm.metadata.version || "Ourz20210928",
+    //   mimeType: mintForm.metadata.mimeType,
+    // };
+
+    const metadata = {
+      name: mintForm.metadata.name,
+      description: mintForm.metadata.description,
+      mimeType: mintForm.metadata.mimeType,
+      external_url: `www.ourz.network`,
+      version: "zora-20210604",
+      attributes: mintForm.metadata.split_recipients.map((recipient: SplitRecipient) => ({
+        account: recipient?.user.id,
+        name: recipient?.name,
+        role: recipient?.role,
+        shares: recipient?.shares,
+        allocation: recipient?.allocation,
+      })),
+    };
+    const metadataJSON = JSON.stringify(metadata); // unordered
+
+    // Upload files to nft.storage
+    const metadataCID = await storage.storeBlob(metadataJSON as unknown as Blob);
+    const metadataUrl = `https://ipfs.io/ipfs/${metadataCID}`;
+    const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
+
     // Construct mediaData object
     const cryptomedia = constructMediaData(mediaUrl, metadataUrl, contentHash, metadataHash);
 
@@ -223,32 +246,31 @@ export const createCryptomedia = async (
 
     return { cryptomedia, bidShares };
   }
-  const { mimeType } = mintForm.media;
+  const { mimeType } = mintForm.metadata;
 
-  // still image
-  if (
-    mimeType.includes(".jpg") ||
-    mimeType.includes(".jpeg") ||
-    mimeType.includes(".jfif") ||
-    mimeType.includes(".pjpeg") ||
-    mimeType.includes(".pjp")
-  ) {
-    const cryptomedia = {
-      // animationUrl: metadataUrl,
-      // animationHash: metadataHash,
-      animationUrl: " ",
-      animationHash: zeroAddress,
-      imageUrl: mediaUrl,
-      imageHash: contentHash,
-    };
-    return { cryptomedia };
-
-    // animated image
-  }
+  // // still image
+  // if (
+  //   mimeType.includes(".jpg") ||
+  //   mimeType.includes(".jpeg") ||
+  //   mimeType.includes(".jfif") ||
+  //   mimeType.includes(".pjpeg") ||
+  //   mimeType.includes(".pjp")
+  // ) {
+  //   const cryptomedia = {
+  //     // animationUrl: metadataUrl,
+  //     // animationHash: metadataHash,
+  //     animationUrl: " ",
+  //     animationHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
+  //     imageUrl: mediaUrl,
+  //     imageHash: contentHash,
+  //   };
+  //   return { cryptomedia };
+  // }
+  // image
   if (mimeType.startsWith("image")) {
     const cryptomedia = {
-      animationUrl: mediaUrl,
-      animationHash: contentHash,
+      animationUrl: " ",
+      animationHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
       imageUrl: mediaUrl,
       imageHash: contentHash,
       // imageUrl: metadataUrl,
@@ -256,16 +278,19 @@ export const createCryptomedia = async (
     };
     return { cryptomedia };
   }
-  const cryptomedia = {
-    animationUrl: mediaUrl,
-    animationHash: contentHash,
-    imageUrl: " ",
-    imageHash: zeroAddress,
-    // imageUrl: metadataUrl,
-    // imageHash: metadataHash,
-  };
-
-  return { cryptomedia };
+  // video
+  if (mimeType.startsWith("video")) {
+    const cryptomedia = {
+      animationUrl: mediaUrl,
+      animationHash: contentHash,
+      imageUrl: " ",
+      imageHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
+      // imageUrl: metadataUrl,
+      // imageHash: metadataHash,
+    };
+    return { cryptomedia };
+  }
+  return null;
 };
 
 export const mintZora = async ({
@@ -290,7 +315,7 @@ export const mintZora = async ({
 
       const mintTx = await zora.mint(cryptomedia as MediaData, bidShares); // Make transaction
 
-      const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+      const mintReceipt = await mintTx.wait(); // Wait for Tx to process
 
       if (mintReceipt.events) {
         return parseInt(mintReceipt.events[0].topics[3], 16);
@@ -299,9 +324,9 @@ export const mintZora = async ({
       const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer }); // minting for a Split Proxy
 
       if (mintForm.mintKind === "1/1") {
-        const mintTx = await PROXY_WRITE.mintZora(cryptomedia, bidShares); // Make transaction
+        const mintTx = await PROXY_WRITE.mintZNFT(cryptomedia, bidShares); // Make transaction
 
-        const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+        const mintReceipt = await mintTx.wait(); // Wait for Tx to process
 
         if (mintReceipt.events) {
           return parseInt(mintReceipt.events[0].topics[3], 16);
@@ -318,7 +343,7 @@ export const mintZora = async ({
           ReservePrice
         ); // Make transaction
 
-        const mintReceipt = await mintTx.wait(2); // Wait for Tx to process
+        const mintReceipt = await mintTx.wait(); // Wait for Tx to process
 
         if (mintReceipt.events) {
           return parseInt(mintReceipt.events[0].topics[3], 16);
@@ -350,6 +375,9 @@ export const createZoraEdition = async ({
     cryptomedia: Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">;
   } = await createCryptomedia(mintForm);
   const metadata = mintForm.metadata as ZNFTEdition;
+  const royalty = Number((Number(mintForm.creatorBidShare) * 100).toFixed(4));
+  const BPS = BigNumber.from(royalty);
+  const salePrice = ethers.utils.parseUnits(metadata?.salePrice?.toString() || "0", "ether");
 
   if (proxyAddress && !soloAddress) {
     const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
@@ -358,17 +386,19 @@ export const createZoraEdition = async ({
       metadata.name,
       metadata.symbol,
       metadata.description,
-      cryptomedia.animationUrl ? cryptomedia.animationUrl : "x",
+      cryptomedia.animationUrl,
       cryptomedia.animationHash,
-      cryptomedia.imageUrl ? cryptomedia.imageUrl : "x",
+      cryptomedia.imageUrl,
       cryptomedia.imageHash,
-      metadata.editionSize,
-      mintForm.creatorBidShare * 100
+      metadata.editionSize || 0,
+      BPS,
+      salePrice,
+      metadata.publicMint
     );
-    const mintReceipt = await mintTx.wait(2);
+
+    const mintReceipt = await mintTx.wait();
     if (mintReceipt) {
-      console.log(mintReceipt);
-      return "a";
+      return mintReceipt.events[metadata.salePrice > 0 ? 4 : 3].args[0];
     }
   } else {
     const zora = initializeZoraEditionsWSigner({ signer });
@@ -381,12 +411,13 @@ export const createZoraEdition = async ({
       cryptomedia.imageUrl,
       cryptomedia.imageHash,
       metadata.editionSize,
-      mintForm.creatorBidShare * 100
+      BPS,
+      salePrice || 0,
+      metadata.publicMint || false
     );
-    const mintReceipt = await mintTx.wait(2);
+    const mintReceipt = await mintTx.wait();
     if (mintReceipt) {
-      console.log(mintReceipt);
-      return "a";
+      return mintReceipt.events[metadata.salePrice > 0 ? 4 : 3].args[0];
     }
   }
 };
@@ -430,7 +461,7 @@ export const createZoraAuction = async ({
   );
 
   // Wait for Tx to process
-  const auctionReceipt = await auctionTx.wait(2);
+  const auctionReceipt = await auctionTx.wait();
 
   if (auctionReceipt) {
     const auctionId = parseInt(auctionReceipt.events[3].topics[1], 16);
@@ -480,12 +511,12 @@ export const claimFunds = async ({
 
   if (needsIncremented) {
     const claimTx = await PROXY_WRITE.incrementThenClaimAll(account, allocation, proof);
-    const claimReceipt = await claimTx.wait(2);
+    const claimReceipt = await claimTx.wait();
 
     if (claimReceipt) return true;
   } else {
     const claimTx = await PROXY_WRITE.claimETHForAllWindows(account, allocation, proof);
-    const claimReceipt = await claimTx.wait(2);
+    const claimReceipt = await claimTx.wait();
 
     if (claimReceipt) return true;
   }

@@ -6,6 +6,12 @@ module.exports = {
       center: true,
     },
     extend: {
+      fontFamily: {
+        "hero": ["'Playfair Display'", "serif"],
+      },
+      letterSpacing: {
+        '2-wide': '0.2em'
+      },
       backgroundImage: (theme) => ({
         zorb: "url('public/ourZorb.png')",
       }),
@@ -41,6 +47,7 @@ module.exports = {
         "3/4": "75%",
         xxs: "10rem",
         "90vh": "90vh",
+        "75vh": "75vh",
         "50vh": "50vh",
         "500px": "500px",
       },
@@ -84,7 +91,7 @@ module.exports = {
         "ourange-150": "#FFA083",
         "ourange-300": "#FF7246",
         "ourange-400": "#FF531D",
-        "ourange-500": "#F33A00",
+        "ourange-500": "#F76009",
         "ourange-600": "#C52F00",
         "ourange-700": "#972400",
         "ourange-800": "#691900",
