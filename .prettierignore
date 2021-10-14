@@ -36,3 +36,5 @@ config.env
 
 # vercel
 .vercel
+
+tailwind.config.js
