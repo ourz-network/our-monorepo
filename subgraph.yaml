@@ -8,9 +8,9 @@ dataSources:
     name: OurFactory
     network: rinkeby
     source:
-      address: "0x8dd346f865E3fAf5aaAcF8f7A4A10e03cB74B5b2"
+      address: "0x9fb2a80001587943BbA4924a1829092977484eB5"
       abi: OurFactory
-      startBlock: 9290000
+      startBlock: 9460800 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -43,6 +43,7 @@ templates:
         - name: OurProxy
           file: ./abis/OurProxy.json
       eventHandlers:
+       # OurManagement.sol
         - event: ProxySetup(address[])
           handler: handleProxySetup
         - event: AddedOwner(address)
@@ -51,6 +52,12 @@ templates:
           handler: handleRemovedOwner
         - event: NameChanged(string)
           handler: handleNameChanged
+        # OurMinter.sol
+        - event: ZNFTMinted(uint256)
+          handler: handleZNFTMinted
+        - event: EditionCreated(address,string,string,string,string,string,uint256,uint256)
+          handler: handleEditionCreated
+        # OurSplitter.sol
         - event: ETHReceived(indexed address,uint256)
           handler: handleETHReceived
         - event: WindowIncremented(uint256,uint256)
@@ -59,13 +66,6 @@ templates:
           handler: handleTransferETH
         - event: TransferERC20(address,uint256)
           handler: handleTransferERC20
-        - event: ERC721Received(address,address,uint256)
-          handler: handleERC721Received
-        - event: ERC1155Received(address,address,uint256,uint256)
-          handler: handleERC1155Received
-        - event: Batch1155Received(address,address,uint256[],uint256[])
-          handler: handleBatch1155Received
+        # OurIntrospector.sol (currently unused)
         - event: ERC777Received(address,address,address,uint256)
           handler: handleERC777Received
-        - event: EditionMinted(uint256,uint256)
-          handler: handleEditionMinted

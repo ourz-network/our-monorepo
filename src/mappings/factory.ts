@@ -1,8 +1,8 @@
-import { BigInt, ByteArray, Bytes, Address, log, json, JSONValue, JSONValueKind, Value } from "@graphprotocol/graph-ts";
+import { BigInt, Address, log } from "@graphprotocol/graph-ts";
 import { ProxyCreated } from "../../generated/OurFactory/OurFactory";
 import { OurPylon } from "../../generated/templates";
 import { OurProxy, SplitRecipient } from "../../generated/schema";
-import { findOrCreateUser, jsonToString, jsonToBigInt, jsonToArrayString } from "./helpers";
+import { findOrCreateUser } from "./helpers";
 import { JSON } from "assemblyscript-json";
 
 /**
@@ -13,14 +13,15 @@ import { JSON } from "assemblyscript-json";
  */
 export function handleProxyCreated(event: ProxyCreated): void {
   log.info("Handling Event: ProxyCreated...", []);
+  // initialize OurProxy instance from Data Source Template
   OurPylon.create(event.params.ourProxy);
 
-  let proxyAddress = event.params.ourProxy.toHexString();
-  let creatorAddress = event.params.proxyCreator.toHexString();
-  let creator = findOrCreateUser(creatorAddress);
+  // let creatorAddress = event.params.proxyCreator.toHexString();
+  // let proxyAddress = event.params.ourProxy.toHexString();
+  let creator = findOrCreateUser(event.params.proxyCreator.toHexString());
   let nickname = event.params.nickname;
 
-  let ourProxy = new OurProxy(proxyAddress);
+  let ourProxy = new OurProxy(event.params.ourProxy.toHexString());
   ourProxy.nickname = nickname;
   ourProxy.transactionHash = event.transaction.hash.toHexString();
   ourProxy.createdAtTimestamp = event.block.timestamp;
@@ -78,7 +79,7 @@ export function handleProxyCreated(event: ProxyCreated): void {
           let user = findOrCreateUser(addressHex);
 
           // "0xContract-0xEOA"
-          let recipientId = proxyAddress + "-" + addressHex;
+          let recipientId = ourProxy.id + "-" + addressHex;
 
           let recipient = new SplitRecipient(recipientId);
           recipient.user = user.id;
@@ -112,14 +113,10 @@ export function handleProxyCreated(event: ProxyCreated): void {
             } else recipient.allocation = "0";
           }
 
-          log.debug("Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}", [
-            `${i}`,
-            address,
-            name,
-            role,
-            shares,
-            allocation,
-          ]);
+          log.debug(
+            "Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}",
+            [`${i}`, address, name, role, shares, allocation]
+          );
 
           recipient.claimableETH = BigInt.fromI32(0);
           recipient.ethClaimed = BigInt.fromI32(0);
@@ -135,7 +132,7 @@ export function handleProxyCreated(event: ProxyCreated): void {
   ourProxy.splitRecipients = recipients;
   ourProxy.save();
   log.info("Created succesfully! Subgraph now monitoring contract at {}; created by {}.", [
-    proxyAddress,
-    creatorAddress,
+    ourProxy.id,
+    creator.id,
   ]);
 }

@@ -1,5 +1,5 @@
 type SplitZNFT @entity {
-  "The tokenId of the ERC-721"
+  "The tokenId of the Zora Media ERC-721"
   id: ID!
 
   "The creator of the ERC-721"
@@ -7,6 +7,38 @@ type SplitZNFT @entity {
 
   "The transaction hash the ERC-721 was originally logged in this subgraph"
   transactionHash: String!
+}
+
+type SplitEdition @entity {
+  "The address of the Zora NFT-Editions contract"
+  id: ID!
+
+  "The creator of the Edition Contract"
+  creator: OurProxy!
+
+  "The title of the Edition contract"
+  name: String!
+
+  "Symbol of the Edition contract"
+  symbol: String!
+
+  "Metadata: Description of the Edition entry"
+  description: String!
+
+  "Metadata: Animation url (optional) of the Edition entry"
+  animationUrl: String!
+
+  "Metadata: Image url (semi-required) of the Edition entry"
+  imageUrl: String!
+
+  "Total size of the Edition (number of possible editions)"
+  editionSize: BigInt!
+
+  # "Number of remaining possible mints"
+  # remainingMints: BigInt!
+
+  "BPS amount of royalty"
+  royaltyBPS: BigInt!
 }
 
 type ERC20Transfer @entity {
@@ -31,7 +63,7 @@ type OurProxy @entity {
   id: ID!
 
   "A nickname for the Proxy"
-  nickname: String
+  nickname: String!
 
   "The transaction hash the Proxy was created at"
   transactionHash: String!
@@ -62,6 +94,9 @@ type OurProxy @entity {
 
   "The ERC721(s) the Proxy created"
   creations: [SplitZNFT!]! @derivedFrom(field: "creator")
+
+  "The Zora NFT-Edition(s) the Proxy created"
+  editions: [SplitEdition!]! @derivedFrom(field: "creator")
 
   "The ERC20 Transfers that the Proxy has successfully distributed"
   ERC20Transfers: [ERC20Transfer!]! @derivedFrom(field: "splitProxy")

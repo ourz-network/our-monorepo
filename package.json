@@ -19,8 +19,8 @@
     "assemblyscript-json": "^1.1.0"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.22.2",
-    "@types/react": "^17.0.26",
+    "@graphprotocol/graph-cli": "^0.22.3",
+    "@types/react": "^17.0.29",
     "husky": "^7.0.2",
     "mustache": "^4.2.0",
     "prettier": "^2.4.1"

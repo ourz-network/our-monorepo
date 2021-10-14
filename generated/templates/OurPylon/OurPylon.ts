@@ -28,92 +28,6 @@ export class AddedOwner__Params {
   }
 }
 
-export class Batch1155Received extends ethereum.Event {
-  get params(): Batch1155Received__Params {
-    return new Batch1155Received__Params(this);
-  }
-}
-
-export class Batch1155Received__Params {
-  _event: Batch1155Received;
-
-  constructor(event: Batch1155Received) {
-    this._event = event;
-  }
-
-  get operator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get from(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get ids(): Array<BigInt> {
-    return this._event.parameters[2].value.toBigIntArray();
-  }
-
-  get values(): Array<BigInt> {
-    return this._event.parameters[3].value.toBigIntArray();
-  }
-}
-
-export class ERC1155Received extends ethereum.Event {
-  get params(): ERC1155Received__Params {
-    return new ERC1155Received__Params(this);
-  }
-}
-
-export class ERC1155Received__Params {
-  _event: ERC1155Received;
-
-  constructor(event: ERC1155Received) {
-    this._event = event;
-  }
-
-  get operator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get from(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get id(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get value(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class ERC721Received extends ethereum.Event {
-  get params(): ERC721Received__Params {
-    return new ERC721Received__Params(this);
-  }
-}
-
-export class ERC721Received__Params {
-  _event: ERC721Received;
-
-  constructor(event: ERC721Received) {
-    this._event = event;
-  }
-
-  get operator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get from(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tokenId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
 export class ERC777Received extends ethereum.Event {
   get params(): ERC777Received__Params {
     return new ERC777Received__Params(this);
@@ -166,25 +80,49 @@ export class ETHReceived__Params {
   }
 }
 
-export class EditionMinted extends ethereum.Event {
-  get params(): EditionMinted__Params {
-    return new EditionMinted__Params(this);
+export class EditionCreated extends ethereum.Event {
+  get params(): EditionCreated__Params {
+    return new EditionCreated__Params(this);
   }
 }
 
-export class EditionMinted__Params {
-  _event: EditionMinted;
+export class EditionCreated__Params {
+  _event: EditionCreated;
 
-  constructor(event: EditionMinted) {
+  constructor(event: EditionCreated) {
     this._event = event;
   }
 
-  get editionId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get editionAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get name(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get symbol(): string {
+    return this._event.parameters[2].value.toString();
+  }
+
+  get description(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
+  get animationUrl(): string {
+    return this._event.parameters[4].value.toString();
+  }
+
+  get imageUrl(): string {
+    return this._event.parameters[5].value.toString();
   }
 
   get editionSize(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get royaltyBPS(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
   }
 }
 
@@ -312,9 +250,50 @@ export class WindowIncremented__Params {
   }
 }
 
+export class ZNFTMinted extends ethereum.Event {
+  get params(): ZNFTMinted__Params {
+    return new ZNFTMinted__Params(this);
+  }
+}
+
+export class ZNFTMinted__Params {
+  _event: ZNFTMinted;
+
+  constructor(event: ZNFTMinted) {
+    this._event = event;
+  }
+
+  get tokenId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
 export class OurPylon extends ethereum.SmartContract {
   static bind(address: Address): OurPylon {
     return new OurPylon("OurPylon", address);
+  }
+
+  MIRROR_CROWDFUND(): Address {
+    let result = super.call(
+      "MIRROR_CROWDFUND",
+      "MIRROR_CROWDFUND():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_MIRROR_CROWDFUND(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "MIRROR_CROWDFUND",
+      "MIRROR_CROWDFUND():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   PERCENTAGE_SCALE(): BigInt {
@@ -340,20 +319,46 @@ export class OurPylon extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  _mirrorCrowdfund(): Address {
-    let result = super.call(
-      "_mirrorCrowdfund",
-      "_mirrorCrowdfund():(address)",
-      []
-    );
+  WETH(): Address {
+    let result = super.call("WETH", "WETH():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try__mirrorCrowdfund(): ethereum.CallResult<Address> {
+  try_WETH(): ethereum.CallResult<Address> {
+    let result = super.tryCall("WETH", "WETH():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  ZORA_AH(): Address {
+    let result = super.call("ZORA_AH", "ZORA_AH():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_ZORA_AH(): ethereum.CallResult<Address> {
+    let result = super.tryCall("ZORA_AH", "ZORA_AH():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  ZORA_EDITIONS(): Address {
+    let result = super.call("ZORA_EDITIONS", "ZORA_EDITIONS():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_ZORA_EDITIONS(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "_mirrorCrowdfund",
-      "_mirrorCrowdfund():(address)",
+      "ZORA_EDITIONS",
+      "ZORA_EDITIONS():(address)",
       []
     );
     if (result.reverted) {
@@ -363,14 +368,14 @@ export class OurPylon extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _partyBid(): Address {
-    let result = super.call("_partyBid", "_partyBid():(address)", []);
+  ZORA_MARKET(): Address {
+    let result = super.call("ZORA_MARKET", "ZORA_MARKET():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try__partyBid(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_partyBid", "_partyBid():(address)", []);
+  try_ZORA_MARKET(): ethereum.CallResult<Address> {
+    let result = super.tryCall("ZORA_MARKET", "ZORA_MARKET():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -378,63 +383,14 @@ export class OurPylon extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _zoraAH(): Address {
-    let result = super.call("_zoraAH", "_zoraAH():(address)", []);
+  ZORA_MEDIA(): Address {
+    let result = super.call("ZORA_MEDIA", "ZORA_MEDIA():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try__zoraAH(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_zoraAH", "_zoraAH():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _zoraEditions(): Address {
-    let result = super.call("_zoraEditions", "_zoraEditions():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__zoraEditions(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_zoraEditions",
-      "_zoraEditions():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _zoraMarket(): Address {
-    let result = super.call("_zoraMarket", "_zoraMarket():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__zoraMarket(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_zoraMarket", "_zoraMarket():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _zoraMedia(): Address {
-    let result = super.call("_zoraMedia", "_zoraMedia():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__zoraMedia(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_zoraMedia", "_zoraMedia():(address)", []);
+  try_ZORA_MEDIA(): ethereum.CallResult<Address> {
+    let result = super.tryCall("ZORA_MEDIA", "ZORA_MEDIA():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -562,20 +518,20 @@ export class OurPylon extends ethereum.SmartContract {
   }
 
   onERC1155BatchReceived(
-    operator: Address,
-    from: Address,
-    ids: Array<BigInt>,
-    values: Array<BigInt>,
+    param0: Address,
+    param1: Address,
+    param2: Array<BigInt>,
+    param3: Array<BigInt>,
     param4: Bytes
   ): Bytes {
     let result = super.call(
       "onERC1155BatchReceived",
       "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes):(bytes4)",
       [
-        ethereum.Value.fromAddress(operator),
-        ethereum.Value.fromAddress(from),
-        ethereum.Value.fromUnsignedBigIntArray(ids),
-        ethereum.Value.fromUnsignedBigIntArray(values),
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromUnsignedBigIntArray(param2),
+        ethereum.Value.fromUnsignedBigIntArray(param3),
         ethereum.Value.fromBytes(param4)
       ]
     );
@@ -584,20 +540,20 @@ export class OurPylon extends ethereum.SmartContract {
   }
 
   try_onERC1155BatchReceived(
-    operator: Address,
-    from: Address,
-    ids: Array<BigInt>,
-    values: Array<BigInt>,
+    param0: Address,
+    param1: Address,
+    param2: Array<BigInt>,
+    param3: Array<BigInt>,
     param4: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC1155BatchReceived",
       "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes):(bytes4)",
       [
-        ethereum.Value.fromAddress(operator),
-        ethereum.Value.fromAddress(from),
-        ethereum.Value.fromUnsignedBigIntArray(ids),
-        ethereum.Value.fromUnsignedBigIntArray(values),
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromUnsignedBigIntArray(param2),
+        ethereum.Value.fromUnsignedBigIntArray(param3),
         ethereum.Value.fromBytes(param4)
       ]
     );
@@ -609,20 +565,20 @@ export class OurPylon extends ethereum.SmartContract {
   }
 
   onERC1155Received(
-    operator: Address,
-    from: Address,
-    id: BigInt,
-    value: BigInt,
+    param0: Address,
+    param1: Address,
+    param2: BigInt,
+    param3: BigInt,
     param4: Bytes
   ): Bytes {
     let result = super.call(
       "onERC1155Received",
       "onERC1155Received(address,address,uint256,uint256,bytes):(bytes4)",
       [
-        ethereum.Value.fromAddress(operator),
-        ethereum.Value.fromAddress(from),
-        ethereum.Value.fromUnsignedBigInt(id),
-        ethereum.Value.fromUnsignedBigInt(value),
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromUnsignedBigInt(param2),
+        ethereum.Value.fromUnsignedBigInt(param3),
         ethereum.Value.fromBytes(param4)
       ]
     );
@@ -631,20 +587,20 @@ export class OurPylon extends ethereum.SmartContract {
   }
 
   try_onERC1155Received(
-    operator: Address,
-    from: Address,
-    id: BigInt,
-    value: BigInt,
+    param0: Address,
+    param1: Address,
+    param2: BigInt,
+    param3: BigInt,
     param4: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC1155Received",
       "onERC1155Received(address,address,uint256,uint256,bytes):(bytes4)",
       [
-        ethereum.Value.fromAddress(operator),
-        ethereum.Value.fromAddress(from),
-        ethereum.Value.fromUnsignedBigInt(id),
-        ethereum.Value.fromUnsignedBigInt(value),
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromUnsignedBigInt(param2),
+        ethereum.Value.fromUnsignedBigInt(param3),
         ethereum.Value.fromBytes(param4)
       ]
     );
@@ -656,18 +612,18 @@ export class OurPylon extends ethereum.SmartContract {
   }
 
   onERC721Received(
-    operator_: Address,
-    from_: Address,
-    tokenId_: BigInt,
+    param0: Address,
+    param1: Address,
+    param2: BigInt,
     param3: Bytes
   ): Bytes {
     let result = super.call(
       "onERC721Received",
       "onERC721Received(address,address,uint256,bytes):(bytes4)",
       [
-        ethereum.Value.fromAddress(operator_),
-        ethereum.Value.fromAddress(from_),
-        ethereum.Value.fromUnsignedBigInt(tokenId_),
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromUnsignedBigInt(param2),
         ethereum.Value.fromBytes(param3)
       ]
     );
@@ -676,18 +632,18 @@ export class OurPylon extends ethereum.SmartContract {
   }
 
   try_onERC721Received(
-    operator_: Address,
-    from_: Address,
-    tokenId_: BigInt,
+    param0: Address,
+    param1: Address,
+    param2: BigInt,
     param3: Bytes
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "onERC721Received",
       "onERC721Received(address,address,uint256,bytes):(bytes4)",
       [
-        ethereum.Value.fromAddress(operator_),
-        ethereum.Value.fromAddress(from_),
-        ethereum.Value.fromUnsignedBigInt(tokenId_),
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromUnsignedBigInt(param2),
         ethereum.Value.fromBytes(param3)
       ]
     );
@@ -753,19 +709,30 @@ export class OurPylon extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  weth(): Address {
-    let result = super.call("weth", "weth():(address)", []);
+  untrustedExecuteTransaction(to: Address, data: Bytes): boolean {
+    let result = super.call(
+      "untrustedExecuteTransaction",
+      "untrustedExecuteTransaction(address,bytes):(bool)",
+      [ethereum.Value.fromAddress(to), ethereum.Value.fromBytes(data)]
+    );
 
-    return result[0].toAddress();
+    return result[0].toBoolean();
   }
 
-  try_weth(): ethereum.CallResult<Address> {
-    let result = super.tryCall("weth", "weth():(address)", []);
+  try_untrustedExecuteTransaction(
+    to: Address,
+    data: Bytes
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "untrustedExecuteTransaction",
+      "untrustedExecuteTransaction(address,bytes):(bool)",
+      [ethereum.Value.fromAddress(to), ethereum.Value.fromBytes(data)]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 }
 
@@ -795,20 +762,20 @@ export class ConstructorCall__Outputs {
   }
 }
 
-export class AcceptZoraMarketBidCall extends ethereum.Call {
-  get inputs(): AcceptZoraMarketBidCall__Inputs {
-    return new AcceptZoraMarketBidCall__Inputs(this);
+export class AcceptZMarketBidCall extends ethereum.Call {
+  get inputs(): AcceptZMarketBidCall__Inputs {
+    return new AcceptZMarketBidCall__Inputs(this);
   }
 
-  get outputs(): AcceptZoraMarketBidCall__Outputs {
-    return new AcceptZoraMarketBidCall__Outputs(this);
+  get outputs(): AcceptZMarketBidCall__Outputs {
+    return new AcceptZMarketBidCall__Outputs(this);
   }
 }
 
-export class AcceptZoraMarketBidCall__Inputs {
-  _call: AcceptZoraMarketBidCall;
+export class AcceptZMarketBidCall__Inputs {
+  _call: AcceptZMarketBidCall;
 
-  constructor(call: AcceptZoraMarketBidCall) {
+  constructor(call: AcceptZMarketBidCall) {
     this._call = call;
   }
 
@@ -816,22 +783,22 @@ export class AcceptZoraMarketBidCall__Inputs {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get expectedBid(): AcceptZoraMarketBidCallExpectedBidStruct {
-    return changetype<AcceptZoraMarketBidCallExpectedBidStruct>(
+  get expectedBid(): AcceptZMarketBidCallExpectedBidStruct {
+    return changetype<AcceptZMarketBidCallExpectedBidStruct>(
       this._call.inputValues[1].value.toTuple()
     );
   }
 }
 
-export class AcceptZoraMarketBidCall__Outputs {
-  _call: AcceptZoraMarketBidCall;
+export class AcceptZMarketBidCall__Outputs {
+  _call: AcceptZMarketBidCall;
 
-  constructor(call: AcceptZoraMarketBidCall) {
+  constructor(call: AcceptZMarketBidCall) {
     this._call = call;
   }
 }
 
-export class AcceptZoraMarketBidCallExpectedBidStruct extends ethereum.Tuple {
+export class AcceptZMarketBidCallExpectedBidStruct extends ethereum.Tuple {
   get amount(): BigInt {
     return this[0].toBigInt();
   }
@@ -848,14 +815,14 @@ export class AcceptZoraMarketBidCallExpectedBidStruct extends ethereum.Tuple {
     return this[3].toAddress();
   }
 
-  get sellOnShare(): AcceptZoraMarketBidCallExpectedBidSellOnShareStruct {
-    return changetype<AcceptZoraMarketBidCallExpectedBidSellOnShareStruct>(
+  get sellOnShare(): AcceptZMarketBidCallExpectedBidSellOnShareStruct {
+    return changetype<AcceptZMarketBidCallExpectedBidSellOnShareStruct>(
       this[4].toTuple()
     );
   }
 }
 
-export class AcceptZoraMarketBidCallExpectedBidSellOnShareStruct extends ethereum.Tuple {
+export class AcceptZMarketBidCallExpectedBidSellOnShareStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
@@ -891,20 +858,20 @@ export class AddOwnerCall__Outputs {
   }
 }
 
-export class CancelZoraAuctionCall extends ethereum.Call {
-  get inputs(): CancelZoraAuctionCall__Inputs {
-    return new CancelZoraAuctionCall__Inputs(this);
+export class CancelZAuctionCall extends ethereum.Call {
+  get inputs(): CancelZAuctionCall__Inputs {
+    return new CancelZAuctionCall__Inputs(this);
   }
 
-  get outputs(): CancelZoraAuctionCall__Outputs {
-    return new CancelZoraAuctionCall__Outputs(this);
+  get outputs(): CancelZAuctionCall__Outputs {
+    return new CancelZAuctionCall__Outputs(this);
   }
 }
 
-export class CancelZoraAuctionCall__Inputs {
-  _call: CancelZoraAuctionCall;
+export class CancelZAuctionCall__Inputs {
+  _call: CancelZAuctionCall;
 
-  constructor(call: CancelZoraAuctionCall) {
+  constructor(call: CancelZAuctionCall) {
     this._call = call;
   }
 
@@ -913,10 +880,10 @@ export class CancelZoraAuctionCall__Inputs {
   }
 }
 
-export class CancelZoraAuctionCall__Outputs {
-  _call: CancelZoraAuctionCall;
+export class CancelZAuctionCall__Outputs {
+  _call: CancelZAuctionCall;
 
-  constructor(call: CancelZoraAuctionCall) {
+  constructor(call: CancelZAuctionCall) {
     this._call = call;
   }
 }
@@ -1172,40 +1139,48 @@ export class CreateZoraEditionCall__Inputs {
     this._call = call;
   }
 
-  get _name(): string {
+  get name(): string {
     return this._call.inputValues[0].value.toString();
   }
 
-  get _symbol(): string {
+  get symbol(): string {
     return this._call.inputValues[1].value.toString();
   }
 
-  get _description(): string {
+  get description(): string {
     return this._call.inputValues[2].value.toString();
   }
 
-  get _animationUrl(): string {
+  get animationUrl(): string {
     return this._call.inputValues[3].value.toString();
   }
 
-  get _animationHash(): Bytes {
+  get animationHash(): Bytes {
     return this._call.inputValues[4].value.toBytes();
   }
 
-  get _imageUrl(): string {
+  get imageUrl(): string {
     return this._call.inputValues[5].value.toString();
   }
 
-  get _imageHash(): Bytes {
+  get imageHash(): Bytes {
     return this._call.inputValues[6].value.toBytes();
   }
 
-  get _editionSize(): BigInt {
+  get editionSize(): BigInt {
     return this._call.inputValues[7].value.toBigInt();
   }
 
-  get _royaltyBPS(): BigInt {
+  get royaltyBPS(): BigInt {
     return this._call.inputValues[8].value.toBigInt();
+  }
+
+  get salePrice(): BigInt {
+    return this._call.inputValues[9].value.toBigInt();
+  }
+
+  get publicMint(): boolean {
+    return this._call.inputValues[10].value.toBoolean();
   }
 }
 
@@ -1413,45 +1388,79 @@ export class MintToAuctionForETHCallBidSharesOwnerStruct extends ethereum.Tuple 
   }
 }
 
-export class MintZoraCall extends ethereum.Call {
-  get inputs(): MintZoraCall__Inputs {
-    return new MintZoraCall__Inputs(this);
+export class MintZEditionsCall extends ethereum.Call {
+  get inputs(): MintZEditionsCall__Inputs {
+    return new MintZEditionsCall__Inputs(this);
   }
 
-  get outputs(): MintZoraCall__Outputs {
-    return new MintZoraCall__Outputs(this);
+  get outputs(): MintZEditionsCall__Outputs {
+    return new MintZEditionsCall__Outputs(this);
   }
 }
 
-export class MintZoraCall__Inputs {
-  _call: MintZoraCall;
+export class MintZEditionsCall__Inputs {
+  _call: MintZEditionsCall;
 
-  constructor(call: MintZoraCall) {
+  constructor(call: MintZEditionsCall) {
     this._call = call;
   }
 
-  get mediaData(): MintZoraCallMediaDataStruct {
-    return changetype<MintZoraCallMediaDataStruct>(
+  get editionAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get recipients(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
+  }
+}
+
+export class MintZEditionsCall__Outputs {
+  _call: MintZEditionsCall;
+
+  constructor(call: MintZEditionsCall) {
+    this._call = call;
+  }
+}
+
+export class MintZNFTCall extends ethereum.Call {
+  get inputs(): MintZNFTCall__Inputs {
+    return new MintZNFTCall__Inputs(this);
+  }
+
+  get outputs(): MintZNFTCall__Outputs {
+    return new MintZNFTCall__Outputs(this);
+  }
+}
+
+export class MintZNFTCall__Inputs {
+  _call: MintZNFTCall;
+
+  constructor(call: MintZNFTCall) {
+    this._call = call;
+  }
+
+  get mediaData(): MintZNFTCallMediaDataStruct {
+    return changetype<MintZNFTCallMediaDataStruct>(
       this._call.inputValues[0].value.toTuple()
     );
   }
 
-  get bidShares(): MintZoraCallBidSharesStruct {
-    return changetype<MintZoraCallBidSharesStruct>(
+  get bidShares(): MintZNFTCallBidSharesStruct {
+    return changetype<MintZNFTCallBidSharesStruct>(
       this._call.inputValues[1].value.toTuple()
     );
   }
 }
 
-export class MintZoraCall__Outputs {
-  _call: MintZoraCall;
+export class MintZNFTCall__Outputs {
+  _call: MintZNFTCall;
 
-  constructor(call: MintZoraCall) {
+  constructor(call: MintZNFTCall) {
     this._call = call;
   }
 }
 
-export class MintZoraCallMediaDataStruct extends ethereum.Tuple {
+export class MintZNFTCallMediaDataStruct extends ethereum.Tuple {
   get tokenURI(): string {
     return this[0].toString();
   }
@@ -1469,52 +1478,52 @@ export class MintZoraCallMediaDataStruct extends ethereum.Tuple {
   }
 }
 
-export class MintZoraCallBidSharesStruct extends ethereum.Tuple {
-  get prevOwner(): MintZoraCallBidSharesPrevOwnerStruct {
-    return changetype<MintZoraCallBidSharesPrevOwnerStruct>(this[0].toTuple());
+export class MintZNFTCallBidSharesStruct extends ethereum.Tuple {
+  get prevOwner(): MintZNFTCallBidSharesPrevOwnerStruct {
+    return changetype<MintZNFTCallBidSharesPrevOwnerStruct>(this[0].toTuple());
   }
 
-  get creator(): MintZoraCallBidSharesCreatorStruct {
-    return changetype<MintZoraCallBidSharesCreatorStruct>(this[1].toTuple());
+  get creator(): MintZNFTCallBidSharesCreatorStruct {
+    return changetype<MintZNFTCallBidSharesCreatorStruct>(this[1].toTuple());
   }
 
-  get owner(): MintZoraCallBidSharesOwnerStruct {
-    return changetype<MintZoraCallBidSharesOwnerStruct>(this[2].toTuple());
+  get owner(): MintZNFTCallBidSharesOwnerStruct {
+    return changetype<MintZNFTCallBidSharesOwnerStruct>(this[2].toTuple());
   }
 }
 
-export class MintZoraCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
+export class MintZNFTCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class MintZoraCallBidSharesCreatorStruct extends ethereum.Tuple {
+export class MintZNFTCallBidSharesCreatorStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class MintZoraCallBidSharesOwnerStruct extends ethereum.Tuple {
+export class MintZNFTCallBidSharesOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class MintZoraWithSigCall extends ethereum.Call {
-  get inputs(): MintZoraWithSigCall__Inputs {
-    return new MintZoraWithSigCall__Inputs(this);
+export class MintZNFTWithSigCall extends ethereum.Call {
+  get inputs(): MintZNFTWithSigCall__Inputs {
+    return new MintZNFTWithSigCall__Inputs(this);
   }
 
-  get outputs(): MintZoraWithSigCall__Outputs {
-    return new MintZoraWithSigCall__Outputs(this);
+  get outputs(): MintZNFTWithSigCall__Outputs {
+    return new MintZNFTWithSigCall__Outputs(this);
   }
 }
 
-export class MintZoraWithSigCall__Inputs {
-  _call: MintZoraWithSigCall;
+export class MintZNFTWithSigCall__Inputs {
+  _call: MintZNFTWithSigCall;
 
-  constructor(call: MintZoraWithSigCall) {
+  constructor(call: MintZNFTWithSigCall) {
     this._call = call;
   }
 
@@ -1522,34 +1531,34 @@ export class MintZoraWithSigCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get mediaData(): MintZoraWithSigCallMediaDataStruct {
-    return changetype<MintZoraWithSigCallMediaDataStruct>(
+  get mediaData(): MintZNFTWithSigCallMediaDataStruct {
+    return changetype<MintZNFTWithSigCallMediaDataStruct>(
       this._call.inputValues[1].value.toTuple()
     );
   }
 
-  get bidShares(): MintZoraWithSigCallBidSharesStruct {
-    return changetype<MintZoraWithSigCallBidSharesStruct>(
+  get bidShares(): MintZNFTWithSigCallBidSharesStruct {
+    return changetype<MintZNFTWithSigCallBidSharesStruct>(
       this._call.inputValues[2].value.toTuple()
     );
   }
 
-  get sig(): MintZoraWithSigCallSigStruct {
-    return changetype<MintZoraWithSigCallSigStruct>(
+  get sig(): MintZNFTWithSigCallSigStruct {
+    return changetype<MintZNFTWithSigCallSigStruct>(
       this._call.inputValues[3].value.toTuple()
     );
   }
 }
 
-export class MintZoraWithSigCall__Outputs {
-  _call: MintZoraWithSigCall;
+export class MintZNFTWithSigCall__Outputs {
+  _call: MintZNFTWithSigCall;
 
-  constructor(call: MintZoraWithSigCall) {
+  constructor(call: MintZNFTWithSigCall) {
     this._call = call;
   }
 }
 
-export class MintZoraWithSigCallMediaDataStruct extends ethereum.Tuple {
+export class MintZNFTWithSigCallMediaDataStruct extends ethereum.Tuple {
   get tokenURI(): string {
     return this[0].toString();
   }
@@ -1567,45 +1576,45 @@ export class MintZoraWithSigCallMediaDataStruct extends ethereum.Tuple {
   }
 }
 
-export class MintZoraWithSigCallBidSharesStruct extends ethereum.Tuple {
-  get prevOwner(): MintZoraWithSigCallBidSharesPrevOwnerStruct {
-    return changetype<MintZoraWithSigCallBidSharesPrevOwnerStruct>(
+export class MintZNFTWithSigCallBidSharesStruct extends ethereum.Tuple {
+  get prevOwner(): MintZNFTWithSigCallBidSharesPrevOwnerStruct {
+    return changetype<MintZNFTWithSigCallBidSharesPrevOwnerStruct>(
       this[0].toTuple()
     );
   }
 
-  get creator(): MintZoraWithSigCallBidSharesCreatorStruct {
-    return changetype<MintZoraWithSigCallBidSharesCreatorStruct>(
+  get creator(): MintZNFTWithSigCallBidSharesCreatorStruct {
+    return changetype<MintZNFTWithSigCallBidSharesCreatorStruct>(
       this[1].toTuple()
     );
   }
 
-  get owner(): MintZoraWithSigCallBidSharesOwnerStruct {
-    return changetype<MintZoraWithSigCallBidSharesOwnerStruct>(
+  get owner(): MintZNFTWithSigCallBidSharesOwnerStruct {
+    return changetype<MintZNFTWithSigCallBidSharesOwnerStruct>(
       this[2].toTuple()
     );
   }
 }
 
-export class MintZoraWithSigCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
+export class MintZNFTWithSigCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class MintZoraWithSigCallBidSharesCreatorStruct extends ethereum.Tuple {
+export class MintZNFTWithSigCallBidSharesCreatorStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class MintZoraWithSigCallBidSharesOwnerStruct extends ethereum.Tuple {
+export class MintZNFTWithSigCallBidSharesOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class MintZoraWithSigCallSigStruct extends ethereum.Tuple {
+export class MintZNFTWithSigCallSigStruct extends ethereum.Tuple {
   get deadline(): BigInt {
     return this[0].toBigInt();
   }
@@ -1620,152 +1629,6 @@ export class MintZoraWithSigCallSigStruct extends ethereum.Tuple {
 
   get s(): Bytes {
     return this[3].toBytes();
-  }
-}
-
-export class OnERC1155BatchReceivedCall extends ethereum.Call {
-  get inputs(): OnERC1155BatchReceivedCall__Inputs {
-    return new OnERC1155BatchReceivedCall__Inputs(this);
-  }
-
-  get outputs(): OnERC1155BatchReceivedCall__Outputs {
-    return new OnERC1155BatchReceivedCall__Outputs(this);
-  }
-}
-
-export class OnERC1155BatchReceivedCall__Inputs {
-  _call: OnERC1155BatchReceivedCall;
-
-  constructor(call: OnERC1155BatchReceivedCall) {
-    this._call = call;
-  }
-
-  get operator(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get from(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get ids(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-
-  get values(): Array<BigInt> {
-    return this._call.inputValues[3].value.toBigIntArray();
-  }
-
-  get value4(): Bytes {
-    return this._call.inputValues[4].value.toBytes();
-  }
-}
-
-export class OnERC1155BatchReceivedCall__Outputs {
-  _call: OnERC1155BatchReceivedCall;
-
-  constructor(call: OnERC1155BatchReceivedCall) {
-    this._call = call;
-  }
-
-  get value0(): Bytes {
-    return this._call.outputValues[0].value.toBytes();
-  }
-}
-
-export class OnERC1155ReceivedCall extends ethereum.Call {
-  get inputs(): OnERC1155ReceivedCall__Inputs {
-    return new OnERC1155ReceivedCall__Inputs(this);
-  }
-
-  get outputs(): OnERC1155ReceivedCall__Outputs {
-    return new OnERC1155ReceivedCall__Outputs(this);
-  }
-}
-
-export class OnERC1155ReceivedCall__Inputs {
-  _call: OnERC1155ReceivedCall;
-
-  constructor(call: OnERC1155ReceivedCall) {
-    this._call = call;
-  }
-
-  get operator(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get from(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get id(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get value(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get value4(): Bytes {
-    return this._call.inputValues[4].value.toBytes();
-  }
-}
-
-export class OnERC1155ReceivedCall__Outputs {
-  _call: OnERC1155ReceivedCall;
-
-  constructor(call: OnERC1155ReceivedCall) {
-    this._call = call;
-  }
-
-  get value0(): Bytes {
-    return this._call.outputValues[0].value.toBytes();
-  }
-}
-
-export class OnERC721ReceivedCall extends ethereum.Call {
-  get inputs(): OnERC721ReceivedCall__Inputs {
-    return new OnERC721ReceivedCall__Inputs(this);
-  }
-
-  get outputs(): OnERC721ReceivedCall__Outputs {
-    return new OnERC721ReceivedCall__Outputs(this);
-  }
-}
-
-export class OnERC721ReceivedCall__Inputs {
-  _call: OnERC721ReceivedCall;
-
-  constructor(call: OnERC721ReceivedCall) {
-    this._call = call;
-  }
-
-  get operator_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get from_(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get tokenId_(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get value3(): Bytes {
-    return this._call.inputValues[3].value.toBytes();
-  }
-}
-
-export class OnERC721ReceivedCall__Outputs {
-  _call: OnERC721ReceivedCall;
-
-  constructor(call: OnERC721ReceivedCall) {
-    this._call = call;
-  }
-
-  get value0(): Bytes {
-    return this._call.outputValues[0].value.toBytes();
   }
 }
 
@@ -1803,20 +1666,20 @@ export class RemoveOwnerCall__Outputs {
   }
 }
 
-export class RemoveZoraMarketAskCall extends ethereum.Call {
-  get inputs(): RemoveZoraMarketAskCall__Inputs {
-    return new RemoveZoraMarketAskCall__Inputs(this);
+export class RemoveZMarketAskCall extends ethereum.Call {
+  get inputs(): RemoveZMarketAskCall__Inputs {
+    return new RemoveZMarketAskCall__Inputs(this);
   }
 
-  get outputs(): RemoveZoraMarketAskCall__Outputs {
-    return new RemoveZoraMarketAskCall__Outputs(this);
+  get outputs(): RemoveZMarketAskCall__Outputs {
+    return new RemoveZMarketAskCall__Outputs(this);
   }
 }
 
-export class RemoveZoraMarketAskCall__Inputs {
-  _call: RemoveZoraMarketAskCall;
+export class RemoveZMarketAskCall__Inputs {
+  _call: RemoveZMarketAskCall;
 
-  constructor(call: RemoveZoraMarketAskCall) {
+  constructor(call: RemoveZMarketAskCall) {
     this._call = call;
   }
 
@@ -1825,10 +1688,10 @@ export class RemoveZoraMarketAskCall__Inputs {
   }
 }
 
-export class RemoveZoraMarketAskCall__Outputs {
-  _call: RemoveZoraMarketAskCall;
+export class RemoveZMarketAskCall__Outputs {
+  _call: RemoveZMarketAskCall;
 
-  constructor(call: RemoveZoraMarketAskCall) {
+  constructor(call: RemoveZMarketAskCall) {
     this._call = call;
   }
 }
@@ -1850,12 +1713,16 @@ export class SetEditionMinterCall__Inputs {
     this._call = call;
   }
 
-  get minter(): Address {
+  get editionAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
+  get minter(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
   get allowed(): boolean {
-    return this._call.inputValues[1].value.toBoolean();
+    return this._call.inputValues[2].value.toBoolean();
   }
 }
 
@@ -1867,54 +1734,20 @@ export class SetEditionMinterCall__Outputs {
   }
 }
 
-export class SetEditionURLsCall extends ethereum.Call {
-  get inputs(): SetEditionURLsCall__Inputs {
-    return new SetEditionURLsCall__Inputs(this);
+export class SetZAuctionApprovalCall extends ethereum.Call {
+  get inputs(): SetZAuctionApprovalCall__Inputs {
+    return new SetZAuctionApprovalCall__Inputs(this);
   }
 
-  get outputs(): SetEditionURLsCall__Outputs {
-    return new SetEditionURLsCall__Outputs(this);
-  }
-}
-
-export class SetEditionURLsCall__Inputs {
-  _call: SetEditionURLsCall;
-
-  constructor(call: SetEditionURLsCall) {
-    this._call = call;
-  }
-
-  get _imageUrl(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-
-  get _animationUrl(): string {
-    return this._call.inputValues[1].value.toString();
+  get outputs(): SetZAuctionApprovalCall__Outputs {
+    return new SetZAuctionApprovalCall__Outputs(this);
   }
 }
 
-export class SetEditionURLsCall__Outputs {
-  _call: SetEditionURLsCall;
+export class SetZAuctionApprovalCall__Inputs {
+  _call: SetZAuctionApprovalCall;
 
-  constructor(call: SetEditionURLsCall) {
-    this._call = call;
-  }
-}
-
-export class SetZoraAuctionApprovalCall extends ethereum.Call {
-  get inputs(): SetZoraAuctionApprovalCall__Inputs {
-    return new SetZoraAuctionApprovalCall__Inputs(this);
-  }
-
-  get outputs(): SetZoraAuctionApprovalCall__Outputs {
-    return new SetZoraAuctionApprovalCall__Outputs(this);
-  }
-}
-
-export class SetZoraAuctionApprovalCall__Inputs {
-  _call: SetZoraAuctionApprovalCall;
-
-  constructor(call: SetZoraAuctionApprovalCall) {
+  constructor(call: SetZAuctionApprovalCall) {
     this._call = call;
   }
 
@@ -1927,28 +1760,28 @@ export class SetZoraAuctionApprovalCall__Inputs {
   }
 }
 
-export class SetZoraAuctionApprovalCall__Outputs {
-  _call: SetZoraAuctionApprovalCall;
+export class SetZAuctionApprovalCall__Outputs {
+  _call: SetZAuctionApprovalCall;
 
-  constructor(call: SetZoraAuctionApprovalCall) {
+  constructor(call: SetZAuctionApprovalCall) {
     this._call = call;
   }
 }
 
-export class SetZoraAuctionReservePriceCall extends ethereum.Call {
-  get inputs(): SetZoraAuctionReservePriceCall__Inputs {
-    return new SetZoraAuctionReservePriceCall__Inputs(this);
+export class SetZAuctionReservePriceCall extends ethereum.Call {
+  get inputs(): SetZAuctionReservePriceCall__Inputs {
+    return new SetZAuctionReservePriceCall__Inputs(this);
   }
 
-  get outputs(): SetZoraAuctionReservePriceCall__Outputs {
-    return new SetZoraAuctionReservePriceCall__Outputs(this);
+  get outputs(): SetZAuctionReservePriceCall__Outputs {
+    return new SetZAuctionReservePriceCall__Outputs(this);
   }
 }
 
-export class SetZoraAuctionReservePriceCall__Inputs {
-  _call: SetZoraAuctionReservePriceCall;
+export class SetZAuctionReservePriceCall__Inputs {
+  _call: SetZAuctionReservePriceCall;
 
-  constructor(call: SetZoraAuctionReservePriceCall) {
+  constructor(call: SetZAuctionReservePriceCall) {
     this._call = call;
   }
 
@@ -1961,28 +1794,28 @@ export class SetZoraAuctionReservePriceCall__Inputs {
   }
 }
 
-export class SetZoraAuctionReservePriceCall__Outputs {
-  _call: SetZoraAuctionReservePriceCall;
+export class SetZAuctionReservePriceCall__Outputs {
+  _call: SetZAuctionReservePriceCall;
 
-  constructor(call: SetZoraAuctionReservePriceCall) {
+  constructor(call: SetZAuctionReservePriceCall) {
     this._call = call;
   }
 }
 
-export class SetZoraMarketAskCall extends ethereum.Call {
-  get inputs(): SetZoraMarketAskCall__Inputs {
-    return new SetZoraMarketAskCall__Inputs(this);
+export class SetZMarketAskCall extends ethereum.Call {
+  get inputs(): SetZMarketAskCall__Inputs {
+    return new SetZMarketAskCall__Inputs(this);
   }
 
-  get outputs(): SetZoraMarketAskCall__Outputs {
-    return new SetZoraMarketAskCall__Outputs(this);
+  get outputs(): SetZMarketAskCall__Outputs {
+    return new SetZMarketAskCall__Outputs(this);
   }
 }
 
-export class SetZoraMarketAskCall__Inputs {
-  _call: SetZoraMarketAskCall;
+export class SetZMarketAskCall__Inputs {
+  _call: SetZMarketAskCall;
 
-  constructor(call: SetZoraMarketAskCall) {
+  constructor(call: SetZMarketAskCall) {
     this._call = call;
   }
 
@@ -1990,22 +1823,22 @@ export class SetZoraMarketAskCall__Inputs {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get ask(): SetZoraMarketAskCallAskStruct {
-    return changetype<SetZoraMarketAskCallAskStruct>(
+  get ask(): SetZMarketAskCallAskStruct {
+    return changetype<SetZMarketAskCallAskStruct>(
       this._call.inputValues[1].value.toTuple()
     );
   }
 }
 
-export class SetZoraMarketAskCall__Outputs {
-  _call: SetZoraMarketAskCall;
+export class SetZMarketAskCall__Outputs {
+  _call: SetZMarketAskCall;
 
-  constructor(call: SetZoraMarketAskCall) {
+  constructor(call: SetZMarketAskCall) {
     this._call = call;
   }
 }
 
-export class SetZoraMarketAskCallAskStruct extends ethereum.Tuple {
+export class SetZMarketAskCallAskStruct extends ethereum.Tuple {
   get amount(): BigInt {
     return this[0].toBigInt();
   }
@@ -2015,20 +1848,20 @@ export class SetZoraMarketAskCallAskStruct extends ethereum.Tuple {
   }
 }
 
-export class SetZoraMarketBidSharesCall extends ethereum.Call {
-  get inputs(): SetZoraMarketBidSharesCall__Inputs {
-    return new SetZoraMarketBidSharesCall__Inputs(this);
+export class SetZMarketBidSharesCall extends ethereum.Call {
+  get inputs(): SetZMarketBidSharesCall__Inputs {
+    return new SetZMarketBidSharesCall__Inputs(this);
   }
 
-  get outputs(): SetZoraMarketBidSharesCall__Outputs {
-    return new SetZoraMarketBidSharesCall__Outputs(this);
+  get outputs(): SetZMarketBidSharesCall__Outputs {
+    return new SetZMarketBidSharesCall__Outputs(this);
   }
 }
 
-export class SetZoraMarketBidSharesCall__Inputs {
-  _call: SetZoraMarketBidSharesCall;
+export class SetZMarketBidSharesCall__Inputs {
+  _call: SetZMarketBidSharesCall;
 
-  constructor(call: SetZoraMarketBidSharesCall) {
+  constructor(call: SetZMarketBidSharesCall) {
     this._call = call;
   }
 
@@ -2036,54 +1869,54 @@ export class SetZoraMarketBidSharesCall__Inputs {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get bidShares(): SetZoraMarketBidSharesCallBidSharesStruct {
-    return changetype<SetZoraMarketBidSharesCallBidSharesStruct>(
+  get bidShares(): SetZMarketBidSharesCallBidSharesStruct {
+    return changetype<SetZMarketBidSharesCallBidSharesStruct>(
       this._call.inputValues[1].value.toTuple()
     );
   }
 }
 
-export class SetZoraMarketBidSharesCall__Outputs {
-  _call: SetZoraMarketBidSharesCall;
+export class SetZMarketBidSharesCall__Outputs {
+  _call: SetZMarketBidSharesCall;
 
-  constructor(call: SetZoraMarketBidSharesCall) {
+  constructor(call: SetZMarketBidSharesCall) {
     this._call = call;
   }
 }
 
-export class SetZoraMarketBidSharesCallBidSharesStruct extends ethereum.Tuple {
-  get prevOwner(): SetZoraMarketBidSharesCallBidSharesPrevOwnerStruct {
-    return changetype<SetZoraMarketBidSharesCallBidSharesPrevOwnerStruct>(
+export class SetZMarketBidSharesCallBidSharesStruct extends ethereum.Tuple {
+  get prevOwner(): SetZMarketBidSharesCallBidSharesPrevOwnerStruct {
+    return changetype<SetZMarketBidSharesCallBidSharesPrevOwnerStruct>(
       this[0].toTuple()
     );
   }
 
-  get creator(): SetZoraMarketBidSharesCallBidSharesCreatorStruct {
-    return changetype<SetZoraMarketBidSharesCallBidSharesCreatorStruct>(
+  get creator(): SetZMarketBidSharesCallBidSharesCreatorStruct {
+    return changetype<SetZMarketBidSharesCallBidSharesCreatorStruct>(
       this[1].toTuple()
     );
   }
 
-  get owner(): SetZoraMarketBidSharesCallBidSharesOwnerStruct {
-    return changetype<SetZoraMarketBidSharesCallBidSharesOwnerStruct>(
+  get owner(): SetZMarketBidSharesCallBidSharesOwnerStruct {
+    return changetype<SetZMarketBidSharesCallBidSharesOwnerStruct>(
       this[2].toTuple()
     );
   }
 }
 
-export class SetZoraMarketBidSharesCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
+export class SetZMarketBidSharesCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class SetZoraMarketBidSharesCallBidSharesCreatorStruct extends ethereum.Tuple {
+export class SetZMarketBidSharesCallBidSharesCreatorStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
 }
 
-export class SetZoraMarketBidSharesCallBidSharesOwnerStruct extends ethereum.Tuple {
+export class SetZMarketBidSharesCallBidSharesOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
   }
@@ -2115,56 +1948,6 @@ export class SetupCall__Outputs {
   _call: SetupCall;
 
   constructor(call: SetupCall) {
-    this._call = call;
-  }
-}
-
-export class StartSplitPartyCall extends ethereum.Call {
-  get inputs(): StartSplitPartyCall__Inputs {
-    return new StartSplitPartyCall__Inputs(this);
-  }
-
-  get outputs(): StartSplitPartyCall__Outputs {
-    return new StartSplitPartyCall__Outputs(this);
-  }
-}
-
-export class StartSplitPartyCall__Inputs {
-  _call: StartSplitPartyCall;
-
-  constructor(call: StartSplitPartyCall) {
-    this._call = call;
-  }
-
-  get marketWrapper(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get nftContract(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get auctionId(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get name(): string {
-    return this._call.inputValues[4].value.toString();
-  }
-
-  get symbol(): string {
-    return this._call.inputValues[5].value.toString();
-  }
-}
-
-export class StartSplitPartyCall__Outputs {
-  _call: StartSplitPartyCall;
-
-  constructor(call: StartSplitPartyCall) {
     this._call = call;
   }
 }
@@ -2257,20 +2040,20 @@ export class TokensReceivedCall__Outputs {
   }
 }
 
-export class UntrustedBurn721Call extends ethereum.Call {
-  get inputs(): UntrustedBurn721Call__Inputs {
-    return new UntrustedBurn721Call__Inputs(this);
+export class UntrustedBurnERC721Call extends ethereum.Call {
+  get inputs(): UntrustedBurnERC721Call__Inputs {
+    return new UntrustedBurnERC721Call__Inputs(this);
   }
 
-  get outputs(): UntrustedBurn721Call__Outputs {
-    return new UntrustedBurn721Call__Outputs(this);
+  get outputs(): UntrustedBurnERC721Call__Outputs {
+    return new UntrustedBurnERC721Call__Outputs(this);
   }
 }
 
-export class UntrustedBurn721Call__Inputs {
-  _call: UntrustedBurn721Call;
+export class UntrustedBurnERC721Call__Inputs {
+  _call: UntrustedBurnERC721Call;
 
-  constructor(call: UntrustedBurn721Call) {
+  constructor(call: UntrustedBurnERC721Call) {
     this._call = call;
   }
 
@@ -2283,28 +2066,66 @@ export class UntrustedBurn721Call__Inputs {
   }
 }
 
-export class UntrustedBurn721Call__Outputs {
-  _call: UntrustedBurn721Call;
+export class UntrustedBurnERC721Call__Outputs {
+  _call: UntrustedBurnERC721Call;
 
-  constructor(call: UntrustedBurn721Call) {
+  constructor(call: UntrustedBurnERC721Call) {
     this._call = call;
   }
 }
 
-export class UntrustedSafeTransfer721Call extends ethereum.Call {
-  get inputs(): UntrustedSafeTransfer721Call__Inputs {
-    return new UntrustedSafeTransfer721Call__Inputs(this);
+export class UntrustedExecuteTransactionCall extends ethereum.Call {
+  get inputs(): UntrustedExecuteTransactionCall__Inputs {
+    return new UntrustedExecuteTransactionCall__Inputs(this);
   }
 
-  get outputs(): UntrustedSafeTransfer721Call__Outputs {
-    return new UntrustedSafeTransfer721Call__Outputs(this);
+  get outputs(): UntrustedExecuteTransactionCall__Outputs {
+    return new UntrustedExecuteTransactionCall__Outputs(this);
   }
 }
 
-export class UntrustedSafeTransfer721Call__Inputs {
-  _call: UntrustedSafeTransfer721Call;
+export class UntrustedExecuteTransactionCall__Inputs {
+  _call: UntrustedExecuteTransactionCall;
 
-  constructor(call: UntrustedSafeTransfer721Call) {
+  constructor(call: UntrustedExecuteTransactionCall) {
+    this._call = call;
+  }
+
+  get to(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class UntrustedExecuteTransactionCall__Outputs {
+  _call: UntrustedExecuteTransactionCall;
+
+  constructor(call: UntrustedExecuteTransactionCall) {
+    this._call = call;
+  }
+
+  get success(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
+export class UntrustedSafeTransferERC721Call extends ethereum.Call {
+  get inputs(): UntrustedSafeTransferERC721Call__Inputs {
+    return new UntrustedSafeTransferERC721Call__Inputs(this);
+  }
+
+  get outputs(): UntrustedSafeTransferERC721Call__Outputs {
+    return new UntrustedSafeTransferERC721Call__Outputs(this);
+  }
+}
+
+export class UntrustedSafeTransferERC721Call__Inputs {
+  _call: UntrustedSafeTransferERC721Call;
+
+  constructor(call: UntrustedSafeTransferERC721Call) {
     this._call = call;
   }
 
@@ -2321,28 +2142,28 @@ export class UntrustedSafeTransfer721Call__Inputs {
   }
 }
 
-export class UntrustedSafeTransfer721Call__Outputs {
-  _call: UntrustedSafeTransfer721Call;
+export class UntrustedSafeTransferERC721Call__Outputs {
+  _call: UntrustedSafeTransferERC721Call;
 
-  constructor(call: UntrustedSafeTransfer721Call) {
+  constructor(call: UntrustedSafeTransferERC721Call) {
     this._call = call;
   }
 }
 
-export class UntrustedSetApproval721Call extends ethereum.Call {
-  get inputs(): UntrustedSetApproval721Call__Inputs {
-    return new UntrustedSetApproval721Call__Inputs(this);
+export class UntrustedSetApprovalERC721Call extends ethereum.Call {
+  get inputs(): UntrustedSetApprovalERC721Call__Inputs {
+    return new UntrustedSetApprovalERC721Call__Inputs(this);
   }
 
-  get outputs(): UntrustedSetApproval721Call__Outputs {
-    return new UntrustedSetApproval721Call__Outputs(this);
+  get outputs(): UntrustedSetApprovalERC721Call__Outputs {
+    return new UntrustedSetApprovalERC721Call__Outputs(this);
   }
 }
 
-export class UntrustedSetApproval721Call__Inputs {
-  _call: UntrustedSetApproval721Call;
+export class UntrustedSetApprovalERC721Call__Inputs {
+  _call: UntrustedSetApprovalERC721Call;
 
-  constructor(call: UntrustedSetApproval721Call) {
+  constructor(call: UntrustedSetApprovalERC721Call) {
     this._call = call;
   }
 
@@ -2359,28 +2180,66 @@ export class UntrustedSetApproval721Call__Inputs {
   }
 }
 
-export class UntrustedSetApproval721Call__Outputs {
-  _call: UntrustedSetApproval721Call;
+export class UntrustedSetApprovalERC721Call__Outputs {
+  _call: UntrustedSetApprovalERC721Call;
 
-  constructor(call: UntrustedSetApproval721Call) {
+  constructor(call: UntrustedSetApprovalERC721Call) {
     this._call = call;
   }
 }
 
-export class UpdateZoraMediaMetadataURICall extends ethereum.Call {
-  get inputs(): UpdateZoraMediaMetadataURICall__Inputs {
-    return new UpdateZoraMediaMetadataURICall__Inputs(this);
+export class UpdateEditionURLsCall extends ethereum.Call {
+  get inputs(): UpdateEditionURLsCall__Inputs {
+    return new UpdateEditionURLsCall__Inputs(this);
   }
 
-  get outputs(): UpdateZoraMediaMetadataURICall__Outputs {
-    return new UpdateZoraMediaMetadataURICall__Outputs(this);
+  get outputs(): UpdateEditionURLsCall__Outputs {
+    return new UpdateEditionURLsCall__Outputs(this);
   }
 }
 
-export class UpdateZoraMediaMetadataURICall__Inputs {
-  _call: UpdateZoraMediaMetadataURICall;
+export class UpdateEditionURLsCall__Inputs {
+  _call: UpdateEditionURLsCall;
 
-  constructor(call: UpdateZoraMediaMetadataURICall) {
+  constructor(call: UpdateEditionURLsCall) {
+    this._call = call;
+  }
+
+  get editionAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get imageUrl(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get animationUrl(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+}
+
+export class UpdateEditionURLsCall__Outputs {
+  _call: UpdateEditionURLsCall;
+
+  constructor(call: UpdateEditionURLsCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateZNFTMetadataURICall extends ethereum.Call {
+  get inputs(): UpdateZNFTMetadataURICall__Inputs {
+    return new UpdateZNFTMetadataURICall__Inputs(this);
+  }
+
+  get outputs(): UpdateZNFTMetadataURICall__Outputs {
+    return new UpdateZNFTMetadataURICall__Outputs(this);
+  }
+}
+
+export class UpdateZNFTMetadataURICall__Inputs {
+  _call: UpdateZNFTMetadataURICall;
+
+  constructor(call: UpdateZNFTMetadataURICall) {
     this._call = call;
   }
 
@@ -2393,28 +2252,28 @@ export class UpdateZoraMediaMetadataURICall__Inputs {
   }
 }
 
-export class UpdateZoraMediaMetadataURICall__Outputs {
-  _call: UpdateZoraMediaMetadataURICall;
+export class UpdateZNFTMetadataURICall__Outputs {
+  _call: UpdateZNFTMetadataURICall;
 
-  constructor(call: UpdateZoraMediaMetadataURICall) {
+  constructor(call: UpdateZNFTMetadataURICall) {
     this._call = call;
   }
 }
 
-export class UpdateZoraMediaTokenURICall extends ethereum.Call {
-  get inputs(): UpdateZoraMediaTokenURICall__Inputs {
-    return new UpdateZoraMediaTokenURICall__Inputs(this);
+export class UpdateZNFTTokenURICall extends ethereum.Call {
+  get inputs(): UpdateZNFTTokenURICall__Inputs {
+    return new UpdateZNFTTokenURICall__Inputs(this);
   }
 
-  get outputs(): UpdateZoraMediaTokenURICall__Outputs {
-    return new UpdateZoraMediaTokenURICall__Outputs(this);
+  get outputs(): UpdateZNFTTokenURICall__Outputs {
+    return new UpdateZNFTTokenURICall__Outputs(this);
   }
 }
 
-export class UpdateZoraMediaTokenURICall__Inputs {
-  _call: UpdateZoraMediaTokenURICall;
+export class UpdateZNFTTokenURICall__Inputs {
+  _call: UpdateZNFTTokenURICall;
 
-  constructor(call: UpdateZoraMediaTokenURICall) {
+  constructor(call: UpdateZNFTTokenURICall) {
     this._call = call;
   }
 
@@ -2427,28 +2286,28 @@ export class UpdateZoraMediaTokenURICall__Inputs {
   }
 }
 
-export class UpdateZoraMediaTokenURICall__Outputs {
-  _call: UpdateZoraMediaTokenURICall;
+export class UpdateZNFTTokenURICall__Outputs {
+  _call: UpdateZNFTTokenURICall;
 
-  constructor(call: UpdateZoraMediaTokenURICall) {
+  constructor(call: UpdateZNFTTokenURICall) {
     this._call = call;
   }
 }
 
-export class UpdateZoraMediaURIsCall extends ethereum.Call {
-  get inputs(): UpdateZoraMediaURIsCall__Inputs {
-    return new UpdateZoraMediaURIsCall__Inputs(this);
+export class UpdateZNFTURIsCall extends ethereum.Call {
+  get inputs(): UpdateZNFTURIsCall__Inputs {
+    return new UpdateZNFTURIsCall__Inputs(this);
   }
 
-  get outputs(): UpdateZoraMediaURIsCall__Outputs {
-    return new UpdateZoraMediaURIsCall__Outputs(this);
+  get outputs(): UpdateZNFTURIsCall__Outputs {
+    return new UpdateZNFTURIsCall__Outputs(this);
   }
 }
 
-export class UpdateZoraMediaURIsCall__Inputs {
-  _call: UpdateZoraMediaURIsCall;
+export class UpdateZNFTURIsCall__Inputs {
+  _call: UpdateZNFTURIsCall;
 
-  constructor(call: UpdateZoraMediaURIsCall) {
+  constructor(call: UpdateZNFTURIsCall) {
     this._call = call;
   }
 
@@ -2465,10 +2324,40 @@ export class UpdateZoraMediaURIsCall__Inputs {
   }
 }
 
-export class UpdateZoraMediaURIsCall__Outputs {
-  _call: UpdateZoraMediaURIsCall;
+export class UpdateZNFTURIsCall__Outputs {
+  _call: UpdateZNFTURIsCall;
 
-  constructor(call: UpdateZoraMediaURIsCall) {
+  constructor(call: UpdateZNFTURIsCall) {
+    this._call = call;
+  }
+}
+
+export class WithdrawEditionFundsCall extends ethereum.Call {
+  get inputs(): WithdrawEditionFundsCall__Inputs {
+    return new WithdrawEditionFundsCall__Inputs(this);
+  }
+
+  get outputs(): WithdrawEditionFundsCall__Outputs {
+    return new WithdrawEditionFundsCall__Outputs(this);
+  }
+}
+
+export class WithdrawEditionFundsCall__Inputs {
+  _call: WithdrawEditionFundsCall;
+
+  constructor(call: WithdrawEditionFundsCall) {
+    this._call = call;
+  }
+
+  get editionAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class WithdrawEditionFundsCall__Outputs {
+  _call: WithdrawEditionFundsCall;
+
+  constructor(call: WithdrawEditionFundsCall) {
     this._call = call;
   }
 }

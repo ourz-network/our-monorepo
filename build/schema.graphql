@@ -1,27 +1,44 @@
-type NFTContract @entity {
-  "The Contract Address"
+type SplitZNFT @entity {
+  "The tokenId of the Zora Media ERC-721"
   id: ID!
-
-  "All of the NFTs from the contract that were created by Split Proxies"
-  splitNFTs: [SplitNFT!]! @derivedFrom(field: "contract")
-}
-
-type SplitNFT @entity {
-  # ex: first Zora NFT = '0-0x7c2668bd0d3c050703cecc956c11bd520c26f7d4'
-  "<tokenId>-<contractAddress>"
-  id: ID!
-
-  "The tokenId of the ERC-721"
-  tokenId: String!
-
-  "The ERC-721 contract's address"
-  contract: NFTContract!
 
   "The creator of the ERC-721"
   creator: OurProxy!
 
   "The transaction hash the ERC-721 was originally logged in this subgraph"
   transactionHash: String!
+}
+
+type SplitEdition @entity {
+  "The address of the Zora NFT-Editions contract"
+  id: ID!
+
+  "The creator of the Edition Contract"
+  creator: OurProxy!
+
+  "The title of the Edition contract"
+  name: String!
+
+  "Symbol of the Edition contract"
+  symbol: String!
+
+  "Metadata: Description of the Edition entry"
+  description: String!
+
+  "Metadata: Animation url (optional) of the Edition entry"
+  animationUrl: String!
+
+  "Metadata: Image url (semi-required) of the Edition entry"
+  imageUrl: String!
+
+  "Total size of the Edition (number of possible editions)"
+  editionSize: BigInt!
+
+  # "Number of remaining possible mints"
+  # remainingMints: BigInt!
+
+  "BPS amount of royalty"
+  royaltyBPS: BigInt!
 }
 
 type ERC20Transfer @entity {
@@ -46,7 +63,7 @@ type OurProxy @entity {
   id: ID!
 
   "A nickname for the Proxy"
-  nickname: String
+  nickname: String!
 
   "The transaction hash the Proxy was created at"
   transactionHash: String!
@@ -76,7 +93,10 @@ type OurProxy @entity {
   splitRecipients: [SplitRecipient!]!
 
   "The ERC721(s) the Proxy created"
-  creations: [SplitNFT!]! @derivedFrom(field: "creator")
+  creations: [SplitZNFT!]! @derivedFrom(field: "creator")
+
+  "The Zora NFT-Edition(s) the Proxy created"
+  editions: [SplitEdition!]! @derivedFrom(field: "creator")
 
   "The ERC20 Transfers that the Proxy has successfully distributed"
   ERC20Transfers: [ERC20Transfer!]! @derivedFrom(field: "splitProxy")
