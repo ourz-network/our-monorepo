@@ -17,8 +17,10 @@ export interface ZNFTEdition {
   animationHash: BytesLike;
   imageUrl?: string;
   imageHash: BytesLike;
-  editionSize: BigNumberish;
-  royaltyBPS: BigNumberish;
+  editionSize: number;
+  royaltyBPS: number;
+  salePrice: number;
+  publicMint: bool;
 }
 
 export interface MintForm {

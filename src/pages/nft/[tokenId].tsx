@@ -10,7 +10,7 @@ import { getPostByID } from "@/modules/subgraphs/zora/functions";
 import { Ourz20210928 } from "@/utils/20210928";
 import { Media } from "@/utils/ZoraSubgraph";
 
-const NFTView = ({
+const ViewERC721 = ({
   tokenId,
   recipients,
   post,
@@ -117,4 +117,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default NFTView;
+export default ViewERC721;

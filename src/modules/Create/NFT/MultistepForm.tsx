@@ -114,6 +114,23 @@ const NewMintMultistepForm = ({
     }));
   };
 
+  const setBidShare = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      creatorBidShare: event.target.value,
+    }));
+  };
+
+  const setPublicMint = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      metadata: {
+        ...prevState.metadata,
+        publicMint: event.target.checked,
+      },
+    }));
+  };
+
   const handleMetadataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -161,7 +178,18 @@ const NewMintMultistepForm = ({
       network?.chainId === 4 &&
       mintForm.mintKind === "Edition"
     ) {
-      await createZoraEdition({ signer, networkId: network.chainId, proxyAddress, mintForm });
+      const editionAddress = await createZoraEdition({
+        signer,
+        networkId: network.chainId,
+        proxyAddress,
+        mintForm,
+      });
+      if (editionAddress) {
+        Router.push(`/nft/edition/${editionAddress}`).then(
+          () => {},
+          () => {}
+        );
+      }
       /*
        * minting as connected web3Wallet
        * const tokenId = await mintNFTSolo(mintForm); // received as 'media';
@@ -291,6 +319,8 @@ const NewMintMultistepForm = ({
           <MintDetails
             mintForm={mintForm}
             handleChange={handleMetadataChange}
+            setBidShare={setBidShare}
+            setPublicMint={setPublicMint}
             thumbs={thumbs}
             next={next}
             back={back}
