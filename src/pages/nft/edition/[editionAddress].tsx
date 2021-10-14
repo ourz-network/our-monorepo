@@ -101,7 +101,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   if (res) {
     const metadata = res;
-    const editionSize = await editionContract.editionSize();
+    const editionSize: BigNumber = await editionContract.editionSize();
     let totalSupply = BigNumber.from(0);
     try {
       totalSupply = await editionContract.totalSupply();
@@ -112,9 +112,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const salePrice = await editionContract.salePrice();
     // const whitelistOnly = await editionContract.allowedMinters(zeroAddress);
     const saleInfo = {
-      maxSupply: editionSize.toNumber(),
-      currentSupply: totalSupply.toNumber(),
-      salePrice: salePrice.toNumber(),
+      maxSupply: Number(editionSize.toString()),
+      currentSupply: Number(totalSupply.toString()),
+      salePrice: Number(ethers.utils.formatUnits(salePrice)),
       // whitelistOnly,
     };
 
@@ -124,13 +124,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
         metadata,
         saleInfo,
       },
-      revalidate: 45,
+      revalidate: 1,
     };
   }
 
   return {
     props: { editionAddress, metadata: undefined },
-    revalidate: 45,
+    revalidate: 1,
   };
 };
 

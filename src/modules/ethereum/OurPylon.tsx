@@ -390,7 +390,7 @@ export const createZoraEdition = async ({
       cryptomedia.animationHash,
       cryptomedia.imageUrl,
       cryptomedia.imageHash,
-      metadata.editionSize || 0,
+      metadata.editionSize,
       BPS,
       salePrice,
       metadata.publicMint
@@ -412,7 +412,7 @@ export const createZoraEdition = async ({
       cryptomedia.imageHash,
       metadata.editionSize,
       BPS,
-      salePrice || 0,
+      salePrice,
       metadata.publicMint || false
     );
     const mintReceipt = await mintTx.wait();
