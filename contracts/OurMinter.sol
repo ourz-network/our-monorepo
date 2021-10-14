@@ -202,7 +202,9 @@ contract OurMinter is OurManagement {
 
     /** NFT-Editions
      * @notice Creates a new edition contract as a factory with a deterministic address
-     * @dev also approves the Owner that called this as a minter.
+     * @dev if publicMint is true & salePrice is more than 0:
+     *      anyone will be able to mint immediately after the edition is deployed
+     *      Set salePrice to 0 if you wish to enable purchasing at a later time
      */
     function createZoraEdition(
         string memory name,
@@ -213,7 +215,9 @@ contract OurMinter is OurManagement {
         string memory imageUrl,
         bytes32 imageHash,
         uint256 editionSize,
-        uint256 royaltyBPS
+        uint256 royaltyBPS,
+        uint256 salePrice,
+        bool publicMint
     ) external onlyOwners {
         uint256 editionId = IZora(ZORA_EDITIONS).createEdition(
             name,
@@ -229,7 +233,13 @@ contract OurMinter is OurManagement {
 
         address editionAddress = IZora(ZORA_EDITIONS).getEditionAtId(editionId);
 
-        IZora(editionAddress).setApprovedMinter(msg.sender, true);
+        if (salePrice > 0) {
+            IZora(editionAddress).setSalePrice(salePrice);
+        }
+
+        if (publicMint) {
+            IZora(editionAddress).setApprovedMinter(address(0x0), true);
+        }
 
         emit EditionCreated(
             editionAddress,
