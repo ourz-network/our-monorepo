@@ -12,74 +12,30 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class NFTContract extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save NFTContract entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save NFTContract entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("NFTContract", id.toString(), this);
-    }
-  }
-
-  static load(id: string): NFTContract | null {
-    return changetype<NFTContract | null>(store.get("NFTContract", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get splitNFTs(): Array<string> {
-    let value = this.get("splitNFTs");
-    return value!.toStringArray();
-  }
-
-  set splitNFTs(value: Array<string>) {
-    this.set("splitNFTs", Value.fromStringArray(value));
-  }
-}
-
-export class SplitNFT extends Entity {
+export class SplitZNFT extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("tokenId", Value.fromString(""));
-    this.set("contract", Value.fromString(""));
     this.set("creator", Value.fromString(""));
     this.set("transactionHash", Value.fromString(""));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save SplitNFT entity without an ID");
+    assert(id != null, "Cannot save SplitZNFT entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save SplitNFT entity with non-string ID. " +
+        "Cannot save SplitZNFT entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("SplitNFT", id.toString(), this);
+      store.set("SplitZNFT", id.toString(), this);
     }
   }
 
-  static load(id: string): SplitNFT | null {
-    return changetype<SplitNFT | null>(store.get("SplitNFT", id));
+  static load(id: string): SplitZNFT | null {
+    return changetype<SplitZNFT | null>(store.get("SplitZNFT", id));
   }
 
   get id(): string {
@@ -89,24 +45,6 @@ export class SplitNFT extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
-  }
-
-  get tokenId(): string {
-    let value = this.get("tokenId");
-    return value!.toString();
-  }
-
-  set tokenId(value: string) {
-    this.set("tokenId", Value.fromString(value));
-  }
-
-  get contract(): string {
-    let value = this.get("contract");
-    return value!.toString();
-  }
-
-  set contract(value: string) {
-    this.set("contract", Value.fromString(value));
   }
 
   get creator(): string {
@@ -125,6 +63,120 @@ export class SplitNFT extends Entity {
 
   set transactionHash(value: string) {
     this.set("transactionHash", Value.fromString(value));
+  }
+}
+
+export class SplitEdition extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("creator", Value.fromString(""));
+    this.set("name", Value.fromString(""));
+    this.set("symbol", Value.fromString(""));
+    this.set("description", Value.fromString(""));
+    this.set("animationUrl", Value.fromString(""));
+    this.set("imageUrl", Value.fromString(""));
+    this.set("editionSize", Value.fromBigInt(BigInt.zero()));
+    this.set("royaltyBPS", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SplitEdition entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SplitEdition entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SplitEdition", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SplitEdition | null {
+    return changetype<SplitEdition | null>(store.get("SplitEdition", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get creator(): string {
+    let value = this.get("creator");
+    return value!.toString();
+  }
+
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get symbol(): string {
+    let value = this.get("symbol");
+    return value!.toString();
+  }
+
+  set symbol(value: string) {
+    this.set("symbol", Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get("description");
+    return value!.toString();
+  }
+
+  set description(value: string) {
+    this.set("description", Value.fromString(value));
+  }
+
+  get animationUrl(): string {
+    let value = this.get("animationUrl");
+    return value!.toString();
+  }
+
+  set animationUrl(value: string) {
+    this.set("animationUrl", Value.fromString(value));
+  }
+
+  get imageUrl(): string {
+    let value = this.get("imageUrl");
+    return value!.toString();
+  }
+
+  set imageUrl(value: string) {
+    this.set("imageUrl", Value.fromString(value));
+  }
+
+  get editionSize(): BigInt {
+    let value = this.get("editionSize");
+    return value!.toBigInt();
+  }
+
+  set editionSize(value: BigInt) {
+    this.set("editionSize", Value.fromBigInt(value));
+  }
+
+  get royaltyBPS(): BigInt {
+    let value = this.get("royaltyBPS");
+    return value!.toBigInt();
+  }
+
+  set royaltyBPS(value: BigInt) {
+    this.set("royaltyBPS", Value.fromBigInt(value));
   }
 }
 
@@ -207,6 +259,7 @@ export class OurProxy extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("nickname", Value.fromString(""));
     this.set("transactionHash", Value.fromString(""));
     this.set("createdAtTimestamp", Value.fromBigInt(BigInt.zero()));
     this.set("createdAtBlockNumber", Value.fromBigInt(BigInt.zero()));
@@ -244,21 +297,13 @@ export class OurProxy extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get nickname(): string | null {
+  get nickname(): string {
     let value = this.get("nickname");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set nickname(value: string | null) {
-    if (!value) {
-      this.unset("nickname");
-    } else {
-      this.set("nickname", Value.fromString(<string>value));
-    }
+  set nickname(value: string) {
+    this.set("nickname", Value.fromString(value));
   }
 
   get transactionHash(): string {
@@ -349,6 +394,15 @@ export class OurProxy extends Entity {
 
   set creations(value: Array<string>) {
     this.set("creations", Value.fromStringArray(value));
+  }
+
+  get editions(): Array<string> {
+    let value = this.get("editions");
+    return value!.toStringArray();
+  }
+
+  set editions(value: Array<string>) {
+    this.set("editions", Value.fromStringArray(value));
   }
 
   get ERC20Transfers(): Array<string> {

@@ -34,93 +34,6 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
-        "name": "ids",
-        "type": "uint256[]"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "values",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "Batch1155Received",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "ERC1155Received",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ERC721Received",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "to",
         "type": "address"
@@ -159,18 +72,54 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "editionId",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "animationUrl",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "imageUrl",
+        "type": "string"
       },
       {
         "indexed": false,
         "internalType": "uint256",
         "name": "editionSize",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "royaltyBPS",
+        "type": "uint256"
       }
     ],
-    "name": "EditionMinted",
+    "name": "EditionCreated",
     "type": "event"
   },
   {
@@ -276,6 +225,32 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "ZNFTMinted",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "MIRROR_CROWDFUND",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "PERCENTAGE_SCALE",
     "outputs": [
@@ -290,7 +265,7 @@
   },
   {
     "inputs": [],
-    "name": "_mirrorCrowdfund",
+    "name": "WETH",
     "outputs": [
       {
         "internalType": "address",
@@ -303,7 +278,7 @@
   },
   {
     "inputs": [],
-    "name": "_partyBid",
+    "name": "ZORA_AH",
     "outputs": [
       {
         "internalType": "address",
@@ -316,7 +291,7 @@
   },
   {
     "inputs": [],
-    "name": "_zoraAH",
+    "name": "ZORA_EDITIONS",
     "outputs": [
       {
         "internalType": "address",
@@ -329,7 +304,7 @@
   },
   {
     "inputs": [],
-    "name": "_zoraEditions",
+    "name": "ZORA_MARKET",
     "outputs": [
       {
         "internalType": "address",
@@ -342,20 +317,7 @@
   },
   {
     "inputs": [],
-    "name": "_zoraMarket",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_zoraMedia",
+    "name": "ZORA_MEDIA",
     "outputs": [
       {
         "internalType": "address",
@@ -413,7 +375,7 @@
         "type": "tuple"
       }
     ],
-    "name": "acceptZoraMarketBid",
+    "name": "acceptZMarketBid",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -458,7 +420,7 @@
         "type": "uint256"
       }
     ],
-    "name": "cancelZoraAuction",
+    "name": "cancelZAuction",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -634,48 +596,58 @@
     "inputs": [
       {
         "internalType": "string",
-        "name": "_name",
+        "name": "name",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "_symbol",
+        "name": "symbol",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "_description",
+        "name": "description",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "_animationUrl",
+        "name": "animationUrl",
         "type": "string"
       },
       {
         "internalType": "bytes32",
-        "name": "_animationHash",
+        "name": "animationHash",
         "type": "bytes32"
       },
       {
         "internalType": "string",
-        "name": "_imageUrl",
+        "name": "imageUrl",
         "type": "string"
       },
       {
         "internalType": "bytes32",
-        "name": "_imageHash",
+        "name": "imageHash",
         "type": "bytes32"
       },
       {
         "internalType": "uint256",
-        "name": "_editionSize",
+        "name": "editionSize",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_royaltyBPS",
+        "name": "royaltyBPS",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "salePrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "publicMint",
+        "type": "bool"
       }
     ],
     "name": "createZoraEdition",
@@ -899,6 +871,24 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "recipients",
+        "type": "address[]"
+      }
+    ],
+    "name": "mintZEditions",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "string",
@@ -969,7 +959,7 @@
         "type": "tuple"
       }
     ],
-    "name": "mintZora",
+    "name": "mintZNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1079,7 +1069,7 @@
         "type": "tuple"
       }
     ],
-    "name": "mintZoraWithSig",
+    "name": "mintZNFTWithSig",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1088,22 +1078,22 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "operator",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "from",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "uint256[]",
-        "name": "ids",
+        "name": "",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "values",
+        "name": "",
         "type": "uint256[]"
       },
       {
@@ -1120,29 +1110,29 @@
         "type": "bytes4"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "operator",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "from",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "id",
+        "name": "",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "value",
+        "name": "",
         "type": "uint256"
       },
       {
@@ -1159,24 +1149,24 @@
         "type": "bytes4"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "operator_",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "from_",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "tokenId_",
+        "name": "",
         "type": "uint256"
       },
       {
@@ -1193,7 +1183,7 @@
         "type": "bytes4"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -1222,7 +1212,7 @@
         "type": "uint256"
       }
     ],
-    "name": "removeZoraMarketAsk",
+    "name": "removeZMarketAsk",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1255,6 +1245,11 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "minter",
         "type": "address"
       },
@@ -1272,24 +1267,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_imageUrl",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_animationUrl",
-        "type": "string"
-      }
-    ],
-    "name": "setEditionURLs",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "auctionId",
         "type": "uint256"
@@ -1300,7 +1277,7 @@
         "type": "bool"
       }
     ],
-    "name": "setZoraAuctionApproval",
+    "name": "setZAuctionApproval",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1318,7 +1295,7 @@
         "type": "uint256"
       }
     ],
-    "name": "setZoraAuctionReservePrice",
+    "name": "setZAuctionReservePrice",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1348,7 +1325,7 @@
         "type": "tuple"
       }
     ],
-    "name": "setZoraMarketAsk",
+    "name": "setZMarketAsk",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1404,7 +1381,7 @@
         "type": "tuple"
       }
     ],
-    "name": "setZoraMarketBidShares",
+    "name": "setZMarketBidShares",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1418,44 +1395,6 @@
       }
     ],
     "name": "setup",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "marketWrapper",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "nftContract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "auctionId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "symbol",
-        "type": "string"
-      }
-    ],
-    "name": "startSplitParty",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1553,8 +1492,32 @@
         "type": "uint256"
       }
     ],
-    "name": "untrustedBurn721",
+    "name": "untrustedBurnERC721",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "untrustedExecuteTransaction",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "success",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -1576,7 +1539,7 @@
         "type": "uint256"
       }
     ],
-    "name": "untrustedSafeTransfer721",
+    "name": "untrustedSafeTransferERC721",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1599,81 +1562,104 @@
         "type": "bool"
       }
     ],
-    "name": "untrustedSetApproval721",
+    "name": "untrustedSetApprovalERC721",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "metadataURI",
-        "type": "string"
-      }
-    ],
-    "name": "updateZoraMediaMetadataURI",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenURI",
-        "type": "string"
-      }
-    ],
-    "name": "updateZoraMediaTokenURI",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenURI",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "metadataURI",
-        "type": "string"
-      }
-    ],
-    "name": "updateZoraMediaURIs",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "weth",
-    "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "imageUrl",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "animationUrl",
+        "type": "string"
+      }
+    ],
+    "name": "updateEditionURLs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "metadataURI",
+        "type": "string"
+      }
+    ],
+    "name": "updateZNFTMetadataURI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "updateZNFTTokenURI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenURI",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "metadataURI",
+        "type": "string"
+      }
+    ],
+    "name": "updateZNFTURIs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "withdrawEditionFunds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
