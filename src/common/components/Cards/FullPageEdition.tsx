@@ -41,7 +41,7 @@ const FullPageEdition = ({
   return (
     <>
       <div className="flex object-contain justify-center p-8 border-b max-h-75vh text-dark-primary border-dark-border bg-dark-accent min-h-33vh">
-        {loading && <p>loading...</p>}
+        {loading && !videoError && <p>loading...</p>}
         {metadata.animationUrl !== " " && !videoError ? (
           <video
             muted
