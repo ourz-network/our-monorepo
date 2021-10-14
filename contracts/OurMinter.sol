@@ -253,7 +253,26 @@ contract OurMinter is OurManagement {
         );
     }
 
-   
+    /** NFT-Editions
+     * @param editionAddress the address of the Edition Contract to call
+     * @param recipients list of addresses to send the newly minted editions to
+     * @dev This mints multiple editions to the given list of addresses.
+     */
+    function mintZEditions(
+        address editionAddress,
+        address[] calldata recipients
+    ) external onlyOwners {
+        IZora(editionAddress).mintEditions(recipients);
+    }
+
+    /** NFT-Editions
+     * @param editionAddress the address of the Edition Contract to call
+     * @dev Withdraws all funds from Edition to split
+     * @notice callable by anyone, as funds are sent to the Split
+     */
+    function withdrawEditionFunds(address editionAddress) external {
+        IZora(editionAddress).withdraw();
+    }
 
     /** NFT-Editions
      * @param editionAddress the address of the Edition Contract to call
