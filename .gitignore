@@ -12,3 +12,4 @@ env*
 .vscode
 package-lock.json
 scripts/deploy.ts
+contracts/.solcx-lock-0.8.4
