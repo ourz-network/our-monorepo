@@ -48,10 +48,11 @@ Currently the contracts are deployed on **Rinkeby** only:
 ### Benefits of these contracts:
 
 - Splits funds securely & efficiently
-- Royalties received from ERC-721 secondary sales can be split (protocol agnostic)
-- Take payment in ERC-20s, though ETH is still recommended.
 - Built for Zora. Need I say more? Supports 1/1 unique NFTs & the new Editions contracts. [Read more](https://github.com/ourzora/nft-editions)
-- Supports minting/selling on other protocols via Gnosis Safe's [execTransaction()](https://github.com/gnosis/safe-contracts/blob/main/contracts/base/Executor.sol), while still guaranteeing ETH in the split is only claimable by recipients. This enables potentially endless possibilities, including using custom ManifoldXYZ creator contracts if Zora doesn't fulfill your needs. It also enables a rogue split owner to approve themselves to transfer ERC-20s, so while splitting ERC-20s is supported - **ETH is still recommended**
+- Royalties received from ERC-721 secondary sales can be split
+- Protocol Agnostic: Splits act as an extension/add-on for any NFT protocol implementing ERC-721/777/1155 standard
+- Supports minting/selling on other protocols via Gnosis Safe's [execTransaction()](https://github.com/gnosis/safe-contracts/blob/main/contracts/base/Executor.sol), while still guaranteeing ETH in the split is only claimable by recipients.
+- This enables potentially endless possibilities, including using custom ManifoldXYZ creator contracts if Zora doesn't fulfill your needs.
 
 ### Potential use cases for these contracts:
 
