@@ -32,7 +32,7 @@ contract OurMinter is OurManagement {
     address public constant ZORA_AH =
         0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
     address public constant ZORA_EDITIONS =
-        0x5d6E1357Acc8BF654979f3b24fdef8C5549A491e;
+        0x38d43BedE3Aac0262FcA248C7fCA10cec35e3bCf;
     address public constant MIRROR_CROWDFUND =
         0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
 
