@@ -3,37 +3,81 @@ import { FullComponents, NFTFullPage } from "@zoralabs/nft-components";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Signer } from "ethers";
 import DetailedPie from "@/components/Charts/DetailedPie";
 import Table from "@/components/Charts/Table";
 import { SplitEdition } from "@/utils/OurzSubgraph";
 import Button from "@/components/Button";
-import web3 from "@/app/web3";
+import {
+  purchaseEdition,
+  setApprovedMinter,
+  withdrawEditionFunds,
+} from "@/modules/ethereum/OurPylon";
 
 const FullPageEdition = ({
   metadata,
-  ownAccount,
+  isOwner,
   chartData,
   saleInfo,
+  signer,
 }: {
   metadata: SplitEdition;
-  ownAccount: boolean;
+  isOwner: boolean;
   chartData: {
     name: string;
     shares: number;
   }[];
   saleInfo: { maxSupply: number; currentSupply: number; salePrice: number; whitelistOnly: boolean };
+  signer: Signer;
 }): JSX.Element => {
-  const { signer } = web3.useContainer();
   const [loading, setLoading] = useState(true); // Global loading state
   const [videoError, setVideoError] = useState(false); // Global loading state
   const recipients = metadata?.creator.splitRecipients;
+  const [approvalForm, setApprovalForm] = useState({});
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setApprovalForm((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.checked,
+    }));
+  };
+  const handleMinter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setApprovalForm((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   const setSalePrice = async () => {
     // console.log(`hi`);
   };
-  const setEditionMinter = async () => {
-    // console.log(`hi`);
+
+  const withdraw = async () => {
+    const bool = await withdrawEditionFunds({
+      signer,
+      proxyAddress: metadata.creator.id,
+      editionAddress: metadata.id,
+    });
   };
+
+  const setEditionMinter = async () => {
+    const bool = await setApprovedMinter({
+      signer,
+      proxyAddress: metadata.creator.id,
+      editionAddress: metadata.id,
+      minterAddress: approvalForm.minterAddress,
+      approved: approvalForm.approved,
+    });
+  };
+
+  const purchase = async () => {
+    const bool = await purchaseEdition({
+      signer,
+      editionAddress: metadata.id,
+      salePrice: saleInfo.salePrice,
+    });
+  };
+
   const mintEditions = async () => {
     // console.log(`hi`);
   };
@@ -75,13 +119,13 @@ const FullPageEdition = ({
                   <p className="whitespace-pre-wrap break-words text-dark-primary">{`${metadata.description}`}</p>
                 </div>
               </div>
-              <div className="flex justify-between w-full h-auto">
-                <div className="mx-4 my-auto w-full text-center border h-min border-dark-border">
+              <div className="flex justify-center w-full h-auto">
+                {/* <div className="mx-4 my-auto w-full text-center border h-min border-dark-border">
                   <ol>
                     <li>MINT HISTORY HERE </li>
                   </ol>
-                </div>
-                <div className="self-end p-1 m-2 text-center">
+                </div> */}
+                <div className="p-1 m-2 text-center">
                   <p className="mb-1">
                     {saleInfo.maxSupply > 0
                       ? `${saleInfo.currentSupply}/${saleInfo.maxSupply}`
@@ -90,20 +134,18 @@ const FullPageEdition = ({
                     Minted
                   </p>
 
-                  <div className="p-1 border border-dark-border">
-                    {saleInfo.salePrice > 0 ? (
+                  {saleInfo.salePrice > 0 && saleInfo.maxSupply !== saleInfo.currentSupply && (
+                    <div className="p-1 border border-dark-border">
                       <Button
-                        onClick={() => mintEditions()}
+                        onClick={() => purchase()}
                         text={`Purchase for ${saleInfo.salePrice}Ξ`}
                         isMain={false}
                       />
-                    ) : (
-                      `Minting Paused`
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col mx-4 my-2 border border-dark-border">
+              <div className="flex flex-col my-2 border border-dark-border">
                 <p className="p-4 w-full text-xs border-b h-min tracking-2-wide border-dark-border">
                   PROOF OF AUTHENTICITY
                 </p>
@@ -154,17 +196,46 @@ const FullPageEdition = ({
               )}
             </div>
           </div>
-          {!ownAccount ? (
+          {!isOwner ? (
             ""
           ) : (
             <>
-              Placeholders {`->`}
+              <Button text="Withdraw Funds" isMain={false} onClick={() => withdraw()} />
               <Button text="Set Sale Price" isMain={false} onClick={() => setSalePrice()} />
-              <Button
-                text="Set Approved Minter"
-                isMain={false}
-                onClick={() => setEditionMinter()}
-              />
+              <div className="flex flex-col border border-dark-border">
+                <form>
+                  <p>Set Minting Approvals for An Address</p>
+                  <p>Enter the address</p>
+                  <input
+                    className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                    type="text"
+                    id="minterAddress"
+                    name="minterAddress"
+                    placeholder="Enter 0xAddress"
+                    value={approvalForm.minterAddress}
+                    onChange={handleMinter}
+                    aria-label="minterAddress"
+                  />
+                  <p>Check the box if the address should be allowed to mint</p>
+                  <input
+                    className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                    type="checkbox"
+                    id="approved"
+                    name="approved"
+                    value={approvalForm.approved}
+                    onChange={handleCheck}
+                    aria-label="Allow Public Mint"
+                  />
+                </form>
+                <div className="mx-auto">
+                  <Button
+                    text="Set Approved Minter"
+                    isMain={false}
+                    onClick={() => setEditionMinter()}
+                  />
+                </div>
+              </div>
+
               <Button text="Mint To Recipients" isMain={false} onClick={() => mintEditions()} />
             </>
           )}

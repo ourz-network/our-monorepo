@@ -174,6 +174,9 @@ export const EDITION_INFO = (editionAddress: string): DocumentNode => {
         creator {
           id
           nickname
+          proxyOwners {
+             id
+          }
           splitRecipients {
             user { id }
             name

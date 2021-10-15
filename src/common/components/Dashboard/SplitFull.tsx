@@ -21,6 +21,7 @@ const SplitFull = ({
   setShowFull: Dispatch<SetStateAction<boolean>>;
 }): JSX.Element => {
   const Router = useRouter();
+  const { signer, address } = web3.useContainer();
   const { data } = useAuctions(split.id);
   const [dialog, setDialog] = useState<string | undefined>();
   const [showDialog, setShowDialog] = useState<boolean | undefined>();
@@ -42,7 +43,10 @@ const SplitFull = ({
 
   const clickClaim = async () => {
     await claimFunds({
+      signer,
+      address,
       splits: split.splitRecipients,
+      needsIncremented: split.needsIncremented,
       proxyAddress: split.id,
     });
   };

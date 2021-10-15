@@ -114,10 +114,10 @@ const NewMintMultistepForm = ({
     }));
   };
 
-  const setBidShare = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const setBidShare = (bidshare: number) => {
     setFormData((prevState) => ({
       ...prevState,
-      creatorBidShare: event.target.value,
+      creatorBidShare: bidshare,
     }));
   };
 

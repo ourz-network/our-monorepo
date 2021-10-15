@@ -11,6 +11,7 @@ import { Ourz20210928 } from "@/utils/20210928";
 import { Media } from "@/utils/ZoraSubgraph";
 import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
 import { zeroAddress } from "@/utils/index";
+import web3 from "@/app/web3";
 
 const editionABI = editionJSON.abi;
 
@@ -23,6 +24,8 @@ const ViewEdition = ({
   metadata: SplitEdition;
   saleInfo: { maxSupply: number; currentSupply: number; salePrice: number; whitelistOnly: boolean };
 }): JSX.Element => {
+  const { signer, address } = web3.useContainer();
+  const [isOwner, setIsOwner] = useState(false);
   const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
 
   useEffect(() => {
@@ -41,6 +44,21 @@ const ViewEdition = ({
     }
   }, [metadata?.creator?.splitRecipients]);
 
+  useEffect(() => {
+    function checkOwners(ethAddress: string) {
+      const found = metadata.creator.proxyOwners.find(
+        (owner) => owner.id === ethAddress.toString().toLowerCase()
+      );
+
+      if (found) {
+        setIsOwner(true);
+      }
+    }
+    if (address && metadata?.creator?.proxyOwners) {
+      checkOwners(address);
+    }
+  }, [address, metadata?.creator?.proxyOwners]);
+
   return (
     <PageLayout>
       <div
@@ -51,8 +69,9 @@ const ViewEdition = ({
           <FullPageEdition
             metadata={metadata}
             saleInfo={saleInfo}
-            ownAccount
+            isOwner={isOwner}
             chartData={firstSale}
+            signer={signer}
           />
         )}
       </div>

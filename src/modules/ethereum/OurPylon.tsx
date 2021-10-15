@@ -14,7 +14,8 @@ import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import factoryJSON from "@/ethereum/abis/OurFactory.json";
-import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
+import editionMintableJSON from "@/ethereum/abis/SingleEditionMintable.json";
+import editionFactoryJSON from "@/ethereum/abis/SingleEditionMintableCreator.json";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
 import { FormSplitRecipient, MintForm, ZNFTEdition } from "@/utils/CreateModule";
 import { zeroAddress } from "@/utils/index";
@@ -44,10 +45,19 @@ const initializeOurProxyAsPylonWSigner = ({
   );
 
 // zora
-const editionABI = editionJSON.abi;
+const editionFactoryABI = editionFactoryJSON.abi;
+const editionMintableABI = editionMintableJSON.abi;
 
-const initializeZoraEditionsWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_4 as string, editionABI, signer);
+const initializeEditionFactoryWSigner = ({ signer }: { signer: Signer }): Contract =>
+  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_4 as string, editionFactoryABI, signer);
+
+const initializeEditionWSigner = ({
+  signer,
+  editionAddress,
+}: {
+  signer: Signer;
+  editionAddress: string;
+}): Contract => new ethers.Contract(editionAddress, editionMintableABI, signer);
 
 export function getZoraQuery({
   injectedProvider,
@@ -375,8 +385,8 @@ export const createZoraEdition = async ({
     cryptomedia: Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">;
   } = await createCryptomedia(mintForm);
   const metadata = mintForm.metadata as ZNFTEdition;
-  const royalty = Number((Number(mintForm.creatorBidShare) * 100).toFixed(4));
-  const BPS = BigNumber.from(royalty);
+  const royalty = mintForm.creatorBidShare * 100;
+  // const BPS = BigNumber.from(royalty);
   const salePrice = ethers.utils.parseUnits(metadata?.salePrice?.toString() || "0", "ether");
 
   if (proxyAddress && !soloAddress) {
@@ -391,7 +401,7 @@ export const createZoraEdition = async ({
       cryptomedia.imageUrl,
       cryptomedia.imageHash,
       metadata.editionSize,
-      BPS,
+      royalty,
       salePrice,
       metadata.publicMint
     );
@@ -401,7 +411,7 @@ export const createZoraEdition = async ({
       return mintReceipt.events[metadata.salePrice > 0 ? 4 : 3].args[0];
     }
   } else {
-    const zora = initializeZoraEditionsWSigner({ signer });
+    const zora = initializeEditionFactoryWSigner({ signer });
     const mintTx = await zora.createEdition(
       metadata.name,
       metadata.symbol,
@@ -411,7 +421,7 @@ export const createZoraEdition = async ({
       cryptomedia.imageUrl,
       cryptomedia.imageHash,
       metadata.editionSize,
-      BPS,
+      royalty,
       salePrice,
       metadata.publicMint || false
     );
@@ -419,6 +429,73 @@ export const createZoraEdition = async ({
     if (mintReceipt) {
       return mintReceipt.events[metadata.salePrice > 0 ? 4 : 3].args[0];
     }
+  }
+};
+
+export const purchaseEdition = async ({
+  signer,
+  editionAddress,
+  salePrice,
+}: {
+  signer: Signer;
+  editionAddress: string;
+  salePrice: BigNumber;
+  // eslint-disable-next-line consistent-return
+}): Promise<boolean> => {
+  // eslint-disable-next-line no-param-reassign
+  editionAddress = ethers.utils.getAddress(editionAddress);
+
+  const edition = initializeEditionWSigner({ signer, editionAddress });
+  const purchaseTx = await edition.purchase({
+    value: ethers.utils.parseUnits(salePrice.toString()),
+  });
+  const purchaseReceipt = await purchaseTx.wait();
+  if (purchaseReceipt) {
+    console.log(purchaseReceipt);
+  }
+};
+
+export const setApprovedMinter = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+  minterAddress,
+  approved,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  minterAddress: string;
+  approved: boolean;
+  // eslint-disable-next-line consistent-return
+}): Promise<boolean> => {
+  // eslint-disable-next-line no-param-reassign
+  proxyAddress = ethers.utils.getAddress(proxyAddress);
+  // eslint-disable-next-line no-param-reassign
+  editionAddress = ethers.utils.getAddress(editionAddress);
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const approveTx = await PROXY_WRITE.setEditionMinter(editionAddress, minterAddress, approved);
+  const txReceipt = await approveTx.wait();
+  if (txReceipt) {
+    console.log(txReceipt);
+  }
+};
+
+export const withdrawEditionFunds = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  // eslint-disable-next-line consistent-return
+}): Promise<boolean> => {
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const withdrawTx = await PROXY_WRITE.withdrawEditionFunds(editionAddress);
+  const txReceipt = await withdrawTx.wait();
+  if (txReceipt) {
+    console.log(txReceipt);
   }
 };
 
