@@ -9,8 +9,10 @@ import Table from "@/components/Charts/Table";
 import { SplitEdition } from "@/utils/OurzSubgraph";
 import Button from "@/components/Button";
 import {
+  mintEditionsToRecipients,
   purchaseEdition,
   setApprovedMinter,
+  setEditionPrice,
   withdrawEditionFunds,
 } from "@/modules/ethereum/OurPylon";
 
@@ -34,8 +36,10 @@ const FullPageEdition = ({
   const [videoError, setVideoError] = useState(false); // Global loading state
   const recipients = metadata?.creator.splitRecipients;
   const [approvalForm, setApprovalForm] = useState({});
+  const [price, setPrice] = useState("0");
+  const [mintRecipients, setMintRecipients] = useState([]);
 
-  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     setApprovalForm((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.checked,
@@ -47,9 +51,17 @@ const FullPageEdition = ({
       [event.target.name]: event.target.value,
     }));
   };
+  const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(event.target.value);
+  };
 
   const setSalePrice = async () => {
-    // console.log(`hi`);
+    const bool = await setEditionPrice({
+      signer,
+      proxyAddress: metadata.creator.id,
+      editionAddress: metadata.id,
+      salePrice: price,
+    });
   };
 
   const withdraw = async () => {
@@ -79,7 +91,12 @@ const FullPageEdition = ({
   };
 
   const mintEditions = async () => {
-    // console.log(`hi`);
+    const bool = await mintEditionsToRecipients({
+      signer,
+      proxyAddress: metadata.creator.id,
+      editionAddress: metadata.id,
+      recipients: mintRecipients,
+    });
   };
 
   return (
@@ -201,7 +218,22 @@ const FullPageEdition = ({
           ) : (
             <>
               <Button text="Withdraw Funds" isMain={false} onClick={() => withdraw()} />
-              <Button text="Set Sale Price" isMain={false} onClick={() => setSalePrice()} />
+              <div className="flex flex-col border border-dark-border">
+                <form>
+                  <p>Set Purchase Price</p>
+                  <p>Enter the amount in ETH</p>
+                  <input
+                    className="visible mb-8 outline-none bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={price}
+                    onChange={handlePrice}
+                    aria-label="price"
+                  />
+                  <Button text="Set Sale Price" isMain={false} onClick={() => setSalePrice()} />
+                </form>
+              </div>
               <div className="flex flex-col border border-dark-border">
                 <form>
                   <p>Set Minting Approvals for An Address</p>
@@ -223,7 +255,7 @@ const FullPageEdition = ({
                     id="approved"
                     name="approved"
                     value={approvalForm.approved}
-                    onChange={handleCheck}
+                    onChange={handleCheckbox}
                     aria-label="Allow Public Mint"
                   />
                 </form>
