@@ -42,6 +42,7 @@ const SplitFull = ({
    */
 
   const clickClaim = async () => {
+    console.log(`clickClaim needsIncremented: ${split.needsIncremented}`);
     await claimFunds({
       signer,
       address,
