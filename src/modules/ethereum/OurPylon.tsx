@@ -633,7 +633,6 @@ export const claimFunds = async ({
   // claim funds with proof
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 
-  console.log(`needsIncremented: ${needsIncremented}`);
   if (!needsIncremented) {
     const claimTx = await PROXY_WRITE.claimETHForAllWindows(account, allocation, proof);
     const claimReceipt = await claimTx.wait();

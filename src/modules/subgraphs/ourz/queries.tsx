@@ -147,6 +147,7 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
               royaltyBPS
             }
             ETH
+            needsIncremented
           }
           name
           role
