@@ -498,6 +498,47 @@ export const withdrawEditionFunds = async ({
     console.log(txReceipt);
   }
 };
+export const setEditionPrice = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+  salePrice,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  salePrice: string;
+  // eslint-disable-next-line consistent-return
+}): Promise<boolean> => {
+  const formattedPrice = ethers.utils.parseUnits(salePrice);
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const pricingTx = await PROXY_WRITE.setEditionPrice(editionAddress, formattedPrice);
+  const txReceipt = await pricingTx.wait();
+  if (txReceipt) {
+    console.log(txReceipt);
+  }
+};
+
+export const mintEditionsToRecipients = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+  recipients,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  recipients: string[];
+  // eslint-disable-next-line consistent-return
+}): Promise<boolean> => {
+  const formattedPrice = ethers.utils.parseUnits(salePrice);
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const mintTx = await PROXY_WRITE.mintZEditions(recipients);
+  const txReceipt = await mintTx.wait();
+  if (txReceipt) {
+    console.log(txReceipt);
+  }
+};
 
 export const createZoraAuction = async ({
   signer,
