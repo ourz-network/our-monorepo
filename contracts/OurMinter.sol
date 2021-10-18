@@ -254,24 +254,17 @@ contract OurMinter is OurManagement {
     }
 
     /** NFT-Editions
-     * @param editionAddress the address of the Edition Contract to call
-     * @param recipients list of addresses to send the newly minted editions to
-     * @dev This mints multiple editions to the given list of addresses.
+     * @param salePrice if sale price is 0 sale is stopped, otherwise that amount
+     *                  of ETH is needed to start the sale.
+     * @dev This sets a simple ETH sales price
+     *      Setting a sales price allows users to mint the edition until it sells out.
+     *      For more granular sales, use an external sales contract.
      */
-    function mintZEditions(
-        address editionAddress,
-        address[] calldata recipients
-    ) external onlyOwners {
-        IZora(editionAddress).mintEditions(recipients);
-    }
-
-    /** NFT-Editions
-     * @param editionAddress the address of the Edition Contract to call
-     * @dev Withdraws all funds from Edition to split
-     * @notice callable by anyone, as funds are sent to the Split
-     */
-    function withdrawEditionFunds(address editionAddress) external {
-        IZora(editionAddress).withdraw();
+    function setEditionPrice(address editionAddress, uint256 salePrice)
+        external
+        onlyOwners
+    {
+        IZora(editionAddress).setSalePrice(salePrice);
     }
 
     /** NFT-Editions
@@ -290,6 +283,27 @@ contract OurMinter is OurManagement {
         bool allowed
     ) external onlyOwners {
         IZora(editionAddress).setApprovedMinter(minter, allowed);
+    }
+
+    /** NFT-Editions
+     * @param editionAddress the address of the Edition Contract to call
+     * @param recipients list of addresses to send the newly minted editions to
+     * @dev This mints multiple editions to the given list of addresses.
+     */
+    function mintEditionsTo(
+        address editionAddress,
+        address[] calldata recipients
+    ) external onlyOwners {
+        IZora(editionAddress).mintEditions(recipients);
+    }
+
+    /** NFT-Editions
+     * @param editionAddress the address of the Edition Contract to call
+     * @dev Withdraws all funds from Edition to split
+     * @notice callable by anyone, as funds are sent to the Split
+     */
+    function withdrawEditionFunds(address editionAddress) external {
+        IZora(editionAddress).withdraw();
     }
 
     /** NFT-Editions
