@@ -61,8 +61,12 @@ export default function GlobalProvider({ children }: { children: JSX.Element }):
               lineSpacing: 28,
               maximumPricingDecimals: 4,
               linkColor: "#B2B2B2", // ourange-300
-              bodyFont: "color: #FFF;", // dark-primary
-              titleFont: "color: #F68D15;", // 70% gray
+              bodyFont: `
+              color: #FFF;
+              `, // dark-primary
+              titleFont: `
+                color: #F68D15; 
+              `, // 70% gray
               headerFont: "color: #691900;",
               mediaContentFont: {
                 fontFamily: `'Playfair Display', 'serif';`,

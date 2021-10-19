@@ -53,7 +53,9 @@ const DashboardNFT = ({
     if (metadata.attributes) {
       return (
         <div className="flex p-2 border-t bg-dark-accent border-dark-border">
-          <div className="mx-auto text-bold">{metadata.name}</div>
+          <div className="mx-auto mb-2 text-xl tracking-wider text-bold font-hero text-dark-primary">
+            {metadata.name}
+          </div>
         </div>
       );
     }

@@ -42,14 +42,12 @@ const UserDashboard = (): JSX.Element => {
 
   const handleClickThumbnail = (split: OurProxy, isOwned: boolean) => {
     setSelectedSplit(split);
-    let userInfo: SplitRecipient;
 
     split.splitRecipients.forEach((recipient) => {
       if (recipient.user.id === address.toLowerCase()) {
-        userInfo = recipient;
+        setUserSplitDetails(recipient);
       }
     });
-    setUserSplitDetails(userInfo);
     setSelectedIsOwned(isOwned);
     setShowFull(true);
   };
@@ -62,7 +60,12 @@ const UserDashboard = (): JSX.Element => {
           className="flex flex-col w-full min-h-screen h-min bg-dark-background"
         >
           {showFull && (
-            <SplitFull split={selectedSplit} isOwned={selectedIsOwned} setShowFull={setShowFull} />
+            <SplitFull
+              split={selectedSplit}
+              userInfo={userSplitDetails}
+              isOwned={selectedIsOwned}
+              setShowFull={setShowFull}
+            />
           )}
 
           {(loading || network?.name !== "rinkeby") && (

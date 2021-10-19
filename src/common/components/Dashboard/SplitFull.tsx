@@ -1,16 +1,13 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { utils } from "ethers";
 import { useAuctions } from "@zoralabs/nft-hooks";
 import web3 from "@/app/web3";
-import Button from "@/components/Button";
 import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
 import DashboardNFT from "@/components/Cards/DashboardNFT";
 import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
 import { claimFunds } from "@/modules/ethereum/OurPylon";
 import Sidebar from "./Sidebar";
-import { toTrimmedAddress } from "@/utils/index";
 import EditionThumb from "@/components/Cards/EditionThumb";
 
 const SplitFull = ({
@@ -91,10 +88,33 @@ const SplitFull = ({
               </ActionDialog>
             )}
           </div>
+          {split?.editions?.length > 0 ? (
+            <>
+              <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
+                Editions
+              </h1>
+              <div className="flex w-full">
+                <div
+                  id="editions"
+                  className="flex flex-col gap-4 justify-center justify-items-center content-evenly mx-auto mb-4 md:flex-none md:space-x-4 md:grid md:grid-flow-col md:auto-cols-max max-w-auto"
+                >
+                  {split.editions.map((edition) => (
+                    <div key={edition.id} className="flex justify-center w-full h-full">
+                      <EditionThumb edition={edition} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
+              No Editions
+            </h1>
+          )}
           {split?.creations?.length > 0 ? (
             <>
               <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
-                Creations
+                1/1 Creations
               </h1>
               <div className="flex w-full">
                 <div
@@ -119,29 +139,7 @@ const SplitFull = ({
               No Creations
             </h1>
           )}
-          {split?.editions?.length > 0 ? (
-            <>
-              <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
-                Editions
-              </h1>
-              <div className="flex w-full">
-                <div
-                  id="editions"
-                  className="flex flex-col gap-4 justify-center justify-items-center content-evenly mx-auto mb-4 md:flex-none md:space-x-4 md:grid md:grid-flow-col md:auto-cols-max max-w-auto"
-                >
-                  {split.editions.map((edition) => (
-                    <div key={edition.id} className="flex justify-center w-full h-full">
-                      <EditionThumb edition={edition} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
-              No Editions
-            </h1>
-          )}
+
           {data &&
             data
               .filter(

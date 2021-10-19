@@ -344,7 +344,7 @@ export const createZoraEdition = async ({
   proxyAddress?: string;
   mintForm: MintForm;
   // eslint-disable-next-line consistent-return
-}) => {
+}): Promise<number | undefined> => {
   // Upload file to IPFS
   const { cryptomedia } = await createCryptomedia(mintForm);
   const metadata = mintForm.metadata as ZNFTEdition;
