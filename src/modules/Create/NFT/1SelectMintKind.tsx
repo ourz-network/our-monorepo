@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import { MintForm } from "@/utils/CreateModule";
@@ -28,8 +28,8 @@ const SelectMintKind = ({
   // }, [kind]);
 
   return (
-    <div className="flex-col justify-center w-full h-full bg-dark-background">
-      <div className="flex justify-evenly items-center self-center place-self-center w-full align-middle min-h-1/2 h-min md:flex-row">
+    <div className="flex-col justify-center w-full h-75vh bg-dark-background">
+      <div className="flex justify-evenly items-center w-full h-3/4 md:flex-row">
         <div
           role="button"
           // className="flex flex-col justify-center items-center text-center w-preview h-preview bg-dark-accent text-dark-primary"

@@ -9,6 +9,35 @@ export interface SplitZNFT {
   transactionHash: string;
 }
 
+export interface SplitEdition {
+  // "The address of the Zora NFT-Editions contract"
+  id: string;
+
+  // "The creator of the Edition Contract"
+  creator: OurProxy;
+
+  // "The title of the Edition contract"
+  name: string;
+
+  // "Symbol of the Edition contract"
+  symbol: string;
+
+  // "Metadata: Description of the Edition entry"
+  description: string;
+
+  // "Metadata: Animation url (optional) of the Edition entry"
+  animationUrl: string;
+
+  // "Metadata: Image url (semi-required) of the Edition entry"
+  imageUrl: string;
+
+  // "Total size of the Edition (number of possible editions)"
+  editionSize: BigInt;
+
+  // "BPS amount of royalty"
+  royaltyBPS: BigInt;
+}
+
 export interface ERC20Transfer {
   // "<txHash>-<proxyAddress>"
   id: string;
@@ -63,6 +92,10 @@ export interface OurProxy {
   // "The ERC721(s) the Proxy created"
   // @derivedFrom(field: "creator")
   creations: SplitZNFT[];
+
+  // "The Zora NFT-Edition(s) the Proxy created"
+  // @derivedFrom(field: "creator")
+  editions: SplitEdition[];
 
   // "The ERC20 Transfers that the Proxy has successfully distributed"
   // @derivedFrom(field: "splitProxy")

@@ -94,7 +94,7 @@ const NewSplit: React.FC = (): JSX.Element => {
       shares: Number(split.shares),
     }));
     newChartData.unshift({
-      name: `${ownerData.name.length > 0 ? ownerData.name : ownerData.account}`,
+      name: `${ownerData.name.length > 0 ? ownerData.name : (ownerData.account as string)}`,
       shares: ownerData.shares,
     });
     setChartData(newChartData);
@@ -216,7 +216,7 @@ const NewSplit: React.FC = (): JSX.Element => {
                     defaultValue={field.account}
                     {...register(`splits.${index}.account` as const, {
                       required: true,
-                      validate: (value) => ethers.utils.isAddress(value) === true,
+                      validate: (value: string) => ethers.utils.isAddress(value) === true,
                     })}
                     onBlur={updateChart}
                     className="p-3 w-1/3 h-auto text-sm border shadow border-dark-border"
