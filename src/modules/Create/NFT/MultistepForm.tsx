@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @next/next/no-img-element */ // next/image not necessary for upload flow
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -34,7 +35,7 @@ const NewMintMultistepForm = ({
   proxyAddress: string;
   splitRecipients: SplitRecipient[];
   // eslint-disable-next-line consistent-return
-}): JSX.Element => {
+}): JSX.Element | undefined => {
   // const [loading, setLoading] = useState(false);
   const Router = useRouter();
   const { address, signer, network } = web3.useContainer(); // Global State
@@ -276,13 +277,30 @@ const NewMintMultistepForm = ({
 
   // Mapping is not exactly necessary, only 1 file can be uploaded, but too lazy to rewrite.
   // eslint-disable-next-line array-callback-return
-  const thumbs = files.map((file) => (
-    <div className="box-border inline-flex p-5" key={file.name}>
-      <div className="flex overflow-hidden min-w-0 h-96">
-        <img src={file.preview} className="block w-auto h-full" alt="Preview of your upload" />
-      </div>
-    </div>
-  ));
+  const thumbs = files.map((file): JSX.Element => {
+    // eslint-disable-next-line no-nested-ternary, @typescript-eslint/no-unused-expressions
+    if (file.type.startsWith("image")) {
+      return (
+        <div className="box-border inline-flex p-5" key={file.name}>
+          <div className="flex overflow-hidden min-w-0 h-96">
+            <img src={file.preview} className="block w-auto h-full" alt="Preview of your upload" />
+          </div>
+        </div>
+      );
+    }
+    if (file.type.startsWith("video")) {
+      return (
+        <div className="box-border inline-flex p-5" key={file.name}>
+          <div className="flex overflow-hidden min-w-0 h-96">
+            <video autoPlay controls muted className="block w-auto h-full" playsInline>
+              <source src={file.preview} />
+            </video>
+          </div>
+        </div>
+      );
+    }
+    return <></>;
+  });
 
   useEffect(
     () => () => {
