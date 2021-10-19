@@ -10,7 +10,7 @@ dataSources:
     source:
       address: "{{OurFactoryAddress}}"
       abi: OurFactory
-      startBlock: 9460800
+      startBlock: 9487525
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

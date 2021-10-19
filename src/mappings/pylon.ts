@@ -1,4 +1,4 @@
-import { BigInt, Address, ByteArray, log } from "@graphprotocol/graph-ts";
+import { BigInt, Address, log } from "@graphprotocol/graph-ts";
 import {
   ProxySetup,
   AddedOwner,
@@ -28,7 +28,7 @@ import { findOrCreateUser } from "./helpers";
 export function handleProxySetup(event: ProxySetup): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: ProxySetup at {}...", [ourProxy.id]);
+  // log.info("Handling Event: ProxySetup at {}...", [ourProxy.id]);
 
   // get formatted variables
   let eventOwners = event.params.owners as Array<Address>;
@@ -47,8 +47,8 @@ export function handleProxySetup(event: ProxySetup): void {
 
   ourProxy.proxyOwners = proxyOwners;
   ourProxy.save();
-  log.info("These are the owners: {}", [proxyOwners.toString()]);
-  log.info("Proxy at {}: Owners saved successfully", [ourProxy.id]);
+  // log.info("These are the owners: {}", [proxyOwners.toString()]);
+  // log.info("Proxy at {}: Owners saved successfully", [ourProxy.id]);
 }
 
 /**
@@ -58,7 +58,7 @@ export function handleProxySetup(event: ProxySetup): void {
 export function handleAddedOwner(event: AddedOwner): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: AddedOwner at {}...", [ourProxy.id]);
+  // log.info("Handling Event: AddedOwner at {}...", [ourProxy.id]);
 
   // get formatted variables
   // let newOwner = event.params.owner.toHexString();
@@ -66,7 +66,7 @@ export function handleAddedOwner(event: AddedOwner): void {
   ourProxy.proxyOwners.push(user.id);
 
   ourProxy.save();
-  log.info("Added Owner: {} to Proxy at {}", [user.id, ourProxy.id]);
+  // log.info("Added Owner: {} to Proxy at {}", [user.id, ourProxy.id]);
 }
 
 /**
@@ -76,7 +76,7 @@ export function handleAddedOwner(event: AddedOwner): void {
 export function handleRemovedOwner(event: RemovedOwner): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: RemovedOwner at {}...", [ourProxy.id]);
+  // log.info("Handling Event: RemovedOwner at {}...", [ourProxy.id]);
 
   // get formatted variables
   // let exOwner = event.params.owner.toHexString();
@@ -88,7 +88,7 @@ export function handleRemovedOwner(event: RemovedOwner): void {
   ourProxy.proxyOwners = proxyOwners;
 
   ourProxy.save();
-  log.info("Removed Owner: {} from Proxy at {}", [user.id, ourProxy.id]);
+  // log.info("Removed Owner: {} from Proxy at {}", [user.id, ourProxy.id]);
 }
 
 /**
@@ -98,14 +98,14 @@ export function handleRemovedOwner(event: RemovedOwner): void {
 export function handleNameChanged(event: NameChanged): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: NameChanged at {}...", [ourProxy.id]);
+  // log.info("Handling Event: NameChanged at {}...", [ourProxy.id]);
 
   // get formatted variables
   let newNickname = event.params.newName;
   ourProxy.nickname = newNickname;
 
   ourProxy.save();
-  log.info("New Nickname: {} for Proxy at {}", [newNickname, ourProxy.id]);
+  // log.info("New Nickname: {} for Proxy at {}", [newNickname, ourProxy.id]);
 }
 
 /**
@@ -117,7 +117,7 @@ export function handleNameChanged(event: NameChanged): void {
 export function handleETHReceived(event: ETHReceived): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: ETHReceived at {}...", [ourProxy.id]);
+  // log.info("Handling Event: ETHReceived at {}...", [ourProxy.id]);
 
   // Recipients that want to claim after this tx should also increment the window now
   ourProxy.needsIncremented = true;
@@ -156,19 +156,19 @@ export function handleETHReceived(event: ETHReceived): void {
     recipient.claimableETH = newClaimable;
     recipient.save();
 
-    log.debug("Recipient {} now has {} ETH available to claim.", [
-      recipient.id,
-      newClaimable.toString(),
-    ]);
+    // log.debug("Recipient {} now has {} ETH available to claim.", [
+    //   recipient.id,
+    //   newClaimable.toString(),
+    // ]);
   }
 
   ourProxy.save();
-  log.info("{} sent {} Ether. Balance {} -> {}", [
-    event.params.sender.toHexString(),
-    value.toString(),
-    beforeETH ? beforeETH.toString() : "0",
-    afterETH.toString(),
-  ]);
+  // log.info("{} sent {} Ether. Balance {} -> {}", [
+  //   event.params.sender.toHexString(),
+  //   value.toString(),
+  //   beforeETH ? beforeETH.toString() : "0",
+  //   afterETH.toString(),
+  // ]);
 }
 
 /**
@@ -178,7 +178,7 @@ export function handleETHReceived(event: ETHReceived): void {
 export function handleWindowIncremented(event: WindowIncremented): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: WindowIncremented at {}...", [ourProxy.id]);
+  // log.info("Handling Event: WindowIncremented at {}...", [ourProxy.id]);
 
   // Window won't need incremented until more ETH is received
   ourProxy.needsIncremented = false;
@@ -197,7 +197,7 @@ export function handleTransferETH(event: TransferETH): void {
   if (success) {
     // load entities
     let ourProxy = OurProxy.load(event.address.toHexString())!;
-    log.info("Handling Event: TransferETH at {}...", [ourProxy.id]);
+    // log.info("Handling Event: TransferETH at {}...", [ourProxy.id]);
 
     // get formatted variables for updating OurProxy entity
     let amount = event.params.amount;
@@ -233,7 +233,7 @@ export function handleTransferETH(event: TransferETH): void {
 export function handleTransferERC20(event: TransferERC20): void {
   // load entities
   let ourProxy = OurProxy.load(event.address.toHexString())!;
-  log.info("Handling Event: TransferERC20 at {}...", [ourProxy.id]);
+  // log.info("Handling Event: TransferERC20 at {}...", [ourProxy.id]);
 
   // get formatted variables
   let tokenAddress = event.params.token.toHexString();
@@ -286,49 +286,8 @@ export function handleEditionCreated(event: EditionCreated): void {
   newEdition.animationUrl = event.params.animationUrl;
   newEdition.imageUrl = event.params.imageUrl;
   newEdition.editionSize = event.params.editionSize;
-  // newEdition.remaining = event.params.remaining;
   newEdition.royaltyBPS = event.params.royaltyBPS;
 
   newEdition.save();
 }
 
-//==== IGNORE ====
-
-/**
- * Handler called when the `ERC721Received` Event is emitted on a Proxy.
- * Only creates SplitNFT entity if newly minted
- * @eventParam address operator: msg.sender of ERC721 transfer (usually parent contract)
- * @eventParam address from: last owner of ERC721 OR 0x00 address if newly minted
- * @eventParam uint256 tokenId: tokenId of the ERC721
- * @eventParam bytes data: optional calldata
- */
-// export function handleERC721Received(event: ERC721Received): void {
-//   let ourProxy = OurProxy.load(event.address.toHexString())!;
-//   // get formatted variables
-//   let contract = event.params.operator.toHexString();
-//   let from = event.params.from.toHexString();
-//   let tokenId = event.params.tokenId.toString();
-//   let transactionHash = event.transaction.hash.toHexString();
-
-//   // if the 'from' address is 0x00, the token was just Created, so create new SplitNFT
-//   if (from == zeroAddress) {
-//     let newZNFT = new SplitZNFT(tokenId);
-//     newZNFT.creator = ourProxy.id;
-//     newZNFT.transactionHash = transactionHash;
-//     newZNFT.save();
-//   }
-// }
-
-/**
- * Handler called when the `ERC777Received` Event is emitted on a Proxy
- * @eventParam address operator: msg.sender of tx (likely the minter)
- * @eventParam address from: old owner of ERC777
- * @eventParam address to: OurProxy
- * @eventParam uint256 amount: number of tokens received
- */
-// export function handleERC777Received(event: ERC777Received): void {
-//   // get formatted variables
-//   let proxy = event.address;
-//   let ourProxy.id = proxy.toHexString();
-//   log.info("Handling Event: ERC777Received at {}...", [ourProxy.id]);
-// }

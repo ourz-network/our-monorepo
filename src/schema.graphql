@@ -34,9 +34,6 @@ type SplitEdition @entity {
   "Total size of the Edition (number of possible editions)"
   editionSize: BigInt!
 
-  # "Number of remaining possible mints"
-  # remainingMints: BigInt!
-
   "BPS amount of royalty"
   royaltyBPS: BigInt!
 }

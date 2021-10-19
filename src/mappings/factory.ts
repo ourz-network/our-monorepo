@@ -12,7 +12,7 @@ import { JSON } from "assemblyscript-json";
  * @eventParam string splitRecipients: JSON.stringify(Array<Object>) of the Split's recipients
  */
 export function handleProxyCreated(event: ProxyCreated): void {
-  log.info("Handling Event: ProxyCreated...", []);
+  // log.info("Handling Event: ProxyCreated...", []);
   // initialize OurProxy instance from Data Source Template
   OurPylon.create(event.params.ourProxy);
 
@@ -34,27 +34,27 @@ export function handleProxyCreated(event: ProxyCreated): void {
 
   // Parse Split Recipients (JSON array of objects)
   let splitRecipients = event.params.splitRecipients;
-  log.debug("Incoming SplitRecipients: {}", [splitRecipients]);
-  log.info("Attempting to parse JSON...", []);
+  // log.debug("Incoming SplitRecipients: {}", [splitRecipients]);
+  // log.info("Attempting to parse JSON...", []);
 
   let splitArr: JSON.Arr = <JSON.Arr>JSON.parse(splitRecipients);
 
   let recipients: Array<string> = [];
   if (splitArr != null) {
-    log.debug("Parsed. New stringified version: {}", [splitArr.toString()]);
+    // log.debug("Parsed. New stringified version: {}", [splitArr.toString()]);
 
     let splitArray = splitArr._arr;
-    log.debug("Accessing _arr: {}", [splitArray.toString()]);
+    // log.debug("Accessing _arr: {}", [splitArray.toString()]);
 
     let splitLength = splitArray.length;
-    log.debug("Length of SplitRecipients array is {}.", [`${splitLength}`]);
+    // log.debug("Length of SplitRecipients array is {}.", [`${splitLength}`]);
 
     for (let i = 0; i < splitArray.length; i++) {
-      log.info("Beginning Recipient #{}...", [`${i}`]);
+      // log.info("Beginning Recipient #{}...", [`${i}`]);
       let splitObject: JSON.Obj = <JSON.Obj>splitArray[i];
 
       if (splitObject != null) {
-        log.debug("splitObject #{} toString: {}", [`${i}`, splitObject.toString()]);
+        // log.debug("splitObject #{} toString: {}", [`${i}`, splitObject.toString()]);
 
         let addressOrNull: JSON.Str | null = splitObject.getString("address");
         let nameOrNull: JSON.Str | null = splitObject.getString("name");
@@ -113,17 +113,17 @@ export function handleProxyCreated(event: ProxyCreated): void {
             } else recipient.allocation = "0";
           }
 
-          log.debug(
-            "Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}",
-            [`${i}`, address, name, role, shares, allocation]
-          );
+          // log.debug(
+          //   "Recipient #{} -- Address: {}, Name: {}, Role: {}, Shares: {}, Allocation: {}",
+          //   [`${i}`, address, name, role, shares, allocation]
+          // );
 
           recipient.claimableETH = BigInt.fromI32(0);
           recipient.ethClaimed = BigInt.fromI32(0);
 
           recipients.push(recipientId);
           recipient.save();
-          log.info("Recipient #{} saved successfully!", [`${i}`]);
+          // log.info("Recipient #{} saved successfully!", [`${i}`]);
         }
       }
     }
@@ -131,8 +131,8 @@ export function handleProxyCreated(event: ProxyCreated): void {
 
   ourProxy.splitRecipients = recipients;
   ourProxy.save();
-  log.info("Created succesfully! Subgraph now monitoring contract at {}; created by {}.", [
-    ourProxy.id,
-    creator.id,
-  ]);
+  // log.info("Created succesfully! Subgraph now monitoring contract at {}; created by {}.", [
+  //   ourProxy.id,
+  //   creator.id,
+  // ]);
 }
