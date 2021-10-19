@@ -1,5 +1,11 @@
 # OURZ Split Contracts
 
+## These contracts enable **creators**, **builders**, and **collaborators of all kind** to receive royalties for their collective work, forever
+
+_For a less-technical overview of these contracts, take a look at the introductory [Substack article](https://ourz.substack.com/p/coming-soon)_
+
+---
+
 First, a quick summary of the original Split contracts by [Mirror](https://github.com/mirror-xyz/splits):
 
 "Allows deployment of a minimal proxy contract that specifies a Merkle root describing an allocation across a number of different addreses. Once ETH has been deposited, `incrementWindow` can be called, and members of the split can claim their allocation."
@@ -45,7 +51,7 @@ Currently the contracts are deployed on **Rinkeby** only:
 
 [Rinkeby Pylon](https://rinkeby.etherscan.io/address/0x58622031f61D212115a9B8C29E515e35cA9410c6)
 
-### Benefits of these contracts:
+### Benefits of these contracts
 
 - Splits funds securely & efficiently
 - Built for Zora. Need I say more? Supports 1/1 unique NFTs & the new Editions contracts. [Read more](https://github.com/ourzora/nft-editions)
@@ -54,7 +60,7 @@ Currently the contracts are deployed on **Rinkeby** only:
 - Supports minting/selling on other protocols via Gnosis Safe's [execTransaction()](https://github.com/gnosis/safe-contracts/blob/main/contracts/base/Executor.sol), while still guaranteeing ETH in the split is only claimable by recipients.
 - This enables potentially endless possibilities, including using custom ManifoldXYZ creator contracts if Zora doesn't fulfill your needs.
 
-### Potential use cases for these contracts:
+### Potential use cases for these contracts
 
 - Any group of creative collaborators looking to split the funds received from NFT's
 - Solo creators who wish to donate NFT sales to various charities
