@@ -23,22 +23,21 @@ const ProfileNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
     if (contentURI.match(regexIPFS)) {
       const { IPFShash } = regexIPFS.exec(contentURI).groups;
 
-      contentURI = `https://ipfs.io/ipfs/${IPFShash}`;
-
-      return (
-        <Link href={`/nft/${tokenId}`} passHref>
-          <div className="p-2 w-full h-full bg-opacity-0 cursor-pointer">
-            <Image
-              alt={`An image of the NFT: ${name as string}`}
-              height={330}
-              width={330}
-              objectFit="scale-down"
-              src={`${contentURI as string}`}
-            />
-          </div>
-        </Link>
-      );
+      contentURI = `https://ipfs.io/ipfs/${IPFShash as string}`;
     }
+    return (
+      <Link href={`/nft/${tokenId}`} passHref>
+        <div className="p-2 w-full h-full bg-opacity-0 cursor-pointer">
+          <Image
+            alt={`An image of the NFT: ${name as string}`}
+            height={330}
+            width={330}
+            objectFit="scale-down"
+            src={`${contentURI as string}`}
+          />
+        </div>
+      </Link>
+    );
   };
 
   const TitleAuthor = () => {
@@ -57,7 +56,10 @@ const ProfileNFT = ({ tokenId }: { tokenId: string }): JSX.Element => {
         <div className="flex flex-col p-2 border-t bg-dark-accent border-dark-border">
           <div className="text-bold">{metadata?.name}</div>
           <div className="text-right">
-            by: <Link href={`/profile/${creatorAddress}`}>{toTrimmedAddress(creatorAddress)}</Link>
+            by:{" "}
+            <Link href={`/profile/${creatorAddress as string}`}>
+              {toTrimmedAddress(creatorAddress)}
+            </Link>
           </div>
         </div>
       );

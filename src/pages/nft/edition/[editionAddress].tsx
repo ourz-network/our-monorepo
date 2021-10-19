@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react"; // State management
 import { BigNumber, ethers } from "ethers";
-import { Zora } from "@zoralabs/zdk";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageEdition from "@/components/Cards/FullPageEdition";
 import { getAllOurzEditions, getEditionMetadata } from "@/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient, SplitEdition } from "@/utils/OurzSubgraph";
-import { getPostByID } from "@/modules/subgraphs/zora/functions";
-import { Ourz20210928 } from "@/utils/20210928";
-import { Media } from "@/utils/ZoraSubgraph";
 import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
-import { zeroAddress } from "@/utils/index";
 import web3 from "@/app/web3";
 
 const editionABI = editionJSON.abi;
 
 const ViewEdition = ({
-  editionAddress,
   metadata,
   saleInfo,
 }: {
-  editionAddress: string;
   metadata: SplitEdition;
   saleInfo: { maxSupply: number; currentSupply: number; salePrice: number; whitelistOnly: boolean };
 }): JSX.Element => {
@@ -82,26 +75,12 @@ const ViewEdition = ({
 // Run on server build
 // eslint-disable-next-line consistent-return
 export const getStaticPaths: GetStaticPaths = async () => {
-  /*
-   * const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-   *   infura: process.env.NEXT_PUBLIC_INFURA_ID,
-   *   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-   *   pocket: process.env.NEXT_PUBLIC_POKT_ID,
-   *   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-   * });
-   * const zoraQuery = new Zora(queryProvider, 4);
-   * const unburned = await zoraQuery.fetchTotalMedia();
-   * const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
-   */
-  const ourEditions: SplitEdition[] = await getAllOurzEditions();
-  // const extras = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
+  const ourEditions = await getAllOurzEditions();
+
   const paths = [];
-  for (let i = ourEditions.length - 1; i >= 0; i -= 1) {
+  for (let i = ourEditions?.length - 1; i >= 0; i -= 1) {
     paths.push({ params: { editionAddress: `${ourEditions[i].id}` } });
   }
-  // for (let i = extras.length - 1; i >= 0; i -= 1) {
-  //   paths.push({ params: { tokenId: `${extras[i]}` } });
-  // }
   return { paths, fallback: true };
 };
 

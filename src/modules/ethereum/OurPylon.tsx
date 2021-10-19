@@ -1,5 +1,5 @@
 import {
-  generateMetadata,
+  // generateMetadata,
   constructBidShares,
   constructMediaData,
   sha256FromBuffer,
@@ -8,8 +8,7 @@ import {
   BidShares,
 } from "@zoralabs/zdk"; // Zora provider
 import { NFTStorage } from "nft.storage";
-import { ethers, BigNumberish, Signer, Contract, providers, BigNumber } from "ethers";
-import { Hash } from "crypto";
+import { ethers, BigNumberish, Signer, Contract, providers, BigNumber, Transaction } from "ethers";
 import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle tree for splits
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
@@ -18,7 +17,7 @@ import editionMintableJSON from "@/ethereum/abis/SingleEditionMintable.json";
 import editionFactoryJSON from "@/ethereum/abis/SingleEditionMintableCreator.json";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
 import { FormSplitRecipient, MintForm, ZNFTEdition } from "@/utils/CreateModule";
-import { zeroAddress } from "@/utils/index";
+import { Ourz20210928 } from "@/utils/20210928";
 
 // ourz
 const factoryABI = factoryJSON.abi;
@@ -133,8 +132,8 @@ export const newProxy = async ({
   const { rootHash, splitsForMeta } = formatSplits(formData);
 
   // init contracts
-  const FACTORY_WRITE = initializeOurFactoryWSigner({ signer });
-  const PYLON_WRITE = initializeOurPylonWSigner({ signer });
+  const FACTORY_WRITE: Contract = initializeOurFactoryWSigner({ signer });
+  const PYLON_WRITE: Contract = initializeOurPylonWSigner({ signer });
 
   // get deployment data to setup owners
   let deployData: string;
@@ -158,7 +157,7 @@ export const newProxy = async ({
 
   // Make transaction
   if (splitsForMeta && rootHash && deployData) {
-    const proxyTx = await FACTORY_WRITE.createSplit(
+    const proxyTx: Transaction = await FACTORY_WRITE.createSplit(
       rootHash,
       deployData,
       JSON.stringify(splitsForMeta),
@@ -177,15 +176,18 @@ export const newProxy = async ({
 // Prepare Media for minting on Zora, storing on IPFS and Arweave
 export const createCryptomedia = async (
   mintForm: MintForm
-): Promise<{
-  cryptomedia:
-    | Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">
-    | MediaData;
-  bidShares?: BidShares;
-}> => {
+): Promise<
+  | {
+      cryptomedia:
+        | Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">
+        | MediaData;
+      bidShares?: BidShares;
+    }
+  | undefined
+> => {
   // Upload files to nft.storage
   const endpoint = "https://api.nft.storage" as unknown as URL; // the default
-  const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY}`;
+  const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY as string}`;
   const storage = new NFTStorage({ endpoint, token });
 
   // Collect mediaCID and metadataCID from nft.storage
@@ -205,21 +207,6 @@ export const createCryptomedia = async (
   const contentHash = sha256FromBuffer(Buffer.from(mintForm.media.blob as ArrayBuffer));
 
   if (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction") {
-    // Generate metadataJSON
-    // const metadata = {
-    //   name: mintForm.metadata.name,
-    //   description: mintForm.metadata.description,
-    //   split_recipients: mintForm.metadata.split_recipients.map((recipient: SplitRecipient) => ({
-    //     account: recipient?.user.id,
-    //     name: recipient?.name,
-    //     role: recipient?.role,
-    //     shares: recipient?.shares,
-    //     allocation: recipient?.allocation,
-    //   })),
-    //   version: mintForm.metadata.version || "Ourz20210928",
-    //   mimeType: mintForm.metadata.mimeType,
-    // };
-
     const metadata = {
       name: mintForm.metadata.name,
       description: mintForm.metadata.description,
@@ -256,26 +243,8 @@ export const createCryptomedia = async (
 
     return { cryptomedia, bidShares };
   }
-  const { mimeType } = mintForm.metadata;
+  const { mimeType } = mintForm.metadata as Ourz20210928;
 
-  // // still image
-  // if (
-  //   mimeType.includes(".jpg") ||
-  //   mimeType.includes(".jpeg") ||
-  //   mimeType.includes(".jfif") ||
-  //   mimeType.includes(".pjpeg") ||
-  //   mimeType.includes(".pjp")
-  // ) {
-  //   const cryptomedia = {
-  //     // animationUrl: metadataUrl,
-  //     // animationHash: metadataHash,
-  //     animationUrl: " ",
-  //     animationHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
-  //     imageUrl: mediaUrl,
-  //     imageHash: contentHash,
-  //   };
-  //   return { cryptomedia };
-  // }
   // image
   if (mimeType.startsWith("image")) {
     const cryptomedia = {
@@ -300,7 +269,7 @@ export const createCryptomedia = async (
     };
     return { cryptomedia };
   }
-  return null;
+  return undefined;
 };
 
 export const mintZora = async ({
@@ -366,24 +335,18 @@ export const mintZora = async ({
 
 export const createZoraEdition = async ({
   signer,
-  networkId,
   soloAddress,
   proxyAddress,
   mintForm,
 }: {
   signer: Signer;
-  networkId: number;
   soloAddress?: string;
   proxyAddress?: string;
   mintForm: MintForm;
   // eslint-disable-next-line consistent-return
 }) => {
   // Upload file to IPFS
-  const {
-    cryptomedia,
-  }: {
-    cryptomedia: Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">;
-  } = await createCryptomedia(mintForm);
+  const { cryptomedia } = await createCryptomedia(mintForm);
   const metadata = mintForm.metadata as ZNFTEdition;
   const royalty = mintForm.creatorBidShare * 100;
   // const BPS = BigNumber.from(royalty);
@@ -439,7 +402,7 @@ export const purchaseEdition = async ({
 }: {
   signer: Signer;
   editionAddress: string;
-  salePrice: BigNumber;
+  salePrice: number;
   // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
   // eslint-disable-next-line no-param-reassign
@@ -449,10 +412,11 @@ export const purchaseEdition = async ({
   const purchaseTx = await edition.purchase({
     value: ethers.utils.parseUnits(salePrice.toString()),
   });
-  const purchaseReceipt = await purchaseTx.wait();
-  if (purchaseReceipt) {
-    console.log(purchaseReceipt);
+  const txReceipt = await purchaseTx.wait();
+  if (txReceipt?.events[0]?.event === "EditionSold" && txReceipt?.status === 1) {
+    return true;
   }
+  return false;
 };
 
 export const setApprovedMinter = async ({
@@ -473,12 +437,17 @@ export const setApprovedMinter = async ({
   proxyAddress = ethers.utils.getAddress(proxyAddress);
   // eslint-disable-next-line no-param-reassign
   editionAddress = ethers.utils.getAddress(editionAddress);
-  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
-  const approveTx = await PROXY_WRITE.setEditionMinter(editionAddress, minterAddress, approved);
+  const PROXY_WRITE: Contract = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const approveTx: Transaction = await PROXY_WRITE.setEditionMinter(
+    editionAddress,
+    minterAddress,
+    approved
+  );
   const txReceipt = await approveTx.wait();
-  if (txReceipt) {
-    console.log(txReceipt);
+  if (txReceipt?.status === 1) {
+    return true;
   }
+  return false;
 };
 
 export const withdrawEditionFunds = async ({
@@ -494,9 +463,10 @@ export const withdrawEditionFunds = async ({
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
   const withdrawTx = await PROXY_WRITE.withdrawEditionFunds(editionAddress);
   const txReceipt = await withdrawTx.wait();
-  if (txReceipt) {
-    console.log(txReceipt);
+  if (txReceipt?.events[0]?.event === "ETHReceived" && txReceipt?.status === 1) {
+    return true;
   }
+  return false;
 };
 export const setEditionPrice = async ({
   signer,
@@ -514,9 +484,10 @@ export const setEditionPrice = async ({
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
   const pricingTx = await PROXY_WRITE.setEditionPrice(editionAddress, formattedPrice);
   const txReceipt = await pricingTx.wait();
-  if (txReceipt) {
-    console.log(txReceipt);
+  if (txReceipt?.events[0]?.data && txReceipt?.status === 1) {
+    return true;
   }
+  return false;
 };
 
 export const mintEditionsToRecipients = async ({
@@ -532,16 +503,12 @@ export const mintEditionsToRecipients = async ({
   // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
-  // const Recipients = [
-  //   "0x82D45296af6dd341Ed6c980C5877AA556044D318",
-  //   "0xf97752a24D83478acA43B04EF7b28789e1D7EEda",
-  //   "0x7cA35BF870F2E3eecE07F767cA13fCC5A04b18a3",
-  // ];
   const mintTx = await PROXY_WRITE.mintEditionsTo(editionAddress, recipients);
   const txReceipt = await mintTx.wait();
-  if (txReceipt) {
-    console.log(txReceipt);
+  if (txReceipt?.events[0] && txReceipt?.status === 1) {
+    return true;
   }
+  return false;
 };
 
 export const createZoraAuction = async ({
@@ -564,7 +531,7 @@ export const createZoraAuction = async ({
   curator: string;
   curatorFeePercentage: number;
   auctionCurrency: string;
-}) => {
+}): Promise<number> => {
   // init Proxy instance as OurPylon, so owner can call Mint
   const proxyPylon = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 

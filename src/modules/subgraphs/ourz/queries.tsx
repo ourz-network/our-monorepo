@@ -74,20 +74,14 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
   return gql`
     {
       user(id: "${owner}") {
+        ethClaimed
         ownedProxies {
           id
           nickname
-          creator { id }
+          ETH
+          needsIncremented
           proxyOwners { id }
-          splitRecipients {
-            user { id }
-            name
-            role
-            shares
-            allocation
-            ethClaimed
-            claimableETH
-          }
+          creator { id }
           creations {
             id
           }
@@ -101,8 +95,15 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
             editionSize
             royaltyBPS
           }
-          ETH
-          needsIncremented
+          splitRecipients {
+            user { id }
+            name
+            role
+            shares
+            allocation
+            claimableETH
+            ethClaimed
+          }
         }
       } 
     }
@@ -119,20 +120,15 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
   return gql`
     {
       user(id: "${recipient}") {
+        ethClaimed
         recipientInfo {
           splitProxy {
             id
             nickname
-            creator { id }
+            ETH
+            needsIncremented
             proxyOwners { id }
-            splitRecipients {
-              user { id }
-              name
-              role
-              shares
-              allocation
-              ethClaimed
-            }
+            creator { id }
             creations {
               id
             }
@@ -146,13 +142,21 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
               editionSize
               royaltyBPS
             }
-            ETH
-            needsIncremented
+            splitRecipients {
+              user { id }
+              name
+              role
+              shares
+              allocation
+              claimableETH
+              ethClaimed
+            }
           }
           name
           role
           shares
           allocation
+          claimableETH
           ethClaimed
         }
       }

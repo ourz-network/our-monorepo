@@ -4,7 +4,6 @@ import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import { getClaimableSplits, getOwnedSplits } from "@/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
-import Sidebar from "@/components/Dashboard/Sidebar";
 import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
 
 const UserDashboard = (): JSX.Element => {
@@ -57,27 +56,21 @@ const UserDashboard = (): JSX.Element => {
 
   return (
     <PageLayout>
-      <div className="flex w-full min-h-screen">
-        <Sidebar split={selectedSplit} showFull={showFull} />
+      <div className="flex w-full h-full min-h-screen">
         <div
           id="OLD_CONTENT"
           className="flex flex-col w-full min-h-screen h-min bg-dark-background"
         >
           {showFull && (
-            <SplitFull
-              split={selectedSplit}
-              isOwned={selectedIsOwned}
-              showFull={showFull}
-              setShowFull={setShowFull}
-            />
+            <SplitFull split={selectedSplit} isOwned={selectedIsOwned} setShowFull={setShowFull} />
           )}
 
-          {(loading || network.name !== "rinkeby") && (
+          {(loading || network?.name !== "rinkeby") && (
             <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
               Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
             </p>
           )}
-          {!loading && network.name === "rinkeby" && (
+          {!loading && network?.name === "rinkeby" && (
             <>
               {/* {!showFull && (
                 <div className="flex justify-center mx-auto space-x-2 w-full border-b border-dark-border bg-dark-accent text-dark-secondary">
@@ -93,12 +86,12 @@ const UserDashboard = (): JSX.Element => {
                   />
                 </div>
               )} */}
-              {ownedSplits.length > 0 && !showFull && (
+              {ownedSplits?.length > 0 && !showFull && (
                 <>
-                  <h1 className="mx-auto mt-8 text-center text-dark-primary">
-                    You are a whitelisted manager of:
+                  <h1 className="mx-auto mt-4 text-center text-dark-primary">
+                    Splits you are a Whitelisted Minter for:
                   </h1>
-                  <div className="grid grid-cols-1 auto-rows-auto gap-8 mx-auto mt-4 w-full h-full min-w-screen lg:grid-cols-3">
+                  <div className="grid auto-cols-auto auto-rows-auto gap-8 justify-center mx-auto mt-2 h-full min-w-screen">
                     {ownedSplits.map((ourProxy) => (
                       <SplitThumb
                         key={`own-${ourProxy.id}`}
@@ -110,18 +103,18 @@ const UserDashboard = (): JSX.Element => {
                   </div>
                 </>
               )}
-              {ownedSplits.length === 0 && !showFull && (
-                <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
+              {ownedSplits?.length === 0 && !showFull && (
+                <p className={`mx-auto text-center text-dark-primary ${!showFull ? `hidden` : ""}`}>
                   You will need to create a new Split first.
                 </p>
               )}
 
-              {claimableSplits.length > 0 && !showFull && (
+              {claimableSplits?.length > 0 && !showFull && (
                 <>
-                  <h1 className="mx-auto mt-8 text-center text-dark-primary">
-                    You are a recipient of:
+                  <h1 className="mx-auto mt-4 text-center text-dark-primary">
+                    Splits you are able to claim:
                   </h1>
-                  <div className="grid grid-cols-1 auto-rows-min gap-8 mx-auto mt-4 w-full h-full lg:grid-cols-3">
+                  <div className="grid auto-cols-auto auto-rows-min gap-8 justify-center mx-auto mt-2 w-full h-full">
                     {claimableSplits.map((ourProxy) => (
                       <SplitThumb
                         key={`rec-${ourProxy.id}`}
@@ -134,7 +127,7 @@ const UserDashboard = (): JSX.Element => {
                 </>
               )}
               {claimableSplits.length === 0 && !showFull && (
-                <p className={`mx-auto text-center text-dark-primary ${showFull && `hidden`}`}>
+                <p className={`mx-auto text-center text-dark-primary ${!showFull ? `hidden` : ""}`}>
                   You are not the recipient of any Splits.
                 </p>
               )}
