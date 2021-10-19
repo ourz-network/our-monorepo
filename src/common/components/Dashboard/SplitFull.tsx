@@ -64,13 +64,13 @@ const SplitFull = ({
   return (
     <div className="flex overflow-hidden w-full">
       <div className="hidden lg:block">
-        <Sidebar split={split} />
+        <Sidebar split={split} userInfo={userInfo} clickClaim={clickClaim} isOwned={isOwned} />
       </div>
       <div className="flex mx-auto w-full min-h-screen text-base text-left transition transform md:inline-block md:align-middle">
         <div className="flex flex-col w-full">
           <div
             ref={refDiv}
-            className="flex items-center px-4 pt-8 pb-4 w-full h-full shadow-2xl bg-dark-background sm:px-6 md:px-6 lg:px-8"
+            className="flex items-center px-4 pb-4 w-full h-full shadow-2xl bg-dark-background sm:px-6 md:px-6 lg:px-8"
           >
             <button
               type="button"
@@ -90,45 +90,6 @@ const SplitFull = ({
                 />
               </ActionDialog>
             )}
-            <div className="p-2 w-full text-center border h-min border-dark-border">
-              <h1 className="p-2 text-2xl tracking-widest font-hero text-dark-primary">
-                {split.nickname}
-              </h1>
-              <h2 className="text-sm font-extrabold text-dark-secondary">
-                {toTrimmedAddress(split.id)}
-              </h2>
-              <h4 className="mt-2 whitespace-pre-wrap text-dark-primary">
-                {utils.formatEther(split.ETH.toString()) || 0} Ξ unclaimed in Split.
-              </h4>
-              {Number(userInfo?.claimableETH ? userInfo?.claimableETH.toString() : "0") > 0 && (
-                <Button
-                  isMain={false}
-                  text={`Claim ${utils.formatEther(userInfo.claimableETH.toString())} Ξ`}
-                  onClick={() => clickClaim()}
-                />
-              )}
-              {isOwned && (
-                <div className="flex gap-4 items-baseline p-4 mx-auto my-4 w-min border border-dark-border">
-                  <Button
-                    isMain={false}
-                    text="Mint"
-                    onClick={() => Router.push(`/create/mint/${split.id}`)}
-                  />
-                  {/* <Button 
-                      text="Curate"
-                      onClick={''}
-                    />
-                    <Button 
-                      text="Crowdfund"
-                      onClick={''}
-                    />
-                    <Button 
-                      text="PartyBid"
-                      onClick={''}
-                    /> */}
-                </div>
-              )}
-            </div>
           </div>
           {split?.creations?.length > 0 ? (
             <>

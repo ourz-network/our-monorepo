@@ -141,23 +141,25 @@ const NewSplit: React.FC = (): JSX.Element => {
               will be claimable by the Split Recipients, up to their allocated amount.
             </p>
           </div>
-          <div className="mx-auto -my-32 w-full max-w-500px">
+          <div className="z-0 mx-auto -my-32 w-full max-w-500px">
             <DetailedPie chartData={chartData || null} secondaryBool={false} />
           </div>
         </div>
-        <form className="justify-center -mt-1 w-full text-center">
-          <label htmlFor="nickname" className="mr-2 text-dark-primary">
-            Nickname for Split:
+        <form className="z-50 justify-center -mt-1 w-full text-center">
+          <div className="flex flex-col justify-center">
+            <p className="mx-auto text-dark-primary">Enter A Nickname For The Split:</p>
             <input
               type="text"
               id="splitNickname"
               name="nickname"
-              placeholder="Nickname"
+              className="mx-auto w-min text-dark-accent"
+              placeholder="Anonymous"
+              aria-label="Enter A Nickname For The Split"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNickname(e.target.value)}
             />
-          </label>
+          </div>
           <div className="flex flex-col justify-center w-full border-b">
-            <ul className="flex z-10 flex-col mt-4 w-full">
+            <ul className="flex flex-col mt-4 w-full">
               <li className="flex flex-nowrap justify-center mx-auto mb-3 space-x-3 w-full">
                 <input
                   type="text"
