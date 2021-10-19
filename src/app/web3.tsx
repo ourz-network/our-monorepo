@@ -1,8 +1,8 @@
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
-import { BigNumber, BigNumberish, ethers, Signer } from "ethers"; // Ethers
+import { BigNumber, ethers, Signer } from "ethers"; // Ethers
 import { useCallback, useEffect, useState } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
-import Web3Modal, { providers } from "web3modal"; // Web3Modal
+import Web3Modal from "web3modal"; // Web3Modal
 
 // ====== Web3Modal Config ======
 const providerOptions = {
@@ -12,8 +12,8 @@ const providerOptions = {
       // bridge: "https://polygon.bridge.walletconnect.org",
       infuraId: process.env.NEXT_PUBLIC_INFURA_ID, // Inject Infura
       rpc: {
-        1: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
-        4: `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
+        1: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID as string}`,
+        4: `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID as string}`,
       },
     },
   },
@@ -90,11 +90,11 @@ function useWeb3() {
     provider?.on("chainChanged", (chainId: number) => {
       // chainId: '0x1' = mainnet, '0x4' = rinkeby, etc
       // must convert from BigNumber
-      const network = ethers.providers.getNetwork(
+      const Network = ethers.providers.getNetwork(
         Number(BigNumber.from(chainId.toString()).toString())
       );
 
-      setNetwork(network);
+      setNetwork(Network);
       // eslint-disable-next-line no-console
       console.log(
         `Detected Web3 Network Change...\nNow connected to ${network.name}, Chain #${network.chainId}`

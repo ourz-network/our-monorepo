@@ -55,8 +55,8 @@ const Home = ({
         {posts.length >= 0 ? (
           // If posts array contains at least 1 post
           <>
-            <div className="mx-auto w-full h-full max-w-11/12 xl:mx-16">
-              <div className="space-x-4 space-y-4 w-full h-full timeline xl:grid">
+            <div className="mx-auto w-full h-full max-w-11/12 xl:max-w-5/6">
+              <div className="w-full h-full xl:space-x-4 xl:space-y-4 timeline xl:grid">
                 {posts.map((post) => (
                   // For each Zora post, Return Post component
                   // eslint-disable-next-line react/jsx-key
@@ -119,7 +119,9 @@ export const getStaticProps: GetStaticProps = async () => {
    *   }
    */
 
-  const ourzSampleTokenIDs = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
+  const ourzSampleTokenIDs = [
+    3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
+  ];
   await Promise.all(
     ourzSampleTokenIDs.map(async (id) => {
       // Collect post
@@ -135,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
       postsToSet: JSON.parse(JSON.stringify(postsToSet)),
       loadMoreStartIndex: 3889,
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 };
 

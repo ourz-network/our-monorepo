@@ -20,7 +20,6 @@ const ViewERC721 = ({
   post: Media & { metadata: Ourz20210928 };
   // creator: string;
 }): JSX.Element => {
-  const [loading, setLoading] = useState(true); // Global loading state
   const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
 
   useEffect(() => {
@@ -32,7 +31,6 @@ const ViewERC721 = ({
       }));
 
       setFirstSale(newChartData);
-      setLoading(false);
     }
 
     if (recipients) {
@@ -108,12 +106,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
         recipients,
         post,
       },
-      revalidate: 45,
+      revalidate: 5,
     };
   }
   return {
     props: { tokenId, recipients: null, post },
-    revalidate: 45,
+    revalidate: 5,
   };
 };
 

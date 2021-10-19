@@ -46,7 +46,7 @@ export const Profile = ({
         />
       )}
 
-      {posts.length > 0 ? (
+      {posts?.length > 0 ? (
         // Else if, post count > 0
         <div id="medias" className="mx-auto w-full h-auto border-t border-dark-border">
           <div className="flex flex-col gap-4 justify-evenly justify-items-center content-evenly mx-4 md:grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 max-w-auto">

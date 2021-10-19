@@ -185,7 +185,7 @@ const NewMintMultistepForm = ({
         mintForm,
       });
       if (editionAddress) {
-        Router.push(`/nft/edition/${editionAddress}`).then(
+        Router.push(`/nft/edition/${editionAddress as string}`).then(
           () => {},
           () => {}
         );

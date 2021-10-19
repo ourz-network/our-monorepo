@@ -4,19 +4,7 @@ import { ApolloQueryResult } from "@apollo/client";
 import axios, { AxiosResponse } from "axios"; // Requests
 import zoraSubgraph from "./index"; // Apollo Client
 import { ZORA_MEDIA_BY_CREATOR, ZORA_MEDIA_BY_ID, ZORA_MEDIA_BY_OWNER } from "./queries"; // GraphQL Queries
-import {
-  Media,
-  // User,
-  // Ask,
-  // Bid,
-  // InactiveBid,
-  // InactiveAsk,
-  // Currency,
-  // Transfer,
-  // URIUpdate,
-  // ReserveAuctionBid,
-  // ReserveAuction,
-} from "./ZoraSubgraph";
+import { Media } from "./ZoraSubgraph";
 import { Ourz20210928 } from "@/Create/types/20210928";
 
 interface Data {
@@ -33,12 +21,12 @@ const cleanURLs = (media: Media): Media => {
 
   if (contentURI.match(regexIPFS)) {
     const { IPFShash } = regexIPFS.exec(contentURI).groups;
-    newMedia.contentURI = `https://ipfs.io/ipfs/${IPFShash}`;
+    newMedia.contentURI = `https://ipfs.io/ipfs/${IPFShash as string}`;
   }
 
   if (metadataURI.match(regexIPFS)) {
     const { IPFShash } = regexIPFS.exec(metadataURI).groups;
-    newMedia.metadataURI = `https://ipfs.io/ipfs/${IPFShash}`;
+    newMedia.metadataURI = `https://ipfs.io/ipfs/${IPFShash as string}`;
   }
 
   media = newMedia;

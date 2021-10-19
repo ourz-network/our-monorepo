@@ -5,12 +5,10 @@ import { keyDownA11y } from "@/utils/index";
 const SplitThumb = ({
   ownedSplit,
   claimableSplit,
-  userInfo,
   handleClick,
 }: {
   ownedSplit: OurProxy;
   claimableSplit: SplitRecipient;
-  userInfo: SplitRecipient;
   handleClick: () => void;
 }): JSX.Element => {
   if (claimableSplit) {
@@ -34,7 +32,10 @@ const SplitThumb = ({
             <br />
             Role: {yourRole}
             <br />
-            {ethers.utils.formatEther(userInfo?.claimableETH.toString() || 0)} ETH unclaimed.
+            {claimableSplit?.claimableETH
+              ? ethers.utils.formatEther(claimableSplit.claimableETH.toString())
+              : "0"}
+            ETH unclaimed.
           </p>
         </div>
       </div>
@@ -67,7 +68,7 @@ const SplitThumb = ({
       </div>
     );
   }
-  return null;
+  return <></>;
 };
 
 export default SplitThumb;

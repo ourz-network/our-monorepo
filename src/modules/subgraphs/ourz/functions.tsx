@@ -10,7 +10,7 @@ import {
   EDITION_INFO,
   RECIPIENTS_BY_ID,
 } from "./queries"; // GraphQL Queries
-import { OurProxy, SplitZNFT, SplitEdition, User, SplitRecipient } from "@/types/OurzSubgraph";
+import { OurProxy, SplitZNFT, SplitEdition, User, SplitRecipient } from "@/utils/OurzSubgraph";
 
 interface Data {
   ourProxy?: OurProxy;
@@ -34,7 +34,7 @@ export const getAllProfilePaths = async (): Promise<string[] | null> => {
   });
 
   const addresses: string[] = [];
-  if (queryUsers.data && queryProxies.data) {
+  if (queryUsers?.data && queryProxies?.data) {
     const { users } = queryUsers.data;
     const { ourProxies } = queryProxies.data;
 
@@ -44,7 +44,7 @@ export const getAllProfilePaths = async (): Promise<string[] | null> => {
   return addresses;
 };
 
-export const getAllOurzTokens = async (): Promise<SplitZNFT[] | null> => {
+export const getAllOurzTokens = async (): Promise<SplitZNFT[] | undefined> => {
   const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: ALL_TOKENS(),
   });
@@ -53,7 +53,7 @@ export const getAllOurzTokens = async (): Promise<SplitZNFT[] | null> => {
   return splitZNFTs;
 };
 
-export const getAllOurzEditions = async (): Promise<SplitEdition[] | null> => {
+export const getAllOurzEditions = async (): Promise<SplitEdition[] | undefined> => {
   const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: ALL_EDITIONS(),
   });
@@ -92,7 +92,7 @@ export const getOwnedSplits = async (ownerAddress: string): Promise<OurProxy[] |
   });
 
   const { user } = query.data;
-  if (user.ownedProxies) {
+  if (user?.ownedProxies) {
     return user.ownedProxies;
   }
   return null;
@@ -111,7 +111,7 @@ export const getClaimableSplits = async (
   });
 
   const { user } = query.data;
-  if (user.recipientInfo) {
+  if (user?.recipientInfo) {
     return user.recipientInfo;
   }
   return null;

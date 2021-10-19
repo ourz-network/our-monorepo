@@ -127,13 +127,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { usernameOrAddress } = context.params;
   await connectDB();
-  let user: IUser | null;
 
+  let user: IUser | null;
   // check if address has user profile first
   if (usernameOrAddress.length === addressLength) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     user = await UserModel.findOne({
-      ethAddress: (usernameOrAddress as string).toLowerCase(),
+      ethAddress: usernameOrAddress,
     }).populate("user");
 
     // if they have profile, abort prop fetching and redirect to page
@@ -155,20 +155,26 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!user) {
     // fetch posts
     const ownedMedia: Media[] = await getPostsByOwner(usernameOrAddress as string);
-    const createdMedia: Media[] = await getPostsByCreator(usernameOrAddress as string);
-    const posts: Media[] = [...ownedMedia.reverse(), ...createdMedia.reverse()];
+    // const createdMedia: Media[] = await getPostsByCreator(usernameOrAddress as string);
+    const posts: Media[] = [
+      ...ownedMedia.reverse(),
+      //  ...createdMedia.reverse()
+    ];
     return {
       props: {
         usernameOrAddress,
         posts,
       },
-      revalidate: 15,
+      revalidate: 10,
     };
   }
   // fetch posts
   const ownedMedia: Media[] = await getPostsByOwner(user.ethAddress);
-  const createdMedia: Media[] = await getPostsByCreator(user.ethAddress);
-  const posts: Media[] = [...ownedMedia.reverse(), ...createdMedia.reverse()];
+  // const createdMedia: Media[] = await getPostsByCreator(user.ethAddress);
+  const posts: Media[] = [
+    ...ownedMedia.reverse(),
+    //  ...createdMedia.reverse()
+  ];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const profileDetails: IProfile = await ProfileModel.findOne({ user: user._id });
   return {
@@ -178,7 +184,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       profileDetails: JSON.parse(JSON.stringify(profileDetails)) as string,
       posts,
     },
-    revalidate: 15,
+    revalidate: 10,
   };
 };
 
