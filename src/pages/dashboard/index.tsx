@@ -5,49 +5,17 @@ import { getClaimableSplits, getOwnedSplits } from "@/subgraphs/ourz/functions";
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
 import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
+import useSplits from "@/common/hooks/useSplits";
 
 const UserDashboard = (): JSX.Element => {
   const { address, network } = web3.useContainer();
-  const [loading, setLoading] = useState(true);
-  const [ownedSplits, setOwnedSplits] = useState<OurProxy[] | null>([]);
-  const [claimableSplits, setClaimableSplits] = useState<SplitRecipient[] | null>([]);
+  const { ownedSplits, claimableSplits, selectedSplit, setSelectedSplit, userSplitInfo, isOwner } =
+    useSplits({ address });
 
   const [showFull, setShowFull] = useState(false);
-  const [selectedSplit, setSelectedSplit] = useState<OurProxy | null>();
-  const [userSplitDetails, setUserSplitDetails] = useState<SplitRecipient | undefined>();
-  const [selectedIsOwned, setSelectedIsOwned] = useState(false);
 
-  useEffect(() => {
-    async function collectSplits(ethAddress: string) {
-      const owned = await getOwnedSplits(ethAddress);
-      if (owned) {
-        setOwnedSplits(owned);
-      }
-
-      const claimable = await getClaimableSplits(ethAddress);
-      if (claimable) {
-        setClaimableSplits(claimable);
-      }
-
-      setLoading(false);
-    }
-    if (address) {
-      collectSplits(address).then(
-        () => {},
-        () => {}
-      );
-    }
-  }, [address]);
-
-  const handleClickThumbnail = (split: OurProxy, isOwned: boolean) => {
+  const handleClickThumbnail = (split: OurProxy) => {
     setSelectedSplit(split);
-
-    split.splitRecipients.forEach((recipient) => {
-      if (recipient.user.id === address.toLowerCase()) {
-        setUserSplitDetails(recipient);
-      }
-    });
-    setSelectedIsOwned(isOwned);
     setShowFull(true);
   };
 
@@ -61,33 +29,19 @@ const UserDashboard = (): JSX.Element => {
           {showFull && (
             <SplitFull
               split={selectedSplit}
-              userInfo={userSplitDetails}
-              isOwned={selectedIsOwned}
+              userInfo={userSplitInfo}
+              isOwner={isOwner}
               setShowFull={setShowFull}
             />
           )}
 
-          {(loading || network?.name !== "rinkeby") && (
+          {(!address || network?.name !== "rinkeby") && (
             <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
               Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
             </p>
           )}
-          {!loading && network?.name === "rinkeby" && (
+          {address && network?.name === "rinkeby" && (
             <>
-              {/* {!showFull && (
-                <div className="flex justify-center mx-auto space-x-2 w-full border-b border-dark-border bg-dark-accent text-dark-secondary">
-                  <Button
-                    text={`${activeTab === "recipient" ? "Show" : ""} Owned Splits`}
-                    onClick={() => handleTabs("owned")}
-                    isMain={undefined}
-                  />
-                  <Button
-                    text={`${activeTab === "owned" ? "Show" : ""} Claimable Splits`}
-                    onClick={() => handleTabs("recipient")}
-                    isMain={undefined}
-                  />
-                </div>
-              )} */}
               {ownedSplits?.length > 0 && !showFull && (
                 <>
                   <h1 className="mx-auto mt-4 text-center text-dark-primary">
@@ -98,7 +52,7 @@ const UserDashboard = (): JSX.Element => {
                       <SplitThumb
                         key={`own-${ourProxy.id}`}
                         ownedSplit={ourProxy}
-                        userInfo={userSplitDetails}
+                        userInfo={userSplitInfo}
                         handleClick={() => handleClickThumbnail(ourProxy, true)}
                       />
                     ))}
@@ -121,7 +75,7 @@ const UserDashboard = (): JSX.Element => {
                       <SplitThumb
                         key={`rec-${ourProxy.id}`}
                         claimableSplit={ourProxy}
-                        userInfo={userSplitDetails}
+                        userInfo={userSplitInfo}
                         handleClick={() => handleClickThumbnail(ourProxy.splitProxy, false)}
                       />
                     ))}
