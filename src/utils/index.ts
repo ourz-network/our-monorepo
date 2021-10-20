@@ -18,8 +18,7 @@ export function cx(classNames: unknown[]): string {
 }
 
 export function tsFormat(value: string): string {
-  // eslint-disable-next-line radix
-  const dateObj = new Date(parseInt(value) * 1000);
+  const dateObj = new Date(parseInt(value, 10) * 1000);
   const year = dateObj.getUTCFullYear();
   const month = dateObj.getUTCMonth() + 1;
   const date = dateObj.getUTCDate();

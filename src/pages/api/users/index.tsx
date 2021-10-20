@@ -26,7 +26,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<NextAp
       }
       break;
     case "POST":
-      // eslint-disable-next-line no-case-declarations
       const { ethAddress, desiredUsername }: { ethAddress: string; desiredUsername: string } =
         req.body;
 
@@ -50,7 +49,6 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<NextAp
 
         user.save((err) => {
           if (err) {
-            // eslint-disable-next-line no-console
             console.log(err);
             return res.status(401).send(err);
           }

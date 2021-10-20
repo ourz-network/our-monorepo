@@ -2,20 +2,30 @@ import { useEffect, useState } from "react"; // State management
 import { BigNumber, ethers } from "ethers";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import FullPageEdition from "@/components/Cards/FullPageEdition";
-import { getAllOurzEditions, getEditionMetadata } from "@/subgraphs/ourz/functions"; // GraphQL client
-import { SplitRecipient, SplitEdition } from "@/utils/OurzSubgraph";
+import FullPageNFT from "@/components/Cards/FullPageNFT";
+import {
+  getAllOurzEditions,
+  getPostByEditionAddress,
+  getSplitOwners,
+  getSplitRecipients,
+} from "@/subgraphs/ourz/functions"; // GraphQL client
+import { SplitRecipient } from "@/utils/OurzSubgraph";
 import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
 import web3 from "@/app/web3";
+import { NFTCard } from "@/modules/subgraphs/utils";
 
 const editionABI = editionJSON.abi;
 
 const ViewEdition = ({
-  metadata,
+  post,
   saleInfo,
+  recipients,
+  proxyOwners,
 }: {
-  metadata: SplitEdition;
+  post: NFTCard;
   saleInfo: { maxSupply: number; currentSupply: number; salePrice: number; whitelistOnly: boolean };
+  recipients: SplitRecipient[];
+  proxyOwners: string[];
 }): JSX.Element => {
   const { signer, address } = web3.useContainer();
   const [isOwner, setIsOwner] = useState(false);
@@ -32,25 +42,23 @@ const ViewEdition = ({
       setFirstSale(newChartData);
     }
 
-    if (metadata?.creator?.splitRecipients) {
-      formatChartData(metadata?.creator?.splitRecipients);
+    if (recipients) {
+      formatChartData(recipients);
     }
-  }, [metadata?.creator?.splitRecipients]);
+  }, [recipients]);
 
   useEffect(() => {
     function checkOwners(ethAddress: string) {
-      const found = metadata.creator.proxyOwners.find(
-        (owner) => owner.id === ethAddress.toString().toLowerCase()
-      );
+      const found = proxyOwners.find((owner) => owner === ethAddress.toString().toLowerCase());
 
       if (found) {
         setIsOwner(true);
       }
     }
-    if (address && metadata?.creator?.proxyOwners) {
+    if (address && proxyOwners) {
       checkOwners(address);
     }
-  }, [address, metadata?.creator?.proxyOwners]);
+  }, [address, proxyOwners]);
 
   return (
     <PageLayout>
@@ -58,11 +66,11 @@ const ViewEdition = ({
         id="pagecontainer"
         className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
       >
-        {metadata && saleInfo && (
-          <FullPageEdition
-            metadata={metadata}
-            saleInfo={saleInfo}
+        {post && saleInfo && (
+          <FullPageNFT
+            post={post}
             isOwner={isOwner}
+            saleInfo={saleInfo}
             chartData={firstSale}
             signer={signer}
           />
@@ -73,7 +81,7 @@ const ViewEdition = ({
 };
 
 // Run on server build
-// eslint-disable-next-line consistent-return
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const ourEditions = await getAllOurzEditions();
 
@@ -95,39 +103,35 @@ export const getStaticProps: GetStaticProps = async (context) => {
   });
   const editionContract = new ethers.Contract(editionAddress, editionABI, queryProvider);
 
-  const res = await getEditionMetadata(editionAddress);
+  const post = await getPostByEditionAddress(editionAddress);
 
-  if (res) {
-    const metadata = res;
-    const editionSize: BigNumber = await editionContract.editionSize();
-    let totalSupply = BigNumber.from(0);
-    try {
-      totalSupply = await editionContract.totalSupply();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-    const salePrice = await editionContract.salePrice();
-    // const whitelistOnly = await editionContract.allowedMinters(zeroAddress);
-    const saleInfo = {
-      maxSupply: Number(editionSize.toString()),
-      currentSupply: Number(totalSupply.toString()),
-      salePrice: Number(ethers.utils.formatUnits(salePrice)),
-      // whitelistOnly,
-    };
+  const recipients = await getSplitRecipients(post.creator);
 
-    return {
-      props: {
-        editionAddress,
-        metadata,
-        saleInfo,
-      },
-      revalidate: 1,
-    };
+  const proxyOwners = await getSplitOwners(post.creator);
+
+  const editionSize: BigNumber = await editionContract.editionSize();
+  let totalSupply = BigNumber.from(0);
+  try {
+    totalSupply = await editionContract.totalSupply();
+  } catch (error) {
+    // console.log(error);
   }
+  const salePrice = await editionContract.salePrice();
+  // const whitelistOnly = await editionContract.allowedMinters(zeroAddress);
+  const saleInfo = {
+    maxSupply: Number(editionSize.toString()),
+    currentSupply: Number(totalSupply.toString()),
+    salePrice: Number(ethers.utils.formatUnits(salePrice)),
+    // whitelistOnly,
+  };
 
   return {
-    props: { editionAddress, metadata: undefined },
+    props: {
+      post,
+      saleInfo,
+      recipients,
+      proxyOwners,
+    },
     revalidate: 1,
   };
 };

@@ -24,7 +24,7 @@ const SelectMintKind = ({
 
   // useEffect(() => {
   //   setMintKind(kind);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //
   // }, [kind]);
 
   return (

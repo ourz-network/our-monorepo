@@ -27,7 +27,6 @@ import MintConfirm from "./4Confirm";
  * So is repeatedly unshifting the user's somewhat-static split field.
  */
 
-// eslint-disable-next-line consistent-return
 const NewMintMultistepForm = ({
   proxyAddress,
   splitRecipients,
@@ -105,8 +104,7 @@ const NewMintMultistepForm = ({
     if (splitRecipients && mintForm.creatorBidShare) {
       formatChartData(splitRecipients);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [splitRecipients]);
+  }, [mintForm.creatorBidShare, splitRecipients]);
 
   const setMintKind = (Kind: MintForm["mintKind"]) => {
     setFormData((prevState) => ({
@@ -266,7 +264,6 @@ const NewMintMultistepForm = ({
         })
       )
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -276,9 +273,8 @@ const NewMintMultistepForm = ({
   });
 
   // Mapping is not exactly necessary, only 1 file can be uploaded, but too lazy to rewrite.
-  // eslint-disable-next-line array-callback-return
+
   const thumbs = files.map((file): JSX.Element => {
-    // eslint-disable-next-line no-nested-ternary, @typescript-eslint/no-unused-expressions
     if (file.type.startsWith("image")) {
       return (
         <div className="box-border inline-flex p-5" key={file.name}>

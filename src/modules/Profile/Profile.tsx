@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import Head from "next/head";
 import { ProfileHeader } from "@/modules/Profile/ProfileHeader";
-import ProfileNFT from "@/components/Cards/ProfileNFT";
+import NFTPreviewCard from "@/components/Cards/NFTPreviewCard";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import { IProfile } from "@/mongodb/models/ProfileModel";
 import { IUser } from "@/mongodb/models/UserModel";
-import { Media } from "@/utils/ZoraSubgraph";
+import { NFTCard } from "../subgraphs/utils";
 
 export const Profile = ({
   linkAddress,
@@ -18,17 +18,13 @@ export const Profile = ({
   profileDetails: IProfile;
   ownAccount: boolean;
   user: IUser;
-  posts: Media[];
+  posts: NFTCard[];
 }): JSX.Element => (
   <PageLayout>
     <Head>
       {/* Custom meta for profile */}
       {/* <meta
           property="og:image"
-          content={`https://zora.gallery/api/meta/profile?address=${linkUsername ? linkUsername : linkAddress}`}
-        /> */}
-      {/* <meta
-          property="twitter:image"
           content={`https://zora.gallery/api/meta/profile?address=${linkUsername ? linkUsername : linkAddress}`}
         /> */}
     </Head>
@@ -39,10 +35,6 @@ export const Profile = ({
           user={user}
           linkAddress={user ? user.ethAddress : linkAddress}
           ownAccount={ownAccount}
-          /*
-           * loggedUserFollowStats={loggedUserFollowStats}
-           * setUserFollowStats={setUserFollowStats}
-           */
         />
       )}
 
@@ -51,18 +43,8 @@ export const Profile = ({
         <div id="medias" className="mx-auto w-full h-auto border-t border-dark-border">
           <div className="flex flex-col gap-4 justify-evenly justify-items-center content-evenly mx-4 md:grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 max-w-auto">
             {posts.map((post) => (
-              /*
-               * For each Zora post
-               * Return Post component
-               */
-              <div key={post?.id} className="flex justify-center w-full h-full">
-                <ProfileNFT
-                  tokenId={post?.id}
-                  /*
-                   * username={user ? user.username : null}
-                   * address={linkAddress || null}
-                   */
-                />
+              <div key={post.name} className="flex justify-center w-full h-full">
+                <NFTPreviewCard post={post} />
               </div>
             ))}
           </div>

@@ -3,16 +3,15 @@
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react"; // React state management
-import { Ourz20210928 } from "@/Create/types/20210928";
-import { Media } from "@/utils/ZoraSubgraph";
+import { NFTCard } from "@/modules/subgraphs/utils";
 
 interface NextImageOnLoad {
   naturalWidth: number;
   naturalHeight: number;
 }
 
-const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.Element => {
-  const tokenId = post.id;
+const HomeNFT = ({ post }: { post: NFTCard }): JSX.Element => {
+  const { tokenId } = post;
   const ref = useRef<HTMLVideoElement>();
 
   /**       ---  Dual-axis Masonry Layout  ---
@@ -98,7 +97,7 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
     }
   });
 
-  if (post?.metadata?.mimeType?.includes("video")) {
+  if (post?.mimeType?.includes("video")) {
     return (
       <div
         key={tokenId}
@@ -138,7 +137,7 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
       </div>
     );
   }
-  if (post?.metadata?.mimeType?.includes("image")) {
+  if (post?.mimeType?.includes("image")) {
     return (
       <div
         className={`m-2 transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep`}

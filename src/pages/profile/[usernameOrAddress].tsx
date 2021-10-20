@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react"; // State management
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router"; // Page redirects (static routing)
 import web3 from "@/app/web3";
-import { getPostsByCreator, getPostsByOwner } from "@/subgraphs/zora/functions"; // Post retrieval function
+import { getPostsByOwner } from "@/subgraphs/zora/functions"; // Post retrieval function
 import { Profile } from "@/modules/Profile/Profile";
 import connectDB from "@/mongodb/utils/connectDB";
 import { getAllProfilePaths } from "@/subgraphs/ourz/functions";
@@ -11,14 +11,14 @@ import { Media } from "@/utils/ZoraSubgraph";
 import { IProfile, ProfileModel } from "@/mongodb/models/ProfileModel";
 import { IUser, UserModel } from "@/mongodb/models/UserModel";
 import { addressLength } from "@/utils/index";
-import { Ourz20210928 } from "@/utils/20210928";
+import { NFTCard } from "@/modules/subgraphs/utils";
 
 interface ProfilePageProps {
   redirectUsername: string;
   usernameOrAddress: string;
   user: IUser;
   profileDetails: IProfile;
-  posts: Media & { metadata: Ourz20210928 };
+  posts: NFTCard[];
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({
@@ -37,8 +37,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
         () => {}
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [redirectUsername]);
+  }, [redirectUsername, router]);
 
   // const [loggedUserFollowStats, setUserFollowStats] = useState(userFollowStats);
 
@@ -51,8 +50,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
     } else {
       setOwnAccount(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [address, user, usernameOrAddress]);
 
   /*
    * useEffect(() => {
@@ -72,7 +70,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
    *       () => {}
    *     );
    *   }
-   *   // eslint-disable-next-line react-hooks/exhaustive-deps
+   *
    * }, [user, usernameOrAddress]); // Collect owned media on load
    */
   if (router.isFallback) {
@@ -123,7 +121,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 // Run on page load
-// eslint-disable-next-line consistent-return
+
 export const getStaticProps: GetStaticProps = async (context) => {
   const { usernameOrAddress } = context.params;
   await connectDB();
@@ -131,7 +129,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let user: IUser | null;
   // check if address has user profile first
   if (usernameOrAddress.length === addressLength) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     user = await UserModel.findOne({
       ethAddress: usernameOrAddress,
     }).populate("user");
@@ -146,7 +143,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       };
     }
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     user = await UserModel.findOne({
       username_lower: (usernameOrAddress as string).toLowerCase(),
     }).populate("user");
@@ -175,7 +171,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     ...ownedMedia.reverse(),
     //  ...createdMedia.reverse()
   ];
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const profileDetails: IProfile = await ProfileModel.findOne({ user: user._id });
   return {
     props: {

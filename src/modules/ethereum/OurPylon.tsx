@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import {
   // generateMetadata,
   constructBidShares,
@@ -403,9 +404,7 @@ export const purchaseEdition = async ({
   signer: Signer;
   editionAddress: string;
   salePrice: number;
-  // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
-  // eslint-disable-next-line no-param-reassign
   editionAddress = ethers.utils.getAddress(editionAddress);
 
   const edition = initializeEditionWSigner({ signer, editionAddress });
@@ -431,11 +430,9 @@ export const setApprovedMinter = async ({
   editionAddress: string;
   minterAddress: string;
   approved: boolean;
-  // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
-  // eslint-disable-next-line no-param-reassign
   proxyAddress = ethers.utils.getAddress(proxyAddress);
-  // eslint-disable-next-line no-param-reassign
+
   editionAddress = ethers.utils.getAddress(editionAddress);
   const PROXY_WRITE: Contract = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
   const approveTx: Transaction = await PROXY_WRITE.setEditionMinter(
@@ -458,7 +455,6 @@ export const withdrawEditionFunds = async ({
   signer: Signer;
   proxyAddress: string;
   editionAddress: string;
-  // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
   const withdrawTx = await PROXY_WRITE.withdrawEditionFunds(editionAddress);
@@ -478,7 +474,6 @@ export const setEditionPrice = async ({
   proxyAddress: string;
   editionAddress: string;
   salePrice: string;
-  // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
   const formattedPrice = ethers.utils.parseUnits(salePrice);
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
@@ -500,7 +495,6 @@ export const mintEditionsToRecipients = async ({
   proxyAddress: string;
   editionAddress: string;
   recipients: string[];
-  // eslint-disable-next-line consistent-return
 }): Promise<boolean> => {
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
   const mintTx = await PROXY_WRITE.mintEditionsTo(editionAddress, recipients);

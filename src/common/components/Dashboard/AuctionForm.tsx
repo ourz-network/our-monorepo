@@ -15,7 +15,6 @@ const AuctionForm = ({
 }): JSX.Element => {
   const Router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formData, setFormData] = useState({
     proxyAddress: split.id,
     tokenId,

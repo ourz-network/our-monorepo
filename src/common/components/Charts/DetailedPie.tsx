@@ -18,7 +18,7 @@ const DetailedPie = ({
   // const { secondaryBool } = data;
   // https://recharts.org/en-US/examples/TwoLevelPieChart
   // https://recharts.org/en-US/examples/CustomActiveShapePieChart
-  // eslint-disable-next-line no-shadow
+
   const renderActiveShape = (props: PieProps) => {
     const RADIAN = Math.PI / 180;
     const {

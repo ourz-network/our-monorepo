@@ -3,7 +3,7 @@ import React, { useState } from "react"; // React state management
 import { GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getPostByID } from "@/subgraphs/zora/functions"; // Post collection helper
-import HomeNFT from "@/components/Cards/HomeNFT";
+import HomeNFT from "@/common/components/Cards/MasonryNFT";
 import { Media } from "@/utils/ZoraSubgraph";
 
 const Home = ({
@@ -59,7 +59,7 @@ const Home = ({
               <div className="w-full h-full xl:space-x-4 xl:space-y-4 timeline xl:grid">
                 {posts.map((post) => (
                   // For each Zora post, Return Post component
-                  // eslint-disable-next-line react/jsx-key
+
                   <HomeNFT key={post.id} post={post} />
                 ))}
               </div>
@@ -103,7 +103,7 @@ export const getStaticProps: GetStaticProps = async () => {
   // });
   // const zoraQuery = new Zora(queryProvider, 4);
   // const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
-  // // eslint-disable-next-line radix
+  //
   // const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned));
 
   // const requests = [];

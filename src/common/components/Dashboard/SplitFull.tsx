@@ -1,14 +1,15 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuctions } from "@zoralabs/nft-hooks";
 import web3 from "@/app/web3";
 import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
-import DashboardNFT from "@/components/Cards/DashboardNFT";
+import NFTPreviewCard from "@/components/Cards/NFTPreviewCard";
 import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
 import { claimFunds } from "@/modules/ethereum/OurPylon";
 import Sidebar from "./Sidebar";
-import EditionThumb from "@/components/Cards/EditionThumb";
+import { formatEditionPost, NFTCard } from "@/modules/subgraphs/utils";
+import { getPostByID } from "@/modules/subgraphs/zora/functions";
 
 const SplitFull = ({
   split,
@@ -30,17 +31,7 @@ const SplitFull = ({
 
   const refDiv = useRef(null);
 
-  /*
-   * const hide = () => {
-   *   setShowFull(false);
-   * };
-   */
-
-  /*
-   * const handleClickClose = () => {
-   *   hide();
-   * };
-   */
+  const [creationPosts, setCreationPosts] = useState<(NFTCard | null)[] | null>();
 
   const clickClaim = async () => {
     await claimFunds({
@@ -51,6 +42,25 @@ const SplitFull = ({
       proxyAddress: split.id,
     });
   };
+
+  useEffect(() => {
+    async function collectPosts(): Promise<void> {
+      const posts: (NFTCard | null)[] = [];
+      await Promise.all(
+        split.creations.map(async (creation) => {
+          const post = await getPostByID(Number(creation.id));
+          posts.push(post);
+        })
+      );
+      setCreationPosts(posts);
+    }
+
+    if (split.creations)
+      collectPosts().then(
+        () => {},
+        () => {}
+      );
+  }, [split]);
 
   // const startAnAuction = (tokenId) => {
   //   setSelectedId(tokenId);
@@ -98,11 +108,14 @@ const SplitFull = ({
                   id="editions"
                   className="flex flex-col gap-4 justify-center justify-items-center content-evenly mx-auto mb-4 md:flex-none md:space-x-4 md:grid md:grid-flow-col md:auto-cols-max max-w-auto"
                 >
-                  {split.editions.map((edition) => (
-                    <div key={edition.id} className="flex justify-center w-full h-full">
-                      <EditionThumb edition={edition} />
-                    </div>
-                  ))}
+                  {split.editions.map((edition) => {
+                    const post = formatEditionPost(edition);
+                    return (
+                      <div key={post?.editionAddress} className="flex justify-center w-full h-full">
+                        <NFTPreviewCard post={post} />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </>
@@ -121,16 +134,12 @@ const SplitFull = ({
                   id="medias"
                   className="flex flex-col gap-4 justify-center justify-items-center content-evenly mx-auto md:flex-none md:space-x-4 md:grid md:grid-flow-col md:auto-cols-max max-w-auto"
                 >
-                  {split.creations.map((creation) => (
-                    <div key={creation.id} className="flex justify-center w-full h-full">
-                      <DashboardNFT
-                        tokenId={creation.id}
-                        onClick={() => Router.push(`/nft/${creation.id}`)}
-                        split={split}
-                        isCreation
-                      />
-                    </div>
-                  ))}
+                  {creationPosts &&
+                    creationPosts.map((post) => (
+                      <div key={post.tokenId} className="flex justify-center w-full h-full">
+                        <NFTPreviewCard post={post} />
+                      </div>
+                    ))}
                 </div>
               </div>
             </>
@@ -148,7 +157,7 @@ const SplitFull = ({
               )
               .map((auction) => (
                 <React.Fragment key={auction.id}>
-                  <DashboardNFT
+                  <NFTPreviewCard
                     key={auction.id}
                     tokenId={auction.tokenId as string}
                     onClick={() =>

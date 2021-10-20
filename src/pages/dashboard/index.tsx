@@ -37,7 +37,6 @@ const UserDashboard = (): JSX.Element => {
         () => {}
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   const handleClickThumbnail = (split: OurProxy, isOwned: boolean) => {

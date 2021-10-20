@@ -19,10 +19,9 @@ const MintDetails = ({
   back: () => void;
 }): JSX.Element => {
   const handleBidShare = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line no-param-reassign
-    event.target.value = parseFloat(event.target.value).toFixed(2);
-    setBidShare(Number(event.target.value));
+    setBidShare(Number(parseFloat(event.target.value).toFixed(2)));
   };
+
   return (
     <div className="flex flex-col justify-evenly items-center w-full h-full md:flex-row bg-dark-background">
       <div className="flex flex-col border lg:-mt-32 border-dark-border" id="details">

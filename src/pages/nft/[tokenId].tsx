@@ -4,22 +4,26 @@ import { Zora } from "@zoralabs/zdk";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/Cards/FullPageNFT";
-import { getAllOurzTokens, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
+import { getAllOurzTokens, getSplitOwners, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient, SplitZNFT } from "@/utils/OurzSubgraph";
 import { getPostByID } from "@/modules/subgraphs/zora/functions";
-import { Ourz20210928 } from "@/utils/20210928";
-import { Media } from "@/utils/ZoraSubgraph";
+import { NFTCard } from "@/modules/subgraphs/utils";
+import web3 from "@/app/web3";
 
 const ViewERC721 = ({
   tokenId,
   recipients,
   post,
+  proxyOwners,
 }: {
   tokenId: string;
   recipients: SplitRecipient[];
-  post: Media & { metadata: Ourz20210928 };
+  post: NFTCard;
+  proxyOwners: string[];
   // creator: string;
 }): JSX.Element => {
+  const { signer, address } = web3.useContainer();
+  const [isOwner, setIsOwner] = useState(false);
   const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
 
   useEffect(() => {
@@ -38,6 +42,19 @@ const ViewERC721 = ({
     }
   }, [recipients]);
 
+  useEffect(() => {
+    function checkOwners(ethAddress: string) {
+      const found = proxyOwners.find((owner) => owner === ethAddress.toString().toLowerCase());
+
+      if (found) {
+        setIsOwner(true);
+      }
+    }
+    if (address && proxyOwners) {
+      checkOwners(address);
+    }
+  }, [address, proxyOwners]);
+
   return (
     <PageLayout>
       <div
@@ -45,11 +62,12 @@ const ViewERC721 = ({
         className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
       >
         <FullPageNFT
+          post={post}
           tokenId={tokenId}
-          ownAccount
+          isOwner={isOwner}
+          signer={signer}
           chartData={firstSale}
           recipients={recipients || null}
-          post={post}
         />
       </div>
     </PageLayout>
@@ -57,7 +75,7 @@ const ViewERC721 = ({
 };
 
 // Run on server build
-// eslint-disable-next-line consistent-return
+
 export const getStaticPaths: GetStaticPaths = async () => {
   /*
    * const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
@@ -97,20 +115,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const post = await getPostByID(Number(tokenId));
   const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
 
-  const res = await getSplitRecipients(creatorAddress);
-  if (res && post) {
-    const recipients = res;
-    return {
-      props: {
-        tokenId,
-        recipients,
-        post,
-      },
-      revalidate: 5,
-    };
-  }
+  const recipients = await getSplitRecipients(creatorAddress);
+  const proxyOwners = await getSplitOwners(creatorAddress);
   return {
-    props: { tokenId, recipients: null, post },
+    props: {
+      tokenId,
+      recipients,
+      post,
+      proxyOwners,
+    },
     revalidate: 5,
   };
 };

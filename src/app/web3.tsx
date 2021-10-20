@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
 import { BigNumber, ethers, Signer } from "ethers"; // Ethers
 import { useCallback, useEffect, useState } from "react"; // State management
@@ -73,13 +74,13 @@ function useWeb3() {
   };
 
   // ====== Disconnect Wallet ======
-  const disconnectWeb3 = () => {
+  const disconnectWeb3 = useCallback(() => {
     modal?.clearCachedProvider();
     setInjectedProvider(undefined);
     setNetwork(undefined);
     setAddress(undefined);
     setSigner(undefined);
-  };
+  }, [modal]);
 
   // ====== Event Subscription ======
   const loadWeb3Modal = useCallback(async () => {
@@ -95,23 +96,21 @@ function useWeb3() {
       );
 
       setNetwork(Network);
-      // eslint-disable-next-line no-console
+
       console.log(
-        `Detected Web3 Network Change...\nNow connected to ${network.name}, Chain #${network.chainId}`
+        `Detected Web3 Network Change...\nNow connected to ${network?.name}, Chain #${network?.chainId}`
       );
     });
 
     provider?.on("accountsChanged", (accounts: string[]) => {
       setAddress(accounts[0]);
 
-      // eslint-disable-next-line no-console
       console.log(`Detected Web3 Account Change...\nNow connected to signer: ${accounts[0]}`);
     });
 
     provider?.on("disconnect", (error: { code: number; message: string }) => {
       disconnectWeb3();
 
-      // eslint-disable-next-line no-console
       console.log(
         `Web3 Disconnected${
           error.message && error.code
@@ -120,8 +119,7 @@ function useWeb3() {
         }`
       );
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modal, setInjectedProvider]);
+  }, [disconnectWeb3, modal, network?.chainId, network?.name]);
 
   useEffect(() => {
     if (modal?.cachedProvider) {
@@ -130,12 +128,10 @@ function useWeb3() {
         () => {}
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadWeb3Modal]);
+  }, [loadWeb3Modal, modal?.cachedProvider]);
 
   useEffect(() => {
     setSigner(injectedProvider?.getSigner());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [injectedProvider]);
 
   // ====== Sign Message Via Metamask ======

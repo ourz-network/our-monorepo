@@ -37,8 +37,7 @@ const NewSplit: React.FC = (): JSX.Element => {
     if (!ownerData.account) {
       ownerData.account = address;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [address, ownerData]);
 
   /**
    *  react-hook-form
@@ -57,14 +56,13 @@ const NewSplit: React.FC = (): JSX.Element => {
       name: "splits",
     });
   // Live updates for pie chart
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const watchSplits = watch("splits");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const controlledFields: FormSplitRecipient[] = fields.map(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     (field: Record<"id", string | number>, index: number) => ({
       ...field,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       ...watchSplits[index],
     })
   );

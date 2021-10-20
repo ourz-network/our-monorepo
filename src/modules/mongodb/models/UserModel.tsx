@@ -27,6 +27,7 @@ export interface IUser {
   username: string;
   username_lower: string;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UserType = IUser & mongoose.Document<any, any, IUser>;
 

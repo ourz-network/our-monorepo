@@ -87,6 +87,10 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
           }
           editions {
             id
+            creator { 
+              id
+              nickname
+            }
             name
             symbol
             description
@@ -134,6 +138,10 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
             }
             editions {
               id
+              creator { 
+                id
+                nickname
+              }
               name
               symbol
               description
@@ -214,6 +222,7 @@ export const RECIPIENTS_BY_ID = (proxyAddress: string): DocumentNode => {
   return gql`
     {
       ourProxy(id: "${proxyAddress}") {
+        proxyOwners { id }
         splitRecipients {
           user { id }
           name
