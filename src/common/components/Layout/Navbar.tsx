@@ -60,12 +60,12 @@ const Navbar = (): JSX.Element => {
 
   return (
     <div id="navContainer">
-      <Popover className="flex relative z-30 items-center border-b lg:pb-2 md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
+      <Popover className="flex relative z-30 items-center border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
         {({ open }) => (
           <>
-            <div className="mx-auto w-5/6">
-              <div className="flex relative flex-col justify-between items-center px-8 md:flex-row md:justify-start md:space-x-10 sm:px-6">
-                <div className="flex flex-col flex-1 justify-start content-center items-center px-8 text-center md:flex-row lg:w-0 lg:flex-1">
+            <div className="m-auto w-5/6">
+              <div className="flex relative flex-col justify-between items-center md:flex-row md:justify-start md:space-x-10">
+                <div className="flex flex-col flex-1 justify-start content-center items-center text-center md:flex-row lg:w-0 lg:flex-1">
                   {/* <div href="#" className="mt-1 md:-mr-11 lg:pl-12">
                     <Image
                       height={30}
@@ -75,7 +75,7 @@ const Navbar = (): JSX.Element => {
                     />
                   </div> */}
                   <Link href="/" passHref>
-                    <a className="lg:pl-12 md:pr-12">
+                    <a className="px-2">
                       <p className="text-2xl lg:font-semibold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
                         {/* "text-2xl font-bold leading-3 tracking-widest uppercase" */}
                         OURZ

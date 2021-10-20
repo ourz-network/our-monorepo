@@ -41,7 +41,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
   );
 
   const Title = () => (
-    <div className="flex flex-col px-2 py-1 border-t bg-dark-accent border-dark-border">
+    <div className="flex flex-col px-2 py-1 rounded-b-xl border-t bg-dark-accent border-dark-border">
       <div className="mx-auto mb-2 text-xl tracking-wider font-hero text-dark-primary">
         {!post.name ? `Untitled` : post.name}
       </div>
@@ -87,7 +87,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
     <>
       {post.nftKind === "Edition" && (
         <div className="m-auto w-full h-full">
-          <div className="m-2 border border-dark-border">
+          <div className="m-2 rounded-xl border border-dark-border">
             <MediaThumb />
             <Title />
           </div>

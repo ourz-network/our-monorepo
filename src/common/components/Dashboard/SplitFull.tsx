@@ -70,10 +70,10 @@ const SplitFull = ({
 
   return (
     <div className="flex overflow-hidden w-full">
-      <div className="hidden lg:block">
+      <div className="hidden md:inline-block">
         <Sidebar split={split} userInfo={userInfo} clickClaim={clickClaim} isOwned={isOwned} />
       </div>
-      <div className="flex mx-auto w-full min-h-screen text-base text-left transition transform md:inline-block md:align-middle">
+      <div className="flex w-full min-h-screen text-base">
         <div className="flex flex-col w-full">
           <div
             ref={refDiv}
@@ -83,7 +83,7 @@ const SplitFull = ({
               type="button"
               // href="#"
               tabIndex={0}
-              className="absolute right-4 top-16 text-dark-primary hover:text-dark-secondary sm:top-10 sm:right-6 md:top-8 md:right-6 lg:top-10 lg:right-8"
+              className="hidden absolute right-4 top-16 text-dark-primary hover:text-dark-secondary md:top-24 md:right-6 lg:top-24 lg:right-8"
               onClick={() => setShowFull(false)}
             >
               <span className="p-2 border text-ourange-400 border-dark-border">Go Back</span>
@@ -103,10 +103,10 @@ const SplitFull = ({
               <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
                 Editions
               </h1>
-              <div className="flex w-full">
+              <div className="flex">
                 <div
                   id="editions"
-                  className="flex flex-col gap-4 justify-center justify-items-center content-evenly mx-auto mb-4 md:flex-none md:space-x-4 md:grid md:grid-flow-col md:auto-cols-max max-w-auto"
+                  className="grid grid-flow-row auto-cols-fr gap-4 m-auto xl:grid-cols-3 lg:grid-cols-2"
                 >
                   {split.editions.map((edition) => {
                     const post = formatEditionPost(edition);
@@ -132,7 +132,7 @@ const SplitFull = ({
               <div className="flex w-full">
                 <div
                   id="medias"
-                  className="flex flex-col gap-4 justify-center justify-items-center content-evenly mx-auto md:flex-none md:space-x-4 md:grid md:grid-flow-col md:auto-cols-max max-w-auto"
+                  className="grid grid-flow-row auto-cols-fr gap-4 m-auto xl:grid-cols-3 lg:grid-cols-2"
                 >
                   {creationPosts &&
                     creationPosts.map((post) => (

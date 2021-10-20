@@ -37,7 +37,7 @@ const sanitizeURLs = (URLs: string[]): string[] => {
 
 const fetchMetadata = async (metadataURI: string): Promise<Ourz20210928> => {
   const res: AxiosResponse<Ourz20210928> = await axios.get(metadataURI, {
-    timeout: 5000,
+    timeout: 10000,
   });
   return res.data;
 };

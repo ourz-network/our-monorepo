@@ -43,7 +43,7 @@ const Wallet = (): JSX.Element => {
   };
 
   return address ? ( // If user is authenticated
-    <div className="flex justify-center items-center my-2 md:justify-end md:my-0 lg:pr-12 md:flex-1 lg:w-0">
+    <div className="flex justify-center items-center md:justify-end md:flex-1 lg:w-0">
       <Popover className="relative bg-dark-background">
         {() => (
           <>
@@ -164,7 +164,7 @@ const Wallet = (): JSX.Element => {
     </div>
   ) : (
     // Else if user is not authenticated
-    <div className="justify-end items-center mt-2 md:mt-0 lg:mr-8 md:flex md:flex-1 lg:w-0">
+    <div className="justify-end items-center mt-2 md:mt-0 md:flex md:flex-1 lg:w-0">
       <Button text="Connect Wallet" isMain onClick={authenticateWithLoading} />
     </div>
   );

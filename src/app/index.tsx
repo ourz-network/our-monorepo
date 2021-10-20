@@ -76,7 +76,7 @@ export default function GlobalProvider({ children }: { children: JSX.Element }):
                 primaryText: "#000",
                 background: "#000",
               },
-              defaultBorderRadius: 0,
+              defaultBorderRadius: 12,
               fontSizeFull: 16,
               // audioColors: {
               //   waveformColor: '#999',
