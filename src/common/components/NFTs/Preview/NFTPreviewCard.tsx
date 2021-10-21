@@ -21,7 +21,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
       }
       passHref
     >
-      <div className="content-center p-2 bg-opacity-0 cursor-pointer w-preview h-preview">
+      <div className="inline-block relative w-full bg-opacity-0 cursor-pointer max-w-preview h-preview">
         {post.mimeType.startsWith("video") && (
           <video muted autoPlay controls playsInline>
             <source src={post.contentURI} />
@@ -30,9 +30,8 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
         {post.mimeType.startsWith("image") && (
           <Image
             alt={`An image of the NFT: ${post.name}`}
-            height={330}
-            width={330}
-            objectFit="scale-down"
+            layout="fill"
+            objectFit="cover"
             src={post.contentURI}
           />
         )}
@@ -41,16 +40,16 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
   );
 
   const Title = () => (
-    <div className="flex flex-col px-2 py-1 rounded-b-xl border-t bg-dark-accent border-dark-border">
-      <div className="mx-auto mb-2 text-xl tracking-wider font-hero text-dark-primary">
+    <div className="flex flex-col p-1 space-y-1.5 border-t bg-dark-accent border-dark-border">
+      <div className="mx-auto text-base tracking-wider font-base text-dark-primary">
         {!post.name ? `Untitled` : post.name}
       </div>
       {supply !== undefined ? (
-        <div className="self-end mr-1 text-xs italic text-dark-primary">
+        <div className="mx-auto text-xs font-light text-dark-primary">
           {supply}/{post.editionSize} Minted
         </div>
       ) : (
-        <div className="self-end mr-1 text-xs italic text-dark-primary">
+        <div className="self-end text-xs italic text-dark-primary">
           by:{` `}
           <Link href={`/profile/${post.creator}`}>{toTrimmedAddress(post.creator)}</Link>
         </div>
@@ -86,15 +85,15 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
   return (
     <>
       {post.nftKind === "Edition" && (
-        <div className="m-auto">
-          <div className="m-2 rounded-xl border border-dark-border">
+        <div className="m-auto max-w-preview">
+          <div className="flex flex-col p-0 m-0 border border-dark-border">
             <MediaThumb />
             <Title />
           </div>
         </div>
       )}
       {post.nftKind === "1/1" && (
-        <div className="m-auto">
+        <div className="object-cover m-auto">
           <NFTPreview id={post.tokenId}>
             <MediaThumb />
             <Title />

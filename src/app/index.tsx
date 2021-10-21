@@ -65,9 +65,12 @@ export default function GlobalProvider({ children }: { children: JSX.Element }):
               color: #FFF;
               `, // dark-primary
               titleFont: `
-                color: #F68D15; 
+              color: #F68D15; 
               `, // 70% gray
-              headerFont: "color: #691900;",
+              // font-size: 10px;
+              headerFont: `
+              color: #691900;
+              `,
               mediaContentFont: {
                 fontFamily: `'Playfair Display', 'serif';`,
               },
@@ -76,8 +79,8 @@ export default function GlobalProvider({ children }: { children: JSX.Element }):
                 primaryText: "#000",
                 background: "#000",
               },
-              defaultBorderRadius: 12,
-              fontSizeFull: 16,
+              defaultBorderRadius: 0,
+              fontSizeFull: 10,
               // audioColors: {
               //   waveformColor: '#999',
               //   progressColor: '#333'

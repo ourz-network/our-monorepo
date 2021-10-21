@@ -3,7 +3,7 @@ import { NFTCard } from "@/modules/subgraphs/utils";
 import NFTPreviewCard from "./Preview/NFTPreviewCard";
 
 const SquareGrid = ({ posts }: { posts: NFTCard[] }) => (
-  <div className="flex flex-col gap-4 place-items-center mx-auto w-full md:grid 4xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 max-w-auto">
+  <div className="grid auto-rows-min gap-8 mx-8 3xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2">
     {posts.map((post) => (
       <div key={post.name}>
         <NFTPreviewCard post={post} />
