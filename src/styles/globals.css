@@ -15,6 +15,13 @@
   }
 }
 
+.zora-cardOuter {
+  margin: 0 !important;
+}
+.css-ansp5a {
+  margin: 0 !important;
+}
+
 /* https://codepen.io/nohoid/pen/kIfto */
 .mainButton:hover {
   background: linear-gradient(
