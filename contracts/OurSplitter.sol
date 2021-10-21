@@ -19,13 +19,21 @@ interface IWETH {
 
 /**
  * @title OurSplitter
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Continuing on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin
+ *
+ * Built on Zora Protocol
+ * https://github.com/ourzora
  */
+
 contract OurSplitter is OurStorage {
     struct Proof {
         bytes32[] merkleProof;

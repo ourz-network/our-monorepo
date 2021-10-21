@@ -3,13 +3,21 @@ pragma solidity 0.8.4;
 
 /**
  * @title OurStorage
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Continuing on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin
+ *
+ * Built on Zora Protocol
+ * https://github.com/ourzora
  */
+
 contract OurStorage {
     bytes32 public merkleRoot;
     uint256 public currentWindow;

@@ -4,18 +4,25 @@ pragma experimental ABIEncoderV2;
 
 import {OurManagement} from "./OurManagement.sol";
 import {IZora} from "./interfaces/IZora.sol";
-import {IMirror} from "./interfaces/IMirror.sol";
-import {IPartyBid} from "./interfaces/IPartyBid.sol";
 import {IERC721} from "./interfaces/IERC721.sol";
 
 /**
  * @title OurMinter
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Continuing on the work from:
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin
+ *
+ * Built on Zora Protocol
+ * https://github.com/ourzora
+ *
+ *
  *
  * @notice Some functions are marked as 'untrusted'Function. Use caution when interacting
  * with these, as any contracts you supply could be potentially unsafe.
@@ -23,6 +30,7 @@ import {IERC721} from "./interfaces/IERC721.sol";
  * are hardcoded to use the Zora Protocol/MirrorXYZ/PartyDAO addresses.
  * https://consensys.github.io/smart-contract-best-practices/recommendations/#mark-untrusted-contracts
  */
+
 contract OurMinter is OurManagement {
     /// @notice RINKEBY ADDRESSES
     address public constant ZORA_MEDIA =
@@ -63,19 +71,6 @@ contract OurMinter is OurManagement {
         IZora.BidShares calldata bidShares
     ) external onlyOwners {
         IZora(ZORA_MEDIA).mint(mediaData, bidShares);
-        emit ZNFTMinted(_getID());
-    }
-
-    /** Media
-     * @notice EIP-712 mintWithSig. Mints new new Zora NFT for a creator on behalf of split contract.
-     */
-    function mintZNFTWithSig(
-        address creator,
-        IZora.MediaData calldata mediaData,
-        IZora.BidShares calldata bidShares,
-        IZora.EIP712Signature calldata sig
-    ) external onlyOwners {
-        IZora(ZORA_MEDIA).mintWithSig(creator, mediaData, bidShares, sig);
         emit ZNFTMinted(_getID());
     }
 
@@ -356,30 +351,6 @@ contract OurMinter is OurManagement {
 
     //======== /IZora =========
     /* solhint-enable ordering */
-
-    /**======== IMirror =========
-     * @notice Create a Crowdfund
-     * @dev see IMirror.sol
-     */
-    function createMirrorCrowdfund(
-        string calldata name,
-        string calldata symbol,
-        address payable operator,
-        address payable fundingRecipient,
-        uint256 fundingCap,
-        uint256 operatorPercent
-    ) external onlyOwners {
-        IMirror(MIRROR_CROWDFUND).createCrowdfund(
-            name,
-            symbol,
-            operator,
-            fundingRecipient,
-            fundingCap,
-            operatorPercent
-        );
-    }
-
-    //======== /IMirror =========
 
     /**======== IERC721 =========
      * NOTE: Althought OurMinter.sol is generally implemented to work with Zora,
