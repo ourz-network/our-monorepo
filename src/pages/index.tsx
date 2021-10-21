@@ -104,7 +104,7 @@ export const getStaticProps: GetStaticProps = async () => {
     pocket: process.env.NEXT_PUBLIC_POKT_ID,
     etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
   });
-  const zoraQuery = new Zora(queryProvider, 1);
+  const zoraQuery = new Zora(queryProvider, 4);
   const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
 
   const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned), 10);
