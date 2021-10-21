@@ -62,7 +62,10 @@ const ProfileHeader = ({
       {Object.keys(profileDetails.social).map((keyName: ProfileKeys["keyName"]) => {
         if (keyName !== "website" && profileDetails.social[keyName]) {
           return (
-            <li className="px-1 py-0.5 mx-auto text-sm capitalize border text-dark-primary border-dark-border w-min">
+            <li
+              key={keyName}
+              className="px-1 py-0.5 mx-auto text-sm capitalize border text-dark-primary border-dark-border w-min"
+            >
               <a href={`https://www.${keyName}.com/${profileDetails.social.keyName}`}>{keyName}</a>
             </li>
           );

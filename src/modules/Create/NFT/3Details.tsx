@@ -23,8 +23,8 @@ const MintDetails = ({
   };
 
   return (
-    <div className="flex flex-col justify-evenly items-center w-full h-full md:flex-row bg-dark-background">
-      <div className="flex flex-col border lg:-mt-32 border-dark-border" id="details">
+    <div className="flex flex-col justify-evenly items-center w-full h-full max-h-90vh md:flex-row bg-dark-background">
+      <div className="flex flex-col border border-dark-border" id="details">
         <form>
           <div className="flex flex-col px-16 py-8 border-b border-dark-border text-dark-primary">
             <p>
@@ -135,16 +135,25 @@ const MintDetails = ({
           </div>
         </form>
       </div>
-      <div className="flex flex-col lg:-mt-32" id="preview">
+      <div className="flex flex-col max-w-1/2" id="preview">
         <p className="pb-2 text-center text-dark-primary">Preview</p>
-        <div className="flex flex-col p-5 border border-dark-border min-h-preview min-w-preview">
+        <div className="flex flex-col items-center p-5 border border-dark-border min-h-preview min-w-preview text-dark-secondary">
           {thumbs}
-          <p className="pt-2 text-xs italic text-center text-dark-secondary">
+          <p className="text-xs italic text-center text-dark-primary">
             {mintForm.metadata.name}
             <br />
             {mintForm.metadata.description}
             <br />
-            {mintForm.media.mimeType}
+            {mintForm.metadata.mimeType ?? ""}
+            {mintForm.mintKind === "Edition" && (
+              <>
+                <br />
+                {mintForm.metadata.symbol}
+                <br />
+                {mintForm.metadata.editionSize}
+                <br />
+              </>
+            )}
           </p>
         </div>
       </div>

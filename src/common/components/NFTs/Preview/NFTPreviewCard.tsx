@@ -15,7 +15,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
   const MediaThumb = () => (
     <Link
       href={
-        post.editionAddress
+        post?.editionAddress
           ? `/nft/edition/${post.editionAddress}`
           : `/nft/${post?.tokenId as string}`
       }
@@ -23,7 +23,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
     >
       <div className="inline-block relative w-full bg-opacity-0 cursor-pointer max-w-preview h-preview">
         {post.mimeType.startsWith("video") && (
-          <video muted autoPlay controls playsInline>
+          <video muted autoPlay={false} controls playsInline>
             <source src={post.contentURI} />
           </video>
         )}
@@ -59,7 +59,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
 
   useEffect(() => {
     async function getEditionSupply(): Promise<void> {
-      const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+      const queryProvider = ethers.providers.getDefaultProvider("homestead", {
         infura: process.env.NEXT_PUBLIC_INFURA_ID,
         alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
         pocket: process.env.NEXT_PUBLIC_POKT_ID,
@@ -73,7 +73,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
       const totalSupply = await editionContract.totalSupply();
       setSupply(Number(totalSupply.toString()));
     }
-    if (post.editionAddress) {
+    if (post?.editionAddress) {
       getEditionSupply().then(
         () => {},
         () => {}

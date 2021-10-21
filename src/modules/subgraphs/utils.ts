@@ -26,38 +26,61 @@ const sanitizeURLs = (URLs: string[]): string[] => {
 
   URLs.forEach((url) => {
     if (url?.length < 2) cleanURLs.push("error");
-    else if (url.match(regexIPFS)) {
+
+    if (url.match(regexIPFS)) {
       // const { IPFShash } = regexIPFS.exec(url).groups;
       cleanURLs.push(`https://ipfs.io/ipfs/${regexIPFS.exec(url).groups.IPFShash}`);
-    } else cleanURLs.push(url);
+    }
+
+    if (
+      url.includes("ipfs") ||
+      url.includes("fleek") ||
+      url.includes("arweave") ||
+      url.includes("mirror") ||
+      url.includes("giphy") ||
+      url.includes("pinata")
+    ) {
+      cleanURLs.push(url);
+    } else {
+      cleanURLs.push("error");
+    }
   });
 
   return cleanURLs;
 };
 
-const fetchMetadata = async (metadataURI: string): Promise<Ourz20210928> => {
-  const res: AxiosResponse<Ourz20210928> = await axios.get(metadataURI, {
-    timeout: 10000,
-  });
-  return res.data;
+const fetchMetadata = async (metadataURI: string): Promise<Ourz20210928 | null> => {
+  try {
+    const { data }: AxiosResponse<Ourz20210928> = await axios.get(metadataURI, {
+      timeout: 15000,
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const formatUniquePost = async (nft: Media | null): Promise<NFTCard | null> => {
   if (!nft) return null;
 
   const cleanURLs = sanitizeURLs([`${nft.contentURI}`, `${nft.metadataURI}`]);
+  if (cleanURLs[0] === "error" && cleanURLs[1] === "error") return null;
+
   const metadata = await fetchMetadata(cleanURLs[1]);
+
+  if (!metadata) return null;
 
   if (!metadata.mimeType) {
     // eslint-disable-next-line no-console
     console.log(`Aborted: No MimeType`);
     return null;
   }
-  // if (metadata?.external_url !== "www.ourz.network") {
 
+  // if (metadata?.external_url !== "www.ourz.network") {
   // console.log(`Aborted: Not Ourz`);
   //   return;
   // }
+
   if (metadata.mimeType.startsWith("text")) {
     const text: AxiosResponse<string> = await axios.get(nft.contentURI);
     cleanURLs[0] = text.data;

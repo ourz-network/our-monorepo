@@ -56,17 +56,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const tokenId = context.params?.tokenId;
   const post = await getPostByID(Number(tokenId));
 
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,
     etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
   });
-  const zoraQuery = new Zora(queryProvider, 4);
+  const zoraQuery = new Zora(queryProvider, 1);
 
   const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
-  const recipients = await getSplitRecipients(creatorAddress);
-  const splitOwners = await getSplitOwners(creatorAddress);
+  let recipients;
+  let splitOwners;
+  try {
+    recipients = await getSplitRecipients(creatorAddress);
+    splitOwners = await getSplitOwners(creatorAddress);
+  } catch (error) {
+    //
+  }
 
   return {
     props: {

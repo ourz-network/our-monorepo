@@ -281,16 +281,20 @@ const NewMintMultistepForm = ({
   const thumbs = files.map((file): JSX.Element => {
     if (file.type.startsWith("image")) {
       return (
-        <div className="box-border inline-flex p-5" key={file.name}>
-          <div className="flex overflow-hidden min-w-0 h-96">
-            <img src={file.preview} className="block w-auto h-full" alt="Preview of your upload" />
+        <div className="box-border inline-flex p-2 my-auto" key={file.name}>
+          <div className="flex object-contain overflow-hidden min-w-0">
+            <img
+              src={file.preview}
+              className="object-contain w-full"
+              alt="Preview of your upload"
+            />
           </div>
         </div>
       );
     }
     if (file.type.startsWith("video")) {
       return (
-        <div className="box-border inline-flex p-5" key={file.name}>
+        <div className="box-border inline-flex p-2 my-auto" key={file.name}>
           <div className="flex overflow-hidden min-w-0 h-96">
             <video autoPlay controls muted className="block w-auto h-full" playsInline>
               <source src={file.preview} />

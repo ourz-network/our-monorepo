@@ -24,8 +24,8 @@ const MintUpload = ({
   };
 
   return (
-    <div className="flex flex-col justify-evenly items-center w-full h-full md:flex-row bg-dark-background">
-      <div className="flex flex-col shadow-xl lg:-mt-32" id="dropzone">
+    <div className="flex overflow-y-hidden flex-col justify-evenly items-center w-full h-75vh md:flex-row bg-dark-background">
+      <div className="flex flex-col my-auto" id="dropzone">
         <form>
           <div
             {...getRootProps({
@@ -66,7 +66,7 @@ const MintUpload = ({
           {/* </div> */}
         </form>
       </div>
-      <div className="flex flex-col shadow-xl lg:-mt-32" id="preview">
+      <div className="flex flex-col my-auto max-w-1/2" id="preview">
         <p className="pb-2 text-center text-dark-primary">Preview</p>
         <div className="flex flex-col items-center p-5 border border-dark-border min-h-preview min-w-preview text-dark-secondary">
           {thumbs}

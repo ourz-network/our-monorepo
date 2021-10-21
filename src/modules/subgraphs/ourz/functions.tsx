@@ -14,14 +14,14 @@ import { OurProxy, SplitZNFT, SplitEdition, User, SplitRecipient } from "@/utils
 import { formatEditionPost, NFTCard } from "../utils";
 
 interface Data {
-  ourProxy?: OurProxy;
-  ourProxies?: OurProxy[];
-  user?: User;
-  users?: User[];
-  splitZNFT?: SplitZNFT;
-  splitZNFTs?: SplitZNFT[];
-  splitEdition?: SplitEdition;
-  splitEditions?: SplitEdition[];
+  ourProxy: OurProxy | null;
+  ourProxies: OurProxy[] | null;
+  user: User | null;
+  users: User[] | null;
+  splitZNFT: SplitZNFT | null;
+  splitZNFTs: SplitZNFT[] | null;
+  splitEdition: SplitEdition | null;
+  splitEditions: SplitEdition[] | null;
 }
 
 export const getAllProfilePaths = async (): Promise<string[] | null> => {
@@ -43,19 +43,25 @@ export const getAllProfilePaths = async (): Promise<string[] | null> => {
 };
 
 export const getAllOurzTokens = async (): Promise<SplitZNFT[] | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: ALL_TOKENS(),
   });
-  if (!query.data.splitZNFTs) return null;
-  return query.data.splitZNFTs;
+
+  if (data) {
+    return data.splitZNFTs;
+  }
+  return null;
 };
 
 export const getAllOurzEditions = async (): Promise<SplitEdition[] | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: ALL_EDITIONS(),
   });
-  if (!query.data.splitEditions) return null;
-  return query.data.splitEditions;
+
+  if (data) {
+    return data.splitEditions;
+  }
+  return null;
 };
 
 /**
@@ -66,11 +72,14 @@ export const getAllOurzEditions = async (): Promise<SplitEdition[] | null> => {
 export const getSplitRecipients = async (
   proxyAddress: string
 ): Promise<SplitRecipient[] | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: RECIPIENTS_BY_ID(proxyAddress),
   });
-  if (!query.data.ourProxy) return null;
-  return query.data.ourProxy.splitRecipients;
+
+  if (data?.ourProxy) {
+    return data.ourProxy.splitRecipients;
+  }
+  return null;
 };
 /**
  * Collect Split Proxies owned by a specific address
@@ -78,13 +87,15 @@ export const getSplitRecipients = async (
  * @returns {Object} containing the owners of a split
  */
 export const getSplitOwners = async (proxyAddress: string): Promise<string[] | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: RECIPIENTS_BY_ID(proxyAddress),
   });
-  if (!query.data.ourProxy) return null;
 
-  const proxyOwners = query.data.ourProxy.proxyOwners.map((owner) => owner.id);
-  return proxyOwners;
+  if (data?.ourProxy) {
+    const proxyOwners = data.ourProxy.proxyOwners.map((owner) => owner.id);
+    return proxyOwners;
+  }
+  return null;
 };
 
 /**
@@ -93,11 +104,14 @@ export const getSplitOwners = async (proxyAddress: string): Promise<string[] | n
  * @returns {Object} containing all split contracts owned by owner
  */
 export const getOwnedSplits = async (ownerAddress: string): Promise<OurProxy[] | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: SPLITS_BY_OWNER(ownerAddress),
   });
-  if (!query.data.user) return null;
-  return query.data.user.ownedProxies;
+
+  if (data?.user) {
+    return data.user.ownedProxies;
+  }
+  return null;
 };
 
 /**
@@ -108,11 +122,14 @@ export const getOwnedSplits = async (ownerAddress: string): Promise<OurProxy[] |
 export const getClaimableSplits = async (
   recipientAddress: string
 ): Promise<SplitRecipient[] | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: SPLITS_BY_RECIPIENT(recipientAddress),
   });
-  if (!query.data.user) return null;
-  return query.data.user.recipientInfo;
+
+  if (data?.user) {
+    return data.user.recipientInfo;
+  }
+  return null;
 };
 
 /**
@@ -121,11 +138,14 @@ export const getClaimableSplits = async (
  * @returns {Object} containing metadata
  */
 export const getEditionMetadata = async (editionAddress: string): Promise<SplitEdition | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: EDITION_INFO(editionAddress),
   });
-  if (!query.data.splitEdition) return null;
-  return query.data.splitEdition;
+
+  if (data) {
+    return data.splitEdition;
+  }
+  return null;
 };
 
 /**
@@ -134,10 +154,12 @@ export const getEditionMetadata = async (editionAddress: string): Promise<SplitE
  * @returns {Object} containing metadata
  */
 export const getPostByEditionAddress = async (editionAddress: string): Promise<NFTCard | null> => {
-  const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
+  const { data }: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: EDITION_INFO(editionAddress),
   });
-  if (!query.data.splitEdition) return null;
-  const post = formatEditionPost(query.data.splitEdition);
-  return post;
+  if (data?.splitEdition) {
+    const post = formatEditionPost(data.splitEdition);
+    return post;
+  }
+  return null;
 };

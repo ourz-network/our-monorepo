@@ -99,10 +99,7 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
 
   if (post?.mimeType?.includes("video")) {
     return (
-      <div
-        key={tokenId}
-        className={`m-2 transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep`}
-      >
+      <div key={tokenId} className={`m-2 cursor-pointer ${aspectRatio} landingPage-item`}>
         <div className="flex flex-col w-full h-full cursor-pointer">
           <Link
             href={{
@@ -114,13 +111,15 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <video
+                  // width={480}
+                  lazy="true"
                   ref={ref}
                   muted
                   onLoadedMetadata={(loadedMedia) => calcAspectRatio(loadedMedia)}
                   onLoadedData={(loadedMedia) => calcAspectRatio(loadedMedia)}
                   onLoad={(loadedMedia) => calcAspectRatio(loadedMedia)}
-                  autoPlay={false}
-                  controls
+                  autoPlay
+                  controls={false}
                   playsInline
                 >
                   <source
@@ -139,9 +138,7 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
   }
   if (post?.mimeType?.includes("image")) {
     return (
-      <div
-        className={`m-2 transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep`}
-      >
+      <div className={`m-2 cursor-pointer ${aspectRatio} landingPage-item`}>
         <div className="flex flex-col w-full h-full xl:h-full">
           <Link
             href={{

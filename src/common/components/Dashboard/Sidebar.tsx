@@ -33,7 +33,7 @@ const Sidebar = ({
             <h2 className="text-sm underline cursor-pointer text-dark-secondary">
               <a
                 className="hover:underline hover:cursor"
-                href={`https://rinkeby.etherscan.io/address/${split.id}`}
+                href={`https://etherscan.io/address/${split.id}`}
               >
                 {toTrimmedAddress(split.id)}
               </a>

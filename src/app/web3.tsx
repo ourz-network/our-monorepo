@@ -33,7 +33,7 @@ function useWeb3() {
     function setupWeb3Modal() {
       // Create new
       const web3Modal = new Web3Modal({
-        network: "rinkeby", // optional
+        // network: "rinkeby", // optional
         cacheProvider: true, // optional
         // theme:"dark", // optional. Change to "dark" for a dark theme.
         providerOptions,
