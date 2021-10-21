@@ -90,7 +90,7 @@ const Navbar = (): JSX.Element => {
                     href="#"
                     className="hidden self-center w-auto text-xs font-bold tracking-wide text-center capitalize md:block text-ourange-150 md:pr-8 hover:text-dark-secondary"
                   >
-                    {/* About */} CAUTION - RINKEBY TESTNET ONLY!
+                    {/* About */}
                   </a>
                   {/* <div className="-my-2 -mr-2 md:hidden">
                     <Popover.Button className="inline-flex justify-center items-center p-2 bg-white text-dark-secondary hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-yellow-500">

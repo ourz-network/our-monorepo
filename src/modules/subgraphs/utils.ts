@@ -76,12 +76,12 @@ export const formatUniquePost = async (nft: Media | null): Promise<NFTCard | nul
     return null;
   }
 
-  if (metadata.mimeType.startsWith("text")) {
-    // if (metadata?.external_url !== "www.ourz.network") {
-    // console.log(`Aborted: Not Ourz`);
-    //   return;
-    // }
+  // if (metadata?.external_url !== "www.ourz.network") {
+  // console.log(`Aborted: Not Ourz`);
+  //   return;
+  // }
 
+  if (metadata.mimeType.startsWith("text")) {
     const text: AxiosResponse<string> = await axios.get(nft.contentURI);
     cleanURLs[0] = text.data;
   }

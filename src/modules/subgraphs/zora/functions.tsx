@@ -14,14 +14,15 @@ interface Data {
  * @param {Number} id post number
  * @returns {Object} containing Zora media details
  */
-export const getPostByID = async (id: number): Promise<NFTCard | null> => {
-  const query: ApolloQueryResult<Data> = await zoraSubgraph.query({
+export const getPostByID = async (id: number): Promise<(NFTCard | null)[] | null> => {
+  const { data }: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_ID(id),
   });
-  if (!query.data.media) return null;
-
-  const post = await formatUniquePost(query.data.media);
-  return post;
+  if (data?.media) {
+    const post = await formatUniquePost(data.media);
+    return post;
+  }
+  return null;
 };
 
 /**
@@ -29,36 +30,38 @@ export const getPostByID = async (id: number): Promise<NFTCard | null> => {
  * @param {Number} id post number
  * @returns {Object} containing Zora media details
  */
-export const getPostsByOwner = async (owner: string): Promise<(NFTCard | null)[]> => {
-  const query: ApolloQueryResult<Data> = await zoraSubgraph.query({
+export const getPostsByOwner = async (owner: string): Promise<(NFTCard | null)[] | null> => {
+  const { data }: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_OWNER(owner),
   });
-  if (!query.data.medias) return [];
+  if (data?.medias) {
+    const posts: (NFTCard | null)[] = [];
+    await Promise.all(
+      data.medias.map(async (media: Media) => {
+        const post = await formatUniquePost(media);
+        posts.push(post);
+      })
+    );
 
-  const posts: (NFTCard | null)[] = [];
-  await Promise.all(
-    query.data.medias.map(async (media: Media) => {
-      const post = await formatUniquePost(media);
-      posts.push(post);
-    })
-  );
-
-  return posts;
+    return posts;
+  }
+  return null;
 };
 
-export const getPostsByCreator = async (creator: string): Promise<(NFTCard | null)[]> => {
-  const query: ApolloQueryResult<Data> = await zoraSubgraph.query({
+export const getPostsByCreator = async (creator: string): Promise<(NFTCard | null)[] | null> => {
+  const { data }: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_CREATOR(creator),
   });
-  if (!query.data.medias) return [];
+  if (data?.medias) {
+    const posts: (NFTCard | null)[] = [];
+    await Promise.all(
+      data.medias.map(async (media: Media) => {
+        const post = await formatUniquePost(media);
+        posts.push(post);
+      })
+    );
 
-  const posts: (NFTCard | null)[] = [];
-  await Promise.all(
-    query.data.medias.map(async (media: Media) => {
-      const post = await formatUniquePost(media);
-      posts.push(post);
-    })
-  );
-
-  return posts;
+    return posts;
+  }
+  return null;
 };

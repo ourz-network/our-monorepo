@@ -98,7 +98,7 @@ const Home = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const queryProvider = ethers.providers.getDefaultProvider("mainnet", {
+  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,

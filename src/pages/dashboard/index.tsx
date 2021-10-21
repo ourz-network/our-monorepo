@@ -5,6 +5,7 @@ import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
 import { OurProxy } from "@/utils/OurzSubgraph";
 import useSplits from "@/common/hooks/useSplits";
+import WrongNetworkAlert from "@/components/Layout/WrongNetworkAlert";
 
 const UserDashboard = (): JSX.Element => {
   const { address, network } = web3.useContainer();
@@ -46,12 +47,8 @@ const UserDashboard = (): JSX.Element => {
             />
           )}
 
-          {(!address || network?.name !== "mainnet") && (
-            <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
-              Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
-            </p>
-          )}
-          {address && network?.name === "mainnet" && (
+          {(!address || network?.name !== "homestead") && <WrongNetworkAlert />}
+          {address && network?.name === "homestead" && (
             <>
               {ownedSplits?.length > 0 && !showFull && (
                 <>

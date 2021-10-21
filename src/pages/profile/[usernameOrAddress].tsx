@@ -48,7 +48,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   if (router.isFallback) {
     return (
       <PageLayout>
-        <p className="my-auto w-full text-center animate-pulse text-dark-primary">Redirecting...</p>
+        <p className="my-auto w-full text-center animate-pulse text-dark-primary">Loading...</p>
       </PageLayout>
     );
   }
@@ -65,7 +65,9 @@ const ProfilePage: FC<ProfilePageProps> = ({
         />
 
         {posts?.length > 0 ? (
-          <SquareGrid posts={posts} />
+          <div className="mx-auto">
+            <SquareGrid posts={posts} />
+          </div>
         ) : (
           <div className="mx-auto mt-6 h-full text-center text-dark-primary">
             Empty Collection{" "}
@@ -129,7 +131,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
           },
         };
       }
-    } catch (error) {
+
       const { posts } = await getPosts(usernameOrAddress);
       return {
         props: {
@@ -138,6 +140,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         },
         revalidate: 10,
       };
+    } catch (error) {
+      //
     }
   }
 

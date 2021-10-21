@@ -1,21 +1,19 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react"; // State management
-import { providers } from "ethers";
+import { useState } from "react"; // State management
 import PageLayout from "@/components/Layout/PageLayout";
 import web3 from "@/app/web3";
-import { getOwnedSplits } from "@/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import Button from "@/components/Button";
 import NewSplit from "@/Create/Split/NewSplit";
-import { OurProxy } from "@/utils/OurzSubgraph";
+import WrongNetworkAlert from "@/components/Layout/WrongNetworkAlert";
+import useSplits from "@/common/hooks/useSplits";
 
 const CreateDashboard = (): JSX.Element => {
-  const [loading, setLoading] = useState(true); // Global loading state
-  const [ownedSplits, setOwnedSplits] = useState<OurProxy[] | undefined>([]);
-  const [newSplit, setNewSplit] = useState(false);
-  const { address, network }: { address: string; network: providers.Network } = web3.useContainer();
-
+  const { address, network } = web3.useContainer();
+  const { ownedSplits } = useSplits({ address });
   const Router = useRouter();
+
+  const [newSplit, setNewSplit] = useState(false);
 
   const handleClick = (id: string) => {
     Router.push(`/create/mint/${id}`).then(
@@ -24,32 +22,14 @@ const CreateDashboard = (): JSX.Element => {
     );
   };
 
-  useEffect(() => {
-    async function collectOwnedSplits(ethAddress) {
-      const splits = await getOwnedSplits(ethAddress);
-      if (splits) {
-        setOwnedSplits(splits);
-      }
-      setLoading(false);
-    }
-    if (address) {
-      collectOwnedSplits(address).then(
-        () => {},
-        () => {}
-      );
-    }
-  }, [address]);
-
   return (
     <PageLayout>
       {newSplit ? (
         <NewSplit />
       ) : (
         <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-          {loading || network?.name !== "mainnet" ? (
-            <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
-              Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
-            </p>
+          {network?.name !== "homestead" ? (
+            <WrongNetworkAlert />
           ) : (
             <>
               {ownedSplits ? (
@@ -72,6 +52,7 @@ const CreateDashboard = (): JSX.Element => {
                   You will need to create a new Split first.
                 </p>
               )}
+              <p className="mx-auto text-dark-primary">OR</p>
               <div className="p-2 mx-auto my-4 w-min h-min">
                 <Button isMain text="Create New Split" onClick={() => setNewSplit(true)} />
               </div>

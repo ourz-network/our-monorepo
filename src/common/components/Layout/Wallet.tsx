@@ -155,7 +155,7 @@ const Wallet = (): JSX.Element => {
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a>
           <Button
-            text={network?.name === "mainnet" ? `Create` : `Switch to Mainnet`}
+            text={network?.name === "homestead" ? `Create` : `Switch to Mainnet`}
             isMain
             onClick={undefined}
           />
