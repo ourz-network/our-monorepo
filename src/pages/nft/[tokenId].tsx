@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const tokenId = context.params?.tokenId;
   const post = await getPostByID(Number(tokenId));
 
-  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
+  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,

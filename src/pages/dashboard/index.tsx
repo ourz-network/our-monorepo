@@ -47,8 +47,8 @@ const UserDashboard = (): JSX.Element => {
             />
           )}
 
-          {(!address || network?.name !== "homestead") && <WrongNetworkAlert />}
-          {address && network?.name === "homestead" && (
+          {(!address || network?.name !== "rinkeby") && <WrongNetworkAlert />}
+          {address && network?.name === "rinkeby" && (
             <>
               {ownedSplits?.length > 0 && !showFull && (
                 <>
