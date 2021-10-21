@@ -1,20 +1,20 @@
 export interface SplitZNFT {
-  // "The tokenId of the ERC-721";
-  id: string;
+  // "The tokenId of the Zora Media ERC-721"
+  id: ID;
 
-  // "The creator of the ERC-721";
-  creator: OurProxy;
+  // "The creator of the ERC-721"
+  creator: Split;
 
-  // "The transaction hash the ERC-721 was originally logged in this subgraph";
+  // "The transaction hash the ERC-721 was originally logged in this subgraph"
   transactionHash: string;
 }
 
 export interface SplitEdition {
   // "The address of the Zora NFT-Editions contract"
-  id: string;
+  id: ID;
 
   // "The creator of the Edition Contract"
-  creator: OurProxy;
+  creator: Split;
 
   // "The title of the Edition contract"
   name: string;
@@ -40,10 +40,10 @@ export interface SplitEdition {
 
 export interface ERC20Transfer {
   // "<txHash>-<proxyAddress>"
-  id: string;
+  id: ID;
 
   // "The address of the Split transferring the ERC20s"
-  splitProxy: OurProxy;
+  split: Split;
 
   // "The transaction hash of the transfer"
   transactionHash: string;
@@ -55,9 +55,9 @@ export interface ERC20Transfer {
   amount: BigInt;
 }
 
-export interface OurProxy {
+export interface Split {
   // "The address of the Proxy"
-  id: string;
+  id: ID;
 
   // "A nickname for the Proxy"
   nickname: string;
@@ -72,22 +72,19 @@ export interface OurProxy {
   createdAtBlockNumber: BigInt;
 
   // "The current owner(s) of the Proxy"
-  proxyOwners: User[];
+  owners: User[];
 
   // "The original owner of the Proxy"
   creator: User;
 
-  // "The number of times ownership has been transferred"
-  transfers: BigInt;
-
-  // "The amount of ETH/WETH available to claim by Split Recipients"
+  // "The amount of ETH/WETH currently available to claim by Split Recipients"
   ETH: BigInt;
 
   // "Recipients should increment window before claiming"
   needsIncremented: boolean;
 
-  // "Array of SplitRecipients"
-  splitRecipients: SplitRecipient[];
+  // "Array of the Split's Recipients"
+  recipients: Recipient[];
 
   // "The ERC721(s) the Proxy created"
   // @derivedFrom(field: "creator")
@@ -98,39 +95,39 @@ export interface OurProxy {
   editions: SplitEdition[];
 
   // "The ERC20 Transfers that the Proxy has successfully distributed"
-  // @derivedFrom(field: "splitProxy")
+  // @derivedFrom(field: "split")
   ERC20Transfers: ERC20Transfer[];
 }
 
 export interface User {
   // "Ethereum Address"
-  id: string;
+  id: ID;
 
   // "Total amount of ETH claimed from all Splits"
-  ethClaimed: BigInt;
+  claimedETH: BigInt;
 
   // "Proxies that this address owns"
-  // @derivedFrom(field: "proxyOwners")
-  ownedProxies: OurProxy[];
+  // @derivedFrom(field: "owners")
+  ownedSplits: Split[];
 
   // "Proxies that this address created"
   // @derivedFrom(field: "creator")
-  createdProxies: OurProxy[];
+  createdSplits: Split[];
 
   // "Splits that this address is a recipient of"
   // @derivedFrom(field: "user")
-  recipientInfo: SplitRecipient[];
+  recipientInfo: Recipient[];
 }
 
-export interface SplitRecipient {
+export interface Recipient {
   // "`${proxyAddress}-${userAddress}`"
-  id: string;
+  id: ID;
 
   // "User Entity"
   user: User;
 
-  // "OurProxy Entity"
-  splitProxy: OurProxy;
+  // "Split Entity"
+  split: Split;
 
   // "Name/Alias of User"
   name: string;
@@ -148,5 +145,5 @@ export interface SplitRecipient {
   claimableETH: BigInt;
 
   // "Total amount of ETH claimed from this Split"
-  ethClaimed: BigInt;
+  claimedETH: BigInt;
 }

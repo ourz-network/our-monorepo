@@ -5,7 +5,7 @@ import web3 from "@/app/web3";
 import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
 import NFTPreviewCard from "@/common/components/NFTs/Preview/NFTPreviewCard";
-import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
+import { Split, Recipient } from "@/utils/OurzSubgraph";
 import Sidebar from "./Sidebar";
 import { NFTCard } from "@/modules/subgraphs/utils";
 import SquareGrid from "@/common/components/NFTs/SquareGrid";
@@ -19,9 +19,9 @@ const SplitFull = ({
   editions,
   clickClaim,
 }: {
-  split: OurProxy;
+  split: Split;
   isOwner: boolean;
-  userInfo: SplitRecipient;
+  userInfo: Recipient;
   setShowFull: Dispatch<SetStateAction<boolean>>;
   creations: NFTCard[];
   editions: NFTCard[];
@@ -51,12 +51,12 @@ const SplitFull = ({
         <div className="flex flex-col w-full">
           <div
             ref={refDiv}
-            className="flex items-center px-4 pb-4 w-full h-full shadow-2xl bg-dark-background sm:px-6 md:px-6 lg:px-8"
+            className="flex items-center px-4 pb-4 w-full shadow-2xl bg-dark-background sm:px-6 md:px-6 lg:px-8"
           >
             <button
               type="button"
               tabIndex={0}
-              className="hidden absolute right-4 top-16 text-dark-primary hover:text-dark-secondary md:top-24 md:right-6 lg:top-24 lg:right-8"
+              className="absolute right-4 top-16 text-dark-primary hover:text-dark-secondary md:top-24 md:right-6 lg:top-24 lg:right-8"
               onClick={() => setShowFull(false)}
             >
               <span className="p-2 border text-ourange-400 border-dark-border">Go Back</span>

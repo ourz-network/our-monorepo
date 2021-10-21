@@ -2,7 +2,7 @@ import { useContext } from "react";
 import FullPageContext from "./FullPageContext";
 import Button from "@/components/Button";
 
-const Details = (): JSX.Element => {
+const Details = ({ purchase }): JSX.Element => {
   const { post, saleInfo } = useContext(FullPageContext);
 
   return (

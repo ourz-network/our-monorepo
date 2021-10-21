@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { utils } from "ethers";
 import Link from "next/link";
-import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
+import { useRouter } from "next/router";
+import { Split, Recipient } from "@/utils/OurzSubgraph";
 import Table from "@/components/Charts/Table";
 import { toTrimmedAddress } from "@/utils/index";
 import Button from "@/components/Button";
@@ -12,15 +13,16 @@ const Sidebar = ({
   clickClaim,
   isOwner,
 }: {
-  split: OurProxy;
-  userInfo: SplitRecipient;
+  split: Split;
+  userInfo: Recipient;
   clickClaim: () => Promise<void>;
   isOwner: boolean;
 }): JSX.Element => {
-  const [recipientInfo, setRecipientInfo] = useState<SplitRecipient[] | undefined>();
+  const [recipientInfo, setRecipientInfo] = useState<Recipient[] | undefined>();
   useEffect(() => {
-    setRecipientInfo(split?.splitRecipients);
+    setRecipientInfo(split?.recipients);
   }, [split]);
+  const Router = useRouter();
 
   return (
     <div className="flex h-full min-h-screen w-preview max-w-sidebar min-w-sidebar bg-dark-accent">
@@ -56,7 +58,7 @@ const Sidebar = ({
           <div id="details">
             <div id="owners" className="my-2">
               <p className="font-bold">Owners:</p>
-              {split?.proxyOwners.map((owner) => (
+              {split?.owners.map((owner) => (
                 <div className="cursor-pointer hover:underline" key={owner.id}>
                   <Link href={`/profile/${owner.id}`} passHref>
                     {toTrimmedAddress(owner.id)}

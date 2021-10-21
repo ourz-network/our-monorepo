@@ -4,14 +4,14 @@ import {
   getClaimableSplits,
   getPostByEditionAddress,
 } from "@/modules/subgraphs/ourz/functions";
-import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
+import { Split, Recipient } from "@/utils/OurzSubgraph";
 import { getPostByID } from "@/modules/subgraphs/zora/functions";
 import { claimFunds } from "@/modules/ethereum/OurPylon";
 
 const useSplits = ({ address }: { address: string | undefined }) => {
   // all user's splits
-  const [ownedSplits, setOwnedSplits] = useState<OurProxy[] | null>([]);
-  const [claimableSplits, setClaimableSplits] = useState<SplitRecipient[] | null>([]);
+  const [ownedSplits, setOwnedSplits] = useState<Split[] | null>([]);
+  const [claimableSplits, setClaimableSplits] = useState<Recipient[] | null>([]);
 
   useEffect(() => {
     async function getAllSplits() {
@@ -28,18 +28,18 @@ const useSplits = ({ address }: { address: string | undefined }) => {
   }, [address]);
 
   // selected split
-  const [selectedSplit, setSelectedSplit] = useState<OurProxy | null>();
-  const [creations, setCreations] = useState<OurProxy | null>();
-  const [editions, setEditions] = useState<OurProxy | null>();
+  const [selectedSplit, setSelectedSplit] = useState<Split | null>();
+  const [creations, setCreations] = useState<Split | null>();
+  const [editions, setEditions] = useState<Split | null>();
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [userSplitInfo, setUserSplitInfo] = useState<SplitRecipient | null>();
+  const [userSplitInfo, setUserSplitInfo] = useState<Recipient | null>();
 
   useEffect(() => {
     setIsOwner(false);
-    selectedSplit?.splitRecipients.forEach((recipient) => {
+    selectedSplit?.recipients.forEach((recipient) => {
       if (recipient.user.id === address?.toLowerCase()) setUserSplitInfo(recipient);
     });
-    selectedSplit?.proxyOwners.forEach((owner) => {
+    selectedSplit?.owners.forEach((owner) => {
       if (owner.id === address?.toLowerCase()) setIsOwner(true);
     });
   }, [selectedSplit, address]);
@@ -48,8 +48,9 @@ const useSplits = ({ address }: { address: string | undefined }) => {
     async function getAllPosts() {
       const Editions: (NFTCard | null)[] = [];
       await Promise.all(
-        (selectedSplit as OurProxy).editions.map(async (edition) => {
+        (selectedSplit as Split).editions.map(async (edition) => {
           const post = await getPostByEditionAddress(edition.id);
+          console.log(post);
           Editions.push(post);
         })
       );
@@ -57,7 +58,7 @@ const useSplits = ({ address }: { address: string | undefined }) => {
 
       const Creations: (NFTCard | null)[] = [];
       await Promise.all(
-        (selectedSplit as OurProxy).creations.map(async (creation) => {
+        (selectedSplit as Split).creations.map(async (creation) => {
           const post = await getPostByID(Number(creation.id));
           Creations.push(post);
         })
@@ -75,7 +76,7 @@ const useSplits = ({ address }: { address: string | undefined }) => {
     await claimFunds({
       signer,
       address,
-      splits: selectedSplit.splitRecipients,
+      splits: selectedSplit.recipients,
       needsIncremented: selectedSplit.needsIncremented,
       proxyAddress: selectedSplit.id,
     });

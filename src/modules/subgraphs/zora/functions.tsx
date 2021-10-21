@@ -14,7 +14,7 @@ interface Data {
  * @param {Number} id post number
  * @returns {Object} containing Zora media details
  */
-export const getPostByID = async (id: number): Promise<(NFTCard | null)[] | null> => {
+export const getPostByID = async (id: number): Promise<NFTCard | null> => {
   const { data }: ApolloQueryResult<Data> = await zoraSubgraph.query({
     query: ZORA_MEDIA_BY_ID(id),
   });

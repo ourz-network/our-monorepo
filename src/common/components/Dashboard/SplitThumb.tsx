@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { SplitRecipient, OurProxy } from "@/utils/OurzSubgraph";
+import { Recipient, Split } from "@/utils/OurzSubgraph";
 import { keyDownA11y } from "@/utils/index";
 
 const SplitThumb = ({
@@ -7,12 +7,12 @@ const SplitThumb = ({
   claimableSplit,
   handleClick,
 }: {
-  ownedSplit: OurProxy;
-  claimableSplit: SplitRecipient;
+  ownedSplit: Split;
+  claimableSplit: Recipient;
   handleClick: () => void;
 }): JSX.Element => {
   if (claimableSplit) {
-    const recipientsLength = claimableSplit.splitProxy.splitRecipients.length;
+    const recipientsLength = claimableSplit.split.recipients.length;
     const yourRole = claimableSplit.role;
 
     return (
@@ -24,7 +24,7 @@ const SplitThumb = ({
           tabIndex={0}
           className="flex z-10 flex-col justify-center items-baseline p-2 m-auto w-3/5 h-1/2 bg-clip-padding bg-opacity-60 rounded-xl border backdrop-filter backdrop-blur-sm lg:h-52 lg:w-60 border-dark-border text-dark-accent"
         >
-          <p className="mx-auto mb-2 text-center">{claimableSplit.splitProxy.nickname}</p>
+          <p className="mx-auto mb-2 text-center">{claimableSplit.split.nickname}</p>
           <p className="mx-auto text-center">
             You,
             {recipientsLength > 1 && ` and ${recipientsLength - 1} other recipient(s)`}
@@ -42,7 +42,7 @@ const SplitThumb = ({
     );
   }
   if (ownedSplit) {
-    const ownersLength = ownedSplit.proxyOwners.length;
+    const ownersLength = ownedSplit.owners.length;
     const creationsLength = ownedSplit.creations.length;
 
     return (
@@ -56,7 +56,7 @@ const SplitThumb = ({
         >
           <p className="mx-auto mb-2 text-center">{ownedSplit.nickname}</p>
           <p className="mx-auto text-center">
-            Split for {ownedSplit.splitRecipients.length} Recipients.
+            Split for {ownedSplit.recipients.length} Recipients.
             <br />
             Owned by you
             {ownersLength > 1 && ` and ${ownersLength - 1} other(s)`}.

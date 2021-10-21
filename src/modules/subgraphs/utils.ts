@@ -26,13 +26,10 @@ const sanitizeURLs = (URLs: string[]): string[] => {
 
   URLs.forEach((url) => {
     if (url?.length < 2) cleanURLs.push("error");
-
-    if (url.match(regexIPFS)) {
+    else if (url.match(regexIPFS)) {
       // const { IPFShash } = regexIPFS.exec(url).groups;
       cleanURLs.push(`https://ipfs.io/ipfs/${regexIPFS.exec(url).groups.IPFShash}`);
-    }
-
-    if (
+    } else if (
       url.includes("ipfs") ||
       url.includes("fleek") ||
       url.includes("arweave") ||
@@ -100,7 +97,6 @@ export const formatUniquePost = async (nft: Media | null): Promise<NFTCard | nul
 
 export const formatEditionPost = (nft: SplitEdition): NFTCard | null => {
   const cleanURLs = sanitizeURLs([`${nft.animationUrl}`, `${nft.imageUrl}`]);
-
   let mimeType;
   let contentURI;
 

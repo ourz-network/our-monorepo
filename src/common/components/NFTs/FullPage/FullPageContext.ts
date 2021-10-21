@@ -10,9 +10,11 @@ interface SaleInfo {
 const FullPageContext = createContext<{
   post: NFTCard | undefined;
   saleInfo: SaleInfo | undefined;
+  purchase: (() => void) | undefined;
 }>({
   post: undefined,
   saleInfo: undefined,
+  purchase: undefined,
 });
 
 export default FullPageContext;

@@ -4,7 +4,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import FullPageNFT from "@/components/NFTs/FullPage/FullPageNFT";
 import { getAllOurzTokens, getSplitOwners, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
-import { SplitRecipient } from "@/utils/OurzSubgraph";
+import { Recipient } from "@/utils/OurzSubgraph";
 import { getPostByID } from "@/modules/subgraphs/zora/functions";
 import { NFTCard } from "@/modules/subgraphs/utils";
 import web3 from "@/app/web3";
@@ -17,7 +17,7 @@ const FullPageZNFT = ({
   splitOwners,
 }: {
   post: NFTCard;
-  recipients: SplitRecipient[];
+  recipients: Recipient[];
   splitOwners: string[];
 }): JSX.Element => {
   const { signer, address } = web3.useContainer();
@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     pocket: process.env.NEXT_PUBLIC_POKT_ID,
     etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
   });
-  const zoraQuery = new Zora(queryProvider, 1);
+  const zoraQuery = new Zora(queryProvider, 4);
 
   const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
   let recipients;

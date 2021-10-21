@@ -14,6 +14,7 @@ import web3 from "@/app/web3";
 import { NFTCard } from "@/modules/subgraphs/utils";
 import useOwners from "@/common/hooks/useOwners";
 import useRecipients from "@/common/hooks/useRecipients";
+import useEditions from "@/common/hooks/useEditions";
 
 const editionABI = editionJSON.abi;
 

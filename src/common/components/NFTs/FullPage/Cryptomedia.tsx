@@ -24,7 +24,7 @@ const Cryptomedia = (): JSX.Element => {
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              className="object-contain max-w-full max-h-full cont"
+              className="object-contain max-w-full max-h-full"
               alt={`${post.name}`}
               src={post.contentURI}
             />

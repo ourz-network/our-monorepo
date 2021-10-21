@@ -58,7 +58,7 @@ export const ALL_USER_ADDRESSES = (): DocumentNode => gql`
  */
 export const ALL_PROXY_ADDRESSES = (): DocumentNode => gql`
   {
-    ourProxies(first: 1000) {
+    splits(first: 1000) {
       id
     }
   }
@@ -74,13 +74,13 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
   return gql`
     {
       user(id: "${owner}") {
-        ethClaimed
-        ownedProxies {
+        claimedETH
+        ownedSplits {
           id
           nickname
           ETH
           needsIncremented
-          proxyOwners { id }
+          owners { id }
           creator { id }
           creations {
             id
@@ -99,14 +99,14 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
             editionSize
             royaltyBPS
           }
-          splitRecipients {
+          recipients {
             user { id }
             name
             role
             shares
             allocation
             claimableETH
-            ethClaimed
+            claimedETH
           }
         }
       } 
@@ -124,14 +124,14 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
   return gql`
     {
       user(id: "${recipient}") {
-        ethClaimed
+        claimedETH
         recipientInfo {
-          splitProxy {
+          split {
             id
             nickname
             ETH
             needsIncremented
-            proxyOwners { id }
+            owners { id }
             creator { id }
             creations {
               id
@@ -150,14 +150,14 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
               editionSize
               royaltyBPS
             }
-            splitRecipients {
+            recipients {
               user { id }
               name
               role
               shares
               allocation
               claimableETH
-              ethClaimed
+              claimedETH
             }
           }
           name
@@ -165,7 +165,7 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
           shares
           allocation
           claimableETH
-          ethClaimed
+          claimedETH
         }
       }
     }
@@ -187,16 +187,16 @@ export const EDITION_INFO = (editionAddress: string): DocumentNode => {
         creator {
           id
           nickname
-          proxyOwners {
+          owners {
              id
           }
-          splitRecipients {
+          recipients {
             user { id }
             name
             role
             shares
             allocation
-            ethClaimed
+            claimedETH
             claimableETH
           }
         }
@@ -221,15 +221,15 @@ export const RECIPIENTS_BY_ID = (proxyAddress: string): DocumentNode => {
   proxyAddress = proxyAddress.toString().toLowerCase();
   return gql`
     {
-      ourProxy(id: "${proxyAddress}") {
-        proxyOwners { id }
-        splitRecipients {
+      split(id: "${proxyAddress}") {
+        owners { id }
+        recipients {
           user { id }
           name
           role
           shares
           allocation
-          ethClaimed
+          claimedETH
         }
       } 
     }
