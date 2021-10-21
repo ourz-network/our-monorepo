@@ -114,13 +114,15 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <video
+                  // width={480}
+                  lazy
                   ref={ref}
                   muted
                   onLoadedMetadata={(loadedMedia) => calcAspectRatio(loadedMedia)}
                   onLoadedData={(loadedMedia) => calcAspectRatio(loadedMedia)}
                   onLoad={(loadedMedia) => calcAspectRatio(loadedMedia)}
-                  autoPlay={false}
-                  controls
+                  autoPlay
+                  controls={false}
                   playsInline
                 >
                   <source

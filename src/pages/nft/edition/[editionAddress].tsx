@@ -65,7 +65,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const editionAddress = context.params?.editionAddress;
   const post = await getPostByEditionAddress(editionAddress as string);
 
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  const queryProvider = ethers.providers.getDefaultProvider("mainnet", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,

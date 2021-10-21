@@ -46,12 +46,12 @@ const UserDashboard = (): JSX.Element => {
             />
           )}
 
-          {(!address || network?.name !== "rinkeby") && (
+          {(!address || network?.name !== "mainnet") && (
             <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
               Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
             </p>
           )}
-          {address && network?.name === "rinkeby" && (
+          {address && network?.name === "mainnet" && (
             <>
               {ownedSplits?.length > 0 && !showFull && (
                 <>

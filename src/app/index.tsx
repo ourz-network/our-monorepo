@@ -8,7 +8,7 @@ export default function GlobalProvider({ children }: { children: JSX.Element }):
     <NFTFetchConfiguration networkId={Networks.RINKEBY}>
       <web3.Provider>
         <MediaConfiguration
-          networkId="4"
+          networkId="1"
           style={{
             styles: {
               cardAuctionPricing: (theme, { type }) => {

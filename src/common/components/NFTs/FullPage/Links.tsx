@@ -11,7 +11,7 @@ const Details = (): JSX.Element => {
       </p>
       <a
         className="hover:underline hover:cursor"
-        href={`https://rinkeby.etherscan.io/address/${post.editionAddress}#code`}
+        href={`https://etherscan.io/address/${post.editionAddress}#code`}
       >
         <p className="p-4 w-full text-base font-semibold border-b h-min border-dark-border">
           View on Etherscan.io

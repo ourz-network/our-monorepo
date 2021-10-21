@@ -46,7 +46,7 @@ const CreateDashboard = (): JSX.Element => {
         <NewSplit />
       ) : (
         <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-          {loading || network?.name !== "rinkeby" ? (
+          {loading || network?.name !== "mainnet" ? (
             <p className="px-4 py-2 mx-auto mt-16 border animate-pulse border-dark-border text-dark-primary">
               Loading... Please connect your wallet to Rinkeby if you haven&rsquo;t already.
             </p>
