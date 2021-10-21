@@ -10,7 +10,7 @@ interface NextImageOnLoad {
   naturalHeight: number;
 }
 
-const HomeNFT = ({ post }: { post: NFTCard }): JSX.Element => {
+const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
   const { tokenId } = post;
   const ref = useRef<HTMLVideoElement>();
 
@@ -176,4 +176,4 @@ const HomeNFT = ({ post }: { post: NFTCard }): JSX.Element => {
   return <></>;
 };
 
-export default HomeNFT;
+export default MasonryNFT;

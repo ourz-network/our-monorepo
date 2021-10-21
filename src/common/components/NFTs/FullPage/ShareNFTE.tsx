@@ -2,7 +2,7 @@ import React from "react";
 import { NFTE } from "@nfte/react";
 import { NFTCard } from "@/modules/subgraphs/utils";
 
-const ShareSection = ({ post }: { post: NFTCard }): JSX.Element => {
+const ShareNFTE = ({ post }: { post: NFTCard }): JSX.Element => {
   const jsCodeSnippet = `<div className='nft-embed'></div>
 <script
   async src='https://nfte.app/api/embed.js?contract=0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7&tokenId=${post?.tokenId}'>
@@ -45,4 +45,4 @@ import Link from 'next/link';
   );
 };
 
-export default ShareSection;
+export default ShareNFTE;

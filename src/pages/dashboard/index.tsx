@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react"; // State management
+import { useState } from "react"; // State management
 import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import { getClaimableSplits, getOwnedSplits } from "@/subgraphs/ourz/functions"; // Post retrieval function
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
-import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
+import { OurProxy } from "@/utils/OurzSubgraph";
 import useSplits from "@/common/hooks/useSplits";
 
 const UserDashboard = (): JSX.Element => {
   const { address, network } = web3.useContainer();
-  const { ownedSplits, claimableSplits, selectedSplit, setSelectedSplit, userSplitInfo, isOwner } =
-    useSplits({ address });
+  const {
+    ownedSplits,
+    claimableSplits,
+    selectedSplit,
+    setSelectedSplit,
+    userSplitInfo,
+    isOwner,
+    creations,
+    editions,
+    clickClaim,
+  } = useSplits({ address });
 
   const [showFull, setShowFull] = useState(false);
 
@@ -32,6 +40,9 @@ const UserDashboard = (): JSX.Element => {
               userInfo={userSplitInfo}
               isOwner={isOwner}
               setShowFull={setShowFull}
+              creations={creations}
+              editions={editions}
+              clickClaim={clickClaim}
             />
           )}
 

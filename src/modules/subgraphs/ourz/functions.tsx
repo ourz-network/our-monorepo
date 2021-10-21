@@ -77,7 +77,7 @@ export const getSplitRecipients = async (
  * @param {String} owner ethereum address
  * @returns {Object} containing the owners of a split
  */
-export const getSplitOwners = async (proxyAddress: string): Promise<User[] | null> => {
+export const getSplitOwners = async (proxyAddress: string): Promise<string[] | null> => {
   const query: ApolloQueryResult<Data> = await ourzSubgraph.query({
     query: RECIPIENTS_BY_ID(proxyAddress),
   });

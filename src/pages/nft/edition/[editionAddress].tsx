@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import FullPageNFT from "@/components/Cards/FullPageNFT";
+import FullPageNFT from "@/components/NFTs/FullPage/FullPageNFT";
 import {
   getAllOurzEditions,
   getPostByEditionAddress,

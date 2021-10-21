@@ -21,7 +21,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
       }
       passHref
     >
-      <div className="flex justify-center p-2 m-auto bg-opacity-0 cursor-pointer w-preview h-preview">
+      <div className="content-center p-2 bg-opacity-0 cursor-pointer w-preview h-preview">
         {post.mimeType.startsWith("video") && (
           <video muted autoPlay controls playsInline>
             <source src={post.contentURI} />
@@ -86,7 +86,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
   return (
     <>
       {post.nftKind === "Edition" && (
-        <div className="m-auto w-full h-full">
+        <div className="m-auto">
           <div className="m-2 rounded-xl border border-dark-border">
             <MediaThumb />
             <Title />
@@ -94,7 +94,7 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
         </div>
       )}
       {post.nftKind === "1/1" && (
-        <div className="m-auto w-full h-full">
+        <div className="m-auto">
           <NFTPreview id={post.tokenId}>
             <MediaThumb />
             <Title />

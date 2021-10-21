@@ -16,6 +16,7 @@ import SelectMintKind from "./1SelectMintKind";
 import MintUpload from "./2Upload";
 import MintDetails from "./3Details";
 import MintConfirm from "./4Confirm";
+import useRecipients from "@/common/hooks/useRecipients";
 
 /**
  * NewMintMultistepForm()
@@ -38,8 +39,6 @@ const NewMintMultistepForm = ({
   // const [loading, setLoading] = useState(false);
   const Router = useRouter();
   const { address, signer, network } = web3.useContainer(); // Global State
-  const [firstSale, setFirstSale] = useState();
-  const [secondarySales, setSecondarySales] = useState();
   const [currentStep, setCurrentStep] = useState(1);
   const [mintForm, setFormData] = useState<MintForm>({
     mintKind: "1/1",
@@ -62,6 +61,11 @@ const NewMintMultistepForm = ({
     },
   });
 
+  const { firstSale, secondarySales } = useRecipients({
+    recipients: splitRecipients,
+    secondaryRoyalty: mintForm.creatorBidShare,
+  });
+
   const next = () => {
     setCurrentStep(currentStep + 1);
   };
@@ -69,42 +73,42 @@ const NewMintMultistepForm = ({
     setCurrentStep(currentStep - 1);
   };
 
-  useEffect(() => {
-    function formatChartData(recipients: SplitRecipient[]) {
-      // setFormData({
-      //   ...mintForm,
-      //   metadata: {
-      //     ...mintForm.metadata,
-      //     split_recipients: recipients,
-      //   },
-      // });
+  // useEffect(() => {
+  //   function formatChartData(recipients: SplitRecipient[]) {
+  //     // setFormData({
+  //     //   ...mintForm,
+  //     //   metadata: {
+  //     //     ...mintForm.metadata,
+  //     //     split_recipients: recipients,
+  //     //   },
+  //     // });
 
-      // create first sale chart data
-      let newChartData = recipients.flatMap((recipient) => ({
-        name: `${recipient.name || recipient.user.id}`,
-        shares: Number(recipient.shares),
-      }));
+  //     // create first sale chart data
+  //     let newChartData = recipients.flatMap((recipient) => ({
+  //       name: `${recipient.name || recipient.user.id}`,
+  //       shares: Number(recipient.shares),
+  //     }));
 
-      setFirstSale(newChartData);
+  //     setFirstSale(newChartData);
 
-      // edit for secondary sales chart data
-      newChartData = newChartData.map((recipient) => ({
-        name: recipient.name,
-        shares: Number(recipient.shares) * Number((mintForm.creatorBidShare / 100).toFixed(4)),
-      }));
+  //     // edit for secondary sales chart data
+  //     newChartData = newChartData.map((recipient) => ({
+  //       name: recipient.name,
+  //       shares: Number(recipient.shares) * Number((mintForm.creatorBidShare / 100).toFixed(4)),
+  //     }));
 
-      newChartData.push({
-        name: "Owner",
-        shares: 100 - mintForm.creatorBidShare,
-      });
+  //     newChartData.push({
+  //       name: "Owner",
+  //       shares: 100 - mintForm.creatorBidShare,
+  //     });
 
-      setSecondarySales(newChartData);
-    }
+  //     setSecondarySales(newChartData);
+  //   }
 
-    if (splitRecipients && mintForm.creatorBidShare) {
-      formatChartData(splitRecipients);
-    }
-  }, [mintForm.creatorBidShare, splitRecipients]);
+  //   if (splitRecipients && mintForm.creatorBidShare) {
+  //     formatChartData(splitRecipients);
+  //   }
+  // }, [mintForm.creatorBidShare, splitRecipients]);
 
   const setMintKind = (Kind: MintForm["mintKind"]) => {
     setFormData((prevState) => ({

@@ -1,26 +1,31 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuctions } from "@zoralabs/nft-hooks";
 import web3 from "@/app/web3";
 import ActionDialog from "@/components/Dashboard/ActionDialog";
 import AuctionForm from "@/components/Dashboard/AuctionForm";
-import NFTPreviewCard from "@/components/Cards/NFTPreviewCard";
+import NFTPreviewCard from "@/common/components/NFTs/Preview/NFTPreviewCard";
 import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
-import { claimFunds } from "@/modules/ethereum/OurPylon";
 import Sidebar from "./Sidebar";
-import { formatEditionPost, NFTCard } from "@/modules/subgraphs/utils";
-import { getPostByID } from "@/modules/subgraphs/zora/functions";
+import { NFTCard } from "@/modules/subgraphs/utils";
+import SquareGrid from "@/common/components/NFTs/SquareGrid";
 
 const SplitFull = ({
   split,
-  isOwned,
+  isOwner,
   userInfo,
   setShowFull,
+  creations,
+  editions,
+  clickClaim,
 }: {
   split: OurProxy;
-  isOwned: boolean;
+  isOwner: boolean;
   userInfo: SplitRecipient;
   setShowFull: Dispatch<SetStateAction<boolean>>;
+  creations: NFTCard[];
+  editions: NFTCard[];
+  clickClaim: () => Promise<void>;
 }): JSX.Element => {
   const Router = useRouter();
   const { signer, address } = web3.useContainer();
@@ -31,37 +36,6 @@ const SplitFull = ({
 
   const refDiv = useRef(null);
 
-  const [creationPosts, setCreationPosts] = useState<(NFTCard | null)[] | null>();
-
-  const clickClaim = async () => {
-    await claimFunds({
-      signer,
-      address,
-      splits: split.splitRecipients,
-      needsIncremented: split.needsIncremented,
-      proxyAddress: split.id,
-    });
-  };
-
-  useEffect(() => {
-    async function collectPosts(): Promise<void> {
-      const posts: (NFTCard | null)[] = [];
-      await Promise.all(
-        split.creations.map(async (creation) => {
-          const post = await getPostByID(Number(creation.id));
-          posts.push(post);
-        })
-      );
-      setCreationPosts(posts);
-    }
-
-    if (split.creations)
-      collectPosts().then(
-        () => {},
-        () => {}
-      );
-  }, [split]);
-
   // const startAnAuction = (tokenId) => {
   //   setSelectedId(tokenId);
   //   setDialog("auction");
@@ -70,8 +44,8 @@ const SplitFull = ({
 
   return (
     <div className="flex overflow-hidden w-full">
-      <div className="hidden md:inline-block">
-        <Sidebar split={split} userInfo={userInfo} clickClaim={clickClaim} isOwned={isOwned} />
+      <div className="hidden lg:inline-block">
+        <Sidebar split={split} userInfo={userInfo} clickClaim={clickClaim} isOwner={isOwner} />
       </div>
       <div className="flex w-full min-h-screen text-base">
         <div className="flex flex-col w-full">
@@ -81,7 +55,6 @@ const SplitFull = ({
           >
             <button
               type="button"
-              // href="#"
               tabIndex={0}
               className="hidden absolute right-4 top-16 text-dark-primary hover:text-dark-secondary md:top-24 md:right-6 lg:top-24 lg:right-8"
               onClick={() => setShowFull(false)}
@@ -98,50 +71,24 @@ const SplitFull = ({
               </ActionDialog>
             )}
           </div>
-          {split?.editions?.length > 0 ? (
+          {editions?.length > 0 ? (
             <>
               <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
                 Editions
               </h1>
-              <div className="flex">
-                <div
-                  id="editions"
-                  className="grid grid-flow-row auto-cols-fr gap-4 m-auto xl:grid-cols-3 lg:grid-cols-2"
-                >
-                  {split.editions.map((edition) => {
-                    const post = formatEditionPost(edition);
-                    return (
-                      <div key={post?.editionAddress} className="flex justify-center w-full h-full">
-                        <NFTPreviewCard post={post} />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              <SquareGrid posts={editions} />
             </>
           ) : (
             <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
               No Editions
             </h1>
           )}
-          {split?.creations?.length > 0 ? (
+          {creations?.length > 0 ? (
             <>
               <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">
                 1/1 Creations
               </h1>
-              <div className="flex w-full">
-                <div
-                  id="medias"
-                  className="grid grid-flow-row auto-cols-fr gap-4 m-auto xl:grid-cols-3 lg:grid-cols-2"
-                >
-                  {creationPosts &&
-                    creationPosts.map((post) => (
-                      <div key={post.tokenId} className="flex justify-center w-full h-full">
-                        <NFTPreviewCard post={post} />
-                      </div>
-                    ))}
-                </div>
-              </div>
+              <SquareGrid posts={creations} />
             </>
           ) : (
             <h1 className="mx-auto my-2 text-4xl italic text-center font-hero text-dark-primary">

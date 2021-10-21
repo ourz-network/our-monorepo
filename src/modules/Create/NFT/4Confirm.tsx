@@ -51,7 +51,7 @@ const MintConfirm = ({
                 First Sale
               </p>
               <div className="z-10 mx-auto -my-32 w-full min-h-500px lg:-my-32 max-w-500px">
-                <DetailedPie chartData={firstSale} secondaryBool={false} />
+                <DetailedPie chartData={firstSale} isSecondaryChart={false} />
               </div>
             </div>
             <div className="flex flex-col md:flex-row-reverse lg:w-1/2 lg:flex-col">
@@ -59,7 +59,7 @@ const MintConfirm = ({
                 Secondary Sales
               </p>
               <div className="z-10 mx-auto -my-32 w-full min-h-500px lg:-my-32 max-w-500px">
-                <DetailedPie chartData={secondarySales} secondaryBool />
+                <DetailedPie chartData={secondarySales} isSecondaryChart />
               </div>
             </div>
           </div>

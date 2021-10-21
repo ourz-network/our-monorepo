@@ -140,7 +140,7 @@ const NewSplit: React.FC = (): JSX.Element => {
             </p>
           </div>
           <div className="z-0 mx-auto -my-32 w-full max-w-500px">
-            <DetailedPie chartData={chartData || null} secondaryBool={false} />
+            <DetailedPie chartData={chartData || null} isSecondaryChart={false} />
           </div>
         </div>
         <form className="z-50 justify-center -mt-1 w-full text-center">

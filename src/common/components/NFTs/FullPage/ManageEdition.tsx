@@ -1,99 +1,25 @@
 /* eslint-disable no-console */
-import React, { useState } from "react";
-import { Signer } from "ethers";
-import {
-  setEditionPrice,
-  withdrawEditionFunds,
-  setApprovedMinter,
-  mintEditionsToRecipients,
-} from "@/modules/ethereum/OurPylon";
+import React, { useContext } from "react";
 import { toTrimmedAddress } from "@/utils/index";
-import { NFTCard } from "@/modules/subgraphs/utils";
-import Button from "../Button";
+import Button from "../../Button";
+import web3 from "@/app/web3";
+import useEditions from "@/common/hooks/useEditions";
+import FullPageContext from "./FullPageContext";
 
-const ManageEditionSection = ({ post, signer }: { post: NFTCard; signer: Signer }): JSX.Element => {
-  const [formData, setFormData] = useState({
-    minterAddress: "0x0000000000000000000000000000000000000000",
-    approved: false,
-    mintTo: "",
-    price: "0",
-  });
-
-  const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.checked,
-    }));
-  };
-
-  const handleMinter = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
-  const handleMintTo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value.replace(/\s/g, ""),
-    }));
-  };
-
-  const handlePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
-  const setSalePrice = async () => {
-    const success = await setEditionPrice({
-      signer,
-      proxyAddress: post.creator,
-      editionAddress: post.editionAddress as string,
-      salePrice: formData.price,
-    });
-    if (!success) {
-      console.log(`ERROR SETTING PRICE`);
-    } else console.log(`SUCCESSFULLY SET PRICE`);
-  };
-
-  const withdraw = async () => {
-    const success = await withdrawEditionFunds({
-      signer,
-      proxyAddress: post.creator,
-      editionAddress: post.editionAddress as string,
-    });
-    if (!success) {
-      console.log(`ERROR WITHDRAWING FUNDS`);
-    } else console.log(`SUCCESSFULLY WITHDREW FUNDS`);
-  };
-
-  const setEditionMinter = async () => {
-    const success = await setApprovedMinter({
-      signer,
-      proxyAddress: post.creator,
-      editionAddress: post.editionAddress as string,
-      minterAddress: formData.minterAddress,
-      approved: formData.approved,
-    });
-    if (!success) {
-      console.log(`ERROR SETTING MINTER`);
-    } else console.log(`SUCCESSFULLY SET MINTER`);
-  };
-
-  const mintEditions = async () => {
-    const success = await mintEditionsToRecipients({
-      signer,
-      proxyAddress: post.creator,
-      editionAddress: post.editionAddress as string,
-      recipients: formData.mintTo.split(","),
-    });
-    if (!success) {
-      console.log(`ERROR MINTING EDITIONS`);
-    } else console.log(`SUCCESSFULLY MINTED EDITIONS`);
-  };
+const ManageSection = () => {
+  const { post, saleInfo } = useContext(FullPageContext);
+  const { signer } = web3.useContainer();
+  const {
+    formData,
+    handleCheckbox,
+    handleMinter,
+    handleMintTo,
+    handlePrice,
+    setSalePrice,
+    withdraw,
+    setEditionMinter,
+    mintEditions,
+  } = useEditions({ post, saleInfo, signer });
 
   return (
     <div className="hidden p-4 space-y-2 border-2 md:flex md:flex-col border-dark-ourange">
@@ -222,4 +148,4 @@ const ManageEditionSection = ({ post, signer }: { post: NFTCard; signer: Signer 
   );
 };
 
-export default ManageEditionSection;
+export default ManageSection;

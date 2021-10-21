@@ -3,7 +3,7 @@ import React, { useState } from "react"; // React state management
 import { GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getPostByID } from "@/subgraphs/zora/functions"; // Post collection helper
-import HomeNFT from "@/common/components/Cards/MasonryNFT";
+import MasonryNFT from "@/common/components/NFTs/Preview/MasonryNFT";
 import { Media } from "@/utils/ZoraSubgraph";
 
 const Home = ({
@@ -60,7 +60,7 @@ const Home = ({
                 {posts.map((post) => (
                   // For each Zora post, Return Post component
 
-                  <HomeNFT key={post.id} post={post} />
+                  <MasonryNFT key={post?.name} post={post} />
                 ))}
               </div>
             </div>

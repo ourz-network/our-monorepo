@@ -57,7 +57,6 @@ import Wallet from "./Wallet";
 
 const Navbar = (): JSX.Element => {
   const { address } = web3.useContainer(); // Global state
-
   return (
     <div id="navContainer">
       <Popover className="flex relative z-30 items-center border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">

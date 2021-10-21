@@ -10,12 +10,12 @@ const Sidebar = ({
   split,
   userInfo,
   clickClaim,
-  isOwned,
+  isOwner,
 }: {
   split: OurProxy;
   userInfo: SplitRecipient;
   clickClaim: () => Promise<void>;
-  isOwned: boolean;
+  isOwner: boolean;
 }): JSX.Element => {
   const [recipientInfo, setRecipientInfo] = useState<SplitRecipient[] | undefined>();
   useEffect(() => {
@@ -71,7 +71,7 @@ const Sidebar = ({
               </div>
             </div>
           </div>
-          {isOwned && (
+          {isOwner && (
             <div className="flex gap-4 items-baseline p-4 mx-auto my-4 w-min border border-dark-border">
               <Button
                 isMain={false}

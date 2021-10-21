@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import FullPageNFT from "@/components/Cards/FullPageNFT";
+import FullPageNFT from "@/components/NFTs/FullPage/FullPageNFT";
 import { getAllOurzTokens, getSplitOwners, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
 import { SplitRecipient } from "@/utils/OurzSubgraph";
 import { getPostByID } from "@/modules/subgraphs/zora/functions";
@@ -13,12 +13,10 @@ import useRecipients from "@/common/hooks/useRecipients";
 
 const FullPageZNFT = ({
   post,
-  tokenId,
   recipients,
   splitOwners,
 }: {
   post: NFTCard;
-  tokenId: string;
   recipients: SplitRecipient[];
   splitOwners: string[];
 }): JSX.Element => {
@@ -72,9 +70,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      tokenId,
-      recipients,
       post,
+      recipients,
       splitOwners,
     },
     revalidate: 5,

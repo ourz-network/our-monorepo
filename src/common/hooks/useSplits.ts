@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import { getOwnedSplits, getClaimableSplits } from "@/modules/subgraphs/ourz/functions";
+import {
+  getOwnedSplits,
+  getClaimableSplits,
+  getPostByEditionAddress,
+} from "@/modules/subgraphs/ourz/functions";
 import { OurProxy, SplitRecipient } from "@/utils/OurzSubgraph";
+import { getPostByID } from "@/modules/subgraphs/zora/functions";
+import { claimFunds } from "@/modules/ethereum/OurPylon";
 
 const useSplits = ({ address }: { address: string | undefined }) => {
   // all user's splits
@@ -13,14 +19,6 @@ const useSplits = ({ address }: { address: string | undefined }) => {
         setOwnedSplits(await getOwnedSplits(address));
         setClaimableSplits(await getClaimableSplits(address));
       }
-      // const owned = await getOwnedSplits(address);
-      // if (owned) {
-      //   setOwnedSplits(owned);
-      // }
-      // const claimable = await getClaimableSplits(address);
-      // if (claimable) {
-      //   setClaimableSplits(claimable);
-      // }
     }
 
     getAllSplits().then(
@@ -31,6 +29,8 @@ const useSplits = ({ address }: { address: string | undefined }) => {
 
   // selected split
   const [selectedSplit, setSelectedSplit] = useState<OurProxy | null>();
+  const [creations, setCreations] = useState<OurProxy | null>();
+  const [editions, setEditions] = useState<OurProxy | null>();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [userSplitInfo, setUserSplitInfo] = useState<SplitRecipient | null>();
 
@@ -44,7 +44,54 @@ const useSplits = ({ address }: { address: string | undefined }) => {
     });
   }, [selectedSplit, address]);
 
-  return { ownedSplits, claimableSplits, selectedSplit, setSelectedSplit, userSplitInfo, isOwner };
+  useEffect(() => {
+    async function getAllPosts() {
+      const Editions: (NFTCard | null)[] = [];
+      await Promise.all(
+        (selectedSplit as OurProxy).editions.map(async (edition) => {
+          const post = await getPostByEditionAddress(edition.id);
+          Editions.push(post);
+        })
+      );
+      setEditions(Editions);
+
+      const Creations: (NFTCard | null)[] = [];
+      await Promise.all(
+        (selectedSplit as OurProxy).creations.map(async (creation) => {
+          const post = await getPostByID(Number(creation.id));
+          Creations.push(post);
+        })
+      );
+      setCreations(Creations);
+    }
+
+    getAllPosts().then(
+      () => {},
+      () => {}
+    );
+  }, [selectedSplit]);
+
+  const clickClaim = async () => {
+    await claimFunds({
+      signer,
+      address,
+      splits: selectedSplit.splitRecipients,
+      needsIncremented: selectedSplit.needsIncremented,
+      proxyAddress: selectedSplit.id,
+    });
+  };
+
+  return {
+    ownedSplits,
+    claimableSplits,
+    selectedSplit,
+    setSelectedSplit,
+    userSplitInfo,
+    isOwner,
+    creations,
+    editions,
+    clickClaim,
+  };
 };
 
 export default useSplits;
