@@ -22,8 +22,8 @@ dataSources:
         - name: OurFactory
           file: ./abis/OurFactory.json
       eventHandlers:
-        - event: ProxyCreated(address,address,string,string)
-          handler: handleProxyCreated
+        - event: SplitCreated(address,address,string,string)
+          handler: handleSplitCreated
 templates:
   - kind: ethereum/contract
     name: OurPylon
@@ -44,8 +44,8 @@ templates:
           file: ./abis/OurProxy.json
       eventHandlers:
         # OurManagement.sol
-        - event: ProxySetup(address[])
-          handler: handleProxySetup
+        - event: SplitSetup(address[])
+          handler: handleSplitSetup
         - event: AddedOwner(address)
           handler: handleAddedOwner
         - event: RemovedOwner(address)

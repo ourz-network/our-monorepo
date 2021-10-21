@@ -140,12 +140,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address[]",
-        "name": "owners",
-        "type": "address[]"
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       }
     ],
-    "name": "ProxySetup",
+    "name": "RemovedOwner",
     "type": "event"
   },
   {
@@ -153,12 +153,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "owners",
+        "type": "address[]"
       }
     ],
-    "name": "RemovedOwner",
+    "name": "SplitSetup",
     "type": "event"
   },
   {
@@ -514,44 +514,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "symbol",
-        "type": "string"
-      },
-      {
-        "internalType": "address payable",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "internalType": "address payable",
-        "name": "fundingRecipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "fundingCap",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "operatorPercent",
-        "type": "uint256"
-      }
-    ],
-    "name": "createMirrorCrowdfund",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
@@ -783,6 +745,24 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "recipients",
+        "type": "address[]"
+      }
+    ],
+    "name": "mintEditionsTo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "string",
@@ -871,24 +851,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "editionAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address[]",
-        "name": "recipients",
-        "type": "address[]"
-      }
-    ],
-    "name": "mintZEditions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "components": [
           {
             "internalType": "string",
@@ -960,116 +922,6 @@
       }
     ],
     "name": "mintZNFT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "string",
-            "name": "tokenURI",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "metadataURI",
-            "type": "string"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "contentHash",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "metadataHash",
-            "type": "bytes32"
-          }
-        ],
-        "internalType": "struct IZora.MediaData",
-        "name": "mediaData",
-        "type": "tuple"
-      },
-      {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IZora.D256",
-            "name": "prevOwner",
-            "type": "tuple"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IZora.D256",
-            "name": "creator",
-            "type": "tuple"
-          },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct IZora.D256",
-            "name": "owner",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct IZora.BidShares",
-        "name": "bidShares",
-        "type": "tuple"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "deadline",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "v",
-            "type": "uint8"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "r",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "s",
-            "type": "bytes32"
-          }
-        ],
-        "internalType": "struct IZora.EIP712Signature",
-        "name": "sig",
-        "type": "tuple"
-      }
-    ],
-    "name": "mintZNFTWithSig",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1260,6 +1112,24 @@
       }
     ],
     "name": "setEditionMinter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "salePrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "setEditionPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

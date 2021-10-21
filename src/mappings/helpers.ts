@@ -10,7 +10,7 @@ export function findOrCreateUser(id: string): User {
 
   if (user == null) {
     user = new User(id);
-    user.ethClaimed = BigInt.fromI32(0);
+    user.claimedETH = BigInt.fromI32(0);
     user.save();
   }
 

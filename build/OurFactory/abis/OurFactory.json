@@ -38,7 +38,7 @@
         "type": "string"
       }
     ],
-    "name": "ProxyCreated",
+    "name": "SplitCreated",
     "type": "event"
   },
   {

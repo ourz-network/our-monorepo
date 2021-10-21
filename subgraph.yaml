@@ -8,7 +8,7 @@ dataSources:
     name: OurFactory
     network: rinkeby
     source:
-      address: "0xF021a3C892B0C9fb9B94cD236ecF37fc5A8d438B"
+      address: "0x2BF174384aE180C7F4254C78a0ec697a4d744879"
       abi: OurFactory
       startBlock: 9487525 
     mapping:
@@ -22,8 +22,8 @@ dataSources:
         - name: OurFactory
           file: ./abis/OurFactory.json
       eventHandlers:
-        - event: ProxyCreated(address,address,string,string)
-          handler: handleProxyCreated
+        - event: SplitCreated(address,address,string,string)
+          handler: handleSplitCreated
 templates:
   - kind: ethereum/contract
     name: OurPylon
@@ -43,9 +43,9 @@ templates:
         - name: OurProxy
           file: ./abis/OurProxy.json
       eventHandlers:
-       # OurManagement.sol
-        - event: ProxySetup(address[])
-          handler: handleProxySetup
+        # OurManagement.sol
+        - event: SplitSetup(address[])
+          handler: handleSplitSetup
         - event: AddedOwner(address)
           handler: handleAddedOwner
         - event: RemovedOwner(address)
