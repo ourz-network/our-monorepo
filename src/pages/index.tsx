@@ -98,62 +98,62 @@ const Home = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-  //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
-  //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-  //   pocket: process.env.NEXT_PUBLIC_POKT_ID,
-  //   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-  // });
-  // const zoraQuery = new Zora(queryProvider, 4);
-  // const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
+  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
+    infura: process.env.NEXT_PUBLIC_INFURA_ID,
+    alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+    pocket: process.env.NEXT_PUBLIC_POKT_ID,
+    etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+  });
+  const zoraQuery = new Zora(queryProvider, 1);
+  const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
 
-  // const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned), 10);
+  const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned), 10);
 
-  // const requests = [];
+  const requests = [];
   const postsToSet: Media[] = [];
 
-  // if (maxSupply) {
-  //   const ids = [];
-  //   for (let i = maxSupply; i >= maxSupply - 24; i -= 1) {
-  //     ids.push(i);
-  //   }
+  if (maxSupply) {
+    const ids = [];
+    for (let i = maxSupply; i >= maxSupply - 24; i -= 1) {
+      ids.push(i);
+    }
 
-  //   await Promise.all(
-  //     ids.map(async (id) => {
-  //       const post = await getPostByID(id);
-  //       if (post != null) {
-  //         postsToSet.push(post);
-  //       }
-  //     })
-  //   ).then();
-  //   return {
-  //     props: {
-  //       postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-  //       loadMoreStartIndex: maxSupply - 24,
-  //     },
-  //     revalidate: 10,
-  //   };
-  const ourzSampleTokenIDs = [
-    3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
-  ];
-  await Promise.all(
-    ourzSampleTokenIDs.map(async (id) => {
-      // Collect post
-      const post = await getPostByID(id);
-      if (post != null) {
-        postsToSet.push(post);
-      }
-    })
-  ).then();
-  return {
-    props: {
-      postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-      loadMoreStartIndex: 0,
-    },
-    revalidate: 10,
-  };
+    await Promise.all(
+      ids.map(async (id) => {
+        const post = await getPostByID(id);
+        if (post != null) {
+          postsToSet.push(post);
+        }
+      })
+    ).then();
+    return {
+      props: {
+        postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+        loadMoreStartIndex: maxSupply - 24,
+      },
+      revalidate: 10,
+    };
+    //   const ourzSampleTokenIDs = [
+    //     3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
+    //   ];
+    //   await Promise.all(
+    //     ourzSampleTokenIDs.map(async (id) => {
+    //       // Collect post
+    //       const post = await getPostByID(id);
+    //       if (post != null) {
+    //         postsToSet.push(post);
+    //       }
+    //     })
+    //   ).then();
+    //   return {
+    //     props: {
+    //       postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+    //       loadMoreStartIndex: 0,
+    //     },
+    //     revalidate: 10,
+    //   };
+  }
+  return { notFound: true };
 };
-//   return { notFound: true };
-// };
 
 export default Home;

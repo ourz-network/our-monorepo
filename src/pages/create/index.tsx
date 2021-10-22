@@ -28,7 +28,7 @@ const CreateDashboard = (): JSX.Element => {
         <NewSplit />
       ) : (
         <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
-          {network?.name !== "rinkeby" ? (
+          {network?.name !== "homestead" ? (
             <WrongNetworkAlert />
           ) : (
             <>

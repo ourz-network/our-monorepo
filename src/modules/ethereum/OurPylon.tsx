@@ -26,10 +26,10 @@ const pylonABI = pylonJSON.abi;
 const proxyBytecode = proxyJSON.bytecode;
 
 const initializeOurFactoryWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_4 as string, factoryABI, signer);
+  new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_1 as string, factoryABI, signer);
 
 const initializeOurPylonWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_4 as string, pylonABI, signer);
+  new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_1 as string, pylonABI, signer);
 
 const initializeOurProxyAsPylonWSigner = ({
   proxyAddress,
@@ -37,19 +37,14 @@ const initializeOurProxyAsPylonWSigner = ({
 }: {
   proxyAddress: string;
   signer: Signer;
-}): Contract =>
-  new ethers.Contract(
-    proxyAddress, // rinkeby
-    pylonABI,
-    signer
-  );
+}): Contract => new ethers.Contract(proxyAddress, pylonABI, signer);
 
 // zora
 const editionFactoryABI = editionFactoryJSON.abi;
 const editionMintableABI = editionMintableJSON.abi;
 
 const initializeEditionFactoryWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_4 as string, editionFactoryABI, signer);
+  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_1 as string, editionFactoryABI, signer);
 
 const initializeEditionWSigner = ({
   signer,
@@ -151,7 +146,7 @@ export const newProxy = async ({
   const salt = ethers.utils.keccak256(constructorArgs);
   const codeHash = ethers.utils.keccak256(proxyBytecode);
   const proxyAddress = ethers.utils.getCreate2Address(
-    process.env.NEXT_PUBLIC_FACTORY_4 as string,
+    process.env.NEXT_PUBLIC_FACTORY_1 as string,
     salt,
     codeHash
   );
@@ -532,11 +527,8 @@ export const createZoraAuction = async ({
   const ReservePrice: BigNumberish = ethers.utils.parseUnits(reservePrice.toString(), "ether");
   const auctionTx = await proxyPylon.createZoraAuction(
     tokenId,
-    // zora media rinkeby
     tokenContract,
     duration,
-    // parseUnits(`${reservePrice}`, "ether"),
-    // ethers.BigNumber.from(reservePrice),
     ReservePrice,
     curator || proxyAddress,
     curatorFeePercentage || Number(0),

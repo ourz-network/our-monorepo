@@ -5,10 +5,10 @@ import web3 from "@/app/web3";
 
 export default function GlobalProvider({ children }: { children: JSX.Element }): JSX.Element {
   return (
-    <NFTFetchConfiguration networkId={Networks.RINKEBY}>
+    <NFTFetchConfiguration networkId={Networks.MAINNET}>
       <web3.Provider>
         <MediaConfiguration
-          networkId="4"
+          networkId="1"
           style={{
             styles: {
               cardAuctionPricing: (theme, { type }) => {

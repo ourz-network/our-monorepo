@@ -50,7 +50,6 @@ const useSplits = ({ address }: { address: string | undefined }) => {
       await Promise.all(
         (selectedSplit as Split).editions.map(async (edition) => {
           const post = await getPostByEditionAddress(edition.id);
-          console.log(post);
           Editions.push(post);
         })
       );

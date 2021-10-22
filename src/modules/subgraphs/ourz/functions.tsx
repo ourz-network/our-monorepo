@@ -139,7 +139,6 @@ export const getEditionMetadata = async (editionAddress: string): Promise<SplitE
   });
 
   if (data) {
-    console.log(data);
     return data.splitEdition;
   }
   return null;

@@ -3,7 +3,7 @@ import web3 from "@/app/web3";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
 import SplitThumb from "@/components/Dashboard/SplitThumb";
 import SplitFull from "@/components/Dashboard/SplitFull";
-import { OurProxy } from "@/utils/OurzSubgraph";
+import { Split } from "@/utils/OurzSubgraph";
 import useSplits from "@/common/hooks/useSplits";
 import WrongNetworkAlert from "@/components/Layout/WrongNetworkAlert";
 
@@ -31,10 +31,7 @@ const UserDashboard = (): JSX.Element => {
   return (
     <PageLayout>
       <div className="flex w-full h-full min-h-screen">
-        <div
-          id="OLD_CONTENT"
-          className="flex flex-col w-full min-h-screen h-min bg-dark-background"
-        >
+        <div className="flex flex-col w-full min-h-screen h-min bg-dark-background">
           {showFull && (
             <SplitFull
               split={selectedSplit}
@@ -47,8 +44,8 @@ const UserDashboard = (): JSX.Element => {
             />
           )}
 
-          {(!address || network?.name !== "rinkeby") && <WrongNetworkAlert />}
-          {address && network?.name === "rinkeby" && (
+          {(!address || network?.name !== "homestead") && <WrongNetworkAlert />}
+          {address && network?.name === "homestead" && (
             <>
               {ownedSplits?.length > 0 && !showFull && (
                 <>
@@ -67,9 +64,9 @@ const UserDashboard = (): JSX.Element => {
                   </div>
                 </>
               )}
-              {ownedSplits?.length === 0 && !showFull && (
-                <p className={`mx-auto text-center text-dark-primary ${!showFull ? `hidden` : ""}`}>
-                  You will need to create a new Split first.
+              {!ownedSplits && (
+                <p className={`mx-auto text-center text-dark-primary ${showFull ? `hidden` : ""}`}>
+                  You will need to create a new Split first. Click Create.
                 </p>
               )}
 
@@ -90,8 +87,8 @@ const UserDashboard = (): JSX.Element => {
                   </div>
                 </>
               )}
-              {claimableSplits?.length === 0 && !showFull && (
-                <p className={`mx-auto text-center text-dark-primary ${!showFull ? `hidden` : ""}`}>
+              {!claimableSplits && (
+                <p className={`mx-auto text-center text-dark-primary ${showFull ? `hidden` : ""}`}>
                   You are not the recipient of any Splits.
                 </p>
               )}
