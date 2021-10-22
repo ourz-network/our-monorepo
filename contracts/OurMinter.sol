@@ -27,22 +27,20 @@ import {IERC721} from "./interfaces/IERC721.sol";
  * @notice Some functions are marked as 'untrusted'Function. Use caution when interacting
  * with these, as any contracts you supply could be potentially unsafe.
  * 'Trusted' functions on the other hand -- implied by the absence of 'untrusted' --
- * are hardcoded to use the Zora Protocol/MirrorXYZ/PartyDAO addresses.
+ * are hardcoded to use the Zora Protocol addresses.
  * https://consensys.github.io/smart-contract-best-practices/recommendations/#mark-untrusted-contracts
  */
 
 contract OurMinter is OurManagement {
     /// @notice RINKEBY ADDRESSES
     address public constant ZORA_MEDIA =
-        0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
+        0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7;
     address public constant ZORA_MARKET =
-        0x85e946e1Bd35EC91044Dc83A5DdAB2B6A262ffA6;
+        0xE5BFAB544ecA83849c53464F85B7164375Bdaac1;
     address public constant ZORA_AH =
-        0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
+        0xE468cE99444174Bd3bBBEd09209577d25D1ad673;
     address public constant ZORA_EDITIONS =
-        0x38d43BedE3Aac0262FcA248C7fCA10cec35e3bCf;
-    address public constant MIRROR_CROWDFUND =
-        0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
+        0x91A8713155758d410DFAc33a63E193AE3E89F909;
 
     //======== Subgraph =========
     event ZNFTMinted(uint256 tokenId);
