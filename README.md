@@ -47,6 +47,10 @@ While simple and effective, the original contracts don't provide any mechanism f
 
 Currently the contracts are deployed on **Rinkeby** only:
 
+[Mainnet Factory](https://etherscan.io/address/0x321e0c06d6f899f732058a6486962e366c161d46)
+
+[Mainnet Pylon](https://etherscan.io/address/0xf2219d832704c50dee7b7d2576c76052cc21eabb))
+
 [Rinkeby Factory](https://rinkeby.etherscan.io/address/0x48Da174d7Fc4850544B34608AE52108f19de488e)
 
 [Rinkeby Pylon](https://rinkeby.etherscan.io/address/0x58622031f61D212115a9B8C29E515e35cA9410c6)
@@ -79,8 +83,6 @@ Create a .env.json with your Etherscan & Alchemy API Keys, as well as a private 
 ---
 
 ## ⚠️ The contracts in this repository are not audited ⚠️
-
-## **Do not consider them safe for mainnet yet.**
 
 ---
 

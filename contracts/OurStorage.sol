@@ -9,13 +9,11 @@ pragma solidity 0.8.4;
  * These contracts enable creators, builders, & collaborators of all kinds
  * to receive royalties for their collective work, forever.
  *
- * Continuing on the work from:
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * @author OpenZeppelin
- *
- * Built on Zora Protocol
- * https://github.com/ourzora
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
 
 contract OurStorage {
@@ -23,8 +21,6 @@ contract OurStorage {
     uint256 public currentWindow;
 
     address internal _pylon;
-
-    /// @notice RINKEBY ADDRESS
     address public constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
     uint256[] public balanceForWindow;

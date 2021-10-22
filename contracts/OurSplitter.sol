@@ -25,13 +25,11 @@ interface IWETH {
  * These contracts enable creators, builders, & collaborators of all kinds
  * to receive royalties for their collective work, forever.
  *
- * Continuing on the work from:
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * @author OpenZeppelin
- *
- * Built on Zora Protocol
- * https://github.com/ourzora
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
 
 contract OurSplitter is OurStorage {
@@ -98,8 +96,8 @@ contract OurSplitter is OurStorage {
      * In most cases, the difference will be negligible:
      *      ~remainder × 10^-17,
      *      or about 0.000000000000000100 at most.
-     * @notice iterating through an array to push payments goes agains best practices,
-     *         therefore it is advised to avoid accepting ERC-20 payments.
+     * @notice iterating through an array to push payments goes against best practices,
+     *         therefore it is advised to avoid accepting ERC-20s as payment.
      */
     function claimERC20ForAll(
         address tokenAddress,

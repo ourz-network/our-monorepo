@@ -26,13 +26,11 @@ interface IOurFactory {
  * These contracts enable creators, builders, & collaborators of all kinds
  * to receive royalties for their collective work, forever.
  *
- * Continuing on the work from:
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * @author OpenZeppelin
- *
- * Built on Zora Protocol
- * https://github.com/ourzora
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
 
 contract OurProxy is OurStorage {

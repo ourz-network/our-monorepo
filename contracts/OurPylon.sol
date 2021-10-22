@@ -22,13 +22,11 @@ import {OurIntrospector} from "./OurIntrospector.sol";
  * These contracts enable creators, builders, & collaborators of all kinds
  * to receive royalties for their collective work, forever.
  *
- * Continuing on the work from:
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * @author OpenZeppelin
- *
- * Built on Zora Protocol
- * https://github.com/ourzora
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
 
 contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
@@ -40,7 +38,7 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
     /**
      * @dev Setup function sets initial storage of Poxy.
      * @param owners_ List of addresses that can execute transactions other than claiming funds.
-     * @notice see OurManagement.sol -> setupOwners()
+     * @notice see OurManagement -> setupOwners()
      * @notice approves Zora AH to handle Zora ERC721s
      */
     function setup(address[] calldata owners_) external {
@@ -48,6 +46,6 @@ contract OurPylon is OurSplitter, OurMinter, OurIntrospector {
         emit SplitSetup(owners_);
 
         // Approve Zora AH
-        setApprovalForAH();
+        // _setApprovalForAH();
     }
 }

@@ -14,13 +14,11 @@ import {IERC721} from "./interfaces/IERC721.sol";
  * These contracts enable creators, builders, & collaborators of all kinds
  * to receive royalties for their collective work, forever.
  *
- * Continuing on the work from:
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * @author OpenZeppelin
- *
- * Built on Zora Protocol
- * https://github.com/ourzora
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  *
  *
  *
@@ -32,7 +30,6 @@ import {IERC721} from "./interfaces/IERC721.sol";
  */
 
 contract OurMinter is OurManagement {
-    /// @notice RINKEBY ADDRESSES
     address public constant ZORA_MEDIA =
         0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7;
     address public constant ZORA_MARKET =
@@ -347,7 +344,6 @@ contract OurMinter is OurManagement {
         );
     }
 
-    //======== /IZora =========
     /* solhint-enable ordering */
 
     /**======== IERC721 =========
@@ -399,18 +395,15 @@ contract OurMinter is OurManagement {
         IERC721(tokenContract_).burn(tokenId_);
     }
 
-    //======== /IERC721 =========
-
-    //======== PROCEEED WITH CAUTION =========
-    /**
-     * NOTE: Marked as >> untrusted << Avoid interacting with contracts you do not trust entirely.
+    /** ======== CAUTION =========
+     * NOTE: As always, avoid interacting with contracts you do not trust entirely.
      * @dev allows a Split Contract to call (non-payable) functions of any other contract
-     * @notice This function is added for 'future-proofing' capabilities and will not be implemented into the
-     *         OURZ frontend. The intent is to support the use of custom ERC721 creator contracts.
-     * @notice In the interest of securing the Split's funds for Recipients from a rogue owner(OurManagement.sol),
+     * @notice This function is added for 'future-proofing' capabilities, & to support the use of 
+               custom ERC721 creator contracts.
+     * @notice In the interest of securing the Split's funds for Recipients from a rogue owner,
      *         the msg.value is hardcoded to zero.
      */
-    function untrustedExecuteTransaction(address to, bytes memory data)
+    function executeTransaction(address to, bytes memory data)
         external
         onlyOwners
         returns (bool success)
@@ -420,8 +413,6 @@ contract OurMinter is OurManagement {
             success := call(gas(), to, 0, add(data, 0x20), mload(data), 0, 0)
         }
     }
-
-    //======== /PROCEEED WITH CAUTION =========
 
     /// @dev calculates tokenID of newly minted ZNFT
     function _getID() private returns (uint256 id) {

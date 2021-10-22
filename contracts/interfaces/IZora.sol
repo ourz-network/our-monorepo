@@ -2,14 +2,11 @@
 pragma solidity 0.8.4;
 
 /**
- * @title Interface for the entire Zora Protocol. Modified for OurMinter.sol
+ * @title Minimal Interface for the Zora Protocol.
  * @author (s):
  * https://github.com/ourzora/
  *
  * @notice combination of Market, Media, and AuctionHouse contracts' interfaces.
- * @dev Some functions have been moved to more basic interfaces - eg IERCXXX.sol -
- * @dev to allow for the implementation of 'untrusted' universal functions in Minter.sol.
- * @dev They will work with Zora, with the additional benefit of working with other protocols.
  */
 
 /* solhint-disable private-vars-leading-underscore, ordering */
