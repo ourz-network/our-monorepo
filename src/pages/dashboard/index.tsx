@@ -90,7 +90,7 @@ const UserDashboard = (): JSX.Element => {
                   </div>
                 </>
               )}
-              {claimableSplits.length === 0 && !showFull && (
+              {claimableSplits?.length === 0 && !showFull && (
                 <p className={`mx-auto text-center text-dark-primary ${!showFull ? `hidden` : ""}`}>
                   You are not the recipient of any Splits.
                 </p>
