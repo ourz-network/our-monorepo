@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
 const queryProvider = ethers.providers.getDefaultProvider("homestead", {
@@ -14,7 +14,7 @@ const useENS = ({ address }: { address: string }) => {
     `${address.substr(0, 4)}…${address.substr(address.length - 3, address.length)}`
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function getENS() {
       if (address) {
         const ENS = await queryProvider.lookupAddress(address);
