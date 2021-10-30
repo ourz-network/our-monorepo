@@ -15,6 +15,13 @@
   }
 }
 
+.zora-cardOuter {
+  margin: 0 !important;
+}
+.css-ansp5a {
+  margin: 0 !important;
+}
+
 /* https://codepen.io/nohoid/pen/kIfto */
 .mainButton:hover {
   background: linear-gradient(
@@ -257,9 +264,9 @@ input[type="number"]::-webkit-outer-spin-button {
   grid-column-start: -30;
   grid-row-start: 9;
 }
-.landingPage-item:nth-child(12n) {
+/* .landingPage-item:nth-child(12n) {
   grid-column-start: 9;
-}
+} */
 /* margin: .5rem; */
 /* place-self: center; */
 /* object-fit: contain; */

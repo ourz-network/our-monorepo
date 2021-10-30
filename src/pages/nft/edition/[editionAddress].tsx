@@ -1,137 +1,113 @@
-import { useEffect, useState } from "react"; // State management
 import { BigNumber, ethers } from "ethers";
-import { Zora } from "@zoralabs/zdk";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import FullPageEdition from "@/components/Cards/FullPageEdition";
-import { getAllOurzEditions, getEditionMetadata } from "@/subgraphs/ourz/functions"; // GraphQL client
-import { SplitRecipient, SplitEdition } from "@/utils/OurzSubgraph";
-import { getPostByID } from "@/modules/subgraphs/zora/functions";
-import { Ourz20210928 } from "@/utils/20210928";
-import { Media } from "@/utils/ZoraSubgraph";
+import FullPageNFT from "@/components/NFTs/FullPage/FullPageNFT";
+import {
+  getAllOurzEditions,
+  getPostByEditionAddress,
+  getSplitOwners,
+  getSplitRecipients,
+} from "@/subgraphs/ourz/functions"; // GraphQL client
+import { SplitRecipient } from "@/utils/OurzSubgraph";
 import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
-import { zeroAddress } from "@/utils/index";
+import web3 from "@/app/web3";
+import { NFTCard } from "@/modules/subgraphs/utils";
+import useOwners from "@/common/hooks/useOwners";
+import useRecipients from "@/common/hooks/useRecipients";
+import useEditions from "@/common/hooks/useEditions";
 
 const editionABI = editionJSON.abi;
 
-const ViewEdition = ({
-  editionAddress,
-  metadata,
+const FullPageEdition = ({
+  post,
   saleInfo,
+  recipients,
+  splitOwners,
 }: {
-  editionAddress: string;
-  metadata: SplitEdition;
+  post: NFTCard;
   saleInfo: { maxSupply: number; currentSupply: number; salePrice: number; whitelistOnly: boolean };
+  recipients: SplitRecipient[];
+  splitOwners: string[];
 }): JSX.Element => {
-  const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
-
-  useEffect(() => {
-    function formatChartData(Recipients: SplitRecipient[]) {
-      // create first sale chart data
-      const newChartData = Recipients.flatMap((recipient) => ({
-        name: `${recipient.name || recipient.user.id}`,
-        shares: Number(recipient.shares),
-      }));
-
-      setFirstSale(newChartData);
-    }
-
-    if (metadata?.creator?.splitRecipients) {
-      formatChartData(metadata?.creator?.splitRecipients);
-    }
-  }, [metadata?.creator?.splitRecipients]);
+  const { signer, address } = web3.useContainer();
+  const { isOwner } = useOwners({ address, splitOwners });
+  const { firstSale } = useRecipients({ recipients, secondaryRoyalty: undefined });
 
   return (
     <PageLayout>
-      <div
-        id="pagecontainer"
-        className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
-      >
-        {metadata && saleInfo && (
-          <FullPageEdition
-            metadata={metadata}
-            saleInfo={saleInfo}
-            ownAccount
-            chartData={firstSale}
-          />
-        )}
+      <div className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background">
+        <FullPageNFT
+          post={post}
+          saleInfo={saleInfo}
+          recipients={recipients}
+          chartData={firstSale}
+          signer={signer}
+          isOwner={isOwner}
+        />
       </div>
     </PageLayout>
   );
 };
 
-// Run on server build
-// eslint-disable-next-line consistent-return
 export const getStaticPaths: GetStaticPaths = async () => {
-  /*
-   * const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-   *   infura: process.env.NEXT_PUBLIC_INFURA_ID,
-   *   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-   *   pocket: process.env.NEXT_PUBLIC_POKT_ID,
-   *   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-   * });
-   * const zoraQuery = new Zora(queryProvider, 4);
-   * const unburned = await zoraQuery.fetchTotalMedia();
-   * const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
-   */
-  const ourEditions: SplitEdition[] = await getAllOurzEditions();
-  // const extras = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
+  const ourEditions = await getAllOurzEditions();
+
   const paths = [];
-  for (let i = ourEditions.length - 1; i >= 0; i -= 1) {
-    paths.push({ params: { editionAddress: `${ourEditions[i].id}` } });
+  if (ourEditions) {
+    for (let i = ourEditions?.length - 1; i >= 0; i -= 1) {
+      paths.push({ params: { editionAddress: `${ourEditions[i].id}` } });
+    }
   }
-  // for (let i = extras.length - 1; i >= 0; i -= 1) {
-  //   paths.push({ params: { tokenId: `${extras[i]}` } });
-  // }
+
   return { paths, fallback: true };
 };
 
-// Run on page load
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { editionAddress } = context.params;
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  const editionAddress = context.params?.editionAddress;
+  const post = await getPostByEditionAddress(editionAddress as string);
+
+  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,
     etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
   });
-  const editionContract = new ethers.Contract(editionAddress, editionABI, queryProvider);
+  const editionContract = new ethers.Contract(editionAddress as string, editionABI, queryProvider);
 
-  const res = await getEditionMetadata(editionAddress);
+  if (post && editionContract) {
+    // subgraph query
+    const recipients = await getSplitRecipients(post.creator);
+    const splitOwners = await getSplitOwners(post.creator);
 
-  if (res) {
-    const metadata = res;
-    const editionSize = await editionContract.editionSize();
+    // blockchain query
     let totalSupply = BigNumber.from(0);
     try {
       totalSupply = await editionContract.totalSupply();
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
+      // reverts if no editions have minted yet
     }
+    const editionSize = await editionContract.editionSize();
     const salePrice = await editionContract.salePrice();
-    // const whitelistOnly = await editionContract.allowedMinters(zeroAddress);
+
     const saleInfo = {
-      maxSupply: editionSize.toNumber(),
-      currentSupply: totalSupply.toNumber(),
-      salePrice: salePrice.toNumber(),
-      // whitelistOnly,
+      maxSupply: Number(editionSize.toString()),
+      currentSupply: Number(totalSupply.toString()),
+      salePrice: Number(ethers.utils.formatUnits(salePrice)),
     };
 
     return {
       props: {
-        editionAddress,
-        metadata,
+        post,
         saleInfo,
+        recipients,
+        splitOwners,
       },
-      revalidate: 45,
+      revalidate: 1,
     };
   }
-
   return {
-    props: { editionAddress, metadata: undefined },
-    revalidate: 45,
+    notFound: true,
   };
 };
 
-export default ViewEdition;
+export default FullPageEdition;

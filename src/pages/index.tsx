@@ -1,10 +1,13 @@
 import Head from "next/head";
 import React, { useState } from "react"; // React state management
 import { GetStaticProps } from "next";
+import { Zora } from "@zoralabs/zdk";
+import { ethers } from "ethers";
 import PageLayout from "@/components/Layout/PageLayout";
 import { getPostByID } from "@/subgraphs/zora/functions"; // Post collection helper
-import HomeNFT from "@/components/Cards/HomeNFT";
+import MasonryNFT from "@/common/components/NFTs/Preview/MasonryNFT";
 import { Media } from "@/utils/ZoraSubgraph";
+import { Ourz20210928 } from "@/utils/20210928";
 
 const Home = ({
   postsToSet,
@@ -55,12 +58,12 @@ const Home = ({
         {posts.length >= 0 ? (
           // If posts array contains at least 1 post
           <>
-            <div className="mx-auto w-full h-full max-w-11/12 xl:mx-16">
-              <div className="space-x-4 space-y-4 w-full h-full timeline xl:grid">
+            <div className="mx-auto w-full h-full max-w-11/12 xl:max-w-5/6">
+              <div className="w-full h-full xl:space-x-4 xl:space-y-4 timeline xl:grid">
                 {posts.map((post) => (
                   // For each Zora post, Return Post component
-                  // eslint-disable-next-line react/jsx-key
-                  <HomeNFT key={post.id} post={post} />
+
+                  <MasonryNFT key={post?.name} post={post} />
                 ))}
               </div>
             </div>
@@ -95,50 +98,62 @@ const Home = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  // const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-  //   infura: process.env.NEXT_PUBLIC_INFURA_ID,
-  //   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-  //   pocket: process.env.NEXT_PUBLIC_POKT_ID,
-  //   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-  // });
-  // const zoraQuery = new Zora(queryProvider, 4);
-  // const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
-  // // eslint-disable-next-line radix
-  // const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned));
+  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
+    infura: process.env.NEXT_PUBLIC_INFURA_ID,
+    alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+    pocket: process.env.NEXT_PUBLIC_POKT_ID,
+    etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+  });
+  const zoraQuery = new Zora(queryProvider, 1);
+  const unburned = Number((await zoraQuery.fetchTotalMedia()) - 1);
 
-  // const requests = [];
+  const maxSupply = parseInt(await zoraQuery.fetchMediaByIndex(unburned), 10);
+
+  const requests = [];
   const postsToSet: Media[] = [];
-  /*
-   * if (maxSupply) {
-   *   for (let i = maxSupply; i >= 3700; i--) {
-   *     // Collect post
-   *     const post = await getPostByID(i);
-   *     if (post != null) {
-   *       postsToSet.push(post);
-   *     }
-   *   }
-   */
 
-  const ourzSampleTokenIDs = [
-    3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
-  ];
-  await Promise.all(
-    ourzSampleTokenIDs.map(async (id) => {
-      // Collect post
-      const post = await getPostByID(id);
-      if (post != null) {
-        postsToSet.push(post);
-      }
-    })
-  ).then();
+  if (maxSupply) {
+    const ids = [];
+    for (let i = maxSupply; i >= maxSupply - 24; i -= 1) {
+      ids.push(i);
+    }
 
-  return {
-    props: {
-      postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-      loadMoreStartIndex: 3889,
-    },
-    revalidate: 60,
-  };
+    await Promise.all(
+      ids.map(async (id) => {
+        const post = await getPostByID(id);
+        if (post != null) {
+          postsToSet.push(post);
+        }
+      })
+    ).then();
+    return {
+      props: {
+        postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+        loadMoreStartIndex: maxSupply - 24,
+      },
+      revalidate: 10,
+    };
+    //   const ourzSampleTokenIDs = [
+    //     3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858, 3898,
+    //   ];
+    //   await Promise.all(
+    //     ourzSampleTokenIDs.map(async (id) => {
+    //       // Collect post
+    //       const post = await getPostByID(id);
+    //       if (post != null) {
+    //         postsToSet.push(post);
+    //       }
+    //     })
+    //   ).then();
+    //   return {
+    //     props: {
+    //       postsToSet: JSON.parse(JSON.stringify(postsToSet)),
+    //       loadMoreStartIndex: 0,
+    //     },
+    //     revalidate: 10,
+    //   };
+  }
+  return { notFound: true };
 };
 
 export default Home;

@@ -58,7 +58,7 @@ export const ALL_USER_ADDRESSES = (): DocumentNode => gql`
  */
 export const ALL_PROXY_ADDRESSES = (): DocumentNode => gql`
   {
-    ourProxies(first: 1000) {
+    splits(first: 1000) {
       id
     }
   }
@@ -74,25 +74,23 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
   return gql`
     {
       user(id: "${owner}") {
-        ownedProxies {
+        claimedETH
+        ownedSplits {
           id
           nickname
+          ETH
+          needsIncremented
+          owners { id }
           creator { id }
-          proxyOwners { id }
-          splitRecipients {
-            user { id }
-            name
-            role
-            shares
-            allocation
-            ethClaimed
-            claimableETH
-          }
           creations {
             id
           }
           editions {
             id
+            creator { 
+              id
+              nickname
+            }
             name
             symbol
             description
@@ -101,8 +99,15 @@ export const SPLITS_BY_OWNER = (owner: string): DocumentNode => {
             editionSize
             royaltyBPS
           }
-          ETH
-          needsIncremented
+          recipients {
+            user { id }
+            name
+            role
+            shares
+            allocation
+            claimableETH
+            claimedETH
+          }
         }
       } 
     }
@@ -119,25 +124,24 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
   return gql`
     {
       user(id: "${recipient}") {
+        claimedETH
         recipientInfo {
-          splitProxy {
+          split {
             id
             nickname
+            ETH
+            needsIncremented
+            owners { id }
             creator { id }
-            proxyOwners { id }
-            splitRecipients {
-              user { id }
-              name
-              role
-              shares
-              allocation
-              ethClaimed
-            }
             creations {
               id
             }
             editions {
               id
+              creator { 
+                id
+                nickname
+              }
               name
               symbol
               description
@@ -146,13 +150,22 @@ export const SPLITS_BY_RECIPIENT = (recipient: string): DocumentNode => {
               editionSize
               royaltyBPS
             }
-            ETH
+            recipients {
+              user { id }
+              name
+              role
+              shares
+              allocation
+              claimableETH
+              claimedETH
+            }
           }
           name
           role
           shares
           allocation
-          ethClaimed
+          claimableETH
+          claimedETH
         }
       }
     }
@@ -174,13 +187,16 @@ export const EDITION_INFO = (editionAddress: string): DocumentNode => {
         creator {
           id
           nickname
-          splitRecipients {
+          owners {
+             id
+          }
+          recipients {
             user { id }
             name
             role
             shares
             allocation
-            ethClaimed
+            claimedETH
             claimableETH
           }
         }
@@ -205,14 +221,15 @@ export const RECIPIENTS_BY_ID = (proxyAddress: string): DocumentNode => {
   proxyAddress = proxyAddress.toString().toLowerCase();
   return gql`
     {
-      ourProxy(id: "${proxyAddress}") {
-        splitRecipients {
+      split(id: "${proxyAddress}") {
+        owners { id }
+        recipients {
           user { id }
           name
           role
           shares
           allocation
-          ethClaimed
+          claimedETH
         }
       } 
     }

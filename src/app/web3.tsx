@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
-import { BigNumber, BigNumberish, ethers, Signer } from "ethers"; // Ethers
+import { BigNumber, ethers, Signer } from "ethers"; // Ethers
 import { useCallback, useEffect, useState } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
-import Web3Modal, { providers } from "web3modal"; // Web3Modal
+import Web3Modal from "web3modal"; // Web3Modal
 
 // ====== Web3Modal Config ======
 const providerOptions = {
@@ -12,8 +13,8 @@ const providerOptions = {
       // bridge: "https://polygon.bridge.walletconnect.org",
       infuraId: process.env.NEXT_PUBLIC_INFURA_ID, // Inject Infura
       rpc: {
-        1: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
-        4: `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`,
+        1: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID as string}`,
+        4: `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID as string}`,
       },
     },
   },
@@ -32,7 +33,7 @@ function useWeb3() {
     function setupWeb3Modal() {
       // Create new
       const web3Modal = new Web3Modal({
-        network: "rinkeby", // optional
+        // network: "rinkeby", // optional
         cacheProvider: true, // optional
         // theme:"dark", // optional. Change to "dark" for a dark theme.
         providerOptions,
@@ -73,13 +74,13 @@ function useWeb3() {
   };
 
   // ====== Disconnect Wallet ======
-  const disconnectWeb3 = () => {
+  const disconnectWeb3 = useCallback(() => {
     modal?.clearCachedProvider();
     setInjectedProvider(undefined);
     setNetwork(undefined);
     setAddress(undefined);
     setSigner(undefined);
-  };
+  }, [modal]);
 
   // ====== Event Subscription ======
   const loadWeb3Modal = useCallback(async () => {
@@ -90,28 +91,26 @@ function useWeb3() {
     provider?.on("chainChanged", (chainId: number) => {
       // chainId: '0x1' = mainnet, '0x4' = rinkeby, etc
       // must convert from BigNumber
-      const network = ethers.providers.getNetwork(
+      const Network = ethers.providers.getNetwork(
         Number(BigNumber.from(chainId.toString()).toString())
       );
 
-      setNetwork(network);
-      // eslint-disable-next-line no-console
+      setNetwork(Network);
+
       console.log(
-        `Detected Web3 Network Change...\nNow connected to ${network.name}, Chain #${network.chainId}`
+        `Detected Web3 Network Change...\nNow connected to ${Network?.name}, Chain #${Network?.chainId}`
       );
     });
 
     provider?.on("accountsChanged", (accounts: string[]) => {
       setAddress(accounts[0]);
 
-      // eslint-disable-next-line no-console
       console.log(`Detected Web3 Account Change...\nNow connected to signer: ${accounts[0]}`);
     });
 
     provider?.on("disconnect", (error: { code: number; message: string }) => {
       disconnectWeb3();
 
-      // eslint-disable-next-line no-console
       console.log(
         `Web3 Disconnected${
           error.message && error.code
@@ -120,8 +119,7 @@ function useWeb3() {
         }`
       );
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modal, setInjectedProvider]);
+  }, [disconnectWeb3, modal, network?.chainId, network?.name]);
 
   useEffect(() => {
     if (modal?.cachedProvider) {
@@ -130,12 +128,10 @@ function useWeb3() {
         () => {}
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadWeb3Modal]);
+  }, [loadWeb3Modal, modal?.cachedProvider]);
 
   useEffect(() => {
     setSigner(injectedProvider?.getSigner());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [injectedProvider]);
 
   // ====== Sign Message Via Metamask ======

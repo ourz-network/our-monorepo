@@ -2,21 +2,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image";
-import React, { useState, useEffect } from "react"; // React state management
-import { ethers } from "ethers";
-import { Zora } from "@zoralabs/zdk";
-import axios from "axios";
-import { useNFTMetadata } from "@zoralabs/nft-hooks";
-import { Ourz20210928 } from "@/Create/types/20210928";
-import { Media } from "@/utils/ZoraSubgraph";
+import React, { useState, useEffect, useRef } from "react"; // React state management
+import { NFTCard } from "@/modules/subgraphs/utils";
 
 interface NextImageOnLoad {
   naturalWidth: number;
   naturalHeight: number;
 }
 
-const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.Element => {
-  const tokenId = post.id;
+const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
+  const { tokenId } = post;
+  const ref = useRef<HTMLVideoElement>();
 
   /**       ---  Dual-axis Masonry Layout  ---
    * For Landing Page: hide posts until they are loaded
@@ -89,13 +85,22 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
     }
   };
 
-  if (post?.metadata?.mimeType?.includes("video")) {
+  useEffect(() => {
+    if (ref?.current && ref.current?.videoWidth) {
+      const videoDimensions = {
+        target: {
+          videoWidth: ref.current.videoWidth,
+          videoHeight: ref.current.videoHeight,
+        },
+      };
+      calcAspectRatio(videoDimensions as unknown as React.SyntheticEvent<HTMLVideoElement>);
+    }
+  });
+
+  if (post?.mimeType?.includes("video")) {
     return (
-      <div
-        key={tokenId}
-        className={`transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep`}
-      >
-        <div className="flex flex-col w-full h-full cursor-pointer xl:h-full">
+      <div key={tokenId} className={`m-2 cursor-pointer ${aspectRatio} landingPage-item`}>
+        <div className="flex flex-col w-full h-full cursor-pointer">
           <Link
             href={{
               pathname: "/nft/[tokenId]",
@@ -106,14 +111,23 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <video
+                  // width={480}
+                  lazy="true"
+                  ref={ref}
                   muted
+                  onLoadedMetadata={(loadedMedia) => calcAspectRatio(loadedMedia)}
+                  onLoadedData={(loadedMedia) => calcAspectRatio(loadedMedia)}
+                  onLoad={(loadedMedia) => calcAspectRatio(loadedMedia)}
                   autoPlay
                   controls={false}
-                  loop
                   playsInline
-                  onLoadedMetadata={(loadedMedia) => calcAspectRatio(loadedMedia)}
                 >
-                  <source src={post.contentURI} />
+                  <source
+                    onLoadedMetadata={(loadedMedia) => calcAspectRatio(loadedMedia)}
+                    onLoadedData={(loadedMedia) => calcAspectRatio(loadedMedia)}
+                    onLoad={(loadedMedia) => calcAspectRatio(loadedMedia)}
+                    src={post.contentURI}
+                  />
                 </video>
               )}
             </div>
@@ -122,11 +136,9 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
       </div>
     );
   }
-  if (post?.metadata?.mimeType?.includes("image")) {
+  if (post?.mimeType?.includes("image")) {
     return (
-      <div
-        className={`border transition-shadow cursor-pointer ${aspectRatio} landingPage-item shadow-deep border-dark-accent`}
-      >
+      <div className={`m-2 cursor-pointer ${aspectRatio} landingPage-item`}>
         <div className="flex flex-col w-full h-full xl:h-full">
           <Link
             href={{
@@ -141,11 +153,11 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
                   alt={`NFT #${tokenId} Thumbnail`}
                   layout="fill"
                   objectFit="contain"
-                  quality={60}
+                  quality={25}
                   src={post.contentURI}
                   placeholder="empty"
                   className="w-full h-full"
-                  sizes="50vw"
+                  // sizes="50vw"
                   onLoadingComplete={(loadedMedia) => calcAspectRatio(loadedMedia)}
                 />
               )}
@@ -161,4 +173,4 @@ const HomeNFT = ({ post }: { post: Media & { metadata: Ourz20210928 } }): JSX.El
   return <></>;
 };
 
-export default HomeNFT;
+export default MasonryNFT;

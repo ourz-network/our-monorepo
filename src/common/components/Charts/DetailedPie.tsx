@@ -4,21 +4,18 @@
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, PieProps } from "recharts";
 import { useState } from "react";
 
+export interface ChartData {
+  name: string;
+  shares: number;
+}
+
 const DetailedPie = ({
   chartData,
-  secondaryBool,
+  isSecondaryChart,
 }: {
-  chartData: {
-    name: string;
-    shares: number;
-  }[];
-  secondaryBool: boolean;
+  chartData: ChartData[];
+  isSecondaryChart: boolean;
 }): JSX.Element => {
-  // const { chartData } = data;
-  // const { secondaryBool } = data;
-  // https://recharts.org/en-US/examples/TwoLevelPieChart
-  // https://recharts.org/en-US/examples/CustomActiveShapePieChart
-  // eslint-disable-next-line no-shadow
   const renderActiveShape = (props: PieProps) => {
     const RADIAN = Math.PI / 180;
     const {
@@ -109,8 +106,8 @@ const DetailedPie = ({
           fill="#8884d8"
           dataKey="shares"
           onMouseEnter={onPieEnter}
-          startAngle={!secondaryBool ? 0 : 180}
-          endAngle={!secondaryBool ? 360 : -180}
+          startAngle={!isSecondaryChart ? 0 : 180}
+          endAngle={!isSecondaryChart ? 360 : -180}
         >
           {chartData.map((entry, index) => (
             <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import { MintForm } from "@/utils/CreateModule";
@@ -24,12 +24,12 @@ const SelectMintKind = ({
 
   // useEffect(() => {
   //   setMintKind(kind);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //
   // }, [kind]);
 
   return (
-    <div className="flex-col justify-center w-full h-full bg-dark-background">
-      <div className="flex justify-evenly items-center self-center place-self-center w-full align-middle min-h-1/2 h-min md:flex-row">
+    <div className="overflow-hidden justify-center w-full h-75vh bg-dark-background">
+      <div className="flex overflow-hidden justify-evenly items-center h-3/4 md:flex-row">
         <div
           role="button"
           // className="flex flex-col justify-center items-center text-center w-preview h-preview bg-dark-accent text-dark-primary"
@@ -57,7 +57,7 @@ const SelectMintKind = ({
           Mint Price. <br /> - ERC-721
         </div>
       </div>
-      <div className="flex justify-center space-x-4 w-full">
+      <div className="flex justify-around mx-auto w-3/4">
         <Button isMain={false} text="Back" onClick={() => Router.push(`/create`)} />
         {mintForm.mintKind && <Button isMain={false} text="Next" onClick={next} />}
       </div>

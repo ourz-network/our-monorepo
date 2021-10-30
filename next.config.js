@@ -36,6 +36,7 @@ const nextConfig = {
       "ipfs.dweb.link",
       "images.mirror-media.xyz",
       "media.giphy.com",
+      "zora-dev.mypinata.cloud",
     ],
     path: "/_next/image",
     // loader can be 'default', 'imgix', 'cloudinary', 'akamai', or 'custom'

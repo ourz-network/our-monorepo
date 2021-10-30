@@ -1,5 +1,6 @@
+/* eslint-disable no-param-reassign */
 import {
-  generateMetadata,
+  // generateMetadata,
   constructBidShares,
   constructMediaData,
   sha256FromBuffer,
@@ -8,16 +9,16 @@ import {
   BidShares,
 } from "@zoralabs/zdk"; // Zora provider
 import { NFTStorage } from "nft.storage";
-import { ethers, BigNumberish, Signer, Contract, providers, BigNumber } from "ethers";
-import { Hash } from "crypto";
+import { ethers, BigNumberish, Signer, Contract, providers, BigNumber, Transaction } from "ethers";
 import BalanceTree from "@/ethereum/merkle-tree/balance-tree"; // Creates merkle tree for splits
 import pylonJSON from "@/ethereum/abis/OurPylon.json";
 import proxyJSON from "@/ethereum/abis/OurProxy.json";
 import factoryJSON from "@/ethereum/abis/OurFactory.json";
-import editionJSON from "@/ethereum/abis/SingleEditionMintable.json";
+import editionMintableJSON from "@/ethereum/abis/SingleEditionMintable.json";
+import editionFactoryJSON from "@/ethereum/abis/SingleEditionMintableCreator.json";
 import { SplitRecipient } from "@/utils/OurzSubgraph";
 import { FormSplitRecipient, MintForm, ZNFTEdition } from "@/utils/CreateModule";
-import { zeroAddress } from "@/utils/index";
+import { Ourz20210928 } from "@/utils/20210928";
 
 // ourz
 const factoryABI = factoryJSON.abi;
@@ -25,10 +26,10 @@ const pylonABI = pylonJSON.abi;
 const proxyBytecode = proxyJSON.bytecode;
 
 const initializeOurFactoryWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_4 as string, factoryABI, signer);
+  new ethers.Contract(process.env.NEXT_PUBLIC_FACTORY_1 as string, factoryABI, signer);
 
 const initializeOurPylonWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_4 as string, pylonABI, signer);
+  new ethers.Contract(process.env.NEXT_PUBLIC_PYLON_1 as string, pylonABI, signer);
 
 const initializeOurProxyAsPylonWSigner = ({
   proxyAddress,
@@ -36,18 +37,22 @@ const initializeOurProxyAsPylonWSigner = ({
 }: {
   proxyAddress: string;
   signer: Signer;
-}): Contract =>
-  new ethers.Contract(
-    proxyAddress, // rinkeby
-    pylonABI,
-    signer
-  );
+}): Contract => new ethers.Contract(proxyAddress, pylonABI, signer);
 
 // zora
-const editionABI = editionJSON.abi;
+const editionFactoryABI = editionFactoryJSON.abi;
+const editionMintableABI = editionMintableJSON.abi;
 
-const initializeZoraEditionsWSigner = ({ signer }: { signer: Signer }): Contract =>
-  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_4 as string, editionABI, signer);
+const initializeEditionFactoryWSigner = ({ signer }: { signer: Signer }): Contract =>
+  new ethers.Contract(process.env.NEXT_PUBLIC_ZEDITION_1 as string, editionFactoryABI, signer);
+
+const initializeEditionWSigner = ({
+  signer,
+  editionAddress,
+}: {
+  signer: Signer;
+  editionAddress: string;
+}): Contract => new ethers.Contract(editionAddress, editionMintableABI, signer);
 
 export function getZoraQuery({
   injectedProvider,
@@ -123,8 +128,8 @@ export const newProxy = async ({
   const { rootHash, splitsForMeta } = formatSplits(formData);
 
   // init contracts
-  const FACTORY_WRITE = initializeOurFactoryWSigner({ signer });
-  const PYLON_WRITE = initializeOurPylonWSigner({ signer });
+  const FACTORY_WRITE: Contract = initializeOurFactoryWSigner({ signer });
+  const PYLON_WRITE: Contract = initializeOurPylonWSigner({ signer });
 
   // get deployment data to setup owners
   let deployData: string;
@@ -132,8 +137,9 @@ export const newProxy = async ({
     // multiple owners
     deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [owners]);
   } else {
+    const owner = [address];
     // signer is sole owner
-    deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [address]);
+    deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [owner]);
   }
 
   // determine address of new proxy
@@ -141,14 +147,14 @@ export const newProxy = async ({
   const salt = ethers.utils.keccak256(constructorArgs);
   const codeHash = ethers.utils.keccak256(proxyBytecode);
   const proxyAddress = ethers.utils.getCreate2Address(
-    process.env.NEXT_PUBLIC_FACTORY_4 as string,
+    process.env.NEXT_PUBLIC_FACTORY_1 as string,
     salt,
     codeHash
   );
 
   // Make transaction
   if (splitsForMeta && rootHash && deployData) {
-    const proxyTx = await FACTORY_WRITE.createSplit(
+    const proxyTx: Transaction = await FACTORY_WRITE.createSplit(
       rootHash,
       deployData,
       JSON.stringify(splitsForMeta),
@@ -167,15 +173,18 @@ export const newProxy = async ({
 // Prepare Media for minting on Zora, storing on IPFS and Arweave
 export const createCryptomedia = async (
   mintForm: MintForm
-): Promise<{
-  cryptomedia:
-    | Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">
-    | MediaData;
-  bidShares?: BidShares;
-}> => {
+): Promise<
+  | {
+      cryptomedia:
+        | Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">
+        | MediaData;
+      bidShares?: BidShares;
+    }
+  | undefined
+> => {
   // Upload files to nft.storage
   const endpoint = "https://api.nft.storage" as unknown as URL; // the default
-  const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY}`;
+  const token = `${process.env.NEXT_PUBLIC_NFT_STORAGE_KEY as string}`;
   const storage = new NFTStorage({ endpoint, token });
 
   // Collect mediaCID and metadataCID from nft.storage
@@ -195,21 +204,6 @@ export const createCryptomedia = async (
   const contentHash = sha256FromBuffer(Buffer.from(mintForm.media.blob as ArrayBuffer));
 
   if (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction") {
-    // Generate metadataJSON
-    // const metadata = {
-    //   name: mintForm.metadata.name,
-    //   description: mintForm.metadata.description,
-    //   split_recipients: mintForm.metadata.split_recipients.map((recipient: SplitRecipient) => ({
-    //     account: recipient?.user.id,
-    //     name: recipient?.name,
-    //     role: recipient?.role,
-    //     shares: recipient?.shares,
-    //     allocation: recipient?.allocation,
-    //   })),
-    //   version: mintForm.metadata.version || "Ourz20210928",
-    //   mimeType: mintForm.metadata.mimeType,
-    // };
-
     const metadata = {
       name: mintForm.metadata.name,
       description: mintForm.metadata.description,
@@ -246,26 +240,8 @@ export const createCryptomedia = async (
 
     return { cryptomedia, bidShares };
   }
-  const { mimeType } = mintForm.metadata;
+  const { mimeType } = mintForm.metadata as Ourz20210928;
 
-  // // still image
-  // if (
-  //   mimeType.includes(".jpg") ||
-  //   mimeType.includes(".jpeg") ||
-  //   mimeType.includes(".jfif") ||
-  //   mimeType.includes(".pjpeg") ||
-  //   mimeType.includes(".pjp")
-  // ) {
-  //   const cryptomedia = {
-  //     // animationUrl: metadataUrl,
-  //     // animationHash: metadataHash,
-  //     animationUrl: " ",
-  //     animationHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
-  //     imageUrl: mediaUrl,
-  //     imageHash: contentHash,
-  //   };
-  //   return { cryptomedia };
-  // }
   // image
   if (mimeType.startsWith("image")) {
     const cryptomedia = {
@@ -290,7 +266,7 @@ export const createCryptomedia = async (
     };
     return { cryptomedia };
   }
-  return null;
+  return undefined;
 };
 
 export const mintZora = async ({
@@ -356,27 +332,21 @@ export const mintZora = async ({
 
 export const createZoraEdition = async ({
   signer,
-  networkId,
   soloAddress,
   proxyAddress,
   mintForm,
 }: {
   signer: Signer;
-  networkId: number;
   soloAddress?: string;
   proxyAddress?: string;
   mintForm: MintForm;
   // eslint-disable-next-line consistent-return
-}) => {
+}): Promise<number | undefined> => {
   // Upload file to IPFS
-  const {
-    cryptomedia,
-  }: {
-    cryptomedia: Pick<ZNFTEdition, "animationUrl" & "animationHash" & "imageUrl" & "imageHash">;
-  } = await createCryptomedia(mintForm);
+  const { cryptomedia } = await createCryptomedia(mintForm);
   const metadata = mintForm.metadata as ZNFTEdition;
-  const royalty = Number((Number(mintForm.creatorBidShare) * 100).toFixed(4));
-  const BPS = BigNumber.from(royalty);
+  const royalty = mintForm.creatorBidShare * 100;
+  // const BPS = BigNumber.from(royalty);
   const salePrice = ethers.utils.parseUnits(metadata?.salePrice?.toString() || "0", "ether");
 
   if (proxyAddress && !soloAddress) {
@@ -390,8 +360,8 @@ export const createZoraEdition = async ({
       cryptomedia.animationHash,
       cryptomedia.imageUrl,
       cryptomedia.imageHash,
-      metadata.editionSize || 0,
-      BPS,
+      metadata.editionSize,
+      royalty,
       salePrice,
       metadata.publicMint
     );
@@ -401,7 +371,7 @@ export const createZoraEdition = async ({
       return mintReceipt.events[metadata.salePrice > 0 ? 4 : 3].args[0];
     }
   } else {
-    const zora = initializeZoraEditionsWSigner({ signer });
+    const zora = initializeEditionFactoryWSigner({ signer });
     const mintTx = await zora.createEdition(
       metadata.name,
       metadata.symbol,
@@ -411,8 +381,8 @@ export const createZoraEdition = async ({
       cryptomedia.imageUrl,
       cryptomedia.imageHash,
       metadata.editionSize,
-      BPS,
-      salePrice || 0,
+      royalty,
+      salePrice,
       metadata.publicMint || false
     );
     const mintReceipt = await mintTx.wait();
@@ -420,6 +390,115 @@ export const createZoraEdition = async ({
       return mintReceipt.events[metadata.salePrice > 0 ? 4 : 3].args[0];
     }
   }
+};
+
+export const purchaseEdition = async ({
+  signer,
+  editionAddress,
+  salePrice,
+}: {
+  signer: Signer;
+  editionAddress: string;
+  salePrice: number;
+}): Promise<boolean> => {
+  editionAddress = ethers.utils.getAddress(editionAddress);
+
+  const edition = initializeEditionWSigner({ signer, editionAddress });
+  const purchaseTx = await edition.purchase({
+    value: ethers.utils.parseUnits(salePrice.toString()),
+  });
+  const txReceipt = await purchaseTx.wait();
+  if (txReceipt?.events[0]?.event === "EditionSold" && txReceipt?.status === 1) {
+    return true;
+  }
+  return false;
+};
+
+export const setApprovedMinter = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+  minterAddress,
+  approved,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  minterAddress: string;
+  approved: boolean;
+}): Promise<boolean> => {
+  proxyAddress = ethers.utils.getAddress(proxyAddress);
+
+  editionAddress = ethers.utils.getAddress(editionAddress);
+  const PROXY_WRITE: Contract = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const approveTx: Transaction = await PROXY_WRITE.setEditionMinter(
+    editionAddress,
+    minterAddress,
+    approved
+  );
+  const txReceipt = await approveTx.wait();
+  if (txReceipt?.status === 1) {
+    return true;
+  }
+  return false;
+};
+
+export const withdrawEditionFunds = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+}): Promise<boolean> => {
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const withdrawTx = await PROXY_WRITE.withdrawEditionFunds(editionAddress);
+  const txReceipt = await withdrawTx.wait();
+  if (txReceipt?.events[0]?.event === "ETHReceived" && txReceipt?.status === 1) {
+    return true;
+  }
+  return false;
+};
+export const setEditionPrice = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+  salePrice,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  salePrice: string;
+}): Promise<boolean> => {
+  const formattedPrice = ethers.utils.parseUnits(salePrice);
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const pricingTx = await PROXY_WRITE.setEditionPrice(editionAddress, formattedPrice);
+  const txReceipt = await pricingTx.wait();
+  if (txReceipt?.events[0]?.data && txReceipt?.status === 1) {
+    return true;
+  }
+  return false;
+};
+
+export const mintEditionsToRecipients = async ({
+  signer,
+  proxyAddress,
+  editionAddress,
+  recipients,
+}: {
+  signer: Signer;
+  proxyAddress: string;
+  editionAddress: string;
+  recipients: string[];
+}): Promise<boolean> => {
+  const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
+  const mintTx = await PROXY_WRITE.mintEditionsTo(editionAddress, recipients);
+  const txReceipt = await mintTx.wait();
+  if (txReceipt?.events[0] && txReceipt?.status === 1) {
+    return true;
+  }
+  return false;
 };
 
 export const createZoraAuction = async ({
@@ -442,18 +521,15 @@ export const createZoraAuction = async ({
   curator: string;
   curatorFeePercentage: number;
   auctionCurrency: string;
-}) => {
+}): Promise<number> => {
   // init Proxy instance as OurPylon, so owner can call Mint
   const proxyPylon = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 
   const ReservePrice: BigNumberish = ethers.utils.parseUnits(reservePrice.toString(), "ether");
   const auctionTx = await proxyPylon.createZoraAuction(
     tokenId,
-    // zora media rinkeby
     tokenContract,
     duration,
-    // parseUnits(`${reservePrice}`, "ether"),
-    // ethers.BigNumber.from(reservePrice),
     ReservePrice,
     curator || proxyAddress,
     curatorFeePercentage || Number(0),
@@ -509,13 +585,13 @@ export const claimFunds = async ({
   // claim funds with proof
   const PROXY_WRITE = initializeOurProxyAsPylonWSigner({ proxyAddress, signer });
 
-  if (needsIncremented) {
-    const claimTx = await PROXY_WRITE.incrementThenClaimAll(account, allocation, proof);
+  if (!needsIncremented) {
+    const claimTx = await PROXY_WRITE.claimETHForAllWindows(account, allocation, proof);
     const claimReceipt = await claimTx.wait();
 
     if (claimReceipt) return true;
   } else {
-    const claimTx = await PROXY_WRITE.claimETHForAllWindows(account, allocation, proof);
+    const claimTx = await PROXY_WRITE.incrementThenClaimAll(account, allocation, proof);
     const claimReceipt = await claimTx.wait();
 
     if (claimReceipt) return true;

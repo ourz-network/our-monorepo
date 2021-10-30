@@ -38,6 +38,8 @@ module.exports = {
         "12ch": "12ch",
         "500px": "500px",
         "800px": "800px",
+        'sidebar': '400px',
+        preview: "330px",
       },
       maxHeight: {
         "1/4": "25%",
@@ -50,6 +52,7 @@ module.exports = {
         "75vh": "75vh",
         "50vh": "50vh",
         "500px": "500px",
+        preview: "330px",
       },
       minWidth: {
         "1/4": "25%",
@@ -60,6 +63,7 @@ module.exports = {
         xxs: "10rem",
         preview: "330px",
         nfte: "490px",
+        'sidebar': '248px'
       },
       minHeight: {
         "1/4": "25%",
@@ -117,6 +121,6 @@ module.exports = {
   variants: {
     extend: {},
   },
-  // eslint-disable-next-line global-require
+  
   plugins: [require("@tailwindcss/forms")],
 };

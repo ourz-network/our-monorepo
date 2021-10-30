@@ -57,15 +57,14 @@ import Wallet from "./Wallet";
 
 const Navbar = (): JSX.Element => {
   const { address } = web3.useContainer(); // Global state
-
   return (
     <div id="navContainer">
-      <Popover className="flex relative z-30 items-center pb-2 border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
+      <Popover className="flex relative z-30 items-center border-b md:pb-0 h-min md:h-16 border-dark-border bg-dark-background">
         {({ open }) => (
           <>
-            <div className="mx-auto w-5/6">
-              <div className="flex relative flex-col justify-between items-center px-8 md:flex-row md:justify-start md:space-x-10 sm:px-6">
-                <div className="flex flex-col flex-1 justify-start content-center items-center px-8 text-center md:flex-row lg:w-0 lg:flex-1">
+            <div className="m-auto w-5/6">
+              <div className="flex relative flex-col justify-between items-center md:flex-row md:justify-start md:space-x-10">
+                <div className="flex flex-col flex-1 justify-start content-center items-center text-center md:flex-row lg:w-0 lg:flex-1">
                   {/* <div href="#" className="mt-1 md:-mr-11 lg:pl-12">
                     <Image
                       height={30}
@@ -75,8 +74,8 @@ const Navbar = (): JSX.Element => {
                     />
                   </div> */}
                   <Link href="/" passHref>
-                    <a className="flex mb-3md:mb-0 lg:pl-12 md:pr-12">
-                      <p className="text-3xl font-bold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
+                    <a className="px-2">
+                      <p className="text-2xl lg:font-semibold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
                         {/* "text-2xl font-bold leading-3 tracking-widest uppercase" */}
                         OURZ
                       </p>
@@ -89,9 +88,9 @@ const Navbar = (): JSX.Element => {
                   </Link>
                   <a
                     href="#"
-                    className="self-center w-auto text-sm font-black tracking-wider leading-tight text-center capitalize text-ourange-500 md:pr-8 hover:text-dark-secondary"
+                    className="hidden self-center w-auto text-xs font-bold tracking-wide text-center capitalize md:block text-ourange-150 md:pr-8 hover:text-dark-secondary"
                   >
-                    {/* About */} CAUTION - RINKEBY TESTNET ONLY!
+                    {/* About */}
                   </a>
                   {/* <div className="-my-2 -mr-2 md:hidden">
                     <Popover.Button className="inline-flex justify-center items-center p-2 bg-white text-dark-secondary hover:text-dark-secondary hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-inset focus:ring-yellow-500">
@@ -155,7 +154,7 @@ const Navbar = (): JSX.Element => {
                     </Popover>
                   </Popover.Group> */}
                 </div>
-                <div className="justify-center items-center md:justify-end md:flex md:flex-1 lg:w-0">
+                <div className="hidden justify-center items-center md:justify-end md:flex md:flex-1 lg:w-0">
                   <Wallet />
                 </div>
               </div>

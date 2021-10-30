@@ -1,120 +1,87 @@
-import { useEffect, useState } from "react"; // State management
 import { ethers } from "ethers";
 import { Zora } from "@zoralabs/zdk";
 import { GetStaticPaths, GetStaticProps } from "next";
 import PageLayout from "@/components/Layout/PageLayout"; // Layout wrapper
-import FullPageNFT from "@/components/Cards/FullPageNFT";
-import { getAllOurzTokens, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
-import { SplitRecipient, SplitZNFT } from "@/utils/OurzSubgraph";
+import FullPageNFT from "@/components/NFTs/FullPage/FullPageNFT";
+import { getAllOurzTokens, getSplitOwners, getSplitRecipients } from "@/subgraphs/ourz/functions"; // GraphQL client
+import { Recipient } from "@/utils/OurzSubgraph";
 import { getPostByID } from "@/modules/subgraphs/zora/functions";
-import { Ourz20210928 } from "@/utils/20210928";
-import { Media } from "@/utils/ZoraSubgraph";
+import { NFTCard } from "@/modules/subgraphs/utils";
+import web3 from "@/app/web3";
+import useOwners from "@/common/hooks/useOwners";
+import useRecipients from "@/common/hooks/useRecipients";
 
-const ViewERC721 = ({
-  tokenId,
-  recipients,
+const FullPageZNFT = ({
   post,
+  recipients,
+  splitOwners,
 }: {
-  tokenId: string;
-  recipients: SplitRecipient[];
-  post: Media & { metadata: Ourz20210928 };
-  // creator: string;
+  post: NFTCard;
+  recipients: Recipient[];
+  splitOwners: string[];
 }): JSX.Element => {
-  const [loading, setLoading] = useState(true); // Global loading state
-  const [firstSale, setFirstSale] = useState<{ name: string; shares: number }[] | undefined>();
-
-  useEffect(() => {
-    function formatChartData(Recipients: SplitRecipient[]) {
-      // create first sale chart data
-      const newChartData = Recipients.flatMap((recipient) => ({
-        name: `${recipient.name || recipient.user.id}`,
-        shares: Number(recipient.shares),
-      }));
-
-      setFirstSale(newChartData);
-      setLoading(false);
-    }
-
-    if (recipients) {
-      formatChartData(recipients);
-    }
-  }, [recipients]);
+  const { signer, address } = web3.useContainer();
+  const { isOwner } = useOwners({ address, splitOwners });
+  const { firstSale } = useRecipients({ recipients, secondaryRoyalty: undefined });
 
   return (
     <PageLayout>
-      <div
-        id="pagecontainer"
-        className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background"
-      >
+      <div className="flex overflow-y-hidden flex-col w-full h-auto min-h-screen bg-dark-background">
         <FullPageNFT
-          tokenId={tokenId}
-          ownAccount
-          chartData={firstSale}
-          recipients={recipients || null}
           post={post}
+          isOwner={isOwner}
+          signer={signer}
+          chartData={firstSale}
+          recipients={recipients}
         />
       </div>
     </PageLayout>
   );
 };
 
-// Run on server build
-// eslint-disable-next-line consistent-return
 export const getStaticPaths: GetStaticPaths = async () => {
-  /*
-   * const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
-   *   infura: process.env.NEXT_PUBLIC_INFURA_ID,
-   *   alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-   *   pocket: process.env.NEXT_PUBLIC_POKT_ID,
-   *   etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
-   * });
-   * const zoraQuery = new Zora(queryProvider, 4);
-   * const unburned = await zoraQuery.fetchTotalMedia();
-   * const maxSupply = await zoraQuery.fetchMediaByIndex(unburned - 1);
-   */
-  const ourTokens: SplitZNFT[] = await getAllOurzTokens();
-  const extras = [3689, 3699, 3733, 3741, 3759, 3772, 3773, 3774, 3829, 3831, 3858];
+  const ourTokens = await getAllOurzTokens();
+
   const paths = [];
-  for (let i = ourTokens.length - 1; i >= 0; i -= 1) {
-    paths.push({ params: { tokenId: `${ourTokens[i].id}` } });
+  if (ourTokens) {
+    for (let i = ourTokens?.length - 1; i >= 0; i -= 1) {
+      paths.push({ params: { tokenId: `${ourTokens[i].id}` } });
+    }
   }
-  for (let i = extras.length - 1; i >= 0; i -= 1) {
-    paths.push({ params: { tokenId: `${extras[i]}` } });
-  }
+
   return { paths, fallback: true };
 };
 
-// Run on page load
 export const getStaticProps: GetStaticProps = async (context) => {
-  const queryProvider = ethers.providers.getDefaultProvider("rinkeby", {
+  const tokenId = context.params?.tokenId;
+  const post = await getPostByID(Number(tokenId));
+
+  const queryProvider = ethers.providers.getDefaultProvider("homestead", {
     infura: process.env.NEXT_PUBLIC_INFURA_ID,
     alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
     pocket: process.env.NEXT_PUBLIC_POKT_ID,
     etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
   });
-  const zoraQuery = new Zora(queryProvider, 4);
+  const zoraQuery = new Zora(queryProvider, 1);
 
-  const { tokenId } = context.params;
-
-  const post = await getPostByID(Number(tokenId));
   const creatorAddress = await zoraQuery.fetchCreator(tokenId as string);
-
-  const res = await getSplitRecipients(creatorAddress);
-  if (res && post) {
-    const recipients = res;
-    return {
-      props: {
-        tokenId,
-        recipients,
-        post,
-      },
-      revalidate: 45,
-    };
+  let recipients;
+  let splitOwners;
+  try {
+    recipients = await getSplitRecipients(creatorAddress);
+    splitOwners = await getSplitOwners(creatorAddress);
+  } catch (error) {
+    //
   }
+
   return {
-    props: { tokenId, recipients: null, post },
-    revalidate: 45,
+    props: {
+      post,
+      recipients,
+      splitOwners,
+    },
+    revalidate: 5,
   };
 };
 
-export default ViewERC721;
+export default FullPageZNFT;

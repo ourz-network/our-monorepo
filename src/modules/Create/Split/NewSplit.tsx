@@ -12,7 +12,7 @@ import { newProxy } from "@/modules/ethereum/OurPylon";
 
 const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();
-  const { address } = web3.useContainer(); // Global State
+  const { address, signer } = web3.useContainer(); // Global State
 
   const [ownerData, setOwnerData] = useState({
     id: undefined,
@@ -37,8 +37,7 @@ const NewSplit: React.FC = (): JSX.Element => {
     if (!ownerData.account) {
       ownerData.account = address;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [address, ownerData]);
 
   /**
    *  react-hook-form
@@ -57,14 +56,13 @@ const NewSplit: React.FC = (): JSX.Element => {
       name: "splits",
     });
   // Live updates for pie chart
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const watchSplits = watch("splits");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const controlledFields: FormSplitRecipient[] = fields.map(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     (field: Record<"id", string | number>, index: number) => ({
       ...field,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       ...watchSplits[index],
     })
   );
@@ -94,7 +92,7 @@ const NewSplit: React.FC = (): JSX.Element => {
       shares: Number(split.shares),
     }));
     newChartData.unshift({
-      name: `${ownerData.name.length > 0 ? ownerData.name : ownerData.account}`,
+      name: `${ownerData.name.length > 0 ? ownerData.name : (ownerData.account as string)}`,
       shares: ownerData.shares,
     });
     setChartData(newChartData);
@@ -103,10 +101,12 @@ const NewSplit: React.FC = (): JSX.Element => {
   const onSubmit = async () => {
     const splitData = controlledFields;
     splitData.unshift(ownerData);
-    const proxyAddress = await newProxy(
-      controlledFields, // received as 'splitData'
-      nickname // received as 'splitData'
-    );
+    const proxyAddress = await newProxy({
+      signer,
+      address,
+      formData: controlledFields, // received as 'splitData'
+      nickname, // received as 'splitData'
+    });
 
     if (proxyAddress) {
       Router.push(`/create/mint/${proxyAddress}`).then(
@@ -141,23 +141,25 @@ const NewSplit: React.FC = (): JSX.Element => {
               will be claimable by the Split Recipients, up to their allocated amount.
             </p>
           </div>
-          <div className="mx-auto -my-32 w-full max-w-500px">
-            <DetailedPie chartData={chartData || null} secondaryBool={false} />
+          <div className="z-0 mx-auto -my-32 w-full max-w-500px">
+            <DetailedPie chartData={chartData || null} isSecondaryChart={false} />
           </div>
         </div>
-        <form className="justify-center -mt-1 w-full text-center">
-          <label htmlFor="nickname" className="mr-2 text-dark-primary">
-            Nickname for Split:
+        <form className="z-50 justify-center -mt-1 w-full text-center">
+          <div className="flex flex-col justify-center">
+            <p className="mx-auto text-dark-primary">Enter A Nickname For The Split:</p>
             <input
               type="text"
               id="splitNickname"
               name="nickname"
-              placeholder="Nickname"
+              className="mx-auto w-min text-dark-accent"
+              placeholder="Anonymous"
+              aria-label="Enter A Nickname For The Split"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNickname(e.target.value)}
             />
-          </label>
+          </div>
           <div className="flex flex-col justify-center w-full border-b">
-            <ul className="flex z-10 flex-col mt-4 w-full">
+            <ul className="flex flex-col mt-4 w-full">
               <li className="flex flex-nowrap justify-center mx-auto mb-3 space-x-3 w-full">
                 <input
                   type="text"
@@ -216,7 +218,7 @@ const NewSplit: React.FC = (): JSX.Element => {
                     defaultValue={field.account}
                     {...register(`splits.${index}.account` as const, {
                       required: true,
-                      validate: (value) => ethers.utils.isAddress(value) === true,
+                      validate: (value: string) => ethers.utils.isAddress(value) === true,
                     })}
                     onBlur={updateChart}
                     className="p-3 w-1/3 h-auto text-sm border shadow border-dark-border"

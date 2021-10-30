@@ -25,6 +25,7 @@ export const ZORA_MEDIA_BY_ID = (id: number): DocumentNode => gql`
       creator { id },
       contentURI,
       metadataURI,
+      creatorBidShare
       createdAtTimestamp
     }
   }
@@ -45,6 +46,7 @@ export const ZORA_MEDIA_BY_OWNER = (owner: string): DocumentNode => {
         creator { id }
         contentURI
         metadataURI
+        creatorBidShare
         createdAtTimestamp
       }
     }
@@ -66,6 +68,7 @@ export const ZORA_MEDIA_BY_CREATOR = (creator: string): DocumentNode => {
         creator { id }
         contentURI
         metadataURI
+        creatorBidShare
         createdAtTimestamp
       }
     }

@@ -1,25 +1,33 @@
+import { ethers } from "ethers";
+
 export const addressLength = 42;
 
 export const zeroAddress = "0x0000000000000000000000000000000000000000";
 
+const queryProvider = ethers.providers.getDefaultProvider("homestead", {
+  infura: process.env.NEXT_PUBLIC_INFURA_ID,
+  alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+  pocket: process.env.NEXT_PUBLIC_POKT_ID,
+  etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+});
+
 /* NFTE @contextart/nfte */
 
-export function toTrimmedAddress(value: string) {
+export function toTrimmedAddress(value: string): string {
   if (!value) return "";
   return `${value.substr(0, 6)}…${value.substr(value.length - 4, value.length)}`;
 }
 
-export function isAddress(value: string) {
+export function isAddress(value: string): boolean {
   return value?.startsWith("0x") && value?.length === addressLength;
 }
 
-export function cx(classNames: unknown[]) {
+export function cx(classNames: unknown[]): string {
   return classNames.filter(Boolean).join(" ");
 }
 
-export function tsFormat(value: string) {
-  // eslint-disable-next-line radix
-  const dateObj = new Date(parseInt(value) * 1000);
+export function tsFormat(value: string): string {
+  const dateObj = new Date(parseInt(value, 10) * 1000);
   const year = dateObj.getUTCFullYear();
   const month = dateObj.getUTCMonth() + 1;
   const date = dateObj.getUTCDate();
@@ -32,7 +40,7 @@ export function tsFormat(value: string) {
 
 /* NFTE @contextart/nfte */
 
-export function keyDownA11y(handler: () => void) {
+export function keyDownA11y(handler: () => void): (event: React.KeyboardEvent) => void {
   return function onKeyDown(event: React.KeyboardEvent) {
     if (["keydown", "keypress"].includes(event.type) && ["Enter", " "].includes(event.key)) {
       handler();

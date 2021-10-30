@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
-import { OurProxy } from "@/utils/OurzSubgraph";
+import { Split } from "@/utils/OurzSubgraph";
 import { createZoraAuction } from "@/modules/ethereum/OurPylon";
 
 const AuctionForm = ({
@@ -10,12 +10,11 @@ const AuctionForm = ({
   onClick,
 }: {
   tokenId: number;
-  split: OurProxy;
+  split: Split;
   onClick: () => void;
 }): JSX.Element => {
   const Router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formData, setFormData] = useState({
     proxyAddress: split.id,
     tokenId,

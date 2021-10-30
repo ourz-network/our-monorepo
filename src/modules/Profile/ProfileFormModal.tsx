@@ -195,7 +195,7 @@ const ProfileFormModal = ({
   const checkUsername = async (desiredUsername: string) => {
     // setUsernameLoading(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,  @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       cancel && cancel();
 
       const { CancelToken } = axios;
@@ -218,7 +218,6 @@ const ProfileFormModal = ({
     // setUsernameLoading(false);
   };
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   /*
    * const checkAvailibility = useEffect(() => {
    *   user.username === ""
@@ -227,7 +226,7 @@ const ProfileFormModal = ({
    *         () => {},
    *         () => {}
    *       );
-   *   // eslint-disable-next-line react-hooks/exhaustive-deps
+   *
    * }, [user.username]);
    */
 
@@ -407,7 +406,6 @@ const ProfileFormModal = ({
                                               <input
                                                 type="text"
                                                 placeholder={
-                                                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                                   user[keyName] !== null
                                                     ? `${user[keyName] as string}`
                                                     : `${keyName}`
