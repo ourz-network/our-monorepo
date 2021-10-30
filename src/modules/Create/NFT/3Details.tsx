@@ -97,9 +97,8 @@ const MintDetails = ({
               </>
             )}
             <p>
-              <input
+              <textarea
                 className="px-3 pt-2 pb-4 mb-8 w-full h-auto border border-dark-border bg-dark-background focus:outline-none focus:border-dark-secondary focus:ring-transparent"
-                type="textarea"
                 id="description"
                 name="description"
                 placeholder="Enter Description"

@@ -1,6 +1,15 @@
+import { ethers } from "ethers";
+
 export const addressLength = 42;
 
 export const zeroAddress = "0x0000000000000000000000000000000000000000";
+
+const queryProvider = ethers.providers.getDefaultProvider("homestead", {
+  infura: process.env.NEXT_PUBLIC_INFURA_ID,
+  alchemy: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+  pocket: process.env.NEXT_PUBLIC_POKT_ID,
+  etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_KEY,
+});
 
 /* NFTE @contextart/nfte */
 

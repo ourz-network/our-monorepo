@@ -9,12 +9,12 @@ const Details = ({ purchase }): JSX.Element => {
     <>
       <div className="flex flex-col justify-between">
         <div className="flex justify-between mb-2 h-full">
-          <p className="my-auto text-xl tracking-wider lg:text-4xl font-hero text-dark-primary">{`${post.name}`}</p>
+          <p className="my-auto text-xl tracking-wider lg:text-4xl font-hero text-dark-primary">{`${post?.name}`}</p>
           {post?.symbol && (
             <p className="my-auto text-lg italic text-dark-primary">{`(${post.symbol})`}</p>
           )}
         </div>
-        <p className="whitespace-pre-wrap break-words text-dark-primary">{`${post.description}`}</p>
+        <p className="whitespace-pre-wrap break-normal text-dark-primary">{`${post?.description}`}</p>
       </div>
       {saleInfo !== undefined && (
         <>

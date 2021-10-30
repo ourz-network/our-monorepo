@@ -77,11 +77,11 @@ const FullPageNFT = ({
               <div className="flex flex-col space-y-2 lg:w-7/12">
                 <div className="flex flex-col justify-between mb-4 md:flex-row">
                   {post && <Details />}
-                  <div className="hidden my-auto md:block">
-                    <FullComponents.PlaceOfferButton />
-                  </div>
                 </div>
                 <FullComponents.AuctionInfo />
+                <div className="hidden place-self-end my-auto md:block">
+                  <FullComponents.PlaceOfferButton />
+                </div>
                 <div className="my-2">
                   <FullComponents.ProofAuthenticity />
                 </div>

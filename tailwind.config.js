@@ -38,7 +38,7 @@ module.exports = {
         "12ch": "12ch",
         "500px": "500px",
         "800px": "800px",
-        'sidebar': '248px',
+        'sidebar': '400px',
         preview: "330px",
       },
       maxHeight: {

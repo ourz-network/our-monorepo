@@ -68,7 +68,7 @@ const MintConfirm = ({
             id="details"
           >
             <div className="flex flex-row justify-center mx-auto mt-5 wrap">{thumbs}</div>
-            <p className="m-auto mb-2 h-auto text-lg italic text-center text-dark-secondary">
+            <p className="m-auto mb-2 h-auto text-lg italic text-center whitespace-pre-wrap text-dark-secondary">
               Media Kind: {mintForm.media.mimeType}
               <br />
               Title: {mintForm.metadata.name}

@@ -73,43 +73,6 @@ const NewMintMultistepForm = ({
     setCurrentStep(currentStep - 1);
   };
 
-  // useEffect(() => {
-  //   function formatChartData(recipients: SplitRecipient[]) {
-  //     // setFormData({
-  //     //   ...mintForm,
-  //     //   metadata: {
-  //     //     ...mintForm.metadata,
-  //     //     split_recipients: recipients,
-  //     //   },
-  //     // });
-
-  //     // create first sale chart data
-  //     let newChartData = recipients.flatMap((recipient) => ({
-  //       name: `${recipient.name || recipient.user.id}`,
-  //       shares: Number(recipient.shares),
-  //     }));
-
-  //     setFirstSale(newChartData);
-
-  //     // edit for secondary sales chart data
-  //     newChartData = newChartData.map((recipient) => ({
-  //       name: recipient.name,
-  //       shares: Number(recipient.shares) * Number((mintForm.creatorBidShare / 100).toFixed(4)),
-  //     }));
-
-  //     newChartData.push({
-  //       name: "Owner",
-  //       shares: 100 - mintForm.creatorBidShare,
-  //     });
-
-  //     setSecondarySales(newChartData);
-  //   }
-
-  //   if (splitRecipients && mintForm.creatorBidShare) {
-  //     formatChartData(splitRecipients);
-  //   }
-  // }, [mintForm.creatorBidShare, splitRecipients]);
-
   const setMintKind = (Kind: MintForm["mintKind"]) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -134,7 +97,7 @@ const NewMintMultistepForm = ({
     }));
   };
 
-  const handleMetadataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
       ...prevState,
       metadata: {
@@ -158,7 +121,7 @@ const NewMintMultistepForm = ({
     if (
       proxyAddress &&
       signer &&
-      network?.chainId === 4 &&
+      network?.chainId === 1 &&
       (mintForm.mintKind === "1/1" || mintForm.mintKind === "1/1 Auction")
     ) {
       // minting as Split Proxy by Owner
@@ -178,7 +141,7 @@ const NewMintMultistepForm = ({
     } else if (
       proxyAddress &&
       signer &&
-      network?.chainId === 4 &&
+      network?.chainId === 1 &&
       mintForm.mintKind === "Edition"
     ) {
       const editionAddress = await createZoraEdition({
@@ -282,7 +245,7 @@ const NewMintMultistepForm = ({
     if (file.type.startsWith("image")) {
       return (
         <div className="box-border inline-flex p-2 my-auto" key={file.name}>
-          <div className="flex object-contain overflow-hidden min-w-0">
+          <div className="flex object-contain overflow-hidden min-w-0 max-h-50vh">
             <img
               src={file.preview}
               className="object-contain w-full"
@@ -340,7 +303,7 @@ const NewMintMultistepForm = ({
         <PageLayout>
           <MintDetails
             mintForm={mintForm}
-            handleChange={handleMetadataChange}
+            handleChange={handleChange}
             setBidShare={setBidShare}
             setPublicMint={setPublicMint}
             thumbs={thumbs}

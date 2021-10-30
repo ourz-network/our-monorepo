@@ -12,7 +12,7 @@ import { newProxy } from "@/modules/ethereum/OurPylon";
 
 const NewSplit: React.FC = (): JSX.Element => {
   const Router = useRouter();
-  const { address } = web3.useContainer(); // Global State
+  const { address, signer } = web3.useContainer(); // Global State
 
   const [ownerData, setOwnerData] = useState({
     id: undefined,
@@ -101,10 +101,12 @@ const NewSplit: React.FC = (): JSX.Element => {
   const onSubmit = async () => {
     const splitData = controlledFields;
     splitData.unshift(ownerData);
-    const proxyAddress = await newProxy(
-      controlledFields, // received as 'splitData'
-      nickname // received as 'splitData'
-    );
+    const proxyAddress = await newProxy({
+      signer,
+      address,
+      formData: controlledFields, // received as 'splitData'
+      nickname, // received as 'splitData'
+    });
 
     if (proxyAddress) {
       Router.push(`/create/mint/${proxyAddress}`).then(

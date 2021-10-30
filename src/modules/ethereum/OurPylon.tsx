@@ -137,8 +137,9 @@ export const newProxy = async ({
     // multiple owners
     deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [owners]);
   } else {
+    const owner = [address];
     // signer is sole owner
-    deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [address]);
+    deployData = PYLON_WRITE.interface.encodeFunctionData("setup", [owner]);
   }
 
   // determine address of new proxy

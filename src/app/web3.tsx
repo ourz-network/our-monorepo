@@ -98,7 +98,7 @@ function useWeb3() {
       setNetwork(Network);
 
       console.log(
-        `Detected Web3 Network Change...\nNow connected to ${network?.name}, Chain #${network?.chainId}`
+        `Detected Web3 Network Change...\nNow connected to ${Network?.name}, Chain #${Network?.chainId}`
       );
     });
 

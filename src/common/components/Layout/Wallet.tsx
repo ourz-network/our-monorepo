@@ -2,6 +2,7 @@
 import Link from "next/link"; // Dynamic routing
 import { Fragment, useEffect, useState } from "react"; // State management, Fragment for TailwindUI
 import { Popover, Transition } from "@headlessui/react"; // TailwindUI
+import { useRouter } from "next/router";
 import web3 from "@/app/web3"; // Global state
 import Button from "@/components/Button";
 import checkForProfile from "@/mongodb/utils/functions";
@@ -13,6 +14,7 @@ function classNames(...classes) {
 
 const Wallet = (): JSX.Element => {
   const { address, network, authenticate, disconnectWeb3 } = web3.useContainer();
+  const Router = useRouter();
 
   const [signerProfile, setSignerProfile] = useState<IUser | undefined>(null); // Check for user on Ourz' user profile api.
 
@@ -151,16 +153,11 @@ const Wallet = (): JSX.Element => {
           </>
         )}
       </Popover>
-      <Link href="/create" passHref>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a>
-          <Button
-            text={network?.name === "homestead" ? `Create` : `Switch to Mainnet`}
-            isMain
-            onClick={undefined}
-          />
-        </a>
-      </Link>
+      <Button
+        text={network?.name === "homestead" ? `Create` : `Switch to Mainnet`}
+        isMain
+        onClick={network?.name === "homestead" ? () => Router.push(`/create`) : () => null}
+      />
     </div>
   ) : (
     // Else if user is not authenticated

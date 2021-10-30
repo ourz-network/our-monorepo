@@ -46,13 +46,13 @@ const CreateDashboard = (): JSX.Element => {
                       />
                     ))}
                   </div>
+                  <p className="mx-auto text-dark-primary">OR</p>
                 </>
               ) : (
                 <p className="mx-auto text-center text-dark-primary">
                   You will need to create a new Split first.
                 </p>
               )}
-              <p className="mx-auto text-dark-primary">OR</p>
               <div className="p-2 mx-auto my-4 w-min h-min">
                 <Button isMain text="Create New Split" onClick={() => setNewSplit(true)} />
               </div>

@@ -25,7 +25,7 @@ const Sidebar = ({
   const Router = useRouter();
 
   return (
-    <div className="flex h-full min-h-screen w-preview max-w-sidebar min-w-sidebar bg-dark-accent">
+    <div className="flex h-full min-h-screen w-sidebar max-w-sidebar min-w-sidebar bg-dark-accent">
       <div className="mt-8 w-full">
         <div className="text-center text-dark-primary">
           <div id="info" className="flex flex-col mb-4 space-y-2">
