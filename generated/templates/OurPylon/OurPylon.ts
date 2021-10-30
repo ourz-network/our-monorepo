@@ -144,24 +144,6 @@ export class NameChanged__Params {
   }
 }
 
-export class ProxySetup extends ethereum.Event {
-  get params(): ProxySetup__Params {
-    return new ProxySetup__Params(this);
-  }
-}
-
-export class ProxySetup__Params {
-  _event: ProxySetup;
-
-  constructor(event: ProxySetup) {
-    this._event = event;
-  }
-
-  get owners(): Array<Address> {
-    return this._event.parameters[0].value.toAddressArray();
-  }
-}
-
 export class RemovedOwner extends ethereum.Event {
   get params(): RemovedOwner__Params {
     return new RemovedOwner__Params(this);
@@ -177,6 +159,24 @@ export class RemovedOwner__Params {
 
   get owner(): Address {
     return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class SplitSetup extends ethereum.Event {
+  get params(): SplitSetup__Params {
+    return new SplitSetup__Params(this);
+  }
+}
+
+export class SplitSetup__Params {
+  _event: SplitSetup;
+
+  constructor(event: SplitSetup) {
+    this._event = event;
+  }
+
+  get owners(): Array<Address> {
+    return this._event.parameters[0].value.toAddressArray();
   }
 }
 
@@ -1018,56 +1018,6 @@ export class ClaimETHForAllWindowsCall__Outputs {
   }
 }
 
-export class CreateMirrorCrowdfundCall extends ethereum.Call {
-  get inputs(): CreateMirrorCrowdfundCall__Inputs {
-    return new CreateMirrorCrowdfundCall__Inputs(this);
-  }
-
-  get outputs(): CreateMirrorCrowdfundCall__Outputs {
-    return new CreateMirrorCrowdfundCall__Outputs(this);
-  }
-}
-
-export class CreateMirrorCrowdfundCall__Inputs {
-  _call: CreateMirrorCrowdfundCall;
-
-  constructor(call: CreateMirrorCrowdfundCall) {
-    this._call = call;
-  }
-
-  get name(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-
-  get symbol(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-
-  get operator(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
-  get fundingRecipient(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
-  get fundingCap(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get operatorPercent(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-}
-
-export class CreateMirrorCrowdfundCall__Outputs {
-  _call: CreateMirrorCrowdfundCall;
-
-  constructor(call: CreateMirrorCrowdfundCall) {
-    this._call = call;
-  }
-}
-
 export class CreateZoraAuctionCall extends ethereum.Call {
   get inputs(): CreateZoraAuctionCall__Inputs {
     return new CreateZoraAuctionCall__Inputs(this);
@@ -1286,6 +1236,40 @@ export class IncrementWindowCall__Outputs {
   }
 }
 
+export class MintEditionsToCall extends ethereum.Call {
+  get inputs(): MintEditionsToCall__Inputs {
+    return new MintEditionsToCall__Inputs(this);
+  }
+
+  get outputs(): MintEditionsToCall__Outputs {
+    return new MintEditionsToCall__Outputs(this);
+  }
+}
+
+export class MintEditionsToCall__Inputs {
+  _call: MintEditionsToCall;
+
+  constructor(call: MintEditionsToCall) {
+    this._call = call;
+  }
+
+  get editionAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get recipients(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
+  }
+}
+
+export class MintEditionsToCall__Outputs {
+  _call: MintEditionsToCall;
+
+  constructor(call: MintEditionsToCall) {
+    this._call = call;
+  }
+}
+
 export class MintToAuctionForETHCall extends ethereum.Call {
   get inputs(): MintToAuctionForETHCall__Inputs {
     return new MintToAuctionForETHCall__Inputs(this);
@@ -1388,40 +1372,6 @@ export class MintToAuctionForETHCallBidSharesOwnerStruct extends ethereum.Tuple 
   }
 }
 
-export class MintZEditionsCall extends ethereum.Call {
-  get inputs(): MintZEditionsCall__Inputs {
-    return new MintZEditionsCall__Inputs(this);
-  }
-
-  get outputs(): MintZEditionsCall__Outputs {
-    return new MintZEditionsCall__Outputs(this);
-  }
-}
-
-export class MintZEditionsCall__Inputs {
-  _call: MintZEditionsCall;
-
-  constructor(call: MintZEditionsCall) {
-    this._call = call;
-  }
-
-  get editionAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get recipients(): Array<Address> {
-    return this._call.inputValues[1].value.toAddressArray();
-  }
-}
-
-export class MintZEditionsCall__Outputs {
-  _call: MintZEditionsCall;
-
-  constructor(call: MintZEditionsCall) {
-    this._call = call;
-  }
-}
-
 export class MintZNFTCall extends ethereum.Call {
   get inputs(): MintZNFTCall__Inputs {
     return new MintZNFTCall__Inputs(this);
@@ -1507,128 +1457,6 @@ export class MintZNFTCallBidSharesCreatorStruct extends ethereum.Tuple {
 export class MintZNFTCallBidSharesOwnerStruct extends ethereum.Tuple {
   get value(): BigInt {
     return this[0].toBigInt();
-  }
-}
-
-export class MintZNFTWithSigCall extends ethereum.Call {
-  get inputs(): MintZNFTWithSigCall__Inputs {
-    return new MintZNFTWithSigCall__Inputs(this);
-  }
-
-  get outputs(): MintZNFTWithSigCall__Outputs {
-    return new MintZNFTWithSigCall__Outputs(this);
-  }
-}
-
-export class MintZNFTWithSigCall__Inputs {
-  _call: MintZNFTWithSigCall;
-
-  constructor(call: MintZNFTWithSigCall) {
-    this._call = call;
-  }
-
-  get creator(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get mediaData(): MintZNFTWithSigCallMediaDataStruct {
-    return changetype<MintZNFTWithSigCallMediaDataStruct>(
-      this._call.inputValues[1].value.toTuple()
-    );
-  }
-
-  get bidShares(): MintZNFTWithSigCallBidSharesStruct {
-    return changetype<MintZNFTWithSigCallBidSharesStruct>(
-      this._call.inputValues[2].value.toTuple()
-    );
-  }
-
-  get sig(): MintZNFTWithSigCallSigStruct {
-    return changetype<MintZNFTWithSigCallSigStruct>(
-      this._call.inputValues[3].value.toTuple()
-    );
-  }
-}
-
-export class MintZNFTWithSigCall__Outputs {
-  _call: MintZNFTWithSigCall;
-
-  constructor(call: MintZNFTWithSigCall) {
-    this._call = call;
-  }
-}
-
-export class MintZNFTWithSigCallMediaDataStruct extends ethereum.Tuple {
-  get tokenURI(): string {
-    return this[0].toString();
-  }
-
-  get metadataURI(): string {
-    return this[1].toString();
-  }
-
-  get contentHash(): Bytes {
-    return this[2].toBytes();
-  }
-
-  get metadataHash(): Bytes {
-    return this[3].toBytes();
-  }
-}
-
-export class MintZNFTWithSigCallBidSharesStruct extends ethereum.Tuple {
-  get prevOwner(): MintZNFTWithSigCallBidSharesPrevOwnerStruct {
-    return changetype<MintZNFTWithSigCallBidSharesPrevOwnerStruct>(
-      this[0].toTuple()
-    );
-  }
-
-  get creator(): MintZNFTWithSigCallBidSharesCreatorStruct {
-    return changetype<MintZNFTWithSigCallBidSharesCreatorStruct>(
-      this[1].toTuple()
-    );
-  }
-
-  get owner(): MintZNFTWithSigCallBidSharesOwnerStruct {
-    return changetype<MintZNFTWithSigCallBidSharesOwnerStruct>(
-      this[2].toTuple()
-    );
-  }
-}
-
-export class MintZNFTWithSigCallBidSharesPrevOwnerStruct extends ethereum.Tuple {
-  get value(): BigInt {
-    return this[0].toBigInt();
-  }
-}
-
-export class MintZNFTWithSigCallBidSharesCreatorStruct extends ethereum.Tuple {
-  get value(): BigInt {
-    return this[0].toBigInt();
-  }
-}
-
-export class MintZNFTWithSigCallBidSharesOwnerStruct extends ethereum.Tuple {
-  get value(): BigInt {
-    return this[0].toBigInt();
-  }
-}
-
-export class MintZNFTWithSigCallSigStruct extends ethereum.Tuple {
-  get deadline(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get v(): i32 {
-    return this[1].toI32();
-  }
-
-  get r(): Bytes {
-    return this[2].toBytes();
-  }
-
-  get s(): Bytes {
-    return this[3].toBytes();
   }
 }
 
@@ -1730,6 +1558,40 @@ export class SetEditionMinterCall__Outputs {
   _call: SetEditionMinterCall;
 
   constructor(call: SetEditionMinterCall) {
+    this._call = call;
+  }
+}
+
+export class SetEditionPriceCall extends ethereum.Call {
+  get inputs(): SetEditionPriceCall__Inputs {
+    return new SetEditionPriceCall__Inputs(this);
+  }
+
+  get outputs(): SetEditionPriceCall__Outputs {
+    return new SetEditionPriceCall__Outputs(this);
+  }
+}
+
+export class SetEditionPriceCall__Inputs {
+  _call: SetEditionPriceCall;
+
+  constructor(call: SetEditionPriceCall) {
+    this._call = call;
+  }
+
+  get editionAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get salePrice(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class SetEditionPriceCall__Outputs {
+  _call: SetEditionPriceCall;
+
+  constructor(call: SetEditionPriceCall) {
     this._call = call;
   }
 }

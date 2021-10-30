@@ -10,16 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class ProxyCreated extends ethereum.Event {
-  get params(): ProxyCreated__Params {
-    return new ProxyCreated__Params(this);
+export class SplitCreated extends ethereum.Event {
+  get params(): SplitCreated__Params {
+    return new SplitCreated__Params(this);
   }
 }
 
-export class ProxyCreated__Params {
-  _event: ProxyCreated;
+export class SplitCreated__Params {
+  _event: SplitCreated;
 
-  constructor(event: ProxyCreated) {
+  constructor(event: SplitCreated) {
     this._event = event;
   }
 
