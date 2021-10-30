@@ -2,15 +2,13 @@
 pragma solidity 0.8.4;
 
 /**
- * @title Interface for the entire Zora Protocol. Modified for OurMinter.sol
+ * @title Minimal Interface for the Zora Protocol.
  * @author (s):
  * https://github.com/ourzora/
  *
  * @notice combination of Market, Media, and AuctionHouse contracts' interfaces.
- * @dev Some functions have been moved to more basic interfaces - eg IERCXXX.sol -
- * @dev to allow for the implementation of 'untrusted' universal functions in Minter.sol.
- * @dev They will work with Zora, with the additional benefit of working with other protocols.
  */
+
 /* solhint-disable private-vars-leading-underscore, ordering */
 interface IZora {
     /**
@@ -51,14 +49,6 @@ interface IZora {
      */
     function tokenByIndex(uint256 index) external returns (uint256);
 
-    // /**
-    //  * @notice Return the metadata URI for a piece of media given the token URI
-    //  */
-    // function tokenMetadataURI(uint256 tokenId)
-    //     external
-    //     view
-    //     returns (string memory);
-
     /**
      * @notice Mint new media for msg.sender.
      */
@@ -75,18 +65,6 @@ interface IZora {
         EIP712Signature calldata sig
     ) external;
 
-    // /**
-    //  * @notice Transfer the token with the given ID to a given address.
-    //  * Save the previous owner before the transfer, in case there is a sell-on fee.
-    //  * @dev This can only be called by the auction contract specified at deployment
-    //  */
-    // function auctionTransfer(uint256 tokenId, address recipient) external;
-
-    // /**
-    //  * @notice Revoke approval for a piece of media
-    //  */
-    // function revokeApproval(uint256 tokenId) external;
-
     /**
      * @notice Update the token URI
      */
@@ -98,15 +76,6 @@ interface IZora {
     function updateTokenMetadataURI(
         uint256 tokenId,
         string calldata metadataURI
-    ) external;
-
-    /**
-     * @notice EIP-712 permit method. Sets an approved spender given a valid signature.
-     */
-    function permit(
-        address spender,
-        uint256 tokenId,
-        EIP712Signature calldata sig
     ) external;
 
     /**
@@ -140,45 +109,6 @@ interface IZora {
         // % of sale value that goes to the seller (current owner) of the nft
         D256 owner;
     }
-
-    event BidCreated(uint256 indexed tokenId, Bid bid);
-    event BidRemoved(uint256 indexed tokenId, Bid bid);
-    event BidFinalized(uint256 indexed tokenId, Bid bid);
-    event AskCreated(uint256 indexed tokenId, Ask ask);
-    event AskRemoved(uint256 indexed tokenId, Ask ask);
-    event BidShareUpdated(uint256 indexed tokenId, BidShares bidShares);
-
-    // function bidForTokenBidder(uint256 tokenId, address bidder)
-    //     external
-    //     view
-    //     returns (Bid memory);
-
-    // function currentAskForToken(uint256 tokenId)
-    //     external
-    //     view
-    //     returns (Ask memory);
-
-    // function bidSharesForToken(uint256 tokenId)
-    //     external
-    //     view
-    //     returns (BidShares memory);
-
-    // function isValidBid(uint256 tokenId, uint256 bidAmount)
-    //     external
-    //     view
-    //     returns (bool);
-
-    // function isValidBidShares(BidShares calldata bidShares)
-    //     external
-    //     pure
-    //     returns (bool);
-
-    // function splitShare(D256 calldata sharePercentage, uint256 amount)
-    //     external
-    //     pure
-    //     returns (uint256);
-
-    // function configure(address mediaContractAddress) external;
 
     function setBidShares(uint256 tokenId, BidShares calldata bidShares)
         external;
@@ -228,68 +158,6 @@ interface IZora {
         // If set to 0x0, the auction will be run in ETH
         address auctionCurrency;
     }
-
-    event AuctionCreated(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        uint256 duration,
-        uint256 reservePrice,
-        address tokenOwner,
-        address curator,
-        uint8 curatorFeePercentage,
-        address auctionCurrency
-    );
-
-    event AuctionApprovalUpdated(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        bool approved
-    );
-
-    event AuctionReservePriceUpdated(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        uint256 reservePrice
-    );
-
-    event AuctionBid(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        address sender,
-        uint256 value,
-        bool firstBid,
-        bool extended
-    );
-
-    event AuctionDurationExtended(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        uint256 duration
-    );
-
-    event AuctionEnded(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        address tokenOwner,
-        address curator,
-        address winner,
-        uint256 amount,
-        uint256 curatorFee,
-        address auctionCurrency
-    );
-
-    event AuctionCanceled(
-        uint256 indexed auctionId,
-        uint256 indexed tokenId,
-        address indexed tokenContract,
-        address tokenOwner
-    );
 
     function createAuction(
         uint256 tokenId,

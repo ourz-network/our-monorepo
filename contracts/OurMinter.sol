@@ -4,37 +4,40 @@ pragma experimental ABIEncoderV2;
 
 import {OurManagement} from "./OurManagement.sol";
 import {IZora} from "./interfaces/IZora.sol";
-import {IMirror} from "./interfaces/IMirror.sol";
-import {IPartyBid} from "./interfaces/IPartyBid.sol";
 import {IERC721} from "./interfaces/IERC721.sol";
 
 /**
  * @title OurMinter
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
+ *
+ *
  *
  * @notice Some functions are marked as 'untrusted'Function. Use caution when interacting
  * with these, as any contracts you supply could be potentially unsafe.
  * 'Trusted' functions on the other hand -- implied by the absence of 'untrusted' --
- * are hardcoded to use the Zora Protocol/MirrorXYZ/PartyDAO addresses.
+ * are hardcoded to use the Zora Protocol addresses.
  * https://consensys.github.io/smart-contract-best-practices/recommendations/#mark-untrusted-contracts
  */
+
 contract OurMinter is OurManagement {
-    /// @notice RINKEBY ADDRESSES
     address public constant ZORA_MEDIA =
-        0x7C2668BD0D3c050703CEcC956C11Bd520c26f7d4;
+        0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7;
     address public constant ZORA_MARKET =
-        0x85e946e1Bd35EC91044Dc83A5DdAB2B6A262ffA6;
+        0xE5BFAB544ecA83849c53464F85B7164375Bdaac1;
     address public constant ZORA_AH =
-        0xE7dd1252f50B3d845590Da0c5eADd985049a03ce;
+        0xE468cE99444174Bd3bBBEd09209577d25D1ad673;
     address public constant ZORA_EDITIONS =
-        0x5d6E1357Acc8BF654979f3b24fdef8C5549A491e;
-    address public constant MIRROR_CROWDFUND =
-        0xeac226B370D77f436b5780b4DD4A49E59e8bEA37;
+        0x91A8713155758d410DFAc33a63E193AE3E89F909;
 
     //======== Subgraph =========
     event ZNFTMinted(uint256 tokenId);
@@ -63,19 +66,6 @@ contract OurMinter is OurManagement {
         IZora.BidShares calldata bidShares
     ) external onlyOwners {
         IZora(ZORA_MEDIA).mint(mediaData, bidShares);
-        emit ZNFTMinted(_getID());
-    }
-
-    /** Media
-     * @notice EIP-712 mintWithSig. Mints new new Zora NFT for a creator on behalf of split contract.
-     */
-    function mintZNFTWithSig(
-        address creator,
-        IZora.MediaData calldata mediaData,
-        IZora.BidShares calldata bidShares,
-        IZora.EIP712Signature calldata sig
-    ) external onlyOwners {
-        IZora(ZORA_MEDIA).mintWithSig(creator, mediaData, bidShares, sig);
         emit ZNFTMinted(_getID());
     }
 
@@ -254,24 +244,17 @@ contract OurMinter is OurManagement {
     }
 
     /** NFT-Editions
-     * @param editionAddress the address of the Edition Contract to call
-     * @param recipients list of addresses to send the newly minted editions to
-     * @dev This mints multiple editions to the given list of addresses.
+     * @param salePrice if sale price is 0 sale is stopped, otherwise that amount
+     *                  of ETH is needed to start the sale.
+     * @dev This sets a simple ETH sales price
+     *      Setting a sales price allows users to mint the edition until it sells out.
+     *      For more granular sales, use an external sales contract.
      */
-    function mintZEditions(
-        address editionAddress,
-        address[] calldata recipients
-    ) external onlyOwners {
-        IZora(editionAddress).mintEditions(recipients);
-    }
-
-    /** NFT-Editions
-     * @param editionAddress the address of the Edition Contract to call
-     * @dev Withdraws all funds from Edition to split
-     * @notice callable by anyone, as funds are sent to the Split
-     */
-    function withdrawEditionFunds(address editionAddress) external {
-        IZora(editionAddress).withdraw();
+    function setEditionPrice(address editionAddress, uint256 salePrice)
+        external
+        onlyOwners
+    {
+        IZora(editionAddress).setSalePrice(salePrice);
     }
 
     /** NFT-Editions
@@ -290,6 +273,27 @@ contract OurMinter is OurManagement {
         bool allowed
     ) external onlyOwners {
         IZora(editionAddress).setApprovedMinter(minter, allowed);
+    }
+
+    /** NFT-Editions
+     * @param editionAddress the address of the Edition Contract to call
+     * @param recipients list of addresses to send the newly minted editions to
+     * @dev This mints multiple editions to the given list of addresses.
+     */
+    function mintEditionsTo(
+        address editionAddress,
+        address[] calldata recipients
+    ) external onlyOwners {
+        IZora(editionAddress).mintEditions(recipients);
+    }
+
+    /** NFT-Editions
+     * @param editionAddress the address of the Edition Contract to call
+     * @dev Withdraws all funds from Edition to split
+     * @notice callable by anyone, as funds are sent to the Split
+     */
+    function withdrawEditionFunds(address editionAddress) external {
+        IZora(editionAddress).withdraw();
     }
 
     /** NFT-Editions
@@ -340,32 +344,7 @@ contract OurMinter is OurManagement {
         );
     }
 
-    //======== /IZora =========
     /* solhint-enable ordering */
-
-    /**======== IMirror =========
-     * @notice Create a Crowdfund
-     * @dev see IMirror.sol
-     */
-    function createMirrorCrowdfund(
-        string calldata name,
-        string calldata symbol,
-        address payable operator,
-        address payable fundingRecipient,
-        uint256 fundingCap,
-        uint256 operatorPercent
-    ) external onlyOwners {
-        IMirror(MIRROR_CROWDFUND).createCrowdfund(
-            name,
-            symbol,
-            operator,
-            fundingRecipient,
-            fundingCap,
-            operatorPercent
-        );
-    }
-
-    //======== /IMirror =========
 
     /**======== IERC721 =========
      * NOTE: Althought OurMinter.sol is generally implemented to work with Zora,
@@ -416,18 +395,15 @@ contract OurMinter is OurManagement {
         IERC721(tokenContract_).burn(tokenId_);
     }
 
-    //======== /IERC721 =========
-
-    //======== PROCEEED WITH CAUTION =========
-    /**
-     * NOTE: Marked as >> untrusted << Avoid interacting with contracts you do not trust entirely.
+    /** ======== CAUTION =========
+     * NOTE: As always, avoid interacting with contracts you do not trust entirely.
      * @dev allows a Split Contract to call (non-payable) functions of any other contract
-     * @notice This function is added for 'future-proofing' capabilities and will not be implemented into the
-     *         OURZ frontend. The intent is to support the use of custom ERC721 creator contracts.
-     * @notice In the interest of securing the Split's funds for Recipients from a rogue owner(OurManagement.sol),
+     * @notice This function is added for 'future-proofing' capabilities, & to support the use of 
+               custom ERC721 creator contracts.
+     * @notice In the interest of securing the Split's funds for Recipients from a rogue owner,
      *         the msg.value is hardcoded to zero.
      */
-    function untrustedExecuteTransaction(address to, bytes memory data)
+    function executeTransaction(address to, bytes memory data)
         external
         onlyOwners
         returns (bool success)
@@ -437,8 +413,6 @@ contract OurMinter is OurManagement {
             success := call(gas(), to, 0, add(data, 0x20), mload(data), 0, 0)
         }
     }
-
-    //======== /PROCEEED WITH CAUTION =========
 
     /// @dev calculates tokenID of newly minted ZNFT
     function _getID() private returns (uint256 id) {

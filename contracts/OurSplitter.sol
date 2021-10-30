@@ -19,13 +19,19 @@ interface IWETH {
 
 /**
  * @title OurSplitter
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
+
 contract OurSplitter is OurStorage {
     struct Proof {
         bytes32[] merkleProof;
@@ -90,8 +96,8 @@ contract OurSplitter is OurStorage {
      * In most cases, the difference will be negligible:
      *      ~remainder × 10^-17,
      *      or about 0.000000000000000100 at most.
-     * @notice iterating through an array to push payments goes agains best practices,
-     *         therefore it is advised to avoid accepting ERC-20 payments.
+     * @notice iterating through an array to push payments goes against best practices,
+     *         therefore it is advised to avoid accepting ERC-20s as payment.
      */
     function claimERC20ForAll(
         address tokenAddress,

@@ -417,14 +417,23 @@ describe('SplitProxy via Factory', () => {
           // NOTE: Gas cost is around 495k on rinkeby/mainnet, due to constructor approval calls.
           it('costs around ~325k gas to deploy the proxy', async () => {
             const gasUsed = (await deployTx.wait()).gasUsed
+            // console.log(`It cost ${gasUsed} gas to deploy a proxy.`)
             expect(gasUsed).to.be.gt(300000)
             expect(gasUsed).to.be.lt(350000)
           })
 
-          it('costs around ~3.75M gas to deploy the Pylon', async () => {
+          it('costs around ~4M gas to deploy the Pylon', async () => {
             const gasUsed = (await pylon.deployTransaction.wait()).gasUsed
-            expect(gasUsed).to.be.gt(3500000)
-            expect(gasUsed).to.be.lt(4000000)
+            // console.log(`It cost ${gasUsed} gas to deploy the Pylon.`)
+            expect(gasUsed).to.be.gt(3750000)
+            expect(gasUsed).to.be.lt(4250000)
+          })
+
+          it('costs around ~450k gas to deploy the Factory', async () => {
+            const gasUsed = (await proxyFactory.deployTransaction.wait()).gasUsed
+            // console.log(`It cost ${gasUsed} gas to deploy the Factory.`)
+            expect(gasUsed).to.be.gt(425000)
+            expect(gasUsed).to.be.lt(475000)
           })
 
           describe('#ERC20', async () => {

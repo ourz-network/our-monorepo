@@ -16,7 +16,7 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "pretty": "prettier --write contracts/**/*.sol",
-    "lint": "solhint contracts/**/*.sol",
+    "lint": "solhint ./contracts/*.sol",
     "prepare": "husky install"
   },
   "lint-staged": {

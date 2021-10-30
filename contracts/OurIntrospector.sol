@@ -8,13 +8,19 @@ import "./interfaces/IERC165.sol";
 
 /**
  * @title OurIntrospector
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
+
 contract OurIntrospector is
     ERC1155TokenReceiver,
     ERC777TokensRecipient,

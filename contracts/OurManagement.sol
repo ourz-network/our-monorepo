@@ -3,13 +3,19 @@ pragma solidity 0.8.4;
 
 /**
  * @title OurManagement
- * @author Nick Adamson - nickadamson@pm.me
+ * @author Nick A.
+ * https://github.com/ourz-network/our-contracts
  *
- * Building on the work from:
+ * These contracts enable creators, builders, & collaborators of all kinds
+ * to receive royalties for their collective work, forever.
+ *
+ * Thank you,
  * @author Mirror       @title Splits   https://github.com/mirror-xyz/splits
  * @author Gnosis       @title Safe     https://github.com/gnosis/safe-contracts
- * & of course, @author OpenZeppelin
+ * @author OpenZeppelin                 https://github.com/OpenZeppelin/openzeppelin-contracts
+ * @author Zora                         https://github.com/ourzora
  */
+
 contract OurManagement {
     // used as origin pointer for linked list of owners
     /* solhint-disable private-vars-leading-underscore */
@@ -20,7 +26,7 @@ contract OurManagement {
     uint256 internal threshold;
     /* solhint-enable private-vars-leading-underscore */
 
-    event ProxySetup(address[] owners);
+    event SplitSetup(address[] owners);
     event AddedOwner(address owner);
     event RemovedOwner(address owner);
     event NameChanged(string newName);

@@ -6,7 +6,6 @@ pragma solidity ^0.8.0;
  * @author (s):
  * https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts/token/ERC721
  *
- * @notice Modified for OurMinter.sol
  * @dev Allows Split contract to interact with ERC-721s beyond the Zora Protocol.
  */
 
