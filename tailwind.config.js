@@ -13,7 +13,7 @@ module.exports = {
         '2-wide': '0.2em'
       },
       backgroundImage: (theme) => ({
-        zorb: "url('public/ourZorb.png')",
+        zorb: "url('./ourZorb.png')",
       }),
       screens: {
         "2k": "2560px",
