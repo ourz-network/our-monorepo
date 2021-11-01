@@ -13,10 +13,10 @@ const Cryptomedia = (): JSX.Element => {
           {post.mimeType.startsWith("video") && !videoError ? (
             <video
               onError={() => setVideoError(true)}
-              muted
               autoPlay
-              controls={false}
-              loop
+              muted
+              controls
+              loop={false}
               playsInline
             >
               <source src={post.contentURI} />
