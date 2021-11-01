@@ -19,16 +19,18 @@ export interface NFTCard {
   royalty: string;
 }
 
-const regexIPFS = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
+const reverseRegex = /https:\/\/(?<IPFShash>\w+).ipfs.dweb.link/g;
+const corsRegex = /ipfs:\/\/(?<IPFShash>\w+)/g;
 
 const sanitizeURLs = (URLs: string[]): string[] => {
   const cleanURLs: string[] = [];
 
   URLs.forEach((url) => {
     if (url?.length < 2) cleanURLs.push("error");
-    else if (url.match(regexIPFS)) {
-      // const { IPFShash } = regexIPFS.exec(url).groups;
-      cleanURLs.push(`https://ipfs.io/ipfs/${regexIPFS.exec(url).groups.IPFShash}`);
+    else if (url.match(reverseRegex)) {
+      cleanURLs.push(`https://ipfs.io/ipfs/${reverseRegex.exec(url).groups.IPFShash}`);
+    } else if (url.match(corsRegex)) {
+      cleanURLs.push(`https://ipfs.io/ipfs/${corsRegex.exec(url).groups.IPFShash}`);
     } else if (
       url.includes("ipfs") ||
       url.includes("fleek") ||
@@ -79,8 +81,14 @@ export const formatUniquePost = async (nft: Media | null): Promise<NFTCard | nul
   // }
 
   if (metadata.mimeType.startsWith("text")) {
-    const text: AxiosResponse<string> = await axios.get(nft.contentURI);
-    cleanURLs[0] = text.data;
+    try {
+      const text: AxiosResponse<string> = await axios.get(nft.contentURI);
+      cleanURLs[0] = text.data;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(`Aborted: Error Fetching Text`);
+      return null;
+    }
   }
 
   return {

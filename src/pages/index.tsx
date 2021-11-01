@@ -24,11 +24,11 @@ const Home = ({
     setLoading(true); // Toggle button loading
 
     const idsToSearch = [];
-    // For numPosts ... max(numPosts - 24, 0)
-    for (let i = numPosts; i >= numPosts - 23; i -= 1) {
+    // For numPosts ... max(numPosts - 12, 0)
+    for (let i = numPosts; i >= numPosts - 11; i -= 1) {
       idsToSearch.push(i);
     }
-    setNumPosts(numPosts - 24); // Update number of loadable posts count
+    setNumPosts(numPosts - 12); // Update number of loadable posts count
 
     const newPosts: Media[] = [];
     const completeFetch = await Promise.all(
@@ -114,7 +114,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   if (maxSupply) {
     const ids = [];
-    for (let i = maxSupply; i >= maxSupply - 24; i -= 1) {
+    for (let i = maxSupply; i >= maxSupply - 12; i -= 1) {
       ids.push(i);
     }
 
@@ -129,7 +129,7 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       props: {
         postsToSet: JSON.parse(JSON.stringify(postsToSet)),
-        loadMoreStartIndex: maxSupply - 24,
+        loadMoreStartIndex: maxSupply - 12,
       },
       revalidate: 10,
     };

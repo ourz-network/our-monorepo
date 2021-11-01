@@ -169,7 +169,7 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
   }
 
   // eslint-disable-next-line no-console
-  console.log("Error Displaying Post.\n", post);
+  console.log(`Error Displaying Token #${post.tokenId}`);
   return <></>;
 };
 
