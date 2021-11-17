@@ -30,6 +30,7 @@ import {IERC721} from "./interfaces/IERC721.sol";
  */
 
 contract OurMinter is OurManagement {
+    address public constant WETH = 0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619;
     address public constant ZORA_MEDIA =
         0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7;
     address public constant ZORA_MARKET =
@@ -139,7 +140,7 @@ contract OurMinter is OurManagement {
 
     /** AuctionHouse
      * @notice Create auction on Zora's AuctionHouse for an owned/approved NFT
-     * @dev reccomended auctionCurrency: ETH or WETH
+     * @dev reccomended auctionCurrency: MATIC or WMATIC or WETH
      *      ERC20s may not be split perfectly. If the amount is indivisible
      *      among ALL recipients, the remainder will be sent to a single recipient.
      */
@@ -245,8 +246,8 @@ contract OurMinter is OurManagement {
 
     /** NFT-Editions
      * @param salePrice if sale price is 0 sale is stopped, otherwise that amount
-     *                  of ETH is needed to start the sale.
-     * @dev This sets a simple ETH sales price
+     *                  of MATIC is needed to start the sale.
+     * @dev This sets a simple MATIC sales price
      *      Setting a sales price allows users to mint the edition until it sells out.
      *      For more granular sales, use an external sales contract.
      */
@@ -320,7 +321,7 @@ contract OurMinter is OurManagement {
 
     /** QoL
      * @notice Mints a Zora NFT with this Split as the Creator,
-     * and then list it on AuctionHouse for ETH
+     * and then list it on AuctionHouse for MATIC
      */
     function mintToAuctionForETH(
         IZora.MediaData calldata mediaData,
@@ -351,6 +352,8 @@ contract OurMinter is OurManagement {
      *       the functions below allow a Split to work with any ERC-721 spec'd platform;
      *       (except for minting, @dev 's see untrustedExecuteTransaction() below)
      * @dev see IERC721.sol
+     * @notice To accomodate WETH natively in OurSplitter, the WETH address is blocked by all ERC-20
+     *         related function calls in OurMinter. The ERC-721 spec has the same function signatures as ERC-20.
      */
 
     /**
@@ -363,6 +366,8 @@ contract OurMinter is OurManagement {
         address newOwner_,
         uint256 tokenId_
     ) external onlyOwners {
+        require(tokenContract_ != WETH);
+
         IERC721(tokenContract_).safeTransferFrom(
             address(this),
             newOwner_,
@@ -380,6 +385,8 @@ contract OurMinter is OurManagement {
         address operator_,
         bool approved_
     ) external onlyOwners {
+        require(tokenContract_ != WETH);
+
         IERC721(tokenContract_).setApprovalForAll(operator_, approved_);
     }
 
@@ -392,14 +399,16 @@ contract OurMinter is OurManagement {
         external
         onlyOwners
     {
+        require(tokenContract_ != WETH);
+
         IERC721(tokenContract_).burn(tokenId_);
     }
 
     /** ======== CAUTION =========
      * NOTE: As always, avoid interacting with contracts you do not trust entirely.
      * @dev allows a Split Contract to call (non-payable) functions of any other contract
-     * @notice This function is added for 'future-proofing' capabilities, & to support the use of 
-               custom ERC721 creator contracts.
+     * @notice This function is added for 'future-proofing' capabilities, & to support the use of
+     *         custom ERC721 creator contracts.
      * @notice In the interest of securing the Split's funds for Recipients from a rogue owner,
      *         the msg.value is hardcoded to zero.
      */
@@ -408,6 +417,8 @@ contract OurMinter is OurManagement {
         onlyOwners
         returns (bool success)
     {
+        require(to != WETH);
+
         // solhint-disable-next-line no-inline-assembly
         assembly {
             success := call(gas(), to, 0, add(data, 0x20), mload(data), 0, 0)
