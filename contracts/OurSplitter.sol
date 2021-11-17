@@ -11,7 +11,7 @@ interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
 }
 
-interface IWETH {
+interface IWMATIC {
     function deposit() external payable;
 
     function transfer(address to, uint256 value) external returns (bool);
@@ -40,9 +40,9 @@ contract OurSplitter is OurStorage {
     uint256 public constant PERCENTAGE_SCALE = 10e5;
 
     /**======== Subgraph =========
-     * ETHReceived - emits sender and value in receive() fallback
-     * WindowIncremented - emits current claim window, and available value of ETH
-     * TransferETH - emits to address, value, and success bool
+     * ETHReceived - emits sender and value in receive() fallback - MATIC *
+     * WindowIncremented - emits current claim window, and available value of MATIC
+     * TransferETH - emits to address, value, and success bool - MATIC *
      * TransferERC20 - emits token's contract address and total transferred amount
      */
     event ETHReceived(address indexed sender, uint256 value);
@@ -50,7 +50,7 @@ contract OurSplitter is OurStorage {
     event TransferETH(address account, uint256 amount, bool success);
     event TransferERC20(address token, uint256 amount);
 
-    // Plain ETH transfers
+    // Plain MATIC transfers
     receive() external payable {
         _depositedInWindow += msg.value;
         emit ETHReceived(msg.sender, msg.value);
@@ -213,9 +213,9 @@ contract OurSplitter is OurStorage {
         returns (uint256 scaledAmount)
     {
         /* Example:
-                BalanceForWindow = 100 ETH // Allocation = 2%
+                BalanceForWindow = 100 MATIC // Allocation = 2%
                 To find out the amount we use, for example: (100 * 200) / (100 * 100)
-                which returns 2 -- i.e. 2% of the 100 ETH balance.
+                which returns 2 -- i.e. 2% of the 100 MATIC balance.
          */
         scaledAmount = (amount * scaledPercent) / (100 * PERCENTAGE_SCALE);
     }
@@ -256,20 +256,20 @@ contract OurSplitter is OurStorage {
         _claimed[_getClaimHash(window, account)] = true;
     }
 
-    // Will attempt to transfer ETH, but will transfer WETH instead if it fails.
+    // Will attempt to transfer MATIC, but will transfer WMATIC instead if it fails.
     function _transferETHOrWETH(address to, uint256 value)
         private
         returns (bool didSucceed)
     {
-        // Try to transfer ETH to the given recipient.
+        // Try to transfer MATIC to the given recipient.
         didSucceed = _attemptETHTransfer(to, value);
         if (!didSucceed) {
-            // If the transfer fails, wrap and send as WETH, so that
+            // If the transfer fails, wrap and send as WMATIC, so that
             // the auction is not impeded and the recipient still
-            // can claim ETH via the WETH contract (similar to escrow).
-            IWETH(WETH).deposit{value: value}();
-            IWETH(WETH).transfer(to, value);
-            // At this point, the recipient can unwrap WETH.
+            // can claim MATIC via the WMATIC contract (similar to escrow).
+            IWMATIC(WMATIC).deposit{value: value}();
+            IWMATIC(WMATIC).transfer(to, value);
+            // At this point, the recipient can unwrap WMATIC.
             didSucceed = true;
         }
 
@@ -281,7 +281,7 @@ contract OurSplitter is OurStorage {
         returns (bool)
     {
         // Here increase the gas limit a reasonable amount above the default, and try
-        // to send ETH to the recipient.
+        // to send MATIC to the recipient.
         // NOTE: This might allow the recipient to attempt  a limited reentrancy attack.
         // solhint-disable-next-line avoid-low-level-calls
         (bool success, ) = to.call{value: value, gas: 30000}("");
