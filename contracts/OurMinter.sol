@@ -32,13 +32,13 @@ import {IERC721} from "./interfaces/IERC721.sol";
 contract OurMinter is OurManagement {
     address public constant WETH = 0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619;
     address public constant ZORA_MEDIA =
-        0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7;
+        0x6953190AAfD8f8995e8f47e8F014d0dB83E92300;
     address public constant ZORA_MARKET =
-        0xE5BFAB544ecA83849c53464F85B7164375Bdaac1;
+        0xE20bd7dC76e09AEBC2A9A732AB6AEE616c5a17Eb;
     address public constant ZORA_AH =
-        0xE468cE99444174Bd3bBBEd09209577d25D1ad673;
+        0x48F1C97259Dc7f3900965391651693BaeBfd59A2;
     address public constant ZORA_EDITIONS =
-        0x91A8713155758d410DFAc33a63E193AE3E89F909;
+        0x8879eE595b76B8c5c40580ad42be95E2e3a2e4Bb;
 
     //======== Subgraph =========
     event ZNFTMinted(uint256 tokenId);
