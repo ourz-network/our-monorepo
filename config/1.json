@@ -1,0 +1,6 @@
+{
+  "network": "mainnet",
+  "startBlock": 13465120,
+  "OurFactoryAddress": "0x321e0c06D6F899F732058A6486962E366C161d46",
+  "OurPylonAddress": "0xf2219D832704C50dee7b7d2576c76052Cc21EABB"
+}

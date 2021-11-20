@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: OurFactory
-    network: mainnet
+    network: {{network}}
     source:
       address: "{{OurFactoryAddress}}"
       abi: OurFactory
-      startBlock: 13465120
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -27,9 +27,9 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: OurPylon
-    network: mainnet
+    network: {{network}}
     source:
-      abi: [OurPylon, OurProxy]
+      abi: OurPylon
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
