@@ -1,19 +1,9 @@
 import styled from "@emotion/styled";
-import {
-  AuctionManager,
-  useManageAuction,
-} from "@zoralabs/manage-auction-hooks";
-import {
-  NFTDataContext,
-  NFTPreview,
-  PreviewComponents,
-} from "@zoralabs/nft-components";
-import { FetchStaticData } from "@zoralabs/nft-hooks";
-import {
-  useWalletButton,
-  useWeb3Wallet,
-} from "@zoralabs/simple-wallet-provider";
-import { Fragment, useContext } from "react";
+import { AuctionManager, useManageAuction } from "@zoralabs/manage-auction-hooks";
+import { NFTDataContext, NFTPreview, PreviewComponents } from "@zoralabs/nft-components";
+import { FetchStaticData, MediaFetchAgent } from "@zoralabs/nft-hooks";
+import { useWalletButton, useWeb3Wallet } from "@zoralabs/simple-wallet-provider";
+import { Fragment, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import { APP_TITLE } from "../utils/env-vars";
 import Head from "../components/head";
@@ -83,7 +73,7 @@ const fetchUserNFTs = async (owner) => {
     const tokens = await FetchStaticData.fetchUserOwnedNFTs(
       fetchAgent,
       {
-        collectionAddress: process.env.NEXT_PUBLIC_TARGET_CONTRACT_ADDRESS || "",
+        collectionAddresses: [process.env.NEXT_PUBLIC_TARGET_CONTRACT_ADDRESS || ""],
         userAddress: owner,
         limit: 200,
         offset: 0,

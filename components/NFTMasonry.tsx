@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react"; // React state management
 import { ReserveAuctionPartialFragment } from "@zoralabs/nft-hooks/dist/graph-queries/zora-graph-types";
-import { TokenWithAuctionFragment } from "@zoralabs/nft-hooks/dist/graph-queries/zora-indexer-types";
+import { IndexerTokenWithAuctionFragment } from "@zoralabs/nft-hooks/dist/graph-queries/zora-indexer-types";
 import { useZNFT } from "@zoralabs/nft-hooks";
 
 interface Token {
   nft: {
-    tokenData: TokenWithAuctionFragment;
+    tokenData: IndexerTokenWithAuctionFragment;
     auctionData: ReserveAuctionPartialFragment;
   };
 }
