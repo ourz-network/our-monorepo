@@ -1,10 +1,21 @@
 import styled from "@emotion/styled";
-import { AuctionManager, useManageAuction } from "@zoralabs/manage-auction-hooks";
-import { NFTDataContext, NFTPreview, PreviewComponents } from "@zoralabs/nft-components";
-import { FetchStaticData, MediaFetchAgent } from "@zoralabs/nft-hooks";
-import { useWalletButton, useWeb3Wallet } from "@zoralabs/simple-wallet-provider";
-import { useContext, useEffect, useState } from "react";
-
+import {
+  AuctionManager,
+  useManageAuction,
+} from "@zoralabs/manage-auction-hooks";
+import {
+  NFTDataContext,
+  NFTPreview,
+  PreviewComponents,
+} from "@zoralabs/nft-components";
+import { FetchStaticData } from "@zoralabs/nft-hooks";
+import {
+  useWalletButton,
+  useWeb3Wallet,
+} from "@zoralabs/simple-wallet-provider";
+import { Fragment, useContext } from "react";
+import useSWR from "swr";
+import { APP_TITLE } from "../utils/env-vars";
 import Head from "../components/head";
 import { PageWrapper } from "../styles/components";
 
@@ -193,7 +204,7 @@ export default function List() {
         renderMedia={MediaThumbnailPreview}
         strings={{
           LIST_MEDIA_HEADER: "List your NFT",
-          LIST_MEDIA_DESCRIPTION: `Set the reserve price to list your NFT on ${process.env.NEXT_PUBLIC_APP_TITLE}`,
+          LIST_MEDIA_DESCRIPTION: `Set the reserve price to list your NFT on ${APP_TITLE}`,
         }}
       >
         <ListWrapper>

@@ -2,8 +2,13 @@
 import { useEffect, useState } from "react";
 import { NFTFullPage, MediaConfiguration } from "@zoralabs/nft-components";
 import { useRouter } from "next/router";
-import { MediaFetchAgent, NetworkIDs, FetchStaticData } from "@zoralabs/nft-hooks";
-
+import {
+  MediaFetchAgent,
+  NetworkIDs,
+  FetchStaticData,
+} from "@zoralabs/nft-hooks";
+import { GetServerSideProps } from "next";
+import { NETWORK_ID, APP_TITLE } from './../../../utils/env-vars'
 import { PageWrapper } from "../../../styles/components";
 import Head from "../../../components/head";
 
@@ -14,18 +19,19 @@ const styles = {
   },
 };
 
-const APP_TITLE = process.env.NEXT_PUBLIC_APP_TITLE;
+type PieceProps = {
+  name: string;
+  description: string;
+  image: string;
+  initialData: any;
+};
 
-export default function Piece() {
-  const [loading, setLoading] = useState(true);
-  const [found, setFound] = useState(false);
-  const [meta, setMeta] = useState({
-    name: "",
-    description: "",
-    image: "",
-    initialData: {},
-  });
-
+export default function Piece({
+  name,
+  description,
+  image,
+  initialData,
+}: PieceProps) {
   const { query } = useRouter();
   const { contract, id } = query;
 
@@ -73,7 +79,7 @@ export default function Piece() {
         ogImage={meta?.image || ""}
       />
       <MediaConfiguration
-        networkId={process.env.NEXT_PUBLIC_NETWORK_ID as NetworkIDs}
+        networkId={NETWORK_ID as NetworkIDs}
         style={styles}
       >
         <PageWrapper>
@@ -90,3 +96,35 @@ export default function Piece() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  if (!params?.id || Array.isArray(params.id)) {
+    return { notFound: true };
+  }
+  if (!params?.contract || Array.isArray(params.contract)) {
+    return { notFound: true };
+  }
+
+  const id = params.id as string;
+  const contract = params.contract as string;
+
+  const fetchAgent = new MediaFetchAgent(
+    NETWORK_ID as NetworkIDs
+  );
+  const data = await FetchStaticData.fetchZoraIndexerItem(fetchAgent, {
+    tokenId: id,
+    collectionAddress: contract,
+  });
+
+  const tokenInfo = FetchStaticData.getIndexerServerTokenInfo(data);
+
+  return {
+    props: {
+      id,
+      name: tokenInfo.metadata?.name || null,
+      description: tokenInfo.metadata?.description || null,
+      image: tokenInfo.image || null,
+      initialData: data,
+    },
+  };
+};
