@@ -2,6 +2,12 @@
   "name": "@ourz/our-contracts",
   "description": "## These contracts enable **creators**, **builders**, and **collaborators of all kind** to receive royalties for their collective work, forever",
   "version": "1.0.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/**/*",
+    "./dist/*"
+  ],
   "author": "ourz-network",
   "license": "GPL-3.0-or-later",
   "scripts": {
@@ -10,6 +16,8 @@
     "prepare": "husky install",
     "compile": "hardhat compile",
     "test": "hardhat test",
+    "build": "yarn compile && yarn package",
+    "package": "rm -rf ./dist && tsc && cp typechain/*.d.ts dist/typechain && cp -R addresses dist && cp -R artifacts/contracts dist/artifacts && cp -R contracts dist"
   },
   "dependencies": {
     "@nomiclabs/hardhat-solhint": "^2.0.0",
