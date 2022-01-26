@@ -1,12 +1,11 @@
 {
   "name": "@ourz/our-contracts",
   "description": "## These contracts enable **creators**, **builders**, and **collaborators of all kind** to receive royalties for their collective work, forever",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "./dist/**/*",
-    "./dist/*"
+    "dist"
   ],
   "author": "ourz-network",
   "license": "GPL-3.0-or-later",
