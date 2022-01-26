@@ -1,65 +1,31 @@
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
-import { BytesLike } from '@ethersproject/bytes'
+import { BytesLike } from '@ethersproject/bytes';
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 
 /**
- * Internal type to represent a Decimal Value
+ * Standard Split Recipient Type
  */
-export type DecimalValue = { value: BigNumber }
+export type SplitRecipient = {
+  address: string;
+  name?: string;
+  role?: string;
+  shares: number;
+  allocation: BigNumberish | BytesLike;
+};
 
 /**
- * Zora Media Protocol BidShares
+ * Split Recipient Type for creating a merkle tree
  */
-export type BidShares = {
-  owner: DecimalValue
-  prevOwner: DecimalValue
-  creator: DecimalValue
-}
+export type MerkleSplitRecipient = {
+  account: string;
+  allocation: BigNumber;
+};
 
 /**
- * Zora Media Protocol Ask
+ * Split Recipient Type for user-input form
  */
-export type Ask = {
-  currency: string
-  amount: BigNumberish
-}
-
-/**
- * Zora Media Protocol Bid
- */
-export type Bid = {
-  currency: string
-  amount: BigNumberish
-  bidder: string
-  recipient: string
-  sellOnShare: DecimalValue
-}
-
-/**
- * Zora Media Protocol MediaData
- */
-export type MediaData = {
-  tokenURI: string
-  metadataURI: string
-  contentHash: BytesLike
-  metadataHash: BytesLike
-}
-
-/**
- * EIP712 Signature
- */
-export type EIP712Signature = {
-  deadline: BigNumberish
-  v: number
-  r: BytesLike
-  s: BytesLike
-}
-
-/**
- * EIP712 Domain
- */
-export type EIP712Domain = {
-  name: string
-  version: string
-  chainId: number
-  verifyingContract: string
-}
+export type FormSplitRecipient = {
+  address: string;
+  name?: string;
+  role?: string;
+  shares: number;
+};

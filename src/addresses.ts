@@ -1,20 +1,22 @@
-import rinkebyAddresses from '@zoralabs/core/dist/addresses/4.json'
-import mainnetAddresses from '@zoralabs/core/dist/addresses/1.json'
-import polygonAddresses from '@zoralabs/core/dist/addresses/137.json'
-import polygonMumbaiAddresses from '@zoralabs/core/dist/addresses/80001.json'
+import * as mainnet from '@ourz/our-contracts/dist/addresses/mainnet.json';
+import * as rinkeby from '@ourz/our-contracts/dist/addresses/rinkeby.json';
+import * as polygon from '@ourz/our-contracts/dist/addresses/polygon.json';
 
 interface AddressBook {
   [key: string]: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }
 
+const Mainnet = mainnet.Contracts;
+const Rinkeby = rinkeby.Contracts;
+const Polygon = polygon.Contracts;
+
 /**
- * Mapping from Network to Officially Deployed Instances of the Zora Media Protocol
+ * Mapping from Network to Officially Deployed Instances of Ourz Contracts
  */
 export const addresses: AddressBook = {
-  rinkeby: rinkebyAddresses,
-  mainnet: mainnetAddresses,
-  polygon: polygonAddresses,
-  polygonMumbai: polygonMumbaiAddresses,
-}
+  mainnet: { ...Mainnet, EditionFactory: '0xEf7a8fF7FC585FA1Fe3062455B628bfC657e2cD5' },
+  rinkeby: { ...Rinkeby, EditionFactory: '0x38d43BedE3Aac0262FcA248C7fCA10cec35e3bCf' },
+  polygon: { ...Polygon, EditionFactory: '0x8879eE595b76B8c5c40580ad42be95E2e3a2e4Bb' },
+};

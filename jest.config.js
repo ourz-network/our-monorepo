@@ -8,9 +8,9 @@ module.exports = {
     '**/*.{ts,tsx,js,jsx}',
     '!**/node_modules/**',
     '!**/dist/**',
-    '!**/vendor/**'
+    '!**/vendor/**',
   ],
   coverageReporters: ['json-summary'],
   coverageDirectory: 'coverage',
-  runner: 'jest-serial-runner'
-}
+  runner: 'jest-serial-runner',
+};
