@@ -2,9 +2,9 @@
 pragma solidity 0.8.4;
 pragma experimental ABIEncoderV2;
 
-import {OurManagement} from "./OurManagement.sol";
-import {IZora} from "./interfaces/IZora.sol";
-import {IERC721} from "./interfaces/IERC721.sol";
+import {OurManagement} from "../OurManagement.sol";
+import {IZora} from "../interfaces/IZora.sol";
+import {IERC721} from "../interfaces/IERC721.sol";
 
 /**
  * @title OurMinter
