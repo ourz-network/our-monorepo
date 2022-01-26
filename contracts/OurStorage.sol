@@ -21,7 +21,7 @@ contract OurStorage {
     uint256 public currentWindow;
 
     address internal _pylon;
-    address public constant WMATIC = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
+    address public constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
     uint256[] public balanceForWindow;
     mapping(bytes32 => bool) internal _claimed;
