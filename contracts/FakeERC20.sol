@@ -1,3 +1,5 @@
+// solhint-disable
+
 // SPDX-License-Identifier: GPL-3.0
 
 // FOR TEST PURPOSES ONLY. NOT PRODUCTION SAFE
