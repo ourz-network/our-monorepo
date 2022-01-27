@@ -2,10 +2,15 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "commonjs",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "declaration": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "strict": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "typeRoots": ["./typechain", "./node_modules/@types"],
     "types": ["@nomiclabs/hardhat-ethers", "@nomiclabs/hardhat-waffle"]
   },

@@ -1,7 +1,7 @@
 {
   "name": "@ourz/our-contracts",
   "description": "## These contracts enable **creators**, **builders**, and **collaborators of all kind** to receive royalties for their collective work, forever",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -13,10 +13,11 @@
     "pretty": "prettier --write contracts/**/*.sol",
     "lint": "solhint ./contracts/*.sol",
     "prepare": "husky install",
-    "compile": "hardhat compile",
+    "compile": "hardhat clean && hardhat compile",
     "test": "hardhat test",
     "build": "yarn compile && yarn package",
-    "package": "rm -rf ./dist && tsc && cp typechain/*.d.ts dist/typechain && cp -R addresses dist && cp -R artifacts/contracts dist/artifacts && cp -R contracts dist"
+    "package": "rm -rf ./dist && tsc && cp typechain/*.d.ts dist/typechain && cp -R addresses dist && cp -R artifacts/contracts dist/artifacts && cp -R contracts dist",
+    "prepublish": "yarn pretty && yarn lint && yarn build"
   },
   "dependencies": {
     "@nomiclabs/hardhat-solhint": "^2.0.0",
@@ -59,10 +60,6 @@
   "lint-staged": {
     "*.{ts,js,css,md,sol}": "prettier --write",
     "*.sol": "solhint"
-  },
-  "directories": {
-    "lib": "lib",
-    "test": "test"
   },
   "repository": {
     "type": "git",
