@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { cache } from 'swr';
 
-import { Networks, NFTFetchConfiguration, useENSAddress} from '../src';
+import { Networks, OurFetchConfiguration, useENSAddress } from '../src';
 
 describe('useENSAddress', () => {
   beforeEach(() => {
@@ -10,42 +10,42 @@ describe('useENSAddress', () => {
 
   it('loads an ens correctly on mainnet', async () => {
     const NetworkWrapper = ({ children }: any) => (
-      <NFTFetchConfiguration networkId={Networks.RINKEBY}>
+      <OurFetchConfiguration networkId={Networks.MAINNET}>
         {children}
-      </NFTFetchConfiguration>
+      </OurFetchConfiguration>
     );
     const { waitFor, result } = renderHook(
-      () => useENSAddress('0x9444390c01Dd5b7249E53FAc31290F7dFF53450D'),
+      () => useENSAddress('0x11CDfCb54576D5990219c426BF2c630115a2012a'),
       { wrapper: NetworkWrapper }
     );
 
-    await waitFor(() => !!result.current.data);
+    await waitFor(() => !!result.current.data, { timeout: 5000 });
     expect(result.current.error).toEqual(undefined);
-    expect(result.current.data).toEqual('iain.eth');
+    expect(result.current.data).toEqual('ourz.eth');
   });
 
   it('loads an ens batch correctly', async () => {
     const NetworkWrapper = ({ children }: any) => (
-      <NFTFetchConfiguration networkId={Networks.MAINNET}>
+      <OurFetchConfiguration networkId={Networks.MAINNET}>
         {children}
-      </NFTFetchConfiguration>
+      </OurFetchConfiguration>
     );
 
     const { waitFor, result } = renderHook(
       () => [
-        useENSAddress('0x660F6D6c9BCD08b86B50e8e53B537F2B40f243Bd'),
-        useENSAddress('0x18C8dF1fb7FB44549F90d1C2BB1DC8b690CD0559'),
+        useENSAddress('0x11CDfCb54576D5990219c426BF2c630115a2012a'),
+        useENSAddress('0xf97752a24D83478acA43B04EF7b28789e1D7EEda'),
         // invalid address
         useENSAddress('0x00000000000749f3Ba62f30374Be55841a8c7146'),
       ],
       { wrapper: NetworkWrapper }
     );
 
-    await waitFor(() => !!result.current[2].error);
+    await waitFor(() => !!result.current[2].error, { timeout: 5000 });
 
     expect(result.current[0].error).toBeUndefined();
-    expect(result.current[0].data).toEqual('fwb.eth');
-    expect(result.current[1].data).toEqual('isiain.eth');
+    expect(result.current[0].data).toEqual('ourz.eth');
+    expect(result.current[1].data).toEqual('nickadamson.eth');
     expect(result.current[2].data).toEqual(undefined);
     expect(result.current[2].error).toMatchInlineSnapshot(`[Error: Not found]`);
   });

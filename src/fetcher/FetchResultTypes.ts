@@ -1,95 +1,142 @@
-import { TokenShortFragment } from '../graph-queries/uniswap-types';
-import {
-  ReserveAuctionPartialFragment,
-} from '../graph-queries/zora-graph-types';
-import {
-  CurrentReserveBid,
-  PastReserveBid,
-} from './AuctionInfoTypes';
+export type SplitShort = {
+  id: string;
+  nickname: string;
+  owners: {
+    id: string;
+  }[];
+  creator: {
+    id: string;
+  };
+  recipients: {
+    id: string;
+  }[];
+  creations: {
+    id: string;
+  }[];
+  editions: {
+    id: string;
+  }[];
+  ETH: BigInt;
+  needsIncremented: boolean;
+};
 
-export type MediaContentType =
-  | { uri: string; type: 'uri'; mimeType: string }
-  | { text: string; type: 'text'; mimeType: string };
+export type SplitDetails = {
+  id: string;
+  nickname: string;
+  owners: UserShort[];
+  creator: UserShort;
+  recipients: RecipientShort[];
+  creations: ZNFTShort[];
+  editions: EditionShort[];
+  ETH: BigInt;
+  needsIncremented: boolean;
+  ERC20Transfers: TransferShort[];
+  transactionHash: string;
+  createdAtTimestamp: BigInt;
+  createdAtBlockNumber: BigInt;
+};
 
-export type FetchGroupTypes = 'id' | 'creator' | 'owner';
+export type UserShort = {
+  id: string;
+  createdSplits: {
+    id: string;
+  }[];
+  ownedSplits: {
+    id: string;
+  }[];
+  recipientInfo: {
+    id: string;
+  }[];
+  claimedETH: BigInt;
+};
 
-export type ZoraFetchQueryType = 'creator' | 'owner' | 'creator' | 'collection';
+export type UserDetails = {
+  id: string;
+  createdSplits: SplitShort[];
+  ownedSplits: SplitShort[];
+  recipientInfo: RecipientShort[];
+  claimedETH: BigInt;
+};
 
-type MetadataIsh = {
-  mimeType: string;
+export type EditionShort = {
+  id: string;
+  creator: {
+    id: string;
+  };
   name: string;
+  symbol: string;
   description: string;
-
-  // Only used for non-zora NFTs
-  animation_url?: string;
-  image?: string;
+  imageUrl: string;
+  animationUrl: string;
+  editionSize: BigInt;
 };
 
-export type MetadataResultType = {
-  metadata: MetadataIsh;
-};
-
-export type AuctionResultType = ReserveAuctionPartialFragment;
-export type AuctionsResult = AuctionResultType[];
-
-export type UsernameResponseType = {
-  address: string,
-  bio?: string,
-  name?: string,
-  username?: string,
-  verified?: boolean,
-  website?: string,
-};
-
-export enum KNOWN_CONTRACTS {
-  ZORA = 'zora',
-};
-
-type ETHAddress = string;
-
-export type NFTResultType = {
-  tokenId: string,
-  contract: {
-    address: string;
-    knownContract?: KNOWN_CONTRACTS;
-    name?: string;
-    symbol?: string;
-    image?: string;
-  },
-  owner: ETHAddress;
-  creator?: ETHAddress;
-  metadataURI: string;
-};
-
-export type GenericNFTResponseType = {
-  metadata: MetadataIsh
-}
-
-export type ZoraMedia = {
-  metadataHash: string;
-  contentURI: string;
-  contentHash?: string;
-  creatorSharePercentage: number;
-  creatorBidShare: string;
-  createdAtTimestamp: string;
-};
-
-export type ReserveAuctionBidsWithCurrency = Omit<
-  ReserveAuctionPartialFragment,
-  'previousBids' | 'currentBid' | 'reservePrice'
-> & {
-  previousBids: PastReserveBid[];
-  currentBid?: CurrentReserveBid;
-};
-
-export type ZoraUsernameFetchResult = {
+export type EditionDetails = {
+  id: string;
+  creator: SplitShort;
   name: string;
-  profileImageURL: string;
-  username: string;
-  verified: string;
+  symbol: string;
+  description: string;
+  imageUrl: string;
+  animationUrl: string;
+  editionSize: BigInt;
+  royaltyBPS: BigInt;
 };
 
-export type ChainCurrencyType = {
-  ethToUsd: string;
-  token: TokenShortFragment;
+export type ZNFTShort = {
+  id: string;
+  creator: {
+    id: string;
+  };
+};
+
+export type ZNFTDetails = {
+  id: string;
+  creator: SplitShort;
+  transactionHash: string;
+};
+
+export type RecipientShort = {
+  id: string;
+  name: string;
+  role: string;
+  shares: string;
+  allocation: string;
+  claimableETH: BigInt;
+  claimedETH: BigInt;
+};
+
+export type RecipientDetails = {
+  id: string;
+  user: UserShort;
+  split: SplitShort;
+  name: string;
+  role: string;
+  shares: string;
+  allocation: string;
+  claimableETH: BigInt;
+  claimedETH: BigInt;
+};
+
+export type TransferShort = {
+  id: string;
+  contract: string;
+  amount: BigInt;
+};
+export type TransferDetails = {
+  id: string;
+  split: SplitShort;
+  transactionHash: string;
+  contract: string;
+  amount: BigInt;
+};
+
+export type GetSplitQueryResult = {
+  data: { splits: SplitDetails[] };
+};
+export type GetUserQueryResult = {
+  data: { users: UserDetails[] };
+};
+export type GetEditionQueryResult = {
+  data: { editions: EditionDetails[] };
 };

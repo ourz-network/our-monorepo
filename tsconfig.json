@@ -1,7 +1,9 @@
 {
+  "include": ["src", "graph-schemas"],
+  "exclude": ["node_modules", "tests"],
   "compilerOptions": {
     "strict": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "target": "es2018",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -24,6 +26,5 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true
-  },
-  "include": ["src", "graph-schemas"]
+  }
 }
