@@ -5,15 +5,13 @@ import { reverseResolveEnsAddresses } from './EnsReverseFetcher';
 import type { NetworkIDs } from '../constants/networks';
 import { GET_SPLITS, GET_USERS, GET_EDITIONS } from '../graph-queries/ourz-graph';
 import { TimeoutsLookupType, DEFAULT_NETWORK_TIMEOUTS_MS } from '../constants/timeouts';
-import {
-  GetSplitQueryResult,
-  GetUserQueryResult,
-  GetEditionQueryResult,
-  EditionDetails,
-  UserDetails,
-  SplitDetails,
-} from './FetchResultTypes';
+import { EditionDetails, UserDetails, SplitDetails } from './FetchResultTypes';
 import { FetchWithTimeout } from './FetchWithTimeout';
+import {
+  GetSplitsByUsersQuery,
+  GetEditionsByAddressesQuery,
+  GetSplitsByAddressesQuery,
+} from 'src/graph-queries/ourz-graph-types';
 
 /**
  * Internal agent for Our-Hooks to fetch from the OURZ Subgraph.
@@ -69,8 +67,8 @@ export class OurFetchAgent {
     });
     const response = (await client.request(GET_SPLITS, {
       addresses: splitAddresses.map((addr) => addr.toLowerCase()),
-    })) as GetSplitQueryResult;
-    return response.data.splits;
+    })) as GetSplitsByAddressesQuery;
+    return response.splits;
   }
 
   async fetchUserGraph(userAddresses: readonly string[]) {
@@ -80,8 +78,8 @@ export class OurFetchAgent {
     });
     const response = (await client.request(GET_USERS, {
       addresses: userAddresses.map((addr) => addr.toLowerCase()),
-    })) as GetUserQueryResult;
-    return response.data.users;
+    })) as GetSplitsByUsersQuery;
+    return response.users;
   }
 
   async fetchEditionGraph(editionAddresses: readonly string[]) {
@@ -91,8 +89,8 @@ export class OurFetchAgent {
     });
     const response = (await client.request(GET_EDITIONS, {
       addresses: editionAddresses.map((addr) => addr.toLowerCase()),
-    })) as GetEditionQueryResult;
-    return response.data.editions;
+    })) as GetEditionsByAddressesQuery;
+    return response.splitEditions;
   }
 
   async loadEnsBatch(addresses: readonly string[]) {

@@ -1,0 +1,9 @@
+{
+  "generates": {
+    "./src/graph-queries/ourz-graph-types.ts": {
+      "schema": "./graph-schemas/ourz-graph.graphql",
+      "documents": "./src/graph-queries/ourz-graph.ts",
+      "plugins": ["typescript", "typescript-operations"]
+    }
+  }
+}

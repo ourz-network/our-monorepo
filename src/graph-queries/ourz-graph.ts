@@ -182,7 +182,7 @@ export const GET_SPLITS = gql`
   ${RECIPIENT_PARTIALS}
   ${SPLIT_PARTIALS}
 
-  query getSplitsByAddresses($addresses: [String!]) {
+  query getSplitsByAddresses($addresses: [ID!]) {
     splits(where: { id_in: $addresses }) {
       ...SplitDetails
     }
@@ -197,7 +197,7 @@ export const GET_USERS = gql`
   ${RECIPIENT_PARTIALS}
   ${SPLIT_PARTIALS}
 
-  query getSplitsByUsers($addresses: [String!]) {
+  query getSplitsByUsers($addresses: [ID!]) {
     users(where: { id_in: $addresses }) {
       ...UserDetails
     }
@@ -211,7 +211,7 @@ export const GET_EDITIONS = gql`
   ${RECIPIENT_PARTIALS}
   ${SPLIT_PARTIALS}
 
-  query getEditionsByAddresses($addresses: [String!]) {
+  query getEditionsByAddresses($addresses: [ID!]) {
     splitEditions(where: { id_in: $addresses }) {
       ...EditionDetails
     }
