@@ -1,6 +1,6 @@
 {
   "include": ["src", "graph-schemas"],
-  "exclude": ["node_modules", "tests"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "strict": true,
     "outDir": "dist",

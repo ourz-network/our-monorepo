@@ -97,6 +97,12 @@ const USER_PARTIALS = gql`
 const RECIPIENT_PARTIALS = gql`
   fragment RecipientShort on Recipient {
     id
+    split {
+      nickname
+      recipients {
+        id
+      }
+    }
     name
     role
     shares

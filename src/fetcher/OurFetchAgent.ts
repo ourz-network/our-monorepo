@@ -11,7 +11,7 @@ import {
   GetSplitsByUsersQuery,
   GetEditionsByAddressesQuery,
   GetSplitsByAddressesQuery,
-} from 'src/graph-queries/ourz-graph-types';
+} from '../graph-queries/ourz-graph-types';
 
 /**
  * Internal agent for Our-Hooks to fetch from the OURZ Subgraph.
@@ -60,7 +60,20 @@ export class OurFetchAgent {
     Object.values(this.loaders).forEach((loader) => loader.clearAll());
   }
 
-  async fetchSplitGraph(splitAddresses: readonly string[]) {
+  async loadSplit(splitAddress: string) {
+    const splitInfo = await this.loaders.splitLoader.load(splitAddress);
+    return splitInfo;
+  }
+  async loadUser(userAddress: string) {
+    const userInfo = await this.loaders.userLoader.load(userAddress);
+    return userInfo;
+  }
+  async loadEdition(editionAddress: string) {
+    const editionInfo = await this.loaders.editionLoader.load(editionAddress);
+    return editionInfo;
+  }
+
+  private async fetchSplitGraph(splitAddresses: readonly string[]) {
     const fetchWithTimeout = new FetchWithTimeout(this.timeouts.Graph);
     const client = new GraphQLClient(OURZ_GRAPH_API_URL_BY_NETWORK[this.networkId], {
       fetch: fetchWithTimeout.fetch,
@@ -71,7 +84,7 @@ export class OurFetchAgent {
     return response.splits;
   }
 
-  async fetchUserGraph(userAddresses: readonly string[]) {
+  private async fetchUserGraph(userAddresses: readonly string[]) {
     const fetchWithTimeout = new FetchWithTimeout(this.timeouts.Graph);
     const client = new GraphQLClient(OURZ_GRAPH_API_URL_BY_NETWORK[this.networkId], {
       fetch: fetchWithTimeout.fetch,
@@ -82,7 +95,7 @@ export class OurFetchAgent {
     return response.users;
   }
 
-  async fetchEditionGraph(editionAddresses: readonly string[]) {
+  private async fetchEditionGraph(editionAddresses: readonly string[]) {
     const fetchWithTimeout = new FetchWithTimeout(this.timeouts.Graph);
     const client = new GraphQLClient(OURZ_GRAPH_API_URL_BY_NETWORK[this.networkId], {
       fetch: fetchWithTimeout.fetch,

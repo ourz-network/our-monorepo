@@ -1,23 +1,23 @@
-import { useUsers, useUsersType } from './hooks/useUsers';
-import { useSplits, useSplitsType } from './hooks/useSplits';
+import { useUser, useUserType } from './hooks/useUser';
+import { useSplit, useSplitType } from './hooks/useSplit';
 import { Networks, NetworkIDs } from './constants/networks';
 import { useENSAddress } from './hooks/useENSAddress';
 import { OurFetchConfiguration } from './context/OurFetchContext';
 import { OurFetchAgent } from './fetcher/OurFetchAgent';
 import { RequestError } from './fetcher/RequestError';
-import { useEditions, useEditionsType } from './hooks/useEditions';
+import { useEdition, useEditionType } from './hooks/useEdition';
 
 export {
   // Hooks
-  useSplits,
-  useUsers,
-  useEditions,
+  useSplit,
+  useUser,
+  useEdition,
   // Wrapped by useNFT, can use the underlying hooks here
   useENSAddress,
   // Hook types
-  useSplitsType,
-  useUsersType,
-  useEditionsType,
+  useSplitType,
+  useUserType,
+  useEditionType,
   // Configuration
   OurFetchConfiguration,
   // Fetch Agent underlying helper
