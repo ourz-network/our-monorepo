@@ -3,15 +3,56 @@ import * as mixins from "./mixins";
 
 export const mediaConfigurationStyles = {
   theme: {
-    /*
-    lineSpacing: 20,
-    linkColor: 'var(--black)',
-    borderStyle: '1px solid var(--black)',
+    bodyFont: `
+      font-family: var(--font-family);
+      color: var(--font-color);
+    `,
+    titleFont: `
+      font-family: var(--font-family);
+      color: var(--font-color);
+    `,
+    headerFont: `
+      font-family: var(--font-family);
+      color: var(--font-color);
+    `,
     defaultBorderRadius: 0,
-    maximumPricingDecimals: 2,
-    */
+    borderStyle: "3px solid var(--colors-accent);",
+    previewCard: {
+      background: "var(--colors-backgroundSecondary);",
+    },
+    linkColor: "var(--font-color)",
   },
   styles: {
+    cardAuctionPricing: (theme, { type }) => {
+      // eslint-disable-next-line consistent-return
+      const getActiveStyle = () => {
+        // eslint-disable-next-line default-case
+        switch (type) {
+          case "reserve-active":
+            return `
+                      background: var(--colors-accent);
+                      color: var(--font-color);
+                      `;
+          case "reserve-pending":
+            return `
+                        background: var(--colors-backgroundTertiary); 
+                        `;
+          case "unknown":
+            return ``;
+          case "perpetual":
+            return ``;
+        }
+      };
+      return css`
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-rows: auto auto;
+        grid-auto-columns: 1fr;
+        padding: ${theme.textBlockPadding};
+        border-top: ${theme.borderStyle};
+        ${getActiveStyle()};
+      `;
+    },
     /*
     fullMediaWrapper: () => css`
       margin: 0;
@@ -72,7 +113,7 @@ export const mediaConfigurationStyles = {
     `,
     fullLabel: () => css`
       color: var(--black);
-      font-family: var(--font-b)!important;
+      font-family: var(--mono)!important;
       text-transform: uppercase;
       font-size: var(--text-03);
     `,
@@ -97,14 +138,14 @@ export const mediaConfigurationStyles = {
     `,
     fullPageHistoryItemMeta: () => css`
       padding-top: 10px;
-    `,
+    `, 
     fullProofLink: () => css`
-      ${mixins.buttonStyle};
+      color: var(--font-color);
       display: inline-block;
       padding: var(--base-unit);
       margin-bottom: var(--space-sm);
       font-size: var(--text-02);
-    `,
+    ` ,
     fullPageHistoryItem: () => css`
       margin: 0;
       padding: 0 0 5px;

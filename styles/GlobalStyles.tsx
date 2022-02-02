@@ -1,8 +1,14 @@
 import { Global, css } from "@emotion/react";
+import "@fontsource/source-serif-4/variable-full.css";
 import { media, buttonStyle } from "./mixins";
 import { returnBreakpoint } from "./breakpoints";
+import { useContext, useEffect, useState } from "react";
+import { SubdomainContext } from "../context/SubdomainContext";
 
 export default function GlobalStyles() {
+  const { userConfig } = useContext(SubdomainContext);
+  const { fontFamily } = userConfig;
+
   return (
     <Global
       styles={css`
@@ -10,15 +16,26 @@ export default function GlobalStyles() {
           /* COLORS */
           --black: #000;
           --white: #fff;
-          --bg-color: #f6f8fa;
+          --border-color: var(--colors-accent);
+          --font-color: var(--colors-textPrimary);
+          --font-family: var(--${fontFamily ?? `sans`});
           --overlay: rgba(0, 0, 0, 0.85);
           --overlay-light: rgba(0, 0, 0, 0.35);
           --border-black: 1px solid var(--black);
           --border-light: 1px solid #dbdbdb;
 
           /* FONTS */
-          --font-a: Helvetica, Arial, sans-serif;
-          --font-b: Courier, monospace;
+          /* --font-a: Helvetica, Arial, sans-serif; */
+
+          --serif: "Didot", "Source Serif 4", serif;
+          --sans: "Neue Helvetica", "Neue-Helvetica", "Helvetica", "Inter", "Arial", sans-serif;
+          --mono: Courier, monospace;
+          --font-stretch-normal: normal;
+          --font-stretch-condensed: condensed;
+          --font-weight-bold: bold;
+          --font-weight-regular: normal;
+          --font-weight-condensed: 500;
+          --font-weight-light: 300;
 
           /* SPACING */
           --base-unit: 8px;
@@ -59,11 +76,21 @@ export default function GlobalStyles() {
 
         /* DEFAULTS */
         /* LAYOUT */
-        body * {
-          font-family: var(--font-a) !important;
+        body {
+          font-family: var(--font-family);
+          overflow-y: scroll;
+          ::-webkit-scrollbar {
+            width: 0; /* Remove scrollbar space */
+            background: transparent; /* Optional: just make scrollbar invisible */
+          }
+          /* Optional: show position indicator in red */
+          ::-webkit-scrollbar-thumb {
+            background: #ff0000;
+          }
         }
 
         main {
+          /* background-color: var(--bg-color); */
           width: 100%;
           overflow-x: hidden;
           position: relative;
@@ -72,15 +99,23 @@ export default function GlobalStyles() {
 
         header,
         footer {
+          font-family: var(--font-family) !important;
+          text-transform: uppercase;
+          background-color: var(--colors-background);
           font-size: var(--text-02);
           width: 100%;
           display: flex;
+          flex-direction: column;
           justify-content: space-between;
           align-items: center;
           padding: 0 var(--space-md);
+          ${media.tablet`
+            flex-direction: row;
+          `}
           a {
             text-decoration: none;
-            color: var(--black);
+            text-align: center;
+            color: var(--font-color);
             &.active {
               text-decoration: underline;
             }
@@ -97,17 +132,20 @@ export default function GlobalStyles() {
         h4,
         h5,
         h6 {
+          color: var(--font-color);
+          font-family: var(--font-family);
           font-weight: 500;
         }
         h1 {
           font-size: var(--text-05);
           line-height: 1;
           text-align: center;
-          padding: var(--space-md) 0 var(--space-lg);
+          padding: var(--space-md) 0 var(--space-sm);
         }
         h2 {
           font-size: var(--text-03);
-          padding: var(--space-sm) 0;
+          text-align: center;
+          padding: var(--space-sm) 0 var(--space-md);
         }
         h3 {
           font-size: var(--text-03);
@@ -126,8 +164,89 @@ export default function GlobalStyles() {
         }
 
         /* CUSTOM */
-        .button {
-          ${buttonStyle};
+
+        .center-x {
+          ${media.tablet`
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+          `}
+        }
+
+        .modal {
+          ::-webkit-scrollbar {
+            width: 0; /* Remove scrollbar space */
+            background: transparent; /* Optional: just make scrollbar invisible */
+          }
+          /* Optional: show position indicator in red */
+          ::-webkit-scrollbar-thumb {
+            background: #ff0000;
+          }
+          overflow-y: scroll;
+          position: fixed;
+          z-index: 1;
+          padding-top: 100px;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgb(0, 0, 0);
+          background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+          display: flex;
+          z-index: 2;
+          flex-direction: column;
+          background-color: var(--colors-background);
+          color: var(--colors-textPrimary);
+          margin: 5% auto;
+          padding: 20px;
+          border: 3px solid var(--colors-accent);
+          border-radius: var(--base-unit);
+          width: 80%;
+        }
+
+        .form {
+          display: grid;
+          grid-auto-flow: row;
+          grid-auto-rows: max-content;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          height: full;
+          width: auto;
+          max-width: full;
+          justify: center;
+        }
+        .form-item {
+          display: flex;
+          flex-direction: column;
+          border: 1px solid #000;
+          align-items: center;
+          padding: var(--space-sm);
+          margin: var(--base-unit);
+        }
+        .form-item label {
+          font-style: italic;
+          margin-bottom: var(--base-unit);
+        }
+        .form-item input {
+          margin: 10px;
+          width: min-content;
+        }
+        .svg {
+          height: var(--space-md);
+          width: var(--space-md);
+          ${media.hover`
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+          `}
+        }
+        .icon {
+          transform: translateY(1px);
+          position: relative;
+          display: block;
+          text-align: center;
+          border: none;
         }
 
         /* ZORA SPECIFIC -- CLEAN UP

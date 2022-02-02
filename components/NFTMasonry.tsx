@@ -40,7 +40,7 @@ const NFTMasonry = ({
       }
       if (json !== metadata?.json) {
         setJSON(metadata.json);
-        console.log(json?.mimeType);
+        // console.log(json?.mimeType);
       }
     }
     setState();
@@ -48,7 +48,7 @@ const NFTMasonry = ({
   }, [media, metadata]);
 
   const zNFTData = useZNFT(`${tokenInfo.tokenId}`);
-  console.log(zNFTData);
+  // console.log(zNFTData);
 
   /**       ---  Dual-axis Masonry Layout  ---
    * For Landing Page: hide posts until they are loaded
@@ -64,11 +64,11 @@ const NFTMasonry = ({
 
     if (loadedMedia.target.naturalWidth) {
       // Photo
-      console.log("RATIO-PHOTO: ", loadedMedia);
+      // console.log("RATIO-PHOTO: ", loadedMedia);
       width = loadedMedia.target.naturalWidth;
       height = loadedMedia.target.naturalHeight;
       ratio = width / height;
-      console.log(width, height, ratio);
+      // console.log(width, height, ratio);
     } else if (loadedMedia.target.videoWidth) {
       // Video
       // console.log("RATIO-VIDEO ", loadedMedia);
@@ -152,7 +152,7 @@ const NFTMasonry = ({
   }
 
   if (json?.mimeType?.includes("video")) {
-    console.log("VIDEO", tokenInfo.tokenId);
+    // console.log("VIDEO", tokenInfo.tokenId);
     const child = (
       <div className="flex flex-col w-full max-w-lg h-full cursor-pointer xl:h-full">
         <div className="object-cover relative w-full h-full bg-transparent">

@@ -4,15 +4,12 @@ import parse from "remark-parse";
 import remark2react from "remark-react";
 
 type MarkdownWrapperProps = {
-  // eslint-disable-next-line react/require-default-props
   markdown?: string;
-  // eslint-disable-next-line react/require-default-props
   styleOverrides?: any;
 };
 
 export default function MarkdownWrapper({ markdown, styleOverrides }: MarkdownWrapperProps) {
   return (
-    // eslint-disable-next-line react/jsx-filename-extension
     <article
       css={[
         css`

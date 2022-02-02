@@ -1,5 +1,4 @@
 import { FetchStaticData, MediaFetchAgent } from "@zoralabs/nft-hooks";
-import { NETWORK_ID, CONTRACT_ADDRESSES } from './../../utils/env-vars'
 
 module.exports = async (req: any, res: any) => {
   const { owner } = req.query;
@@ -7,9 +6,7 @@ module.exports = async (req: any, res: any) => {
     return res.status(403).json({ failed: true });
   }
 
-  const fetchAgent = new MediaFetchAgent(
-    NETWORK_ID as any
-  );
+  const fetchAgent = new MediaFetchAgent(NETWORK_ID as any);
 
   const tokens = await FetchStaticData.fetchUserOwnedNFTs(
     fetchAgent,

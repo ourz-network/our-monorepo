@@ -61,32 +61,31 @@ export const absoluteFullCentered = css`
   ${absoluteCentered};
 `;
 
-export const buttonInit = css`
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  -webkit-appearance: none;
-  border: 0;
-  background-color: rgba(255, 255, 255, 0);
-  text-decoration: none;
-  cursor: pointer;
-`;
+// export const buttonInit = css`
+//   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+//   -webkit-appearance: none;
+//   border: 0;
+//   background-color: rgba(255, 255, 255, 0);
+//   text-decoration: none;
+//   cursor: pointer;
+//   font-family: inherit;
+//   text-transform: inherit;
+// `;
 
-export const buttonStyle = css`
-  ${buttonInit};
-  border: var(--border-black);
-  color: var(--white);
-  background-color: var(--black);
-  margin: 0 auto;
-  position: relative;
-  display: block;
-  padding: var(--base-unit) var(--space-md);
-  font-size: var(--text-01);
-  border-radius: 50rem;
-  text-align: center;
-  ${media.hover`
-    background-color: var(--black);
-    color: var(--white);
-  `}
-`;
+// export const buttonStyle = css`
+//   ${buttonInit};
+//   margin: var(--base-unit);
+//   position: relative;
+//   display: block;
+//   padding: var(--base-unit) var(--space-md);
+//   font-size: inherit;
+//   text-align: center;
+//   color: var(--font-color);
+//   font-size: var(--text-01);
+//   border: var(--border-color);
+//   background-color: var(--border-color);
+//   border-radius: 50rem;
+// `;
 
 export const pixelScaleImage = css`
   image-rendering: pixelated;

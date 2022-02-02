@@ -4,7 +4,7 @@ import readMe from "../README.md";
 import Markdown from "../components/Markdown";
 import { PageWrapper } from "../styles/components";
 
-export default function About() {
+const About = () => {
   return (
     <>
       <Head title="About" />
@@ -13,4 +13,6 @@ export default function About() {
       </PageWrapper>
     </>
   );
-}
+};
+
+export default About;

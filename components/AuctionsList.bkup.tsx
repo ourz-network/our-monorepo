@@ -1,23 +1,34 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FetchStaticData, MediaFetchAgent, NetworkIDs } from "@zoralabs/nft-hooks";
 import NFTMasonry from "./NFTMasonry";
+import { SubdomainContext } from "../context/SubdomainContext";
 
-export const AuctionsList = () => {
+export const NFTList = () => {
   const [loading, setLoading] = useState(true);
   const [tokens, setTokens] = useState([]);
   const router = useRouter();
-
-  const fetchAgent = new MediaFetchAgent(process.env.NEXT_PUBLIC_NETWORK_ID as NetworkIDs);
+  const { userConfig } = useContext(SubdomainContext);
+  const fetchAgent = new MediaFetchAgent(userConfig?.networkId ?? 1);
 
   useEffect(() => {
     async function getTokens() {
       try {
-        const res = await FetchStaticData.fetchZoraIndexerList(fetchAgent, {
-          curatorAddress: process.env.NEXT_PUBLIC_CURATORS_ID as string,
-          collectionAddresses: [process.env.NEXT_PUBLIC_TARGET_CONTRACT_ADDRESS as string],
-          limit: 25,
-          offset: 75,
+        // const res = await FetchStaticData.fetchZoraIndexerList(fetchAgent, {
+        //   curatorAddress: CURATOR_ID,
+        //   collectionAddresses: [CONTRACT_ADDRESSES, "0x12c8630369977ee708c8e727d8e838f74d9420c5"],
+        //   limit: 25,
+        //   offset: 0,
+        // });
+        const res = await FetchStaticData.fetchUserOwnedNFTs(fetchAgent, {
+          userAddress: userConfig.curator,
+          collectionAddresses: [
+            "0x677cE7d51eAad3a63890529A4cBeB74DEC218FE1", // Villains
+            "0xCa21d4228cDCc68D4e23807E5e370C07577Dd152", // Zorbs
+            "0x12C8630369977eE708C8E727d8e838f74D9420C5", // GM
+          ],
+          limit: 5000,
+          offset: 0,
         });
         if (res) {
           setTokens(res);
@@ -27,10 +38,11 @@ export const AuctionsList = () => {
         console.log(error);
       }
     }
-
-    getTokens();
+    if (userConfig?.curator) {
+      getTokens();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userConfig?.curator]);
 
   return (
     <div className="flex justify-center w-full text-center">
