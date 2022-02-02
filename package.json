@@ -1,6 +1,6 @@
 {
   "name": "@ourz/odk",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "SDK for interacting with ourz.network. Fork of @zoralabs/zdk",
   "author": "ourz-network",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "scripts": {
     "prepare": "husky install",
