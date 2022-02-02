@@ -60,12 +60,15 @@ export default function CreateAuctionHouseApp({ Component, pageProps }: AppProps
             </Box>
           )}
           {(data || subdomain === "www") && (
-            <ThemeProvider defaultMode={data.mode} defaultAccent={data.accent}>
+            <ThemeProvider
+              defaultMode={data?.mode ?? "light"}
+              defaultAccent={data?.accent ?? "blue"}
+            >
               <OurConfiguration
                 networkId={data?.networkId?.toString() ?? "1"}
                 style={mediaConfigurationStyles}
-                mode={data.mode}
-                accent={data.accent}
+                mode={data?.mode ?? "light"}
+                accent={data?.accent ?? "blue"}
               >
                 <Box backgroundColor="backgroundSecondary">
                   <Header />
