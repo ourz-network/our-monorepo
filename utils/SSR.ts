@@ -14,7 +14,7 @@ export const findUser = async ({
 
   const contractAddresses: string[] =
     config?.contracts?.split(",") ?? JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS);
-  if (contractAddresses.at(-1) === "") {
+  if (contractAddresses?.at(-1) === "") {
     contractAddresses.pop();
   }
 
