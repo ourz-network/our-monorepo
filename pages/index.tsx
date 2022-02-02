@@ -31,15 +31,15 @@ export default function Home({
   // eslint-disable-next-line react/jsx-filename-extension
   return (
     <IndexWrapper>
-      {noSubdomain || userConfig?.subdomain === "www" ? (
+      {noSubdomain ? (
         //TODO make homepage for subdomain-less url
         <Box
           display="flex"
           flexDirection="column"
           width="full"
-          height="full"
-          justifyContent="center"
+          justifyContent="stretch"
           alignItems="center"
+          marginY="auto"
         >
           HomePage still needs work... <Spinner />
         </Box>
@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const subdomain = hostname?.slice(0, hostname.indexOf("."));
 
   // sorry www.eth
-  if (subdomain !== ("localhost:300" && "www" && "")) {
+  if (subdomain !== "www" && subdomain !== "") {
     try {
       const { config, contractAddresses, fetchAgent } = await findUser({ subdomain });
 
