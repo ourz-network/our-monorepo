@@ -15,13 +15,19 @@ export const findUser = async ({
   let contractAddresses: string | string[] =
     config?.contracts?.split(",") ?? JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS);
 
+  console.log(`contractAddresses (${typeof contractAddresses}):\n`, contractAddresses);
+
   if (Array.isArray(contractAddresses)) {
+    console.log(`contractAddresses is Array`);
     if (contractAddresses?.at(-1) === "") {
       contractAddresses.pop();
+      console.log(`contractAddresses popped`);
     }
   } else {
+    console.log(`converting to array...`);
     contractAddresses = [contractAddresses];
   }
+  console.log(`completed... contractAddresses (${typeof contractAddresses}):\n`, contractAddresses);
 
   const fetchAgent = new MediaFetchAgent(
     (config?.networkId as unknown as NetworkIDs) ?? (1 as unknown as NetworkIDs)
