@@ -17,6 +17,7 @@ export const getENSFromAddress = async (address) => {
 };
 
 export const getAddressFromENS = async (ens) => {
+  console.log("util", ens);
   if (ens.startsWith("0x") && ens.length === 42) {
     return ens;
   }

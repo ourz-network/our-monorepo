@@ -50,39 +50,51 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const hostname = context.req.headers.host;
   const subdomain = hostname.slice(0, hostname.indexOf("."));
 
-  if (subdomain !== "localhost:300") {
-    const client = await clientPromise;
-    const collection = await client.db().collection("ourGallery");
-    const config = await collection.findOne({ _id: `${subdomain}` });
+  if (subdomain !== ("localhost:300" && "www" && "")) {
+    try {
+      const client = await clientPromise;
+      const collection = await client.db().collection("ourGallery");
+      const config = await collection.findOne({ _id: `${subdomain}` });
 
-    const fetchAgent = new MediaFetchAgent(config?.networkId ?? 1);
-    const contractAddresses = config?.contracts ?? [
-      process.env.NEXT_PUBLIC_MAINNET_CONTRACTS as string,
-    ];
+      const fetchAgent = new MediaFetchAgent(config?.networkId ?? 1);
+      const contractAddresses: string[] =
+        config?.contracts ?? process.env.NEXT_PUBLIC_MAINNET_CONTRACTS;
+      const address = await getAddressFromENS(subdomain);
 
-    const tokens = await FetchStaticData.fetchUserOwnedNFTs(
-      fetchAgent,
-      {
-        userAddress: await getAddressFromENS(subdomain),
-        collectionAddresses: [
-          ...contractAddresses,
-          "0xCa21d4228cDCc68D4e23807E5e370C07577Dd152", // Zorbs
-          "0x12C8630369977eE708C8E727d8e838f74D9420C5", // GM
-          "0xb80fBF6cdb49c33dC6aE4cA11aF8Ac47b0b4C0f3", // EthBlockArt
-        ],
-        limit: 25,
-        offset: 0,
-      },
-      true
-    );
+      const tokens = await FetchStaticData.fetchUserOwnedNFTs(
+        fetchAgent,
+        {
+          userAddress: address,
+          collectionAddresses: [
+            ...contractAddresses,
+            // "0xCa21d4228cDCc68D4e23807E5e370C07577Dd152", // Zorbs
+            // "0x12C8630369977eE708C8E727d8e838f74D9420C5", // GM
+            // "0xb80fBF6cdb49c33dC6aE4cA11aF8Ac47b0b4C0f3", // EthBlockArt
+          ],
+          limit: 25,
+          offset: 0,
+        },
+        true
+      );
 
-    return {
-      props: {
-        tokens,
-        config,
-        noSubdomain: false,
-      },
-    };
+      return {
+        props: {
+          tokens,
+          config,
+          noSubdomain: false,
+          revalidate: 10,
+        },
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        props: {
+          config: {},
+          noSubdomain: false,
+          revalidate: 10,
+        },
+      };
+    }
   }
   return {
     props: {
