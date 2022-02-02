@@ -44,7 +44,7 @@ const SubdomainContextProvider = ({
       setAddress(() => addr);
     }
 
-    if (subdomain) {
+    if (subdomain && subdomain !== "www") {
       getAddress();
     }
   }, [subdomain]);

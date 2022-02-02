@@ -2,7 +2,7 @@ import { FetchStaticData, MediaFetchAgent } from "@zoralabs/nft-hooks";
 import { useContext, useLayoutEffect } from "react";
 import { GetServerSideProps } from "next";
 import styled from "@emotion/styled";
-import { useTheme } from "degene-sais-quoi";
+import { Box, Spinner, useTheme } from "degene-sais-quoi";
 import Head from "../components/head";
 import { PageWrapper } from "../styles/components";
 import { NFTList } from "../components/NFTList";
@@ -31,9 +31,18 @@ export default function Home({
   // eslint-disable-next-line react/jsx-filename-extension
   return (
     <IndexWrapper>
-      {noSubdomain ? (
+      {noSubdomain || userConfig?.subdomain === "www" ? (
         //TODO make homepage for subdomain-less url
-        <div className="">HomePage</div>
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="full"
+          height="full"
+          justifyContent="center"
+          alignItems="center"
+        >
+          HomePage still needs work... <Spinner />
+        </Box>
       ) : (
         <>
           <Head config={userConfig ?? config} />
@@ -52,7 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   console.log(subdomain);
 
   // sorry www.eth
-  if (subdomain !== ("localhost:300" || "www" || "")) {
+  if (subdomain !== "www") {
     const client = await clientPromise;
     const collection = await client.db().collection("ourGallery");
     const config = await collection.findOne({ _id: `${subdomain}` });
