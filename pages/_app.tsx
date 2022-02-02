@@ -18,7 +18,7 @@ import useSWR from "swr";
 
 export default function CreateAuctionHouseApp({ Component, pageProps }: AppProps) {
   const [subdomain, setSubdomain] = useState<null | string>();
-  const { data } = useSWR(subdomain ? `/api/user/${subdomain}` : null);
+  const { data, error } = useSWR(subdomain ? `/api/user/${subdomain}` : null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function CreateAuctionHouseApp({ Component, pageProps }: AppProps
               <Spinner />
             </Box>
           )}
-          {(data || subdomain === "www") && (
+          {(data || subdomain === "www" || error) && (
             <ThemeProvider
               defaultMode={data?.mode ?? "light"}
               defaultAccent={data?.accent ?? "blue"}
