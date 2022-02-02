@@ -63,7 +63,8 @@ const SettingsForm = ({ subdomain, address, userConfig, setShowForm }) => {
   const [formData, setFormData] = useState({
     subdomain: subdomain,
     curator: address,
-    contracts: "0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7",
+    contracts:
+      "0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7,0xCa21d4228cDCc68D4e23807E5e370C07577Dd152,0x12C8630369977eE708C8E727d8e838f74D9420C5,0xb80fBF6cdb49c33dC6aE4cA11aF8Ac47b0b4C0f3",
     networkId: 1,
     ...userConfig,
   });
