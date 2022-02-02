@@ -19,7 +19,7 @@ export const findUser = async ({
 
   if (Array.isArray(contractAddresses)) {
     console.log(`contractAddresses is Array`);
-    if (contractAddresses?.at(-1) === "") {
+    if (contractAddresses[contractAddresses.length - 1] === "") {
       contractAddresses.pop();
       console.log(`contractAddresses popped`);
     }
