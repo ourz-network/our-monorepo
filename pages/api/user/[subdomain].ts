@@ -23,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         res.status(200).json(userConfig);
       } catch (error) {
+        console.log(error);
         return res.status(404).json({ failed: true });
       }
 

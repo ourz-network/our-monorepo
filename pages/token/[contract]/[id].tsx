@@ -1,13 +1,13 @@
 import { NFTFullPage } from "@ourz/our-components";
 import { useRouter } from "next/router";
-import { MediaFetchAgent, FetchStaticData } from "@zoralabs/nft-hooks";
+import { FetchStaticData } from "@zoralabs/nft-hooks";
 import { GetServerSideProps } from "next";
 import { PageWrapper } from "../../../styles/components";
 import Head from "../../../components/head";
 import { useContext, useLayoutEffect } from "react";
 import { SubdomainContext } from "../../../context/SubdomainContext";
-import clientPromise from "../../../mongodb/client";
 import { useTheme } from "degene-sais-quoi";
+import { findUser } from "../../../utils/SSR";
 
 const styles = {
   theme: {
@@ -58,22 +58,19 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
   const hostname = req.headers.host;
   const subdomain = hostname.slice(0, hostname.indexOf("."));
 
-  try {
-    const client = await clientPromise;
-    const collection = await client.db().collection("ourGallery");
-    const config = await collection.findOne({ _id: `${subdomain}` });
+  if (!params?.id || Array.isArray(params.id)) {
+    return { notFound: true };
+  }
+  if (!params?.contract || Array.isArray(params.contract)) {
+    return { notFound: true };
+  }
 
-    if (!params?.id || Array.isArray(params.id)) {
-      return { notFound: true };
-    }
-    if (!params?.contract || Array.isArray(params.contract)) {
-      return { notFound: true };
-    }
+  try {
+    const { config, fetchAgent } = await findUser({ subdomain });
 
     const id = params.id as string;
     const contract = params.contract as string;
 
-    const fetchAgent = new MediaFetchAgent(config?.networkId ?? 1);
     const data = await FetchStaticData.fetchZoraIndexerItem(fetchAgent, {
       tokenId: id,
       collectionAddress: contract,
@@ -92,6 +89,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       props: {
         config: {},
