@@ -1091,6 +1091,21 @@
     tiny-warning "^1.0.3"
     ts-node "^10.4.0"
 
+"@ourz/odk@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@ourz/odk/-/odk-1.0.8.tgz#30507051a700e81f5fcf0cda310eed2865066a78"
+  integrity sha512-Wlvhp9Qy4YHo9gl3AzVpDsMX/RRCJ+398pFok0oiMgFlsrEQg6bS7gMtpOFm5y6NaryFr1oKrJCiNlE+gfwFRg==
+  dependencies:
+    "@apollo/client" "^3.5.8"
+    "@ourz/our-contracts" "^1.0.6"
+    "@zoralabs/core" "^1.0.7"
+    "@zoralabs/zdk" "^1.2.6"
+    axios "^0.25.0"
+    ethers "^5.5.3"
+    tiny-invariant "^1.2.0"
+    tiny-warning "^1.0.3"
+    ts-node "^10.4.0"
+
 "@ourz/our-components@^0.0.19":
   version "0.0.19"
   resolved "https://registry.yarnpkg.com/@ourz/our-components/-/our-components-0.0.19.tgz#ad89f5170195848bc77cfb6d5aad9e387c25842b"
