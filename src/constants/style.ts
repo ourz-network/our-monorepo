@@ -47,9 +47,7 @@ const CENTER_FULL_CONTAINER = `
 `;
 
 function renderSVG(svg: string) {
-  return `background-image: url("data:image/svg+xml,${encodeURIComponent(
-    svg
-  )}");`;
+  return `background-image: url("data:image/svg+xml,${encodeURIComponent(svg)}");`;
 }
 
 export const Style = {
@@ -296,8 +294,7 @@ export const Style = {
       css`
         border: ${theme.borderStyle};
         border-radius: ${theme.defaultBorderRadius}px;
-        padding: ${theme.spacingUnit} ${theme.spacingUnit}
-          ${bottomPadding ? theme.spacingUnit : 0};
+        padding: ${theme.spacingUnit} ${theme.spacingUnit} ${bottomPadding ? theme.spacingUnit : 0};
         position: relative;
       `,
     fullInfoSpacer: (_: any, { height = 15 }: { height: number }) => css`
@@ -324,13 +321,13 @@ export const Style = {
     fullProofLink: (theme: ThemeOptionsType) => css`
       display: block;
       text-decoration: none;
-      color: ${theme.linkColor};
+      color: var(--colors-textPrimary);
       padding: ${theme.spacingUnit};
       margin: 0 -${theme.spacingUnit};
       border-top: ${theme.borderStyle};
 
       :hover {
-        background-color: #f2f2f2;
+        background-color: var(--colors-accent);
       }
       :after {
         content: " ";
@@ -338,7 +335,7 @@ export const Style = {
         height: 14px;
         opacity: 0.5;
         ${renderSVG(SVG_NEXT_ICON)}
-        color: #eee;
+        color: var(--colors-textPrimary);
         right: ${theme.spacingUnit};
         position: absolute;
       }
@@ -426,12 +423,8 @@ export const Style = {
     // Generic styles
     button: (theme: ThemeOptionsType, { primary }: any) => css`
       ${buttonReset}
-      background: ${primary
-        ? theme.buttonColor.primaryBackground
-        : theme.buttonColor.background};
-      color: ${primary
-        ? theme.buttonColor.primaryText
-        : theme.buttonColor.text};
+      background: ${primary ? theme.buttonColor.primaryBackground : theme.buttonColor.background};
+      color: ${primary ? theme.buttonColor.primaryText : theme.buttonColor.text};
       border-radius: ${theme.defaultBorderRadius}px;
       padding: 11px;
       transition: transform 0.1s ease-in-out;
@@ -463,10 +456,7 @@ export const Style = {
       grid-area: 1 / 2 / span 1 / span 2;
       text-align: right;
     `,
-    nftProposalActionButton: (
-      theme: ThemeOptionsType,
-      { action }: { action: "approve" | "deny" }
-    ) => css`
+    nftProposalActionButton: (theme: ThemeOptionsType, { action }: { action: "approve" | "deny" }) => css`
       border-radius: 1000px;
       background-color: ${theme.buttonColor.background};
       background-repeat: no-repeat;
@@ -552,9 +542,7 @@ export const Style = {
     ],
     mediaPlayButton: (_: ThemeOptionsType, { playing }: any) => css`
       ${buttonCommonSize("32px")}
-      background-image: url("data:image/svg+xml,${encodeURIComponent(
-        playing ? SVG_PAUSE : SVG_PLAY_ARROW
-      )}");
+      background-image: url("data:image/svg+xml,${encodeURIComponent(playing ? SVG_PAUSE : SVG_PLAY_ARROW)}");
       z-index: 8;
     `,
     mediaVideoControls: (_: ThemeOptionsType, { isFullPage }: any) => css`
@@ -581,9 +569,7 @@ export const Style = {
     mediaMuteButton: (theme: ThemeOptionsType, { muted }: any) => css`
       ${buttonCommonSize(theme.spacingUnit)}
       background-color: #000;
-      background-image: url("data:image/svg+xml,${encodeURIComponent(
-        muted ? SVG_UNMUTED : SVG_MUTED
-      )}");
+      background-image: url("data:image/svg+xml,${encodeURIComponent(muted ? SVG_UNMUTED : SVG_MUTED)}");
     `,
   },
 };

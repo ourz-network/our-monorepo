@@ -32,7 +32,7 @@ export const Strings = {
    * View metadata in proof of authenticity box
    * @default View Metadata
    */
-  VIEW_METADATA: 'View Metadata',
+  VIEW_METADATA: "View Metadata",
   /**
    * List price used in pricing components
    * @default List price
@@ -241,4 +241,10 @@ export const Strings = {
    * @default Properties
    */
   PROPERTIES_TITLE: "Properties",
+  /**
+   * Edition Supply component title text
+   *
+   * @default Properties
+   */
+  EDITION_SUPPLY: "Supply",
 };

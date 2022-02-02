@@ -1,8 +1,5 @@
 import React, { useContext } from "react";
-import {
-  NetworkIDs,
-  NFTFetchConfiguration,
-} from "@zoralabs/nft-hooks";
+import { NetworkIDs, NFTFetchConfiguration } from "@zoralabs/nft-hooks";
 import { merge } from "merge-anything";
 
 import type { Strings } from "../constants/strings";
@@ -10,6 +7,8 @@ import type { RecursivePartial } from "../utils/RecursivePartial";
 import type { RendererConfig } from "../content-components/RendererConfig";
 import { MediaRendererDefaults } from "../content-components";
 import { MediaContext, ThemeType } from "./MediaContext";
+import { ThemeProvider } from "degene-sais-quoi";
+import type { Accent, Mode } from "degene-sais-quoi/dist/types/tokens";
 
 type MediaContextConfigurationProps = {
   /**
@@ -31,6 +30,11 @@ type MediaContextConfigurationProps = {
    * List of renderers.
    */
   renderers?: RendererConfig[];
+  /**
+   * degene-sais-quoi config
+   */
+  mode?: Mode;
+  accent?: Accent;
 };
 
 export const MediaConfiguration = ({
@@ -39,6 +43,8 @@ export const MediaConfiguration = ({
   children,
   strings = {},
   renderers,
+  mode,
+  accent,
 }: MediaContextConfigurationProps) => {
   const superContext = useContext(MediaContext);
 
@@ -57,10 +63,10 @@ export const MediaConfiguration = ({
   };
 
   return (
-    <MediaContext.Provider value={newContext}>
-      <NFTFetchConfiguration networkId={newNetworkId}>
-        {children}
-      </NFTFetchConfiguration>
-    </MediaContext.Provider>
+    <ThemeProvider defaultAccent={accent} defaultMode={mode}>
+      <MediaContext.Provider value={newContext}>
+        <NFTFetchConfiguration networkId={newNetworkId}>{children}</NFTFetchConfiguration>
+      </MediaContext.Provider>
+    </ThemeProvider>
   );
 };

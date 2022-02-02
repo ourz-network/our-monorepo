@@ -1,4 +1,6 @@
 {
+  "include": ["src"],
+  "exclude": ["src/stories", "node_modules", "tests/**"],
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist",
@@ -19,13 +21,10 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
-    "importsNotUsedAsValues": "error"
-  },
-  "include": ["src"],
-  "exclude": ["src/stories"]
+    "importsNotUsedAsValues": "error",
+    "skipLibCheck": true
+  }
 }
