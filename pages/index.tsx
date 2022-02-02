@@ -51,7 +51,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const subdomain = hostname.slice(0, hostname.indexOf("."));
   console.log(subdomain);
 
-  if (subdomain !== "localhost:300") {
+  // sorry www.eth
+  if (subdomain !== ("localhost:300" || "www")) {
     const client = await clientPromise;
     const collection = await client.db().collection("ourGallery");
     const config = await collection.findOne({ _id: `${subdomain}` });
