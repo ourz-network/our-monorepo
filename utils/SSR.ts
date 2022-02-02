@@ -12,10 +12,13 @@ export const findUser = async ({
   const collection = await client.db().collection("ourGallery");
   const config = await collection.findOne({ _id: `${subdomain}` });
 
-  const contractAddresses: string[] =
+  const contractAddresses: string | string[] =
     config?.contracts?.split(",") ?? JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS);
-  if (contractAddresses?.at(-1) === "") {
-    contractAddresses.pop();
+
+  if (Array.isArray(contractAddresses)) {
+    if (contractAddresses?.at(-1) === "") {
+      contractAddresses.pop();
+    }
   }
 
   const fetchAgent = new MediaFetchAgent(
