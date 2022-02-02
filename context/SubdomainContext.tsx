@@ -1,48 +1,69 @@
-import { createContext, useEffect, useState } from "react";
+import { Context, createContext, ReactNode, useEffect, useState } from "react";
 import { getAddressFromENS } from "../utils/ethers";
 
-export const SubdomainContext = createContext({
-  userConfig: {},
-  subdomain: "",
-});
+export type UserConfig = {
+  subdomain?: string;
+  title?: string;
+  desc?: string;
+  networkId?: 1 | 4 | 137;
+  curator?: string;
+  contracts?: string[];
+  fontFamily?: "serif" | "sans" | "mono";
+  mode?: "light" | "dark";
+  accent?: "blue" | "green" | "indigo" | "orange" | "pink" | "purple" | "red" | "teal" | "yellow";
+};
 
-const SubdomainContextProvider: React.FunctionComponent = (props) => {
+export const SubdomainContext: Context<{ userConfig: UserConfig; subdomain: string }> =
+  createContext({
+    userConfig: {},
+    subdomain: "",
+  });
+
+const SubdomainContextProvider = ({
+  subdomain,
+  userConfig,
+  children,
+}: {
+  subdomain: string;
+  userConfig: UserConfig;
+  children: ReactNode;
+}) => {
   const [address, setAddress] = useState(undefined);
 
-  const [config, setConfig] = useState({
-    subdomain: props?.subdomain,
-    title: props?.subdomain,
+  const [config, setConfig] = useState<UserConfig>({
+    subdomain: subdomain,
+    title: subdomain,
     networkId: 1,
-    curatorAddress: address,
-    contractAddresses: ["0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7"],
+    curator: address,
+    contracts: ["0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7"],
   });
 
   useEffect(() => {
     async function getAddress() {
-      const addr = await getAddressFromENS(props.subdomain);
+      const addr = await getAddressFromENS(subdomain);
       setAddress(() => addr);
     }
 
-    if (props?.subdomain) {
+    if (subdomain) {
       getAddress();
     }
-  }, [props?.subdomain]);
+  }, [subdomain]);
 
   useEffect(() => {
-    if (props?.userConfig) {
-      setConfig(() => props?.userConfig);
+    if (userConfig) {
+      setConfig(() => userConfig);
     }
-  }, [props?.userConfig]);
+  }, [userConfig]);
 
   return (
     <>
       <SubdomainContext.Provider
         value={{
           userConfig: config,
-          subdomain: props?.subdomain,
+          subdomain: subdomain,
         }}
       >
-        {props.children}
+        {children}
       </SubdomainContext.Provider>
     </>
   );

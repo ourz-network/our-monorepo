@@ -1,9 +1,12 @@
+// @ts-nocheck
+
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { css } from "@emotion/react";
 import { useWeb3Wallet } from "@zoralabs/simple-wallet-provider";
 import { Box, BoxProps, Button, Input, Stack, Text } from "degene-sais-quoi";
 import { IconClose } from "degene-sais-quoi";
+import { Tone } from "degene-sais-quoi/dist/types/components/Button/styles.css";
 // import ColorPicker from "./ColorPicker";
 
 const inputFields = {
@@ -183,8 +186,9 @@ const SettingsForm = ({ subdomain, address, userConfig, setShowForm }) => {
                         return (
                           <div key={`${option}`}>
                             <Box width="auto" paddingX="2" marginX="2">
+                              {/* // @ts-ignore */}
                               <Button
-                                tone={field === "accent" ? `${option as Tone}` : null}
+                                tone={field === "accent" ? (option as Tone) : null}
                                 center
                                 size="medium"
                                 width="32"

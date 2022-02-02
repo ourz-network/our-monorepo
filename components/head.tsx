@@ -1,4 +1,5 @@
 import NextHead from "next/head";
+import { UserConfig } from "../context/SubdomainContext";
 import { BASE_URL, FAVICON, DEFAULT_OG_CARD } from "../utils/env-vars";
 
 const Head = ({
@@ -12,7 +13,7 @@ const Head = ({
   description?: string;
   url?: string;
   ogImage?: string;
-  config?: object;
+  config?: UserConfig;
 }) => (
   <NextHead>
     <meta charSet="UTF-8" />

@@ -1,6 +1,6 @@
 import { Global, css } from "@emotion/react";
 import "@fontsource/source-serif-4/variable-full.css";
-import { media, buttonStyle } from "./mixins";
+import { media } from "./mixins";
 import { returnBreakpoint } from "./breakpoints";
 import { useContext, useEffect, useState } from "react";
 import { SubdomainContext } from "../context/SubdomainContext";
@@ -278,7 +278,6 @@ export default function GlobalStyles() {
             margin-bottom: 15px;
           }
           button.zora--auction-house-actionButton {
-            ${buttonStyle};
             margin-bottom: 15px;
           }
         }
