@@ -23,12 +23,17 @@ export class Ourz {
   public ourProxyBytecode: string;
   public readOnly: boolean;
 
-  constructor(
-    signerOrProvider: Signer | Provider,
-    chainId: number,
-    factoryAddress?: string,
-    pylonAddress?: string
-  ) {
+  constructor({
+    signerOrProvider,
+    chainId,
+    factoryAddress,
+    pylonAddress,
+  }: {
+    signerOrProvider: Signer | Provider;
+    chainId: number;
+    factoryAddress?: string;
+    pylonAddress?: string;
+  }) {
     if (!factoryAddress != !pylonAddress) {
       invariant(
         false,

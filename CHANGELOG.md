@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3 - 1.0.7] - 2022-02-01
+
+### Added
+
+- Add getTotalSupply() to useEditions
+
+### Fixed
+
+- destructure class constructors
+- Move some Edition methods to Split
+
 ## [1.0.2] - 2022-01-26
 
 ### Fixed
