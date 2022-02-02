@@ -16,7 +16,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.3.0",
     "@fontsource/source-serif-4": "^4.5.1",
-    "@ourz/odk": "^1.0.7",
+    "@ourz/odk": "^1.0.8",
     "@ourz/our-components": "^0.0.19",
     "@ourz/our-hooks": "^1.0.9",
     "@zoralabs/manage-auction-hooks": "^0.1.2",
