@@ -35,7 +35,7 @@ const SubdomainContextProvider = ({
     title: subdomain,
     networkId: 1,
     curator: address,
-    contracts: ["0xabEFBc9fD2F806065b4f3C237d4b59D9A97Bcac7"],
+    contracts: JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS),
   });
 
   useEffect(() => {
