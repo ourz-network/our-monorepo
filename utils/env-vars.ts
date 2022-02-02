@@ -7,7 +7,7 @@
 
 // export const CONTRACT_ADDRESSES =
 //   process.env.NEXT_PUBLIC_NETWORK_ID === '1'
-//     ? (process.env.NEXT_PUBLIC_MAINNET_CONTRACTS as string)
+//     ? (JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS) as string)
 //     : (process.env.NEXT_PUBLIC_TESTNET_CONTRACTS as string)
 
 // if (!CURATOR_ID && !CONTRACT_ADDRESSES) {

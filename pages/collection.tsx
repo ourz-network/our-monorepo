@@ -58,9 +58,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
       const fetchAgent = new MediaFetchAgent(config?.networkId ?? 1);
       const contractAddresses: string[] =
-        config?.contracts ?? process.env.NEXT_PUBLIC_MAINNET_CONTRACTS;
+        config?.contracts ?? JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS);
       const address = await getAddressFromENS(subdomain);
-      console.log(contractAddresses);
 
       const tokens = await FetchStaticData.fetchUserOwnedNFTs(
         fetchAgent,
@@ -87,7 +86,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
     } catch (error) {
-      console.log(error);
       return {
         props: {
           config: {},
