@@ -59,7 +59,7 @@ export default function CreateAuctionHouseApp({ Component, pageProps }: AppProps
               <Spinner />
             </Box>
           )}
-          {data && (
+          {(data || subdomain === "www") && (
             <ThemeProvider defaultMode={data.mode} defaultAccent={data.accent}>
               <OurConfiguration
                 networkId={data?.networkId?.toString() ?? "1"}
