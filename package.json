@@ -1,26 +1,26 @@
 {
   "name": "@ourz/odk",
-  "description": "SDK for interacting with ourz.network",
-  "version": "1.0.2",
-  "main": "dist/src/index.js",
+  "version": "1.0.8",
+  "description": "SDK for interacting with ourz.network. Fork of @zoralabs/zdk",
   "author": "ourz-network",
   "license": "MIT",
+  "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "scripts": {
     "prepare": "husky install",
-    "make-badges": "istanbul-badges-readme --coverageDir=./coverage",
     "test": "jest",
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc",
+    "prepublish": "yarn build",
+    "make-badges": "istanbul-badges-readme --coverageDir=./coverage",
     "ci": "rm -rf node_modules && yarn install --frozen-lockfile",
-    "chain": "ganache-cli --networkId 50 --accounts 20 -e 100 -l 10000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'",
-    "prepublish": "yarn build"
+    "chain": "ganache-cli --networkId 50 --accounts 20 -e 100 -l 10000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'"
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",

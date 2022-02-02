@@ -15,8 +15,19 @@ export class Split {
   public splitProxy: OurPylon;
   public splitAddress: string;
   public readOnly: boolean;
+  public editionAddress?: string;
 
-  constructor(signerOrProvider: Signer | Provider, chainId: number, splitAddress: string) {
+  constructor({
+    signerOrProvider,
+    chainId,
+    splitAddress,
+    editionAddress,
+  }: {
+    signerOrProvider: Signer | Provider;
+    chainId: number;
+    splitAddress: string;
+    editionAddress?: string;
+  }) {
     if (Signer.isSigner(signerOrProvider)) {
       this.readOnly = false;
     } else {
@@ -29,6 +40,11 @@ export class Split {
     const parsedSplitAddress = validateAndParseAddress(splitAddress);
     this.splitAddress = parsedSplitAddress;
     this.splitProxy = OurPylon__factory.connect(this.splitAddress, signerOrProvider);
+
+    if (editionAddress) {
+      const parsedEditionAddress = validateAndParseAddress(editionAddress);
+      this.editionAddress = parsedEditionAddress;
+    }
   }
 
   /******************
@@ -358,6 +374,127 @@ export class Split {
     }
 
     return await this.splitProxy.cancelZAuction(auctionId);
+  }
+
+  /** OurMinter - Zora NFT-Editions */
+
+  //  createZoraEdition
+  public async createZoraEdition(
+    name: string,
+    symbol: string,
+    description: string,
+    animationUrl: string,
+    animationHash: BytesLike,
+    imageUrl: string,
+    imageHash: BytesLike,
+    editionSize: number,
+    royaltyBPS: number,
+    salePrice: number,
+    publicMint: boolean
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      if (err instanceof Error) {
+        return Promise.reject(err.message);
+      }
+    }
+
+    return await this.splitProxy.createZoraEdition(
+      name,
+      symbol,
+      description,
+      animationUrl,
+      animationHash,
+      imageUrl,
+      imageHash,
+      editionSize,
+      royaltyBPS,
+      ethers.utils.parseUnits(salePrice.toString(), 'ether'),
+      publicMint
+    );
+  }
+
+  //  setEditionPrice
+  public async setEditionPrice(salePrice: string): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      if (err instanceof Error) {
+        return Promise.reject(err.message);
+      }
+    }
+
+    return await this.splitProxy.setEditionPrice(
+      this.editionAddress as string,
+      ethers.utils.parseUnits(salePrice)
+    );
+  }
+
+  //  setEditionMinter
+  public async setApprovedEditionMinter(
+    minterAddress: string,
+    approved: boolean
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      if (err instanceof Error) {
+        return Promise.reject(err.message);
+      }
+    }
+
+    return await this.splitProxy.setEditionMinter(
+      this.editionAddress as string,
+      minterAddress,
+      approved
+    );
+  }
+
+  //  mintEditionsTo
+  public async mintEditionsToRecipients(recipients: string[]): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      if (err instanceof Error) {
+        return Promise.reject(err.message);
+      }
+    }
+
+    return await this.splitProxy.mintEditionsTo(this.editionAddress as string, recipients);
+  }
+
+  //  withdrawEditionFunds
+  public async withdrawEditionFunds(): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      if (err instanceof Error) {
+        return Promise.reject(err.message);
+      }
+    }
+
+    return await this.splitProxy.withdrawEditionFunds(this.editionAddress as string);
+  }
+
+  //  updateEditionURLs
+  public async updateEditionURLs(
+    imageUrl: string,
+    animationUrl: string
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      if (err instanceof Error) {
+        return Promise.reject(err.message);
+      }
+    }
+
+    return await this.splitProxy.updateEditionURLs(
+      this.editionAddress as string,
+      imageUrl,
+      animationUrl
+    );
   }
 
   /** OurMinter - Untrusted ERC-721 methods */
