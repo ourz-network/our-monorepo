@@ -1,12 +1,12 @@
+import { UserDetailsFragment } from './../graph-queries/ourz-graph-types';
 import { useContext } from 'react';
 import { OurFetchContext } from '../context/OurFetchContext';
-import { UserDetails } from '../fetcher/FetchResultTypes';
 import useSWR from 'swr';
 
 export type useUserType = {
   userLoaded: boolean;
   error?: string;
-  data?: UserDetails;
+  data?: UserDetailsFragment;
 };
 
 type OptionsType = {
@@ -24,7 +24,7 @@ type OptionsType = {
 export function useUser(userAddress: string, options: OptionsType = {}): useUserType {
   const fetcher = useContext(OurFetchContext);
 
-  const { data, error } = useSWR<UserDetails>(
+  const { data, error } = useSWR<UserDetailsFragment>(
     userAddress,
     async () => fetcher.loadUser(userAddress),
     options
@@ -33,6 +33,6 @@ export function useUser(userAddress: string, options: OptionsType = {}): useUser
   return {
     userLoaded: !!data,
     error: error,
-    data: data,
+    data: { ...data, ...options.initialData },
   };
 }

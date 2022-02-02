@@ -5,12 +5,14 @@ import { reverseResolveEnsAddresses } from './EnsReverseFetcher';
 import type { NetworkIDs } from '../constants/networks';
 import { GET_SPLITS, GET_USERS, GET_EDITIONS } from '../graph-queries/ourz-graph';
 import { TimeoutsLookupType, DEFAULT_NETWORK_TIMEOUTS_MS } from '../constants/timeouts';
-import { EditionDetails, UserDetails, SplitDetails } from './FetchResultTypes';
 import { FetchWithTimeout } from './FetchWithTimeout';
 import {
   GetSplitsByUsersQuery,
   GetEditionsByAddressesQuery,
   GetSplitsByAddressesQuery,
+  SplitDetailsFragment,
+  UserDetailsFragment,
+  EditionDetailsFragment,
 } from '../graph-queries/ourz-graph-types';
 
 /**
@@ -30,11 +32,11 @@ export class OurFetchAgent {
   // Batching content loaders
   private loaders: {
     // fetches Split data from the OURZ subgraph, cached and batched
-    splitLoader: DataLoader<string, SplitDetails>;
+    splitLoader: DataLoader<string, SplitDetailsFragment>;
     // fetches User data from the OURZ subgraph, cached and batched
-    userLoader: DataLoader<string, UserDetails>;
+    userLoader: DataLoader<string, UserDetailsFragment>;
     // fetches NFT-Editions data from the OURZ subgraph, cached and batched
-    editionLoader: DataLoader<string, EditionDetails>;
+    editionLoader: DataLoader<string, EditionDetailsFragment>;
     // ensLoader
     ensLoader: DataLoader<string, string>;
   };

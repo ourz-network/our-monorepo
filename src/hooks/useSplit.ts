@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { OurFetchContext } from '../context/OurFetchContext';
-import { SplitDetails } from '../fetcher/FetchResultTypes';
 import useSWR from 'swr';
+import { SplitDetailsFragment } from 'src/graph-queries/ourz-graph-types';
 
 export type useSplitType = {
   splitLoaded: boolean;
   error?: string;
-  data?: SplitDetails;
+  data?: SplitDetailsFragment | (SplitDetailsFragment & { totalSupply: number });
 };
 
 type OptionsType = {
@@ -24,7 +24,7 @@ type OptionsType = {
 export function useSplit(splitAddress: string, options: OptionsType = {}): useSplitType {
   const fetcher = useContext(OurFetchContext);
 
-  const { data, error } = useSWR<SplitDetails>(
+  const { data, error } = useSWR<SplitDetailsFragment>(
     splitAddress,
     async () => fetcher.loadSplit(splitAddress),
     options
@@ -33,6 +33,6 @@ export function useSplit(splitAddress: string, options: OptionsType = {}): useSp
   return {
     splitLoaded: !!data,
     error: error,
-    data: data,
+    data: { ...data, ...options?.initialData },
   };
 }

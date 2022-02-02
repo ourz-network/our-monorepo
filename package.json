@@ -1,6 +1,6 @@
 {
   "name": "@ourz/our-hooks",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "description": "Generic react hooks for fetching ourz.network Splits, NFTs, and other misc data. Fork of @zoralabs/nft-hooks.",
   "author": "ourz-network",
   "license": "GPL-3.0",
@@ -22,6 +22,7 @@
   "dependencies": {
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bytes": "^5.5.0",
+    "@ourz/odk": "^1.0.7",
     "big.js": "^6.1.1",
     "cross-fetch": "^3.1.5",
     "dataloader": "^2.0.0",
