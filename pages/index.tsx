@@ -70,6 +70,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const contractAddresses: string[] =
         config?.contracts ?? process.env.NEXT_PUBLIC_MAINNET_CONTRACTS;
 
+      console.log(contractAddresses);
+
       const tokens = await FetchStaticData.fetchZoraIndexerList(fetchAgent, {
         curatorAddress: config?.curator ?? (await getAddressFromENS(subdomain)),
         collectionAddresses: [

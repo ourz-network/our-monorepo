@@ -60,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const contractAddresses: string[] =
         config?.contracts ?? process.env.NEXT_PUBLIC_MAINNET_CONTRACTS;
       const address = await getAddressFromENS(subdomain);
+      console.log(contractAddresses);
 
       const tokens = await FetchStaticData.fetchUserOwnedNFTs(
         fetchAgent,
