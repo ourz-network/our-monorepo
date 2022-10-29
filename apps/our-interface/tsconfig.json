@@ -40,6 +40,6 @@
     "preserveConstEnums": true,
     "removeComments": false
   },
-  "exclude": [".github", ".next", ".husky", ".vscode", "node_modules", "src/types/**/*.*"],
+  "exclude": [".github", ".next", ".vscode", "node_modules", "src/types/**/*.*"],
   "include": ["next-env.d.ts", "src"]
 }
