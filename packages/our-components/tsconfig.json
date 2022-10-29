@@ -1,0 +1,30 @@
+{
+  "include": ["src"],
+  "exclude": ["src/stories", "node_modules", "tests/**"],
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "./dist",
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "preserveConstEnums": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": false,
+    "esModuleInterop": true,
+    "declaration": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "importsNotUsedAsValues": "error",
+    "skipLibCheck": true
+  }
+}

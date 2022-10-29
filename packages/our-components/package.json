@@ -1,0 +1,76 @@
+{
+  "name": "@ourz/our-components",
+  "version": "0.0.19",
+  "description": "React Components for displaying ourz.network splits, NFTs, and Editions. Fork of @zoralabs/nft-components.",
+  "author": "ourz-network",
+  "license": "GPL-3.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "source": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "yarn clean && tsc",
+    "build": "yarn run prepack",
+    "test": "TZ='EST' jest",
+    "clean": "rm -rf ./dist",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "predeploy": "npm run build-storybook",
+    "deploy-storybook": "gh-pages -d storybook-static"
+  },
+  "dependencies": {
+    "@emotion/css": "^11.1.3",
+    "@ourz/odk": "^1.0.7",
+    "@ourz/our-hooks": "^1.0.9",
+    "@types/react": "^17.0.5",
+    "@zoralabs/nft-hooks": "^0.8.0",
+    "degene-sais-quoi": "^0.0.11",
+    "merge-anything": "^4.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "recharts": "^2.1.2",
+    "swr": "^0.5.6",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.2",
+    "@storybook/addon-a11y": "^6.2.9",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/react": "^6.2.9",
+    "@testing-library/react": "^11.2.7",
+    "@types/jest": "^26.0.23",
+    "babel-loader": "^8.2.2",
+    "fetch-mock-jest": "^1.5.1",
+    "gh-pages": "^3.1.0",
+    "husky": "^6.0.0",
+    "jest": "^27.0.4",
+    "mockdate": "^3.0.5",
+    "prettier": "^2.3.0",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.2.4"
+  },
+  "peerDependencies": {
+    "@ourz/our-hooks": "^1.0.1",
+    "@zoralabs/nft-hooks": "^0.8.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,md}": "prettier src --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ourz-network/our-components"
+  },
+  "bugs": {
+    "url": "https://github.com/ourz-network/our-components/issues"
+  },
+  "homepage": "https://github.com/ourz-network/our-components#README"
+}
