@@ -1,0 +1,17 @@
+[
+  {
+    "allocationPercentages": [100000000],
+    "firstDepositFirstWindow": [100],
+    "secondDepositSecondWindow": [100]
+  },
+  {
+    "allocationPercentages": [25000000, 25000000, 25000000, 25000000],
+    "firstDepositFirstWindow": [25, 25, 25, 25],
+    "secondDepositSecondWindow": [25, 25, 25, 25]
+  },
+  {
+    "allocationPercentages": [37000000, 26036700, 15000000, 10900000, 4400000, 3333300, 2220000, 1110000],
+    "firstDepositFirstWindow": [37, 26.0367, 15, 10.9, 4.4, 3.3333, 2.22, 1.11],
+    "secondDepositSecondWindow": [37, 26.0367, 15, 10.9, 4.4, 3.3333, 2.22, 1.11]
+  }
+]

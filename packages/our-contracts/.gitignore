@@ -1,0 +1,16 @@
+node_modules/
+outputs/
+Reports/
+coverage/
+cache/
+artifacts/
+build/
+typechain/
+.env
+*.DS_Store
+env*
+.vscode
+package-lock.json
+scripts/deploy.ts
+contracts/.solcx-lock-0.8.4
+dist/
