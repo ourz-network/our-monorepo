@@ -1,0 +1,143 @@
+type SplitZNFT @entity {
+  "The tokenId of the Zora Media ERC-721"
+  id: ID!
+
+  "The creator of the ERC-721"
+  creator: Split!
+
+  "The transaction hash the ERC-721 was originally logged in this subgraph"
+  transactionHash: String!
+}
+
+type SplitEdition @entity {
+  "The address of the Zora NFT-Editions contract"
+  id: ID!
+
+  "The creator of the Edition Contract"
+  creator: Split!
+
+  "The title of the Edition contract"
+  name: String!
+
+  "Symbol of the Edition contract"
+  symbol: String!
+
+  "Metadata: Description of the Edition entry"
+  description: String!
+
+  "Metadata: Animation url (optional) of the Edition entry"
+  animationUrl: String!
+
+  "Metadata: Image url (semi-required) of the Edition entry"
+  imageUrl: String!
+
+  "Total size of the Edition (number of possible editions)"
+  editionSize: BigInt!
+
+  "BPS amount of royalty"
+  royaltyBPS: BigInt!
+}
+
+type ERC20Transfer @entity {
+  "<txHash>-<proxyAddress>"
+  id: ID!
+
+  "The address of the Split transferring the ERC20s"
+  split: Split!
+
+  "The transaction hash of the transfer"
+  transactionHash: String!
+
+  "The address of the ERC20 Contract"
+  contract: String!
+
+  "The amount of ERC20s Transferred"
+  amount: BigInt!
+}
+
+type Split @entity {
+  "The address of the Proxy"
+  id: ID!
+
+  "A nickname for the Proxy"
+  nickname: String!
+
+  "The transaction hash the Proxy was created at"
+  transactionHash: String!
+
+  "The timestamp of the block the Ask was created in"
+  createdAtTimestamp: BigInt!
+
+  "The number of the block the Ask created in"
+  createdAtBlockNumber: BigInt!
+
+  "The current owner(s) of the Proxy"
+  owners: [User!]!
+
+  "The original owner of the Proxy"
+  creator: User!
+
+  "The amount of ETH/WETH currently available to claim by Split Recipients"
+  ETH: BigInt!
+
+  "Recipients should increment window before claiming"
+  needsIncremented: Boolean!
+
+  "Array of the Split's Recipients"
+  recipients: [Recipient!]!
+
+  "The ERC721(s) the Proxy created"
+  creations: [SplitZNFT!]! @derivedFrom(field: "creator")
+
+  "The Zora NFT-Edition(s) the Proxy created"
+  editions: [SplitEdition!]! @derivedFrom(field: "creator")
+
+  "The ERC20 Transfers that the Proxy has successfully distributed"
+  ERC20Transfers: [ERC20Transfer!]! @derivedFrom(field: "split")
+}
+
+type User @entity {
+  "Ethereum Address"
+  id: ID!
+
+  "Total amount of ETH claimed from all Splits"
+  claimedETH: BigInt!
+
+  "Proxies that this address owns"
+  ownedSplits: [Split!]! @derivedFrom(field: "owners")
+
+  "Proxies that this address created"
+  createdSplits: [Split!]! @derivedFrom(field: "creator")
+
+  "Splits that this address is a recipient of"
+  recipientInfo: [Recipient!]! @derivedFrom(field: "user")
+}
+
+type Recipient @entity {
+  "`${proxyAddress}-${userAddress}`"
+  id: ID!
+
+  "User Entity"
+  user: User!
+
+  "Split Entity"
+  split: Split!
+
+  "Name/Alias of User"
+  name: String!
+
+  "Role in Split"
+  role: String!
+
+  "Number between 0-100 as a string"
+  shares: String!
+
+  "Shares * 1,000,000 as a string"
+  allocation: String!
+
+  "ETH available to claim for the specific user"
+  claimableETH: BigInt!
+
+  "Total amount of ETH claimed from this Split"
+  claimedETH: BigInt!
+}

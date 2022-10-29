@@ -1,0 +1,71 @@
+specVersion: 0.0.2
+description: Ourz
+repository:
+schema:
+  file: ./src/schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: OurFactory
+    network: {{network}}
+    source:
+      address: "{{OurFactoryAddress}}"
+      abi: OurFactory
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - OurFactory
+      abis:
+        - name: OurFactory
+          file: ./abis/OurFactory.json
+      eventHandlers:
+        - event: SplitCreated(address,address,string,string)
+          handler: handleSplitCreated
+templates:
+  - kind: ethereum/contract
+    name: OurPylon
+    network: {{network}}
+    source:
+      abi: OurPylon
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mappings/pylon.ts
+      entities:
+        - OurPylon
+      abis:
+        - name: OurPylon
+          file: ./abis/OurPylon.json
+        - name: OurProxy
+          file: ./abis/OurProxy.json
+      eventHandlers:
+        # OurManagement.sol
+        - event: SplitSetup(address[])
+          handler: handleSplitSetup
+        - event: AddedOwner(address)
+          handler: handleAddedOwner
+        - event: RemovedOwner(address)
+          handler: handleRemovedOwner
+        - event: NameChanged(string)
+          handler: handleNameChanged
+        # OurMinter.sol
+        - event: ZNFTMinted(uint256)
+          handler: handleZNFTMinted
+        - event: EditionCreated(address,string,string,string,string,string,uint256,uint256)
+          handler: handleEditionCreated
+        # OurSplitter.sol
+        - event: ETHReceived(indexed address,uint256)
+          handler: handleETHReceived
+        - event: WindowIncremented(uint256,uint256)
+          handler: handleWindowIncremented
+        - event: TransferETH(address,uint256,bool)
+          handler: handleTransferETH
+        - event: TransferERC20(address,uint256)
+          handler: handleTransferERC20
+        # OurIntrospector.sol (currently unused)
+        - event: ERC777Received(address,address,address,uint256)
+          handler: handleERC777Received

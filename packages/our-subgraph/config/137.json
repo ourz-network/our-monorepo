@@ -1,0 +1,6 @@
+{
+  "network": "matic",
+  "startBlock": 21568380,
+  "OurFactoryAddress": "0x766169FBD57142Dc5B8Da074b8f7F078C4b58a88",
+  "OurPylonAddress": "0xb5Aa2676607986f2908F12e6E5a5D469f2cce289"
+}
