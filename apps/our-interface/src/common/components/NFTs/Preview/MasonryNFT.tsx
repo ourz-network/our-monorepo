@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from "next/link"; // Dynamic routing
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { useState, useEffect, useRef } from "react"; // React state management
 import { NFTCard } from "@/modules/subgraphs/utils";
 

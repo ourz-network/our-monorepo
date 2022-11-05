@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
-import Image from "next/image"; // Dynamic routing
+import Image from "next/legacy/image";
 import React, { useEffect, useState } from "react"; // React state management
 import { ethers } from "ethers";
 import { NFTPreview, PreviewComponents } from "@zoralabs/nft-components";
