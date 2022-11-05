@@ -11,8 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "yarn clean && tsc",
-    "build": "yarn run prepack",
+    "prepack": "pnpm clean && tsc",
+    "build": "pnpm run prepack",
     "test": "TZ='EST' jest",
     "clean": "rm -rf ./dist",
     "storybook": "start-storybook -p 6006",

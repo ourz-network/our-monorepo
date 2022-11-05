@@ -15,10 +15,10 @@
   "scripts": {
     "test": "jest",
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc",
-    "prepublish": "yarn build",
+    "build": "pnpm clean && tsc",
+    "prepublish": "pnpm build",
     "make-badges": "istanbul-badges-readme --coverageDir=./coverage",
-    "ci": "rm -rf node_modules && yarn install --frozen-lockfile",
+    "ci": "rm -rf node_modules && pnpm install --frozen-lockfile",
     "chain": "ganache-cli --networkId 50 --accounts 20 -e 100 -l 10000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'"
   },
   "dependencies": {

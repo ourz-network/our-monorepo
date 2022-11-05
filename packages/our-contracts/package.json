@@ -14,9 +14,9 @@
     "lint": "solhint ./contracts/*.sol",
     "compile": "hardhat clean && hardhat compile",
     "test": "hardhat test",
-    "build": "yarn compile && yarn package",
+    "build": "pnpm compile && pnpm package",
     "package": "rm -rf ./dist && tsc && cp typechain/*.d.ts dist/typechain && cp -R addresses dist && cp -R artifacts/contracts dist/artifacts && cp -R contracts dist",
-    "prepublish": "yarn pretty && yarn lint && yarn build"
+    "prepublish": "pnpm pretty && pnpm lint && pnpm build"
   },
   "dependencies": {
     "@ethereumjs/util": "^8.0.2",

@@ -13,21 +13,21 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1.0-dependencies-{{ checksum "yarn.lock" }}
+            - v1.0-dependencies-{{ checksum "pnpm.lock" }}
             # fallback to using the latest cache if no exact match is found
             - v1.0-dependencies-
 
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: pnpm
 
-      - run: yarn install
+      - run: pnpm install
 
-      - run: yarn add jest-junit -W
+      - run: pnpm add jest-junit -W
 
       - save_cache:
           paths:
             - node_modules
-          key: v1.0-dependencies-{{ checksum "yarn.lock" }}
+          key: v1.0-dependencies-{{ checksum "pnpm.lock" }}
 
       - persist_to_workspace:
           root: .
@@ -41,7 +41,7 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          command: yarn run test --ci 
+          command: pnpm run test --ci
           name: Run Tests
   build:
     <<: *env_defaults
@@ -50,7 +50,7 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          command: yarn run build
+          command: pnpm run build
           name: Build Typescript Package
 
 orbs:
@@ -65,6 +65,3 @@ workflows:
       - test:
           requires:
             - build
-
-
-

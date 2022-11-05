@@ -13,8 +13,8 @@
   "scripts": {
     "test": "jest",
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc",
-    "prepublish": "yarn build",
+    "build": "pnpm clean && tsc",
+    "prepublish": "pnpm build",
     "gen-graphql-types": "graphql-code-generator",
     "load-schemas": "./graph-schemas/get-schemas.sh"
   },
