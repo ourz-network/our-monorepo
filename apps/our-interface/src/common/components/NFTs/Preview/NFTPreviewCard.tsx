@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable consistent-return */
 import Link from "next/link"; // Dynamic routing
-import Image from "next/legacy/image";
+import Image from "next/image";
 import React, { useEffect, useState } from "react"; // React state management
 import { ethers } from "ethers";
 import { NFTPreview, PreviewComponents } from "@zoralabs/nft-components";
@@ -30,10 +30,12 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
         {post.mimeType.startsWith("image") && (
           <Image
             alt={`An image of the NFT: ${post.name}`}
-            layout="fill"
-            objectFit="cover"
             src={post.contentURI}
-          />
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: "cover"
+            }} />
         )}
       </div>
     </Link>

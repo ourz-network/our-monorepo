@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from "next/link"; // Dynamic routing
-import Image from "next/legacy/image";
+import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react"; // React state management
 import { NFTCard } from "@/modules/subgraphs/utils";
 
@@ -154,15 +154,17 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
               {post.contentURI && (
                 <Image
                   alt={`NFT #${tokenId} Thumbnail`}
-                  layout="fill"
-                  objectFit="contain"
                   quality={25}
                   src={post.contentURI}
                   placeholder="empty"
                   className="w-full h-full"
                   // sizes="50vw"
                   onLoadingComplete={(loadedMedia) => calcAspectRatio(loadedMedia)}
-                />
+                  fill
+                  sizes="100vw"
+                  style={{
+                    objectFit: "contain"
+                  }} />
               )}
             </div>
           </Link>

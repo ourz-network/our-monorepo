@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import makeBlockie from "ethereum-blockies-base64"; // Ethereum avatar
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { toTrimmedAddress } from "@/utils/index";
 import ProfileFormModal from "@/modules/Profile/ProfileFormModal";
 import { IProfile } from "@/mongodb/models/ProfileModel";
@@ -29,7 +29,10 @@ const ProfileHeader = ({
             width={80}
             height={80}
             className="rounded-full"
-          />
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
         </a>
       </div>
       <p className="text-xs text-dark-primary">
