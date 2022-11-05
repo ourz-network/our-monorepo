@@ -1,5 +1,5 @@
 {
-  "name": "@scaffold-eth/subgraph",
+  "name": "@ourz/our-subgraph",
   "license": "UNLICENSED",
   "version": "1.0.0",
   "scripts": {
@@ -12,8 +12,7 @@
     "deploy:polygon": "graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ourz-network/ourz-v1-polygon",
     "create-local": "graph create --node http://localhost:8020/ scaffold-eth/your-contract",
     "remove-local": "graph remove --node http://localhost:8020/ scaffold-eth/your-contract",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract",
-    "prepare": "husky install"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract"
   },
   "dependencies": {
     "@assemblyscript/loader": "^0.19.17",
@@ -22,10 +21,11 @@
     "assemblyscript-json": "^1.1.0"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.22.3",
-    "@types/react": "^17.0.30",
-    "husky": "^7.0.2",
+    "@graphprotocol/graph-cli": "^0.35.0",
+    "@types/react": "^18.0.24",
+    "eslint-config-custom": "workspace:*",
     "mustache": "^4.2.0",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "tsconfig": "workspace:*"
   }
 }
