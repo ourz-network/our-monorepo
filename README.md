@@ -1,3 +1,7 @@
+# monorepo still under active construction
+
+if you'd like to see the production/deployed code, visit the polyrepos
+
 # Turborepo kitchen sink starter
 
 This is an official starter Turborepo with multiple meta-frameworks all working in harmony and sharing packages.
