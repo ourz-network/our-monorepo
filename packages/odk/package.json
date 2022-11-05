@@ -42,7 +42,7 @@
     "@ethersproject/providers": "^5.5.2",
     "@ethersproject/solidity": "^5.5.0",
     "@ethersproject/transactions": "^5.5.0",
-    "@types/jest": "^27.4.0",
+    "@types/jest": "^29.2.2",
     "axios-mock-adapter": "^1.20.0",
     "eslint-config-custom": "workspace:*",
     "ganache-cli": "^6.12.2",

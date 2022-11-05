@@ -26,7 +26,7 @@
     "degene-sais-quoi": "^0.0.11",
     "ethers": "^5.5.3",
     "mongodb": "^4.3.1",
-    "next": "13.0.0",
+    "next": "13.0.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "remark-parse": "^10.0.1",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
-    "@types/react": "17.0.9",
+    "@types/react": "18.0.25",
     "cross-env": "^7.0.3",
     "eslint": "^8.7.0",
     "eslint-config-custom": "workspace:*",
