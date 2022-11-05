@@ -15,7 +15,7 @@
     "@emotion/css": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.3.0",
-    "@fontsource/source-serif-4": "^4.5.1",
+    "@next/font": "latest",
     "@ourz/odk": "workspace:*",
     "@ourz/our-components": "workspace:*",
     "@ourz/our-hooks": "workspace:*",
