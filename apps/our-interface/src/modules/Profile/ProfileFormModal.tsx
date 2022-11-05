@@ -242,222 +242,220 @@ const ProfileFormModal = ({
    * };
    */
 
-  return (
-    <>
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog
-          as="div"
-          static
-          className="overflow-y-auto fixed inset-0 z-10"
-          initialFocus={cancelButtonRef}
-          open={open}
-          onClose={setOpen}
-        >
-          <div className="flex justify-center items-center px-4 pt-4 pb-20 min-h-screen text-center sm:block sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Dialog.Overlay className="fixed inset-0 bg-opacity-100 transition-opacity bg-dark-background" />
-            </Transition.Child>
+  return <>
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog
+        as="div"
+        static
+        className="overflow-y-auto fixed inset-0 z-10"
+        initialFocus={cancelButtonRef}
+        open={open}
+        onClose={setOpen}
+      >
+        <div className="flex justify-center items-center px-4 pt-4 pb-20 min-h-screen text-center sm:block sm:p-0">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Dialog.Overlay className="fixed inset-0 bg-opacity-100 transition-opacity bg-dark-background" />
+          </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-              &#8203;
-            </span>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <div className="inline-block overflow-hidden text-left align-bottom shadow-xl transition-all transform bg-dark-background sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div className="px-4 pt-5 pb-4 rounded-sm border bg-dark-background border-dark-border sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    {/* Dialog Container */}
-                    {/* <div className="flex flex-shrink justify-center items-center mx-auto w-full h-1/2 bg-ourange-500 ll flex-shrin sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationIcon className="w-6 h-6 text-ourange-500" aria-hidden="true" />
-                    </div> */}
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <Dialog.Title
-                        as="h2"
-                        className="mx-2 text-2xl font-extrabold text-center text-dark-primary"
-                      >
-                        {!profileDetails ? "Create Profile" : "Edit Profile"}
-                      </Dialog.Title>
-                      <div className="mt-2">
-                        {/* <p className="text-sm text-dark-secondary">
-                          Are you sure you want to deactivate your account? All of your data will be permanently removed.
-                          This action cannot be undone.
-                        </p> */}
-                        <p className="mx-2 text-sm text-center text-dark-secondary">
-                          {!profileDetails
-                            ? "Choose a username to create an account. This is completely optional. Anyone can mint an NFT without a user profile."
-                            : "Click Submit or hit Enter on your keyboard."}
-                        </p>
-                      </div>
-                      <div className="py-1">
-                        <div className="border-t border-dark-border" />
-                      </div>
-                      <div className="mx-1 md:mx-0">
-                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                          <div className="overflow-hidden shadow sm:">
-                            <div className="p-4 sm:p-6">
-                              <div className="flex flex-col justify-items-center content-center items-center">
-                                {!profileDetails && (
-                                  <>
-                                    <div className="flex shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
-                                        @
-                                      </span>
-                                      <input
-                                        type="text"
-                                        placeholder="username"
-                                        aria-label="username"
-                                        className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                        {...register("desiredUsername", {
-                                          required: true, // JS only: <p>error message</p>
-                                          minLength: 3,
-                                          maxLength: 24,
+          {/* This element is to trick the browser into centering the modal contents. */}
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+            &#8203;
+          </span>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            enterTo="opacity-100 translate-y-0 sm:scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          >
+            <div className="inline-block overflow-hidden text-left align-bottom shadow-xl transition-all transform bg-dark-background sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="px-4 pt-5 pb-4 rounded-sm border bg-dark-background border-dark-border sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  {/* Dialog Container */}
+                  {/* <div className="flex flex-shrink justify-center items-center mx-auto w-full h-1/2 bg-ourange-500 ll flex-shrin sm:mx-0 sm:h-10 sm:w-10">
+                    <ExclamationIcon className="w-6 h-6 text-ourange-500" aria-hidden="true" />
+                  </div> */}
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <Dialog.Title
+                      as="h2"
+                      className="mx-2 text-2xl font-extrabold text-center text-dark-primary"
+                    >
+                      {!profileDetails ? "Create Profile" : "Edit Profile"}
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      {/* <p className="text-sm text-dark-secondary">
+                        Are you sure you want to deactivate your account? All of your data will be permanently removed.
+                        This action cannot be undone.
+                      </p> */}
+                      <p className="mx-2 text-sm text-center text-dark-secondary">
+                        {!profileDetails
+                          ? "Choose a username to create an account. This is completely optional. Anyone can mint an NFT without a user profile."
+                          : "Click Submit or hit Enter on your keyboard."}
+                      </p>
+                    </div>
+                    <div className="py-1">
+                      <div className="border-t border-dark-border" />
+                    </div>
+                    <div className="mx-1 md:mx-0">
+                      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="overflow-hidden shadow sm:">
+                          <div className="p-4 sm:p-6">
+                            <div className="flex flex-col justify-items-center content-center items-center">
+                              {!profileDetails && (
+                                <>
+                                  <div className="flex shadow-sm max-w-1/2">
+                                    <span className="inline-flex items-center px-3 text-sm border border-r-0 text-dark-primary border-dark-border md bg-dark-background">
+                                      @
+                                    </span>
+                                    <input
+                                      type="text"
+                                      placeholder="username"
+                                      aria-label="username"
+                                      className="block flex-1 w-full border border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                      {...register("desiredUsername", {
+                                        required: true, // JS only: <p>error message</p>
+                                        minLength: 3,
+                                        maxLength: 24,
 
-                                          pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
-                                          validate: {
-                                            available: async (v) => {
-                                              await checkUsername(v).then(
-                                                () => {},
-                                                () => {}
-                                              );
-                                            },
+                                        pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,24}$/,
+                                        validate: {
+                                          available: async (v) => {
+                                            await checkUsername(v).then(
+                                              () => {},
+                                              () => {}
+                                            );
                                           },
-                                        })}
-                                      />
-                                    </div>
-                                  </>
-                                )}
-                                {profileDetails && (
-                                  <>
-                                    <div className="flex mb-4 shadow-sm max-w-1/2">
-                                      <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
-                                        @
-                                      </span>
-                                      <input
-                                        type="text"
-                                        aria-label="username"
-                                        placeholder={`${user.username}`}
-                                        className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        {...register("desiredUsername", {
-                                          required: "error message", // JS only: <p>error message</p>
-                                          minLength: {
-                                            value: 3,
-                                            message: "error message", // JS only: <p>error message</p> TS only support string
-                                          },
-                                          maxLength: {
-                                            value: 24,
-                                            message: "error message", // JS only: <p>error message</p> TS only support string
-                                          },
-                                          validate: {
-                                            available: async (v: string) => {
-                                              setUser((prev) => ({
-                                                ...prev,
-                                                username: v,
-                                              }));
-                                              await checkUsername(v).then(
-                                                () => {},
-                                                () => {}
-                                              );
-                                            },
-                                          },
-                                        })}
-                                      />
-                                    </div>
-                                    <div className="grid grid-cols-3 grid-flow-row-dense gap-4 w-full">
-                                      {Object.keys(user).map((keyName: ProfileKeys["keyName"]) => {
-                                        if (
-                                          keyName !== "username" &&
-                                          keyName !== "ethAddress" &&
-                                          keyName !== "userId"
-                                        ) {
-                                          return (
-                                            <div
-                                              key={`${keyName}`}
-                                              className={
-                                                keyName === "name" ||
-                                                keyName === "bio" ||
-                                                keyName === "website"
-                                                  ? `col-span-full w-1/2 mx-auto`
-                                                  : `col-span-1 `
-                                              }
-                                            >
-                                              <label
-                                                htmlFor={`${keyName}`}
-                                                className="hidden text-sm font-medium"
-                                                aria-hidden="true"
-                                              >
-                                                {`${keyName}`}
-                                              </label>
-                                              <input
-                                                type="text"
-                                                placeholder={
-                                                  user[keyName] !== null
-                                                    ? `${user[keyName] as string}`
-                                                    : `${keyName}`
-                                                }
-                                                className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
-                                                {...register(keyName)}
-                                              />
-                                            </div>
-                                          );
-                                        }
+                                        },
                                       })}
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                              {errors.username && (
-                                <p className="justify-center place-items-center mx-auto w-2/3 text-center text-ourange-500 text-small">
-                                  3-24 alphanumeric characters
-                                  <br />
-                                  No spaces
-                                </p>
+                                    />
+                                  </div>
+                                </>
+                              )}
+                              {profileDetails && (
+                                <>
+                                  <div className="flex mb-4 shadow-sm max-w-1/2">
+                                    <span className="inline-flex items-center px-3 text-sm border border-r-0 bg-dark-accent text-dark-primary border-dark-border">
+                                      @
+                                    </span>
+                                    <input
+                                      type="text"
+                                      aria-label="username"
+                                      placeholder={`${user.username}`}
+                                      className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                      {...register("desiredUsername", {
+                                        required: "error message", // JS only: <p>error message</p>
+                                        minLength: {
+                                          value: 3,
+                                          message: "error message", // JS only: <p>error message</p> TS only support string
+                                        },
+                                        maxLength: {
+                                          value: 24,
+                                          message: "error message", // JS only: <p>error message</p> TS only support string
+                                        },
+                                        validate: {
+                                          available: async (v: string) => {
+                                            setUser((prev) => ({
+                                              ...prev,
+                                              username: v,
+                                            }));
+                                            await checkUsername(v).then(
+                                              () => {},
+                                              () => {}
+                                            );
+                                          },
+                                        },
+                                      })}
+                                    />
+                                  </div>
+                                  <div className="grid grid-cols-3 grid-flow-row-dense gap-4 w-full">
+                                    {Object.keys(user).map((keyName: ProfileKeys["keyName"]) => {
+                                      if (
+                                        keyName !== "username" &&
+                                        keyName !== "ethAddress" &&
+                                        keyName !== "userId"
+                                      ) {
+                                        return (
+                                          <div
+                                            key={`${keyName}`}
+                                            className={
+                                              keyName === "name" ||
+                                              keyName === "bio" ||
+                                              keyName === "website"
+                                                ? `col-span-full w-1/2 mx-auto`
+                                                : `col-span-1 `
+                                            }
+                                          >
+                                            <label
+                                              htmlFor={`${keyName}`}
+                                              className="hidden text-sm font-medium"
+                                              aria-hidden="true"
+                                            >
+                                              {`${keyName}`}
+                                            </label>
+                                            <input
+                                              type="text"
+                                              placeholder={
+                                                user[keyName] !== null
+                                                  ? `${user[keyName] as string}`
+                                                  : `${keyName}`
+                                              }
+                                              className="block flex-1 w-full text-dark-primary bg-dark-accent border-dark-border ne focus:ring-indigo-500 focus:border-indigo-500 md sm:text-sm"
+                                              {...register(keyName)}
+                                            />
+                                          </div>
+                                        );
+                                      }
+                                    })}
+                                  </div>
+                                </>
                               )}
                             </div>
+                            {errors.username && (
+                              <p className="justify-center place-items-center mx-auto w-2/3 text-center text-ourange-500 text-small">
+                                3-24 alphanumeric characters
+                                <br />
+                                No spaces
+                              </p>
+                            )}
                           </div>
-                          <div className="px-4 py-3 bg-dark-background sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button
-                              type="submit"
-                              className="inline-flex justify-center px-4 py-2 w-1/2 text-base font-medium text-white border border-transparent shadow-sm bg-ourange-500 hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-500 sm:ml-3 sm:w-auto sm:text-sm"
-                            >
-                              Submit
-                            </button>
-                            <button
-                              type="button"
-                              className="inline-flex justify-center px-4 py-2 mt-3 w-1/2 text-base font-medium bg-white border shadow-sm text-dark-secondary border-dark-border hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                              onClick={() => hide()}
-                              ref={cancelButtonRef}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </form>
-                      </div>
+                        </div>
+                        <div className="px-4 py-3 bg-dark-background sm:px-6 sm:flex sm:flex-row-reverse">
+                          <button
+                            type="submit"
+                            className="inline-flex justify-center px-4 py-2 w-1/2 text-base font-medium text-white border border-transparent shadow-sm bg-ourange-500 hover:bg-ourange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ourange-500 sm:ml-3 sm:w-auto sm:text-sm"
+                          >
+                            Submit
+                          </button>
+                          <button
+                            type="button"
+                            className="inline-flex justify-center px-4 py-2 mt-3 w-1/2 text-base font-medium bg-white border shadow-sm text-dark-secondary border-dark-border hover:bg-dark-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                            onClick={() => hide()}
+                            ref={cancelButtonRef}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
               </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition.Root>
-    </>
-  );
+            </div>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition.Root>
+  </>;
 };
 
 export default ProfileFormModal;

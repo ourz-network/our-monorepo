@@ -60,14 +60,14 @@ const Sidebar = ({
               <p className="font-bold">Owners:</p>
               {split?.owners.map((owner) => (
                 <div className="cursor-pointer hover:underline" key={owner.id}>
-                  <Link href={`/profile/${owner.id}`} passHref>
+                  <Link href={`/profile/${owner.id}`} passHref legacyBehavior>
                     {toTrimmedAddress(owner.id)}
                   </Link>
                 </div>
               ))}
               <p className="mt-2 font-bold">Creator:</p>
               <div className="cursor-pointer hover:underline" key={split.creator.id}>
-                <Link href={`/profile/${split.creator.id}`} passHref>
+                <Link href={`/profile/${split.creator.id}`} passHref legacyBehavior>
                   {toTrimmedAddress(split.creator.id)}
                 </Link>
               </div>

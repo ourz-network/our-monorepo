@@ -21,7 +21,7 @@ export const NavLink = ({ children, activeClassName = "active", ...props }: NavL
 
   return (
     // eslint-disable-next-line react/jsx-filename-extension
-    <Link {...props}>
+    <Link {...props} legacyBehavior>
       {React.cloneElement(child, {
         className: className || null,
       })}

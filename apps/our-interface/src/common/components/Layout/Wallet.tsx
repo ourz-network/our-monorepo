@@ -117,19 +117,19 @@ const Wallet = (): JSX.Element => {
                           <div className="grid relative gap-4 p-4 bg-dark-background">
                             {/* see comments above */}
                             {signerProfile ? (
-                              <Link href={`/profile/${signerProfile.username_lower}`} passHref>
+                              <Link href={`/profile/${signerProfile.username_lower}`} passHref legacyBehavior>
                                 <div className="p-2 w-full text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary">
                                   @{signerProfile.username}
                                 </div>
                               </Link>
                             ) : (
-                              <Link href={`/profile/${address}`} passHref>
+                              <Link href={`/profile/${address}`} passHref legacyBehavior>
                                 <div className="p-2 w-full text-base font-medium text-right cursor-pointer p- hover:bg-dark-background text-dark-primary">
                                   Profile
                                 </div>
                               </Link>
                             )}
-                            <Link href="/dashboard" passHref>
+                            <Link href="/dashboard" passHref legacyBehavior>
                               <div className="p-2 w-full text-base font-medium text-right whitespace-nowrap cursor-pointer p- hover:bg-dark-background text-dark-primary">
                                 Manage Splits
                               </div>
