@@ -73,18 +73,18 @@ const Navbar = (): JSX.Element => {
                       src={nfthacksmiley}
                     />
                   </div> */}
-                  <Link href="/" passHref>
-                    <a className="px-2">
-                      <p className="text-2xl lg:font-semibold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
-                        {/* "text-2xl font-bold leading-3 tracking-widest uppercase" */}
-                        OURZ
-                      </p>
-                      {/* <img
-                        className="w-auto h-8 sm:h-10"
-                        src=""
-                        alt="OURZ-V2"
-                      /> */}
-                    </a>
+                  <Link href="/" passHref className="px-2">
+
+                    <p className="text-2xl lg:font-semibold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
+                      {/* "text-2xl font-bold leading-3 tracking-widest uppercase" */}
+                      OURZ
+                    </p>
+                    {/* <img
+                      className="w-auto h-8 sm:h-10"
+                      src=""
+                      alt="OURZ-V2"
+                    /> */}
+
                   </Link>
                   <a
                     href="#"
@@ -219,8 +219,8 @@ const Navbar = (): JSX.Element => {
                     {/* If user is logged in, show link to their creations */}
                     {address && (
                       <h3>
-                        <Link href={`/profile/${address}`}>
-                          <a className="">Your Creations</a>
+                        <Link href={`/profile/${address}`} className="">
+                          Your Creations
                         </Link>
                       </h3>
                     )}

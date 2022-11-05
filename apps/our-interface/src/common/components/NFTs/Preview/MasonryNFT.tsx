@@ -110,7 +110,7 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
               query: { tokenId },
             }}
             passHref
-          >
+            legacyBehavior>
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <video
@@ -149,7 +149,7 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
               query: { tokenId },
             }}
             passHref
-          >
+            legacyBehavior>
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <Image
