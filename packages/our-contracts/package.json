@@ -14,7 +14,7 @@
     "lint": "solhint ./contracts/*.sol",
     "compile": "hardhat clean && hardhat compile",
     "test": "hardhat test",
-    "build": "pnpm compile && pnpm package",
+    "oldbuild": "pnpm compile && pnpm package",
     "package": "rm -rf ./dist && tsc && cp typechain/*.d.ts dist/typechain && cp -R addresses dist && cp -R artifacts/contracts dist/artifacts && cp -R contracts dist",
     "prepublish": "pnpm pretty && pnpm lint && pnpm build"
   },
