@@ -1,4 +1,4 @@
-import { useSplit, useSplitType } from "@ourz/our-hooks";
+import { useSplit, useSplitType } from "our-hooks";
 import { SplitDataContext } from "./SplitDataContext";
 
 export type SplitDataProviderProps = {
@@ -13,7 +13,12 @@ export type SplitDataProviderProps = {
     | any;
 };
 
-export const SplitDataProvider = ({ children, splitAddress, refreshInterval, initialData }: SplitDataProviderProps) => {
+export const SplitDataProvider = ({
+  children,
+  splitAddress,
+  refreshInterval,
+  initialData,
+}: SplitDataProviderProps) => {
   const { Split: splitInitial } = initialData || {};
 
   const split = useSplit(splitAddress, {
@@ -21,5 +26,9 @@ export const SplitDataProvider = ({ children, splitAddress, refreshInterval, ini
     refreshInterval: refreshInterval,
   });
 
-  return <SplitDataContext.Provider value={{ split }}>{children}</SplitDataContext.Provider>;
+  return (
+    <SplitDataContext.Provider value={{ split }}>
+      {children}
+    </SplitDataContext.Provider>
+  );
 };

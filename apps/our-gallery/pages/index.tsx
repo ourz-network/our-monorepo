@@ -1,10 +1,9 @@
 import { FetchStaticData } from "@zoralabs/nft-hooks";
 import { useContext, useLayoutEffect } from "react";
 import { GetServerSideProps } from "next";
-import styled from "@emotion/styled";
 import { Box, Spinner, useTheme } from "degene-sais-quoi";
 import Head from "../components/head";
-import { PageWrapper } from "../styles/components";
+// import { PageWrapper } from "../styles/components";
 import { NFTList } from "../components/NFTList";
 import { SubdomainContext } from "../context/SubdomainContext";
 import { getAddressFromENS } from "../utils/ethers";
@@ -19,6 +18,7 @@ export default function Home({
   config?: any;
   noSubdomain?: boolean;
 }) {
+  console.log(tokens, config);
   const { userConfig } = useContext(SubdomainContext);
   const { setMode, setAccent } = useTheme();
   useLayoutEffect(() => {
@@ -30,7 +30,8 @@ export default function Home({
 
   // eslint-disable-next-line react/jsx-filename-extension
   return (
-    <IndexWrapper>
+    <>
+      {/* <IndexWrapper> */}
       {noSubdomain ? (
         //TODO make homepage for subdomain-less url
         <Box
@@ -51,7 +52,8 @@ export default function Home({
           <NFTList tokens={tokens} />
         </>
       )}
-    </IndexWrapper>
+      {/* </IndexWrapper> */}
+    </>
   );
 }
 
@@ -98,6 +100,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const IndexWrapper = styled(PageWrapper)`
-  max-width: var(--content-width-xl);
-`;
+// const IndexWrapper = styled(PageWrapper)`
+//   max-width: var(--content-width-xl);
+// `;

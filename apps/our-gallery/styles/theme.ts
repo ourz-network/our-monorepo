@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import * as mixins from "./mixins";
 
 export const mediaConfigurationStyles = {
@@ -43,15 +42,15 @@ export const mediaConfigurationStyles = {
             return ``;
         }
       };
-      return css`
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-rows: auto auto;
-        grid-auto-columns: 1fr;
-        padding: ${theme.textBlockPadding};
-        border-top: ${theme.borderStyle};
-        ${getActiveStyle()};
-      `;
+      // return css`
+      //   display: grid;
+      //   grid-auto-flow: column;
+      //   grid-template-rows: auto auto;
+      //   grid-auto-columns: 1fr;
+      //   padding: ${theme.textBlockPadding};
+      //   border-top: ${theme.borderStyle};
+      //   ${getActiveStyle()};
+      // `;
     },
     /*
     fullMediaWrapper: () => css`

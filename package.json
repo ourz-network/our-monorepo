@@ -1,20 +1,39 @@
 {
+  "name": "our-monorepo",
+  "version": "0.0.0",
   "private": true,
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "scripts": {
+    "full-turbo": "pnpm lint && pnpm build",
     "build": "turbo run build",
+    "dev": "turbo run dev --parallel --continue",
     "clean": "turbo run clean",
-    "dev": "turbo run dev --no-cache --parallel --continue",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
-    "test": "turbo run test"
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,html,css}\"",
+    "lint": "turbo run lint && pnpm lint:language",
+    "lint:language": "alex .",
+    "test": "turbo run test",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "prettier": "^2.7.1",
+    "alex": "^10.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
+    "prettier": "latest",
     "turbo": "latest"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": [
+      "prettier --write"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{js,jsx,ts,tsx,md}": [
+      "alex"
+    ]
   },
   "engines": {
     "node": ">=14.0.0"

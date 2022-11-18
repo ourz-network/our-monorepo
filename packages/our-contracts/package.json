@@ -1,5 +1,5 @@
 {
-  "name": "@ourz/our-contracts",
+  "name": "our-contracts",
   "description": "## These contracts enable **creators**, **builders**, and **collaborators of all kind** to receive royalties for their collective work, forever",
   "version": "1.0.6",
   "main": "./dist/index.js",

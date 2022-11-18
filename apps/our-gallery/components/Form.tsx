@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { css } from "@emotion/react";
 import { useWeb3Wallet } from "@zoralabs/simple-wallet-provider";
 import { Box, BoxProps, Button, Input, Stack, Text } from "degene-sais-quoi";
 import { IconClose } from "degene-sais-quoi";
@@ -117,10 +116,10 @@ const SettingsForm = ({ subdomain, address, userConfig, setShowForm }) => {
     <div className="modal">
       <div className="modal-content">
         <div
-          css={css`
-            display: inline-flex;
-            place-self: end;
-          `}
+        // css={css`
+        //   display: inline-flex;
+        //   place-self: end;
+        // `}
         >
           <Button tone="red" onClick={() => setShowForm(() => false)}>
             <IconClose color="red" />
@@ -130,10 +129,10 @@ const SettingsForm = ({ subdomain, address, userConfig, setShowForm }) => {
           {fields.map((field) => (
             <div
               key={field}
-              css={css`
-                text-transform: none;
-                color: var(--colors-text);
-              `}
+              // css={css`
+              //   text-transform: none;
+              //   color: var(--colors-text);
+              // `}
             >
               <Box
                 display="flex"

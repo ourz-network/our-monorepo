@@ -1,6 +1,6 @@
 import { Box } from "degene-sais-quoi";
 import { useState } from "react";
-import { HexColorPicker, HexColorInput } from "react-colorful";
+// import { HexColorPicker, HexColorInput } from "react-colorful";
 
 const ColorPicker = ({ name, currentValue, updateColor }) => {
   const [color, setColor] = useState(currentValue ?? "#000");
@@ -12,8 +12,8 @@ const ColorPicker = ({ name, currentValue, updateColor }) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap="2" marginTop="1">
-      <HexColorPicker color={color} onChange={handleColorChange} />
-      <HexColorInput color={color} onChange={handleColorChange} />
+      {/* <HexColorPicker color={color} onChange={handleColorChange} />
+      <HexColorInput color={color} onChange={handleColorChange} /> */}
     </Box>
   );
 };

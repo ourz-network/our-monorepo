@@ -1,5 +1,5 @@
 {
-  "name": "@ourz/odk",
+  "name": "odk",
   "version": "1.0.8",
   "description": "SDK for interacting with ourz.network. Fork of @zoralabs/zdk",
   "author": "ourz-network",
@@ -23,9 +23,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",
-    "@ourz/our-contracts": "^1.0.6",
-    "@zoralabs/core": "^1.0.7",
-    "@zoralabs/zdk": "^1.2.6",
+    "our-contracts": "^1.0.6",
+    "@zoralabs/core": "latest",
+    "@zoralabs/zdk": "latest",
     "axios": "^0.25.0",
     "ethers": "^5.5.3",
     "tiny-invariant": "^1.2.0",

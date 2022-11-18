@@ -2,7 +2,6 @@ import { NFTFullPage } from "@ourz/our-components";
 import { useRouter } from "next/router";
 import { FetchStaticData } from "@zoralabs/nft-hooks";
 import { GetServerSideProps } from "next";
-import { PageWrapper } from "../../../styles/components";
 import Head from "../../../components/head";
 import { useContext, useLayoutEffect } from "react";
 import { SubdomainContext } from "../../../context/SubdomainContext";
@@ -42,14 +41,14 @@ export default function Piece({ name, description, image, initialData }: PiecePr
         description={description}
         ogImage={image}
       />
-      <PageWrapper>
-        <NFTFullPage
-          useBetaIndexer={true}
-          contract={query.contract as string}
-          id={query.id as string}
-          initialData={initialData}
-        />
-      </PageWrapper>
+      {/* <PageWrapper> */}
+      <NFTFullPage
+        useBetaIndexer={true}
+        contract={query.contract as string}
+        id={query.id as string}
+        initialData={initialData}
+      />
+      {/* </PageWrapper> */}
     </>
   );
 }

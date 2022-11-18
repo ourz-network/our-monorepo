@@ -1,5 +1,5 @@
 {
-  "name": "@ourz/our-components",
+  "name": "our-components",
   "version": "0.0.19",
   "description": "React Components for displaying ourz.network splits, NFTs, and Editions. Fork of @zoralabs/nft-components.",
   "author": "ourz-network",
@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@emotion/css": "^11.1.3",
-    "@ourz/odk": "workspace:*",
-    "@ourz/our-hooks": "workspace:*",
+    "odk": "workspace:*",
+    "our-hooks": "workspace:*",
     "@types/react": "^18.0.25",
     "@zoralabs/nft-hooks": "latest",
     "degene-sais-quoi": "latest",

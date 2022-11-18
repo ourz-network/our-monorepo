@@ -9,7 +9,7 @@ export const findUser = async ({
   subdomain: string;
 }): Promise<{ config: UserConfig; contractAddresses: string[]; fetchAgent: MediaFetchAgent }> => {
   const client = await clientPromise;
-  const collection = await client.db().collection("ourGallery");
+  const collection = await client.db("ourGallery").collection("ourGallery");
   const config = await collection.findOne({ _id: `${subdomain}` });
 
   let contractAddresses: string | string[] =

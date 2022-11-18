@@ -2,17 +2,23 @@ import { Fragment, useContext } from "react";
 import { EditionDataContext } from "../context/EditionDataContext";
 import { InfoContainer, InfoContainerProps } from "./InfoContainer";
 import type { StyleProps } from "../utils/StyleTypes";
-import type { EditionDetailsFragment } from "@ourz/our-hooks/dist/graph-queries/ourz-graph-types";
+import type { EditionDetailsFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
 
 type SupplyInfoProps = {
   showPerpetual?: boolean;
 } & StyleProps;
 
-export const SupplyInfo = ({ showPerpetual = true, className }: SupplyInfoProps) => {
+export const SupplyInfo = ({
+  showPerpetual = true,
+  className,
+}: SupplyInfoProps) => {
   const { edition } = useContext(EditionDataContext);
   // const { getStyles, getString } = useMediaContext();
 
-  const SupplyInfoWrapper = ({ children, ...containerArgs }: InfoContainerProps) => (
+  const SupplyInfoWrapper = ({
+    children,
+    ...containerArgs
+  }: InfoContainerProps) => (
     <InfoContainer {...containerArgs} className={className}>
       {children}
     </InfoContainer>
@@ -24,11 +30,17 @@ export const SupplyInfo = ({ showPerpetual = true, className }: SupplyInfoProps)
 
   const { data } = edition;
 
-  if ((data as EditionDetailsFragment & { totalSupply: number })?.totalSupply && data?.editionSize) {
+  if (
+    (data as EditionDetailsFragment & { totalSupply: number })?.totalSupply &&
+    data?.editionSize
+  ) {
     return (
       <Fragment>
         <SupplyInfoWrapper titleString="EDITION_SUPPLY">
-          {`${(data as EditionDetailsFragment & { totalSupply: number }).totalSupply}/${data.editionSize} Minted`}
+          {`${
+            (data as EditionDetailsFragment & { totalSupply: number })
+              .totalSupply
+          }/${data.editionSize} Minted`}
           {/* <PricingString pricing={data.pricing.perpetual.ask.pricing} /> */}
         </SupplyInfoWrapper>
       </Fragment>

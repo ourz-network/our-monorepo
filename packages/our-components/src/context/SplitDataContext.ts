@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { useSplitType } from "@ourz/our-hooks";
+import type { useSplitType } from "our-hooks";
 
 export type SplitDataContext = {
   split: useSplitType;

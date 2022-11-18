@@ -1,65 +1,64 @@
-import { css } from "@emotion/react";
 import { returnBreakpoint } from "./breakpoints";
 
-export const media = {
-  mobile: (...args: [TemplateStringsArray]) => css`
-    @media (min-width: ${returnBreakpoint("mobile")}) {
-      ${css(...args)}
-    }
-  `,
-  tablet: (...args: [TemplateStringsArray]) => css`
-    @media (min-width: ${returnBreakpoint("tablet")}) {
-      ${css(...args)}
-    }
-  `,
-  laptop: (...args: [TemplateStringsArray]) => css`
-    @media (min-width: ${returnBreakpoint("laptop")}) {
-      ${css(...args)}
-    }
-  `,
-  desktop: (...args: [TemplateStringsArray]) => css`
-    @media (min-width: ${returnBreakpoint("desktop")}) {
-      ${css(...args)}
-    }
-  `,
-  xl: (...args: [TemplateStringsArray]) => css`
-    @media (min-width: ${returnBreakpoint("xl")}) {
-      ${css(...args)}
-    }
-  `,
-  hover: (...args: [TemplateStringsArray]) => css`
-    @media (hover: hover) {
-      &:hover {
-        ${css(...args)}
-      }
-    }
-  `,
-  canHover: (...args: [TemplateStringsArray]) => css`
-    @media (hover: hover) {
-      ${css(...args)}
-    }
-  `,
-  noHover: (...args: [TemplateStringsArray]) => css`
-    @media (hover: none) {
-      ${css(...args)}
-    }
-  `,
-};
+// export const media = {
+//   mobile: (...args: [TemplateStringsArray]) => css`
+//     @media (min-width: ${returnBreakpoint("mobile")}) {
+//       ${css(...args)}
+//     }
+//   `,
+//   tablet: (...args: [TemplateStringsArray]) => css`
+//     @media (min-width: ${returnBreakpoint("tablet")}) {
+//       ${css(...args)}
+//     }
+//   `,
+//   laptop: (...args: [TemplateStringsArray]) => css`
+//     @media (min-width: ${returnBreakpoint("laptop")}) {
+//       ${css(...args)}
+//     }
+//   `,
+//   desktop: (...args: [TemplateStringsArray]) => css`
+//     @media (min-width: ${returnBreakpoint("desktop")}) {
+//       ${css(...args)}
+//     }
+//   `,
+//   xl: (...args: [TemplateStringsArray]) => css`
+//     @media (min-width: ${returnBreakpoint("xl")}) {
+//       ${css(...args)}
+//     }
+//   `,
+//   hover: (...args: [TemplateStringsArray]) => css`
+//     @media (hover: hover) {
+//       &:hover {
+//         ${css(...args)}
+//       }
+//     }
+//   `,
+//   canHover: (...args: [TemplateStringsArray]) => css`
+//     @media (hover: hover) {
+//       ${css(...args)}
+//     }
+//   `,
+//   noHover: (...args: [TemplateStringsArray]) => css`
+//     @media (hover: none) {
+//       ${css(...args)}
+//     }
+//   `,
+// };
 
-export const absoluteCentered = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto !important;
-`;
+// export const absoluteCentered = css`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   margin: auto !important;
+// `;
 
-export const absoluteFullCentered = css`
-  width: 100%;
-  height: 100%;
-  ${absoluteCentered};
-`;
+// export const absoluteFullCentered = css`
+//   width: 100%;
+//   height: 100%;
+//   ${absoluteCentered};
+// `;
 
 // export const buttonInit = css`
 //   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
@@ -87,8 +86,8 @@ export const absoluteFullCentered = css`
 //   border-radius: 50rem;
 // `;
 
-export const pixelScaleImage = css`
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
-`;
+// export const pixelScaleImage = css`
+//   image-rendering: pixelated;
+//   image-rendering: -moz-crisp-edges;
+//   image-rendering: crisp-edges;
+// `;

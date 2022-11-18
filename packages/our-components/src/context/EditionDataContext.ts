@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { useEditionType } from "@ourz/our-hooks";
+import type { useEditionType } from "our-hooks";
 
 export type EditionDataContext = {
   edition: useEditionType;

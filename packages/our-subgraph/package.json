@@ -1,5 +1,5 @@
 {
-  "name": "@ourz/our-subgraph",
+  "name": "our-subgraph",
   "license": "UNLICENSED",
   "version": "1.0.0",
   "scripts": {

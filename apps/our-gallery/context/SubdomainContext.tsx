@@ -13,11 +13,15 @@ export type UserConfig = {
   accent?: "blue" | "green" | "indigo" | "orange" | "pink" | "purple" | "red" | "teal" | "yellow";
 };
 
-export const SubdomainContext: Context<{ userConfig: UserConfig; subdomain: string }> =
-  createContext({
-    userConfig: {},
-    subdomain: "",
-  });
+export const SubdomainContext: Context<{
+  userConfig: UserConfig;
+  subdomain: string;
+  domainAddress: string;
+}> = createContext({
+  userConfig: {},
+  domainAddress: "",
+  subdomain: "",
+});
 
 const SubdomainContextProvider = ({
   subdomain,
@@ -28,20 +32,19 @@ const SubdomainContextProvider = ({
   userConfig: UserConfig;
   children: ReactNode;
 }) => {
-  const [address, setAddress] = useState(undefined);
-
+  const [domainAddress, setDomainAddress] = useState("");
   const [config, setConfig] = useState<UserConfig>({
     subdomain: subdomain,
     title: subdomain,
     networkId: 1,
-    curator: address,
-    contracts: JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS),
+    curator: domainAddress,
+    // contracts: JSON.parse(process.env.NEXT_PUBLIC_MAINNET_CONTRACTS),
   });
 
   useEffect(() => {
     async function getAddress() {
       const addr = await getAddressFromENS(subdomain);
-      setAddress(() => addr);
+      setDomainAddress(() => addr);
     }
 
     if (subdomain && subdomain !== "www") {
@@ -61,6 +64,7 @@ const SubdomainContextProvider = ({
         value={{
           userConfig: config,
           subdomain: subdomain,
+          domainAddress: domainAddress,
         }}
       >
         {children}

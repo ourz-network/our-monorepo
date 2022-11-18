@@ -1,0 +1,20 @@
+/* eslint-disable import/no-default-export */
+/* eslint-disable react/jsx-props-no-spreading */
+import { Analytics } from '@vercel/analytics/react'
+// import { SessionProvider } from "next-auth/react";
+// import type { Session } from "next-auth";
+
+import '@/styles/globals.css'
+
+import type { AppProps } from 'next/app'
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      {/* <SessionProvider session={session}> */}
+      <Component {...pageProps} />
+      <Analytics />
+      {/* </SessionProvider> */}
+    </>
+  )
+}

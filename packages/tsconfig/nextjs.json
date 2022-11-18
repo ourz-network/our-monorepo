@@ -3,15 +3,28 @@
   "display": "Next.js",
   "extends": "./base.json",
   "compilerOptions": {
-    "allowJs": true,
-    "declaration": false,
-    "declarationMap": false,
-    "incremental": true,
-    "jsx": "preserve",
+    "target": "esnext",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
+    "allowJs": true,
     "noEmit": true,
+    "incremental": true,
     "resolveJsonModule": true,
-    "target": "es5"
-  }
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/data/*": ["data/*"],
+      "@/layouts/*": ["layouts/*"],
+      "@/lib/*": ["lib/*"],
+      "@/styles/*": ["styles/*"],
+      "@/types": ["types/index"],
+      "@/types/*": ["types/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": [".github", ".next", ".vscode", "node_modules", "src/types/**/*.*"]
 }

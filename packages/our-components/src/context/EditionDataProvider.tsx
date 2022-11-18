@@ -1,4 +1,4 @@
-import { useEdition, useEditionType } from "@ourz/our-hooks";
+import { useEdition, useEditionType } from "our-hooks";
 import { EditionDataContext } from "./EditionDataContext";
 
 export type EditionDataProviderProps = {
@@ -14,7 +14,12 @@ export type EditionDataProviderProps = {
     | any;
 };
 
-export const EditionDataProvider = ({ children, contract, refreshInterval, initialData }: EditionDataProviderProps) => {
+export const EditionDataProvider = ({
+  children,
+  contract,
+  refreshInterval,
+  initialData,
+}: EditionDataProviderProps) => {
   const { edition: editionInitial } = initialData || {};
 
   const edition = useEdition(contract, {
@@ -22,5 +27,9 @@ export const EditionDataProvider = ({ children, contract, refreshInterval, initi
     refreshInterval: refreshInterval,
   });
 
-  return <EditionDataContext.Provider value={{ edition }}>{children}</EditionDataContext.Provider>;
+  return (
+    <EditionDataContext.Provider value={{ edition }}>
+      {children}
+    </EditionDataContext.Provider>
+  );
 };

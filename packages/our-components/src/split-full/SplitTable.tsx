@@ -1,8 +1,8 @@
 import { Box, Text } from "degene-sais-quoi";
-import { useENSAddress } from "@ourz/our-hooks";
+import { useENSAddress } from "our-hooks";
 import { useContext } from "react";
 import { MediaContext } from "../context/MediaContext";
-import type { RecipientShortFragment } from "@ourz/our-hooks/dist/graph-queries/ourz-graph-types";
+import type { RecipientShortFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
 
 const SplitTable = ({
   recipients,

@@ -1,11 +1,26 @@
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer, PieProps } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  ResponsiveContainer,
+  PieProps,
+} from "recharts";
 import { useState } from "react";
 import type {
   RecipientDetailsFragment,
   RecipientShortFragment,
-} from "@ourz/our-hooks/dist/graph-queries/ourz-graph-types";
+} from "our-hooks/dist/graph-queries/ourz-graph-types";
 
-const COLORS = ["#FFDAC1", "#E2F0CB", "#B5EAD7", "#C7CEEA", "#D9C5F7", "#FF9AA2", "#FFB7B2"];
+const COLORS = [
+  "#FFDAC1",
+  "#E2F0CB",
+  "#B5EAD7",
+  "#C7CEEA",
+  "#D9C5F7",
+  "#FF9AA2",
+  "#FFB7B2",
+];
 
 const SplitPie = ({
   recipients,
@@ -24,9 +39,22 @@ const SplitPie = ({
     });
   };
 
-  const renderActiveShape = (props: PieProps & { payload: RecipientDetailsFragment; percent: number }) => {
+  const renderActiveShape = (
+    props: PieProps & { payload: RecipientDetailsFragment; percent: number }
+  ) => {
     const RADIAN = Math.PI / 180;
-    const { cx, cy, minAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
+    const {
+      cx,
+      cy,
+      minAngle,
+      innerRadius,
+      outerRadius,
+      startAngle,
+      endAngle,
+      fill,
+      payload,
+      percent,
+    } = props;
     const sin = Math.sin(-RADIAN * (minAngle as number));
     const cos = Math.cos(-RADIAN * (minAngle as number));
     const sx = Number(cx) + (Number(outerRadius) + 10) * cos;
@@ -39,7 +67,13 @@ const SplitPie = ({
 
     return (
       <g>
-        <text x={cx as number} y={cy as number} dy={6 as number} textAnchor="middle" fill="#FFFFFF">
+        <text
+          x={cx as number}
+          y={cy as number}
+          dy={6 as number}
+          textAnchor="middle"
+          fill="#FFFFFF"
+        >
           1Ξ
         </text>
         <Sector
@@ -60,14 +94,32 @@ const SplitPie = ({
           outerRadius={(outerRadius as number) + 10}
           fill={fill as string}
         />
-        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+        <path
+          d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+          stroke={fill}
+          fill="none"
+        />
         <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#FFFFFF">{`${
+        <text
+          x={ex + (cos >= 0 ? 1 : -1) * 12}
+          y={ey}
+          textAnchor={textAnchor}
+          fill="#FFFFFF"
+        >{`${
           payload.name.length <= 14
             ? (payload.name as string)
-            : (payload.name.substring(0, Number(payload.name.indexOf(" ")) + 7) as string)
+            : (payload.name.substring(
+                0,
+                Number(payload.name.indexOf(" ")) + 7
+              ) as string)
         }`}</text>
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#B2B2B2">
+        <text
+          x={ex + (cos >= 0 ? 1 : -1) * 12}
+          y={ey}
+          dy={18}
+          textAnchor={textAnchor}
+          fill="#B2B2B2"
+        >
           {`${percent.toFixed(6) as string}Ξ`}
         </text>
       </g>
@@ -90,9 +142,13 @@ const SplitPie = ({
           dataKey="shares"
           onMouseEnter={onPieEnter}
           startAngle={!secondarySale ? 0 : 180}
-          endAngle={!secondarySale ? 360 : -180}>
+          endAngle={!secondarySale ? 360 : -180}
+        >
           {recipients.map((entry, index) => (
-            <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${entry.name}`}
+              fill={COLORS[index % COLORS.length]}
+            />
           ))}
         </Pie>
       </PieChart>
