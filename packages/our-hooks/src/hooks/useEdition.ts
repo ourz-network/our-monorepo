@@ -2,22 +2,23 @@ import {
   useContext,
   // useEffect, useState
 } from 'react';
-import { OurFetchContext } from '../context/OurFetchContext';
-import { EditionDetailsFragment } from 'src/graph-queries/ourz-graph-types';
 import useSWR from 'swr';
+
+import { OurFetchContext } from '../context/OurFetchContext';
+import { EditionDetailsFragment } from '../graph-queries/ourz-graph-types';
 // import { Edition } from '@ourz/odk';
 
-export type useEditionType = {
+export interface useEditionType {
   // saleInfoLoaded: boolean;
   editionLoaded: boolean;
   error?: string;
   data?: EditionDetailsFragment;
-};
+}
 
-type OptionsType = {
+interface OptionsType {
   refreshInterval?: number;
   initialData?: any;
-};
+}
 
 /**
  * Fetches ZNFT-Edition data from the Graph
@@ -27,7 +28,7 @@ type OptionsType = {
  * @returns useEditionType hook results include loading, error, and ZNFT-Edition metadata.
  */
 export function useEdition(editionAddress: string, options: OptionsType = {}): useEditionType {
-  const fetcher = useContext(OurFetchContext);
+  const { fetcher } = useContext(OurFetchContext);
 
   const { data, error } = useSWR<EditionDetailsFragment>(
     editionAddress,
@@ -48,7 +49,7 @@ export function useEdition(editionAddress: string, options: OptionsType = {}): u
 
   return {
     editionLoaded: !!data,
-    error: error,
-    data: { ...data, ...options?.initialData },
+    error,
+    data: { ...data, ...options.initialData },
   };
 }

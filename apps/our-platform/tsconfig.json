@@ -7,13 +7,16 @@
     ".next/types/**/*.ts",
     "../bkup/types/common.ts"
   ],
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "jsx": "preserve"
   }
 }

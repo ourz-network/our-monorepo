@@ -1,16 +1,18 @@
+/* eslint-disable no-plusplus */
 import * as bytes from '@ethersproject/bytes';
 import { isAddress } from '@ethersproject/address';
 
-import { FetchWithTimeout } from './FetchWithTimeout';
 import { RPC_URL_BY_NETWORK } from '../constants/urls';
 import { ENS_REVERSE_LOOKUP_CONTRACT_BY_NETWORK } from '../constants/addresses';
+
+import { FetchWithTimeout } from './FetchWithTimeout';
 
 function parseHexNumber(hex: string) {
   return parseInt(bytes.hexStripZeros(`0x${hex}`), 16);
 }
 
 function processReturnData(result: string) {
-  let pieces = [];
+  const pieces = [];
   for (let i = 2; i < result.length; i += 64) {
     pieces.push(result.substr(i, 64));
   }
@@ -22,8 +24,8 @@ function processReturnData(result: string) {
   }
 
   for (let i = 0; i < numberEntries; i++) {
-    let pieceId = offsets[i] / 32 + 2;
-    let strLen = parseHexNumber(pieces[pieceId]);
+    const pieceId = offsets[i] / 32 + 2;
+    const strLen = parseHexNumber(pieces[pieceId]);
     const strHex = result.substr((pieceId + 1) * 64 + 2, strLen * 2);
     addresses.push(Buffer.from(strHex, 'hex').toString());
   }
@@ -38,13 +40,13 @@ export async function reverseResolveEnsAddresses(
   if (!ENS_REVERSE_LOOKUP_CONTRACT_BY_NETWORK[networkId]) {
     throw new Error('Undefined ENS lookup for network');
   }
-  const mapping = addresses.reduce((last, at) => {
+  const mapping = addresses.reduce<Record<string, string>>((last, at) => {
     if (!isAddress(at)) {
       return last;
     }
     last[at] = at;
     return last;
-  }, {} as { [address: string]: string });
+  }, {});
   const mappingKeys = Object.keys(mapping);
 
   const requestData = bytes.hexConcat([
@@ -78,8 +80,8 @@ export async function reverseResolveEnsAddresses(
   if (resultAddresses.length !== mappingKeys.length) {
     throw new Error('Wrong address return length');
   }
-  return mappingKeys.reduce((last, at, index) => {
+  return mappingKeys.reduce<Record<string, string>>((last, at, index) => {
     last[at] = resultAddresses[index];
     return last;
-  }, {} as { [name: string]: string });
+  }, {});
 }

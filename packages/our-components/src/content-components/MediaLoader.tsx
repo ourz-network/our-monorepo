@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import type { RenderRequest } from "./RendererConfig";
 
 function getNormalizedURI(
@@ -67,20 +68,20 @@ export const MediaLoader = ({
   error: string | undefined;
 }) => {
   if (!loading && !error) {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
   }
   if (error) {
     return (
-      <React.Fragment>
+      <>
         <span {...getStyles("mediaObjectMessage")}>Error loading content</span>
         {children}
-      </React.Fragment>
+      </>
     );
   }
   return (
-    <React.Fragment>
+    <>
       <span {...getStyles("mediaLoader")}>Loading...</span>
       {children}
-    </React.Fragment>
+    </>
   );
 };

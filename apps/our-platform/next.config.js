@@ -9,6 +9,7 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
+  reactStrictMode: true,
   eslint: {
     dirs: [
       'src/app',
@@ -51,7 +52,6 @@ const nextConfig = {
     // allowMiddlewareResponseBody: true,
     // serverComponentsExternalPackages: ["mongodb"],
   },
-  reactStrictMode: true,
   swcMinify: false, // Required to fix: https://nextjs.org/docs/messages/failed-loading-swc,
   // webpack: (config, { isServer }) => {
   //   if (!isServer) {

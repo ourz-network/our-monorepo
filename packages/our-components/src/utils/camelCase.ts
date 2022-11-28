@@ -19,7 +19,7 @@ export const camelCase = (text: string) => {
       )
       .join('');
     
-  } else {
+  } 
     return ''
-  }
+  
 }

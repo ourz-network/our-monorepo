@@ -1,18 +1,19 @@
-import { UserDetailsFragment } from './../graph-queries/ourz-graph-types';
 import { useContext } from 'react';
-import { OurFetchContext } from '../context/OurFetchContext';
 import useSWR from 'swr';
 
-export type useUserType = {
+import { OurFetchContext } from '../context/OurFetchContext';
+import { UserDetailsFragment } from "../graph-queries/ourz-graph-types";
+
+export interface useUserType {
   userLoaded: boolean;
   error?: string;
   data?: UserDetailsFragment;
-};
+}
 
-type OptionsType = {
+interface OptionsType {
   refreshInterval?: number;
   initialData?: any;
-};
+}
 
 /**
  * Fetches OURZ User data from the Graph
@@ -22,7 +23,7 @@ type OptionsType = {
  * @returns useUserType hook results include loading, error, and User split information.
  */
 export function useUser(userAddress: string, options: OptionsType = {}): useUserType {
-  const fetcher = useContext(OurFetchContext);
+  const { fetcher } = useContext(OurFetchContext);
 
   const { data, error } = useSWR<UserDetailsFragment>(
     userAddress,
@@ -32,7 +33,7 @@ export function useUser(userAddress: string, options: OptionsType = {}): useUser
 
   return {
     userLoaded: !!data,
-    error: error,
+    error,
     data: { ...data, ...options.initialData },
   };
 }

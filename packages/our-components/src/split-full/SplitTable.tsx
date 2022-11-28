@@ -1,45 +1,47 @@
-import { Box, Text } from "degene-sais-quoi";
-import { useENSAddress } from "our-hooks";
-import { useContext } from "react";
-import { MediaContext } from "../context/MediaContext";
-import type { RecipientShortFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
+import { Box, Text } from 'degene-sais-quoi'
+import { useENSAddress } from 'our-hooks'
+import { useContext } from 'react'
+import type { RecipientShortFragment } from 'our-hooks/dist/graph-queries/ourz-graph-types'
+
+import { MediaContext } from '../context/MediaContext'
 
 const SplitTable = ({
   recipients,
   customLink,
 }: {
-  recipients: RecipientShortFragment[];
-  customLink?: string;
+  recipients: RecipientShortFragment[]
+  customLink?: string
 }): JSX.Element => {
-  const { networkId } = useContext(MediaContext);
+  const { networkId } = useContext(MediaContext)
   return (
     <Box>
-      <table className="">
+      <table className=''>
         <thead>
           <tr>
-            <th className="">
-              <Text variant="label">Address</Text>
+            <th className=''>
+              <Text variant='label'>Address</Text>
             </th>
-            <th className="">
-              <Text variant="label">Name</Text>
+            <th className=''>
+              <Text variant='label'>Name</Text>
             </th>
-            <th className="">
-              <Text variant="label">Role</Text>
+            <th className=''>
+              <Text variant='label'>Role</Text>
             </th>
-            <th className="">
-              <Text variant="label">Share</Text>
+            <th className=''>
+              <Text variant='label'>Share</Text>
             </th>
           </tr>
         </thead>
         <tbody>
-          {recipients?.map((recipient) => {
-            const { data } = useENSAddress(recipient.id);
+          {recipients.map((recipient) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const { data } = useENSAddress(recipient.id)
             return (
               <tr key={`${recipient.user.id}`}>
-                <td className="">
-                  <Text variant="base">{data ?? recipient.id}</Text>
+                <td className=''>
+                  <Text variant='base'>{data ?? recipient.id}</Text>
                 </td>
-                <td className="">
+                <td className=''>
                   {/* <Link href={`/${networkId}/profile/${recipient.user.id}`} passHref>
                     <Text variant="base">{recipient.name}</Text>
                   </Link> */}
@@ -50,10 +52,10 @@ const SplitTable = ({
                     </Link>
                   </p> */}
                 </td>
-                <td className="">{recipient.role}</td>
-                <td className="">
+                <td className=''>{recipient.role}</td>
+                <td className=''>
                   {Number(
-                    Number(recipient.shares).toLocaleString("en", {
+                    Number(recipient.shares).toLocaleString('en', {
                       useGrouping: false,
                       minimumFractionDigits: 0,
                     })
@@ -61,12 +63,12 @@ const SplitTable = ({
                   %{/* {Number(recipient.shares?.toString()).toFixed(2)}% */}
                 </td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>
     </Box>
-  );
-};
+  )
+}
 
-export default SplitTable;
+export default SplitTable

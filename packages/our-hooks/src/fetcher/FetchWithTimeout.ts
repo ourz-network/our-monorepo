@@ -9,7 +9,9 @@ import { RequestError } from './RequestError';
  */
 export class FetchWithTimeout {
   controller: AbortController;
+
   expectedContentType?: string;
+
   timeoutDuration: number;
 
   constructor(timeoutDuration = 5000, contentType: string | undefined = undefined) {
@@ -19,8 +21,9 @@ export class FetchWithTimeout {
     // Bind context to class
     this.fetch = this.fetch.bind(this);
   }
+
   async fetch(url: string, options: any = {}) {
-    const controller = this.controller;
+    const {controller} = this;
     const response = await fetch(url, {
       ...options,
       signal: this.controller.signal,

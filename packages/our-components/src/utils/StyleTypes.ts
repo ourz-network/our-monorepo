@@ -1,3 +1,3 @@
-export type StyleProps = {
+export interface StyleProps {
   className?: string;
-};
+}

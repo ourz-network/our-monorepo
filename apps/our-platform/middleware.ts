@@ -14,6 +14,7 @@ export const config = {
   ],
 }
 
+// eslint-disable-next-line import/no-default-export
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl
 
@@ -34,7 +35,7 @@ export default function middleware(req: NextRequest) {
       ? hostname.replace(`.ourz.xyz`, '').replace(`.ourz.network`, '')
       : hostname.replace(`.localhost:3000`, '')
 
-  console.log(subdomain)
+  // console.log(subdomain)
   // rewrites for app pages
   if (subdomain === 'app' && hostname.includes('ourz.network')) {
     // if (
@@ -58,6 +59,6 @@ export default function middleware(req: NextRequest) {
 
   // rewrite everything else to `/_sites/[site] dynamic route
   url.pathname = `/_gallery/${subdomain}${url.pathname}`
-  console.log('sending to dynamic route', NextResponse.rewrite(url))
+  // console.log('sending to dynamic route', NextResponse.rewrite(url))
   return NextResponse.rewrite(url)
 }

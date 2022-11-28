@@ -1,4 +1,4 @@
-import { useSplit } from "our-hooks";
+import { useSplit } from 'our-hooks'
 import {
   Box,
   IconSplit,
@@ -6,37 +6,35 @@ import {
   Stack,
   Text,
   useTheme,
-} from "degene-sais-quoi";
+} from 'degene-sais-quoi'
 
 const SplitPreview = ({
   splitAddress,
 }: {
-  splitAddress: string;
+  splitAddress: string
 }): JSX.Element => {
-  const { data, splitLoaded } = useSplit(splitAddress);
-  const { mode } = useTheme();
+  const { data, splitLoaded } = useSplit(splitAddress)
+  const { mode } = useTheme()
 
   // const { getStyles } = useMediaContext();
 
   return (
-    <>
-      <Box>
-        <Stack direction="vertical">
+    <Box>
+        <Stack direction='vertical'>
           {!splitLoaded ? (
             <Spinner />
           ) : (
             <>
-              <IconSplit color={mode === "dark" ? "white" : "black"} />
-              <Text>{data.data.nickname}</Text>
-              <Text>{`${data.data.recipients.length} Recipient${
-                data.data.recipients.length > 1 ? `s` : ``
+              <IconSplit color={mode === 'dark' ? 'white' : 'black'} />
+              <Text>{data.nickname}</Text>
+              <Text>{`${data.recipients.length} Recipient${
+                data.recipients.length! > 1 ? `s` : ``
               }`}</Text>
             </>
           )}
         </Stack>
       </Box>
-    </>
-  );
-};
+  )
+}
 
-export default SplitPreview;
+export default SplitPreview

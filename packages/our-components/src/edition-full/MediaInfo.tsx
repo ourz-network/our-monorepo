@@ -42,14 +42,14 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
         {description}
       </div>
       {!style.theme.showCreator && !style.theme.showOwner ? (
-        <Fragment />
+        <></>
       ) : (
         <dl {...getStyles("fullCreatorOwnerSection")}>
-          {data?.creator?.id && style.theme.showCreator && (
-            <Fragment>
+          {data.creator.id && style.theme.showCreator && (
+            <>
               <dt {...getStyles("fullLabel")}>{getString("CREATOR")}</dt>
               <dd {...getStyles("fullOwnerAddress")}>{data ? <AddressView address={data.creator.id} /> : " "}</dd>
-            </Fragment>
+            </>
           )}
         </dl>
       )}

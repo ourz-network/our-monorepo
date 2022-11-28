@@ -1,22 +1,26 @@
-import { Fragment } from "react";
+'use client'
 
-import { PricingComponent } from "./PricingComponent";
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/require-default-props */
+
 import {
   NFTDataProvider,
   NFTDataProviderProps,
-} from "../context/NFTDataProvider";
-import type { StyleProps } from "../utils/StyleTypes";
-import { MediaThumbnailWrapper } from "./MediaThumbnailWrapper";
-import { MediaThumbnail } from "./MediaThumbnail";
+} from '../context/NFTDataProvider'
+import type { StyleProps } from '../utils/StyleTypes'
+
+import { PricingComponent } from './PricingComponent'
+import { MediaThumbnailWrapper } from './MediaThumbnailWrapper'
+import { MediaThumbnail } from './MediaThumbnail'
 
 export type NFTPreviewProps = {
-  onClick?: (evt: React.MouseEvent<HTMLElement>) => void;
-  href?: string;
-  children?: React.ReactNode;
-  showBids?: boolean;
-  showPerpetual?: boolean;
-} & Omit<NFTDataProviderProps, "children"> &
-  StyleProps;
+  onClick?: (evt: React.MouseEvent<HTMLElement>) => void
+  href?: string
+  children?: React.ReactNode
+  showBids?: boolean
+  showPerpetual?: boolean
+} & Omit<NFTDataProviderProps, 'children'> &
+  StyleProps
 
 export const NFTPreview = ({
   children,
@@ -29,15 +33,15 @@ export const NFTPreview = ({
 }: NFTPreviewProps) => {
   const getChildren = () => {
     if (children) {
-      return children;
+      return children
     }
     return (
-      <Fragment>
+      <>
         <MediaThumbnail />
         {showBids && <PricingComponent showPerpetual={showPerpetual} />}
-      </Fragment>
-    );
-  };
+      </>
+    )
+  }
 
   return (
     <NFTDataProvider {...wrapperProps}>
@@ -49,5 +53,5 @@ export const NFTPreview = ({
         {getChildren()}
       </MediaThumbnailWrapper>
     </NFTDataProvider>
-  );
-};
+  )
+}

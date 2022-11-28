@@ -1,11 +1,10 @@
 import DataLoader from 'dataloader';
 import { GraphQLClient } from 'graphql-request';
+
 import { OURZ_GRAPH_API_URL_BY_NETWORK } from '../constants/urls';
-import { reverseResolveEnsAddresses } from './EnsReverseFetcher';
 import type { NetworkIDs } from '../constants/networks';
 import { GET_SPLITS, GET_USERS, GET_EDITIONS } from '../graph-queries/ourz-graph';
 import { TimeoutsLookupType, DEFAULT_NETWORK_TIMEOUTS_MS } from '../constants/timeouts';
-import { FetchWithTimeout } from './FetchWithTimeout';
 import {
   GetSplitsByUsersQuery,
   GetEditionsByAddressesQuery,
@@ -14,6 +13,14 @@ import {
   UserDetailsFragment,
   EditionDetailsFragment,
 } from '../graph-queries/ourz-graph-types';
+import {
+  GenericMediaInterface,
+  MediaContentType,
+} from '../backends/generic-media/GenericMediaInterface';
+import { GenericMediaData } from '../backends/generic-media/GenericMediaData';
+
+import { FetchWithTimeout } from './FetchWithTimeout';
+import { reverseResolveEnsAddresses } from './EnsReverseFetcher';
 
 /**
  * Internal agent for Our-Hooks to fetch from the OURZ Subgraph.
@@ -41,6 +48,8 @@ export class OurFetchAgent {
     ensLoader: DataLoader<string, string>;
   };
 
+  genericMediaFetcher: GenericMediaInterface;
+
   constructor(network: NetworkIDs) {
     this.timeouts = DEFAULT_NETWORK_TIMEOUTS_MS;
     this.networkId = network;
@@ -53,6 +62,8 @@ export class OurFetchAgent {
       }),
       ensLoader: new DataLoader((keys) => this.loadEnsBatch(keys), { maxBatchSize: 100 }),
     };
+
+    this.genericMediaFetcher = new GenericMediaData(this.timeouts.IPFS);
   }
 
   /**
@@ -66,10 +77,12 @@ export class OurFetchAgent {
     const splitInfo = await this.loaders.splitLoader.load(splitAddress);
     return splitInfo;
   }
+
   async loadUser(userAddress: string) {
     const userInfo = await this.loaders.userLoader.load(userAddress);
     return userInfo;
   }
+
   async loadEdition(editionAddress: string) {
     const editionInfo = await this.loaders.editionLoader.load(editionAddress);
     return editionInfo;
@@ -120,4 +133,34 @@ export class OurFetchAgent {
   async loadEnsName(address: string) {
     return this.loaders.ensLoader.load(address.toLowerCase());
   }
+
+  /**
+   * Fetch NFT content or retun URI if content shouild not be fetched
+   * @param url NFT Content URL
+   * @param contentType string mime type to fetch
+   * @returns Promise<MediaContentType> Media content information or URL
+   */
+  fetchContent = (url: string, contentType: string): Promise<MediaContentType> =>
+    this.genericMediaFetcher.fetchContent(url, contentType);
+
+  /**
+   * Fetch Content MIME type from content URI
+   *
+   * @param url IPFS Content URI
+   * @returns mime type as a string
+   * @throws RequestError
+   */
+  fetchContentMimeType = (url: string): Promise<string> =>
+    this.genericMediaFetcher.fetchContentMimeType(url);
+
+  /**
+   * Fetch method to query metadata from IPFS. Not cached
+   *
+   * @function fetchIPFSMetadataCached
+   * @public
+   * @param url Metadata Source
+   * @returns IPFS Metadata Fetch
+   * @throws RequestError
+   */
+  public fetchIPFSMetadata = (url: string) => this.genericMediaFetcher.fetchMetadata(url);
 }

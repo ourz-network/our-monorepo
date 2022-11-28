@@ -18,9 +18,9 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "alex": "^10.0.0",
+    "alex": "^11.0.0",
     "husky": "^8.0.0",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.0.4",
     "prettier": "latest",
     "turbo": "latest"
   },
@@ -38,5 +38,8 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@7.13.4"
+  "packageManager": "pnpm@7.13.4",
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  }
 }

@@ -1,74 +1,88 @@
-import { useContext } from "react";
+import { useContext, useMemo } from 'react'
+import {
+  AuctionLike,
+  AUCTION_SOURCE_TYPES,
+  MARKET_INFO_STATUSES,
+} from '@zoralabs/nft-hooks/dist/types'
 
-import { AddressView } from "../components/AddressView";
-import { MediaObject } from "../components/MediaObject";
-import { useMediaContext } from "../context/useMediaContext";
-import { NFTDataContext } from "../context/NFTDataContext";
-import type { StyleProps } from "../utils/StyleTypes";
+import { AddressView } from '../components/AddressView'
+import { MediaObject } from '../components/MediaObject'
+import { useMediaContext } from '../context/useMediaContext'
+import { NFTDataContext } from '../context/NFTDataContext'
+import type { StyleProps } from '../utils/StyleTypes'
+import {
+  defaultGetContentData,
+  GetContentDataType,
+} from '../utils/getContentDataOptions'
 
-type ProposalMediaDisplayProps = {} & StyleProps;
+// eslint-disable-next-line @typescript-eslint/ban-types
+type ProposalMediaDisplayProps = {} & StyleProps
 
+/** @deprecated */
 export const ProposalMediaDisplay = ({
   className,
 }: ProposalMediaDisplayProps) => {
-  const {
-    nft: { data },
-    metadata: { metadata },
-  } = useContext(NFTDataContext);
+  const { data } = useContext(NFTDataContext)
 
-  const { getStyles, getString } = useMediaContext();
+  const reserveAuction = useMemo(
+    () =>
+      data.markets.find(
+        (market) =>
+          market.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
+          market.status !== MARKET_INFO_STATUSES.CANCELED
+      ),
+    [data.markets]
+  ) as undefined | AuctionLike
+
+  const { getStyles, getString } = useMediaContext()
 
   const getContent = () => {
-    if (metadata && data) {
+    if (data) {
       return {
         media: (
           <MediaObject
-            contentURI={
-              data && "zoraNFT" in data ? data.zoraNFT?.contentURI : undefined
-            }
-            metadata={metadata}
+            isFullPage={false}
+            {...(defaultGetContentData(data) as GetContentDataType)}
           />
         ),
-        title: metadata.name,
-      };
+        title: data.metadata.name,
+      }
     }
     return {
-      media: <div {...getStyles("mediaLoader")}></div>,
-      title: "...",
-    };
-  };
+      media: <div {...getStyles('mediaLoader')} />,
+      title: '...',
+    }
+  }
 
-  const { media, title } = getContent();
-  const hasCreator = data?.nft.creator;
-  const address = hasCreator ? data?.nft.creator : data?.nft.owner;
+  const { media, title } = getContent()
+  const hasCreator = data.nft.minted.address
+  const address = hasCreator ? data.nft.minted.address : data.nft.owner.address
   return (
     <div className={className}>
-      <div {...getStyles("nftProposalMediaWrapper")}>{media}</div>
-      <div {...getStyles("nftProposalInfoLayout")}>
-        <div {...getStyles("nftProposalTitle")}>{title}</div>
-        <div {...getStyles("nftProposalLabelWrapper")}>
-          <div {...getStyles("nftProposalLabel")}>
+      <div {...getStyles('nftProposalMediaWrapper')}>{media}</div>
+      <div {...getStyles('nftProposalInfoLayout')}>
+        <div {...getStyles('nftProposalTitle')}>{title}</div>
+        <div {...getStyles('nftProposalLabelWrapper')}>
+          <div {...getStyles('nftProposalLabel')}>
             {hasCreator
-              ? getString("CARD_CREATED_BY")
-              : getString("CARD_OWNED_BY")}
+              ? getString('CARD_CREATED_BY')
+              : getString('CARD_OWNED_BY')}
           </div>
-          <div {...getStyles("fullOwnerAddress")}>
+          <div {...getStyles('fullOwnerAddress')}>
             {address && <AddressView address={address} />}
           </div>
         </div>
-        {data?.pricing.reserve?.tokenOwner && (
-          <div {...getStyles("nftProposalLabelWrapper")}>
-            <div {...getStyles("nftProposalLabel")}>
-              {getString("PROPOSED_BY")}
+        {reserveAuction.createdBy && (
+          <div {...getStyles('nftProposalLabelWrapper')}>
+            <div {...getStyles('nftProposalLabel')}>
+              {getString('PROPOSED_BY')}
             </div>
-            <div {...getStyles("fullOwnerAddress")}>
-              {address && (
-                <AddressView address={data.pricing.reserve.tokenOwner.id} />
-              )}
+            <div {...getStyles('fullOwnerAddress')}>
+              {address && <AddressView address={reserveAuction.createdBy} />}
             </div>
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}

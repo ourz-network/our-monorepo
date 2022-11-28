@@ -1,22 +1,21 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext } from 'react'
 
-import { ZORA_SITE_URL_BASE } from "../constants/media-urls";
-import { useMediaContext } from "../context/useMediaContext";
-import { Button } from "../components/Button";
-import { EditionDataContext } from "../context/EditionDataContext";
-import { AuctionType } from "@zoralabs/nft-hooks";
-import type { StyleProps } from "../utils/StyleTypes";
+import { ZORA_SITE_URL_BASE } from '../constants/media-urls'
+import { useMediaContext } from '../context/useMediaContext'
+import { Button } from '../components/Button'
+import { EditionDataContext } from '../context/EditionDataContext'
+import type { StyleProps } from '../utils/StyleTypes'
 
 type MintButtonProps = {
-  allowOffer?: boolean;
-} & StyleProps;
+  allowOffer?: boolean
+} & StyleProps
 
 export const MintButton = ({ allowOffer, className }: MintButtonProps) => {
-  const { edition } = useContext(EditionDataContext);
-  const { getString, getStyles } = useMediaContext();
+  const { edition } = useContext(EditionDataContext)
+  const { getString, getStyles } = useMediaContext()
 
   if (!edition) {
-    return <Fragment />;
+    return <></>
   }
 
   // Disable offer functionality if not a zora NFT or if offers are disabled
@@ -57,5 +56,5 @@ export const MintButton = ({ allowOffer, className }: MintButtonProps) => {
     //     {getString(edition.data.pricing.auctionType === AuctionType.RESERVE ? "PLACE_BID" : "PLACE_OFFER")}
     //   </Button>
     // </div>
-  );
-};
+  )
+}

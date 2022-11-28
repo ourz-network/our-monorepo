@@ -1,4 +1,4 @@
-import { css } from "@emotion/css";
+import { css } from '@emotion/react'
 
 import {
   SVG_FULLSCREEN,
@@ -9,8 +9,8 @@ import {
   SVG_UNMUTED,
   SVG_AUCTION_APPROVE,
   SVG_AUCTION_DENY,
-} from "./svg-icons";
-import { ThemeOptions, ThemeOptionsType } from "./theme";
+} from './svg-icons'
+import { ThemeOptions, ThemeOptionsType } from './theme'
 
 const buttonCommonSize = (size: string) => `
   padding: ${size};
@@ -24,7 +24,7 @@ const buttonCommonSize = (size: string) => `
   background-repeat: no-repeat;
   background-position: center;
   margin: 0 10px;
-`;
+`
 
 const buttonReset = `
   font: inherit;
@@ -33,7 +33,7 @@ const buttonReset = `
   border: 0;
   cursor: pointer;
   display: inline-block;
-`;
+`
 
 const CENTER_FULL_CONTAINER = `
   position: absolute;
@@ -44,10 +44,12 @@ const CENTER_FULL_CONTAINER = `
   justify-items: center;
   display: flex;
   height: 100%;
-`;
+`
 
 function renderSVG(svg: string) {
-  return `background-image: url("data:image/svg+xml,${encodeURIComponent(svg)}");`;
+  return `background-image: url("data:image/svg+xml,${encodeURIComponent(
+    svg
+  )}");`
 }
 
 export const Style = {
@@ -77,7 +79,7 @@ export const Style = {
           transform: scale(0.98);
         }
       `
-        : ""}
+        : ''}
     `,
     cardLink: (_: ThemeOptionsType) => css`
       ${buttonReset}
@@ -109,25 +111,27 @@ export const Style = {
       {
         type,
       }: {
-        type: "perpetual" | "reserve-active" | "reserve-pending" | "unknown";
+        type: 'perpetual' | 'reserve-active' | 'reserve-pending' | 'unknown'
       }
     ) => {
+      // eslint-disable-next-line consistent-return
       const getActiveStyle = () => {
+        // eslint-disable-next-line default-case
         switch (type) {
-          case "reserve-active":
+          case 'reserve-active':
             return `
               background: #000;
               color: #fff;
-            `;
-          case "reserve-pending":
+            `
+          case 'reserve-pending':
             return `
               background: #e6e6e6; 
-            `;
-          case "unknown":
-          case "perpetual":
-            return ``;
+            `
+          case 'unknown':
+          case 'perpetual':
+            return ``
         }
-      };
+      }
       return css`
         display: grid;
         grid-auto-flow: column;
@@ -136,7 +140,7 @@ export const Style = {
         padding: ${theme.textBlockPadding};
         border-top: ${theme.borderStyle};
         ${getActiveStyle()};
-      `;
+      `
     },
     cardTitle: (theme: ThemeOptionsType) => css`
       font-size: inherit;
@@ -160,6 +164,7 @@ export const Style = {
       margin: ${theme.spacingUnit} 0;
     `,
     fullDescription: (theme: ThemeOptionsType) => css`
+      white-space: pre-wrap;
       font-size: ${theme.fontSizeFull}px;
       margin: 10px 0;
     `,
@@ -226,7 +231,7 @@ export const Style = {
         z-index: 10;
         right: 0;
         transition: opacity 0.4s ease-in;
-        content: " ";
+        content: ' ';
         width: 14px;
         height: 14px;
         position: absolute;
@@ -251,7 +256,7 @@ export const Style = {
       position: relative;
 
       &:after {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 10px;
         bottom: 10px;
@@ -294,7 +299,8 @@ export const Style = {
       css`
         border: ${theme.borderStyle};
         border-radius: ${theme.defaultBorderRadius}px;
-        padding: ${theme.spacingUnit} ${theme.spacingUnit} ${bottomPadding ? theme.spacingUnit : 0};
+        padding: ${theme.spacingUnit} ${theme.spacingUnit}
+          ${bottomPadding ? theme.spacingUnit : 0};
         position: relative;
       `,
     fullInfoSpacer: (_: any, { height = 15 }: { height: number }) => css`
@@ -330,7 +336,7 @@ export const Style = {
         background-color: var(--colors-accent);
       }
       :after {
-        content: " ";
+        content: ' ';
         width: 14px;
         height: 14px;
         opacity: 0.5;
@@ -423,8 +429,12 @@ export const Style = {
     // Generic styles
     button: (theme: ThemeOptionsType, { primary }: any) => css`
       ${buttonReset}
-      background: ${primary ? theme.buttonColor.primaryBackground : theme.buttonColor.background};
-      color: ${primary ? theme.buttonColor.primaryText : theme.buttonColor.text};
+      background: ${primary
+        ? theme.buttonColor.primaryBackground
+        : theme.buttonColor.background};
+      color: ${primary
+        ? theme.buttonColor.primaryText
+        : theme.buttonColor.text};
       border-radius: ${theme.defaultBorderRadius}px;
       padding: 11px;
       transition: transform 0.1s ease-in-out;
@@ -456,7 +466,10 @@ export const Style = {
       grid-area: 1 / 2 / span 1 / span 2;
       text-align: right;
     `,
-    nftProposalActionButton: (theme: ThemeOptionsType, { action }: { action: "approve" | "deny" }) => css`
+    nftProposalActionButton: (
+      theme: ThemeOptionsType,
+      { action }: { action: 'approve' | 'deny' }
+    ) => css`
       border-radius: 1000px;
       background-color: ${theme.buttonColor.background};
       background-repeat: no-repeat;
@@ -467,10 +480,10 @@ export const Style = {
       border: 0;
       cursor: pointer;
 
-      ${action === "approve" && `margin-right: 15px;`}
+      ${action === 'approve' && `margin-right: 15px;`}
 
-      ${action === "approve" && renderSVG(SVG_AUCTION_APPROVE)}
-      ${action === "deny" && renderSVG(SVG_AUCTION_DENY)}
+      ${action === 'approve' && renderSVG(SVG_AUCTION_APPROVE)}
+      ${action === 'deny' && renderSVG(SVG_AUCTION_DENY)}
     `,
     nftProposalAcceptedPill: (theme: ThemeOptionsType) => css`
       color: #009165;
@@ -489,27 +502,27 @@ export const Style = {
     `,
     mediaLoader: (_: ThemeOptionsType, { mediaLoaded, isFullPage }: any) => css`
       pointer-events: none;
-      ${isFullPage ? "min-height: 40vh;" : ""}
+      ${isFullPage ? 'min-height: 40vh;' : ''}
       width: 100%;
       justify-content: center;
       align-items: center;
-      opacity: ${mediaLoaded ? "0" : "1"};
+      opacity: ${mediaLoaded ? '0' : '1'};
       transition: 0.2s ease-out opacity;
       ${CENTER_FULL_CONTAINER}
       ${isFullPage && !mediaLoaded
         ? `
       &:after {
         content: " ";
-        ${isFullPage ? "height: 30vh" : ""}
+        ${isFullPage ? 'height: 30vh' : ''}
       }
       `
-        : ""}
+        : ''}
     `,
     mediaObject: (_: ThemeOptionsType, { mediaLoaded, isFullPage }: any) => css`
-      opacity: ${mediaLoaded ? "1" : "0"};
+      opacity: ${mediaLoaded ? '1' : '0'};
       transition: 0.2s ease-in opacity;
-      ${isFullPage ? "max-height: 70vh;" : "height: 100%;"}
-      ${isFullPage ? "max-width: 100%;" : "width: 100%;"}
+      ${isFullPage ? 'max-height: 70vh;' : 'height: 100%;'}
+      ${isFullPage ? 'max-width: 100%;' : 'width: 100%;'}
       display: block;
       margin: 0 auto;
       flex-shrink: 1;
@@ -541,8 +554,10 @@ export const Style = {
       theme.mediaContentFont,
     ],
     mediaPlayButton: (_: ThemeOptionsType, { playing }: any) => css`
-      ${buttonCommonSize("32px")}
-      background-image: url("data:image/svg+xml,${encodeURIComponent(playing ? SVG_PAUSE : SVG_PLAY_ARROW)}");
+      ${buttonCommonSize('32px')}
+      background-image: url("data:image/svg+xml,${encodeURIComponent(
+        playing ? SVG_PAUSE : SVG_PLAY_ARROW
+      )}");
       z-index: 8;
     `,
     mediaVideoControls: (_: ThemeOptionsType, { isFullPage }: any) => css`
@@ -559,7 +574,7 @@ export const Style = {
         transition: opacity 0.6s ease-in-out;
         transition-delay: 0 0.3s;
       `
-        : "display: none;"}
+        : 'display: none;'}
     `,
     mediaFullscreenButton: (theme: ThemeOptionsType) => css`
       ${buttonCommonSize(theme.spacingUnit)}
@@ -569,7 +584,9 @@ export const Style = {
     mediaMuteButton: (theme: ThemeOptionsType, { muted }: any) => css`
       ${buttonCommonSize(theme.spacingUnit)}
       background-color: #000;
-      background-image: url("data:image/svg+xml,${encodeURIComponent(muted ? SVG_UNMUTED : SVG_MUTED)}");
+      background-image: url('data:image/svg+xml,${encodeURIComponent(
+        muted ? SVG_UNMUTED : SVG_MUTED
+      )}');
     `,
   },
-};
+}

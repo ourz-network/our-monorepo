@@ -1,53 +1,53 @@
-import { Fragment, useContext } from "react";
-import { EditionDataContext } from "../context/EditionDataContext";
-import { InfoContainer, InfoContainerProps } from "./InfoContainer";
-import type { StyleProps } from "../utils/StyleTypes";
-import type { EditionDetailsFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
+import { Fragment, useContext } from 'react'
+import type { EditionDetailsFragment } from 'our-hooks/dist/graph-queries/ourz-graph-types'
+
+import { EditionDataContext } from '../context/EditionDataContext'
+import type { StyleProps } from '../utils/StyleTypes'
+
+import { InfoContainer, InfoContainerProps } from './InfoContainer'
 
 type SupplyInfoProps = {
-  showPerpetual?: boolean;
-} & StyleProps;
+  showPerpetual?: boolean
+} & StyleProps
+
+const SupplyInfoWrapper = ({
+  className,
+  children,
+  ...containerArgs
+}: InfoContainerProps) => (
+  <InfoContainer {...containerArgs} className={className}>
+    {children}
+  </InfoContainer>
+)
 
 export const SupplyInfo = ({
   showPerpetual = true,
   className,
 }: SupplyInfoProps) => {
-  const { edition } = useContext(EditionDataContext);
+  const { edition } = useContext(EditionDataContext)
   // const { getStyles, getString } = useMediaContext();
 
-  const SupplyInfoWrapper = ({
-    children,
-    ...containerArgs
-  }: InfoContainerProps) => (
-    <InfoContainer {...containerArgs} className={className}>
-      {children}
-    </InfoContainer>
-  );
-
   if (!edition) {
-    return <Fragment />;
+    return <></>
   }
 
-  const { data } = edition;
+  const { data } = edition
 
   if (
-    (data as EditionDetailsFragment & { totalSupply: number })?.totalSupply &&
-    data?.editionSize
+    (data as EditionDetailsFragment & { totalSupply: number }).totalSupply &&
+    data.editionSize
   ) {
     return (
-      <Fragment>
-        <SupplyInfoWrapper titleString="EDITION_SUPPLY">
-          {`${
-            (data as EditionDetailsFragment & { totalSupply: number })
-              .totalSupply
-          }/${data.editionSize} Minted`}
-          {/* <PricingString pricing={data.pricing.perpetual.ask.pricing} /> */}
-        </SupplyInfoWrapper>
-      </Fragment>
-    );
-  } else {
-    return <></>;
+      <SupplyInfoWrapper titleString='EDITION_SUPPLY'>
+        {`${
+          (data as EditionDetailsFragment & { totalSupply: number }).totalSupply
+        }/${data.editionSize} Minted`}
+        {/* <PricingString pricing={data.pricing.perpetual.ask.pricing} /> */}
+      </SupplyInfoWrapper>
+    )
   }
+  return <></>
+
   // if (data?.totalSupply && data.editionSize) {
   //   return (
   //     <Fragment>
@@ -155,4 +155,4 @@ export const SupplyInfo = ({
   //     </div>
   //   </SupplyInfoWrapper>
   // );
-};
+}

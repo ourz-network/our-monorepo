@@ -1,21 +1,10 @@
-import { createContext } from "react";
-import type {
-  useNFTMetadataType,
-  useNFTType,
-  useZNFTType,
-} from "@zoralabs/nft-hooks";
+import { createContext } from 'react'
+import type { useNFTType } from '@zoralabs/nft-hooks'
 
-export type NFTDataContext = {
-  nft: useNFTType | useZNFTType;
-  metadata: useNFTMetadataType;
-};
+export type NFTDataContext = useNFTType
 
-const DEFAULT_OBJECT = {
-  loading: true,
-  error: undefined,
-};
-
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NFTDataContext = createContext<NFTDataContext>({
-  nft: { ...DEFAULT_OBJECT, currencyLoaded: false },
-  metadata: { ...DEFAULT_OBJECT, metadata: undefined },
-});
+  data: undefined,
+  currencyLoaded: false,
+})

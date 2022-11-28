@@ -1,9 +1,11 @@
 import { cache } from 'react'
+
 // import prisma from "@/lib/prisma";
 // import remarkMdx from "remark-mdx";
 // import { remark } from "remark";
 // import { serialize } from "next-mdx-remote/serialize";
 import clientPromise from './mongodb'
+
 import type { GalleryConfig } from '@/types'
 // import { replaceExamples, replaceTweets } from "@/lib/remark-plugins";
 
@@ -20,21 +22,24 @@ export const getAllGalleryConfigs: () => Promise<GalleryConfig[]> = cache(
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     cursor.forEach((galleryConfig) => {
       // console.log(galleryConfig);
-      allGalleries.push(galleryConfig as GalleryConfig)
+      allGalleries.push(galleryConfig as unknown as GalleryConfig)
     })
 
     return allGalleries
   }
 )
 
-export const getGalleryConfig: (subdomain: string) => Promise<GalleryConfig> =
-  cache(async (subdomain: string): Promise<GalleryConfig> => {
+export const getGalleryConfig: (
+  subdomain: string
+) => Promise<GalleryConfig | undefined> = cache(
+  async (subdomain: string): Promise<GalleryConfig | undefined> => {
     const collection = await getCollection()
     const galleryConfig = await collection.findOne({ _id: `${subdomain}` })
+    // console.log({ galleryConfig })
     // const data = await fetch(`/api/gallery/${subdomain}`);
     // const galleryConfig = await data.json();
     // console.log(galleryConfig);
-    return galleryConfig as GalleryConfig
+    if (galleryConfig) return galleryConfig as unknown as GalleryConfig
     // setConfig(config as UserConfig);
     // let filter: {
     //   subdomain?: string;
@@ -68,7 +73,8 @@ export const getGalleryConfig: (subdomain: string) => Promise<GalleryConfig> =
 
     // return data;
     // return { user: null, font: "font-work", posts: [] };
-  })
+  }
+)
 
 // export const getPostData = cache(async (site: string, slug: string) => {
 //   let filter: {

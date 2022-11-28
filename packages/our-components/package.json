@@ -12,24 +12,28 @@
   ],
   "scripts": {
     "prepack": "pnpm clean && tsc",
+    "lint": "eslint \"src/**/*.ts*\" --fix",
     "build": "pnpm run prepack",
     "test": "TZ='EST' jest",
-    "clean": "rm -rf ./dist",
+    "clean": "rimraf ./dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "predeploy": "npm run build-storybook",
     "deploy-storybook": "gh-pages -d storybook-static"
   },
+  "peerDependencies": {
+    "@emotion/cache": "^11.10.5",
+    "@emotion/react": "^11.5.0"
+  },
   "dependencies": {
-    "@emotion/css": "^11.1.3",
-    "odk": "workspace:*",
-    "our-hooks": "workspace:*",
     "@types/react": "^18.0.25",
     "@zoralabs/nft-hooks": "latest",
     "degene-sais-quoi": "latest",
     "merge-anything": "^5.0.4",
-    "react": "experimental",
-    "react-dom": "experimental",
+    "@ourz/odk": "latest",
+    "our-hooks": "workspace:*",
+    "react": "latest",
+    "react-dom": "latest",
     "recharts": "^2.1.2",
     "swr": "latest",
     "tslib": "^2.4.1"
@@ -44,6 +48,7 @@
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.2.2",
     "babel-loader": "^9.1.0",
+    "eslint": "latest",
     "eslint-config-custom": "workspace:*",
     "fetch-mock-jest": "^1.5.1",
     "gh-pages": "^4.0.0",

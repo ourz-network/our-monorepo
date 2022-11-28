@@ -1,7 +1,5 @@
 import React from "react";
 
-const Data = () => {
-  return <div></div>;
-};
+const Data = () => <div />;
 
 export default Data;

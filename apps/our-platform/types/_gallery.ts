@@ -21,12 +21,17 @@
 // }
 
 export interface GalleryConfig {
-  subdomain?: string
-  title?: string
-  desc?: string
-  networkId?: 1 | 4 | 137
+  _id?: string
   curator?: string
   contracts?: string
+  networkId?: 1 | 4 | 137
+  title?: string
+  desc?: string
+  fontColor?: string
+  borderColor?: string
+  previewBg?: string
+  siteBg?: string
+  subdomain?: string
   fontFamily?: 'serif' | 'sans' | 'mono'
   mode?: 'light' | 'dark'
   accent?:

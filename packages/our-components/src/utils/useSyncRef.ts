@@ -1,4 +1,4 @@
-import { ForwardedRef, RefObject, useCallback } from "react";
+import { ForwardedRef, RefObject, useCallback } from 'react'
 
 /**
  * Helper function to sync forwardRefs to object refs.
@@ -6,11 +6,12 @@ import { ForwardedRef, RefObject, useCallback } from "react";
 export function useSyncRef<T>(source: RefObject<T>, target: ForwardedRef<T>) {
   useCallback(() => {
     if (source && source.current && target) {
-      if (typeof target === "function") {
-        target(source.current);
+      if (typeof target === 'function') {
+        target(source.current)
       } else {
-        target.current = source.current;
+        // eslint-disable-next-line no-param-reassign
+        target.current = source.current
       }
     }
-  }, [source, target]);
+  }, [source, target])
 }

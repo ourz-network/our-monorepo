@@ -4,14 +4,14 @@ export const ThemeOptions = {
    * @default {width: '330px', height: '330px', background: 'transparent'}
    */
   previewCard: {
-    width: "330px",
-    height: "330px",
-    background: "white",
+    width: '330px',
+    height: '330px',
+    background: 'white',
   },
 
   nftProposalCard: {
-    mediaWidth: "160px",
-    mediaHeight: "160px",
+    mediaWidth: '160px',
+    mediaHeight: '160px',
   },
 
   /**
@@ -38,14 +38,14 @@ export const ThemeOptions = {
    * @default true
    */
   useZoraUsernameResolution: true,
-   
+
   /**
    * Flag if showing the nft owner on full view
    * should be enabled
    * @default true
    */
   showOwner: true,
-  
+
   /**
    * Flag if showing transaction history links on full view
    * should be enabled
@@ -57,18 +57,18 @@ export const ThemeOptions = {
    * Padding for preview card text block
    * @default 20px
    */
-  spacingUnit: "20px",
-  
+  spacingUnit: '20px',
+
   /**
    * Padding for preview card text block
    * @default 10px 15px
    */
-  textBlockPadding: "10px 15px",
+  textBlockPadding: '10px 15px',
   /**
    * Border style for preview card text block
    * @default 2px solid #e6e6e6
    */
-  borderStyle: "2px solid #e6e6e6",
+  borderStyle: '2px solid #e6e6e6',
 
   /**
    * Line-spacing on preview component
@@ -87,7 +87,7 @@ export const ThemeOptions = {
    * Color for link on full preview page authenticity link
    * @default #000
    */
-  linkColor: "#000",
+  linkColor: '#000',
 
   /**
    * Settings for body text font
@@ -123,7 +123,7 @@ export const ThemeOptions = {
    * @default {fontFamily: "Times New Roman"}
    */
   mediaContentFont: {
-    fontFamily: "Times New Roman",
+    fontFamily: 'Times New Roman',
   },
 
   /**
@@ -131,10 +131,10 @@ export const ThemeOptions = {
    * @default {primaryBackground: '#333', primaryText: '#fff', background: '#eee'}
    */
   buttonColor: {
-    primaryBackground: "#333",
-    primaryText: "#fff",
-    background: "#eee",
-    text: "#000",
+    primaryBackground: '#333',
+    primaryText: '#fff',
+    background: '#eee',
+    text: '#000',
   },
 
   /**
@@ -153,23 +153,23 @@ export const ThemeOptions = {
    * Audio Player Color configurations
    * @default {waveformColor: '#999, progressColor: '#333'}
    */
-   audioColors: {
+  audioColors: {
     waveformColor: '#999',
-    progressColor: '#333'
-   },
+    progressColor: '#333',
+  },
 
-   /**
+  /**
    * Background color for loading media content
    * @default {placeHolderColor '#e6e6e6'}
    */
-    placeHolderColor: '#e6e6e6',
-   
+  placeHolderColor: '#e6e6e6',
+
   /**
    * Flag if showing the nft collection tag on full view
    * should be enabled
    * @default true
    */
-   useCollectionTag: true,
-};
+  useCollectionTag: true,
+}
 
-export type ThemeOptionsType = typeof ThemeOptions;
+export type ThemeOptionsType = typeof ThemeOptions

@@ -1,17 +1,17 @@
-import { useSplit, useSplitType } from "our-hooks";
-import { SplitDataContext } from "./SplitDataContext";
+import { useSplit, useSplitType } from 'our-hooks'
 
-export type SplitDataProviderProps = {
-  splitAddress: string;
-  useBetaIndexer?: boolean;
-  refreshInterval?: number;
-  children: React.ReactNode;
+import { SplitDataContext } from './SplitDataContext'
+
+export interface SplitDataProviderProps {
+  splitAddress: string
+  refreshInterval?: number
+  children: React.ReactNode
   initialData?:
     | {
-        split?: useSplitType["data"];
+        split?: useSplitType['data']
       }
-    | any;
-};
+    | any
+}
 
 export const SplitDataProvider = ({
   children,
@@ -19,16 +19,17 @@ export const SplitDataProvider = ({
   refreshInterval,
   initialData,
 }: SplitDataProviderProps) => {
-  const { Split: splitInitial } = initialData || {};
+  const { Split: splitInitial } = initialData || {}
 
   const split = useSplit(splitAddress, {
     initialData: splitInitial,
-    refreshInterval: refreshInterval,
-  });
+    refreshInterval,
+  })
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <SplitDataContext.Provider value={{ split }}>
       {children}
     </SplitDataContext.Provider>
-  );
-};
+  )
+}

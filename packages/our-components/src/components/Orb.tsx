@@ -1,6 +1,6 @@
-import { css } from "@emotion/css";
+import { css } from '@emotion/react'
 
-type OrbProps = {
+interface OrbProps {
   size?: number | string
 }
 
@@ -15,19 +15,15 @@ const DEFAULT_ORB_BACKGROUND_GRADIENT = `radial-gradient(
   #2d1c13 100%
 );`
 
-
-export const Orb = ({
-  size = '100%',
-}: OrbProps) => {
-  return (
-    <div
-      className={css`
-        display: block;
-        height: ${size};
-        width: ${size};
-        background: ${DEFAULT_ORB_BACKGROUND_GRADIENT};
-        border-radius: 1500px;
-      `}
-    />
-  )
-}
+export const Orb = ({ size = '100%' }: OrbProps) => (
+  <div
+    // eslint-disable-next-line react/no-unknown-property
+    css={css`
+      display: block;
+      height: ${size};
+      width: ${size};
+      background: ${DEFAULT_ORB_BACKGROUND_GRADIENT};
+      border-radius: 1500px;
+    `}
+  />
+)

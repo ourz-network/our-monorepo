@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import type { Revalidator, RevalidatorOptions } from 'swr';
 
 export class NotFoundError extends Error {}

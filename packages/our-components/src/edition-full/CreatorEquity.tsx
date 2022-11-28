@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 
 import { useMediaContext } from "../context/useMediaContext";
 import { EditionDataContext } from "../context/EditionDataContext";
-import { InfoContainer } from "./InfoContainer";
 import { AddressView } from "../components/AddressView";
 import type { StyleProps } from "../utils/StyleTypes";
+
+import { InfoContainer } from "./InfoContainer";
 
 export const CreatorEquity = ({ className }: StyleProps) => {
   const {
@@ -12,7 +13,7 @@ export const CreatorEquity = ({ className }: StyleProps) => {
   } = useContext(EditionDataContext);
   const { getStyles, getString } = useMediaContext();
 
-  const getContent = (bidSharePercentage: number) => <React.Fragment>{Math.floor(bidSharePercentage)}%</React.Fragment>;
+  const getContent = (bidSharePercentage: number) => <>{Math.floor(bidSharePercentage)}%</>;
 
   return (
     <>

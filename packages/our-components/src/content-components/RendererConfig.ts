@@ -9,12 +9,12 @@ export enum RenderingPreference {
   PRIORITY = 4,
 }
 
-export type MediaUriType = {
+export interface MediaUriType {
   uri: string;
   type?: string;
-};
+}
 
-export type RenderRequest = {
+export interface RenderRequest {
   media: {
     // from zora content uri
     content?: MediaUriType;
@@ -24,16 +24,16 @@ export type RenderRequest = {
   };
   metadata: any;
   renderingContext: "PREVIEW" | "FULL";
-};
+}
 
-export type RenderComponentType = {
+export interface RenderComponentType {
   request: RenderRequest;
   // TODO(iain): Fix types
   getString: any;
   getStyles: any;
   theme: ThemeType["theme"];
   a11yIdPrefix?: string;
-};
+}
 
 export interface RendererConfig {
   getRenderingPreference(request: RenderRequest): RenderingPreference;

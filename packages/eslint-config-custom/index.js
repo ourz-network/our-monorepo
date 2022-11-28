@@ -17,15 +17,15 @@ module.exports = {
   plugins: [],
   extends: [
     'turbo',
+    'plugin:@typescript-eslint/recommended',
+    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/strict',
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:jsx-a11y/recommended',
     'airbnb',
     'airbnb/hooks',
     'airbnb-typescript',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:@typescript-eslint/strict',
     'plugin:@next/next/core-web-vitals',
     'prettier',
   ],
@@ -34,7 +34,14 @@ module.exports = {
     '@next/next/no-html-link-for-pages': 'off',
     // https://ilikekillnerds.com/2019/08/default-exports-bad/
     'import/prefer-default-export': 'off',
-    'import/no-default-export': 'error',
+    'import/no-default-export': 'warn',
+    'import/extensions': 'off',
+    'import/order': [
+      'error',
+      {
+        'newlines-between': 'always',
+      },
+    ],
     // It's not accurate in the monorepo style
     'import/no-extraneous-dependencies': 'off',
     // react
@@ -42,6 +49,10 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/destructuring-assignment': 'off',
     'react/jsx-filename-extension': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-no-useless-fragment': 'warn',
+    'react/require-default-props': 'warn',
+    // 'react/no-unknown-property': ['error', { ignore: ['css'] }],
     // Use function hoisting to improve code readability
     'no-use-before-define': [
       'error',
@@ -53,10 +64,18 @@ module.exports = {
       'error',
       { functions: false, classes: true, variables: true, typedefs: true },
     ],
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
-  ignorePatterns: [
-    '.eslintrc.js',
-    'next.config.js',
-    'index.js',
+  overrides: [
+    // use default exports in next's app dir
+    {
+      files: ['**/app/**/*.tsx', '**/pages/**/*.tsx'],
+      rules: {
+        'import/prefer-default-export': 'warn',
+        'import/no-default-export': 'off',
+      },
+    },
   ],
+
+  ignorePatterns: ['.eslintrc.js', 'next.config.js', 'index.js'],
 }

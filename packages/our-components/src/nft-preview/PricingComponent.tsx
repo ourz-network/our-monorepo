@@ -1,181 +1,208 @@
-import { Fragment, useContext } from "react";
+'use client'
 
-import { useMediaContext } from "../context/useMediaContext";
-import { NFTDataContext } from "../context/NFTDataContext";
-import { CountdownDisplay } from "../components/CountdownDisplay";
-import { PricingString } from "../utils/PricingString";
-import { AuctionStateInfo, AuctionType } from "@zoralabs/nft-hooks";
-import type { StyleProps } from "../utils/StyleTypes";
+import { Fragment, useContext, useMemo } from 'react'
+import {
+  AUCTION_SOURCE_TYPES,
+  AuctionLike,
+  EditionLike,
+  MARKET_INFO_STATUSES,
+  MARKET_TYPES,
+  FIXED_SIDE_TYPES,
+} from '@zoralabs/nft-hooks/dist/types'
+
+import { useMediaContext } from '../context/useMediaContext'
+import { NFTDataContext } from '../context/NFTDataContext'
+import { CountdownDisplay } from '../components/CountdownDisplay'
+import { PricingString } from '../utils/PricingString'
+import type { StyleProps } from '../utils/StyleTypes'
 
 function isInFuture(timestamp: string) {
-  const timestampParsed = parseInt(timestamp);
-  return timestampParsed > Math.floor(new Date().getTime() / 1000);
+  return new Date(timestamp).getTime() > new Date().getTime()
 }
 
 type PricingComponentProps = {
-  showPerpetual?: boolean;
-} & StyleProps;
+  showPerpetual?: boolean
+} & StyleProps
 
 export const PricingComponent = ({
+  // @ts-expect-error TS6133
   showPerpetual = true,
   className,
 }: PricingComponentProps) => {
-  const {
-    nft: { data },
-  } = useContext(NFTDataContext);
+  const { data } = useContext(NFTDataContext)
 
-  const { getStyles, getString } = useMediaContext();
+  const { getStyles, getString } = useMediaContext()
 
-  const pricing = data?.pricing;
+  const reserveAuction = useMemo(
+    () =>
+      data.markets.find(
+        (market) =>
+          market.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
+          market.status !== MARKET_INFO_STATUSES.CANCELED
+      ),
+    [data.markets]
+  ) as undefined | AuctionLike
 
-  if (
-    pricing &&
-    !pricing.reserve &&
-    pricing.status === AuctionStateInfo.NO_PRICING
-  ) {
+  const ask = useMemo(
+    () =>
+      data.markets.find(
+        (market) =>
+          market.type === MARKET_TYPES.FIXED_PRICE &&
+          market.side === FIXED_SIDE_TYPES.ASK &&
+          market.status === MARKET_INFO_STATUSES.ACTIVE
+      ),
+    [data.markets]
+  )
+
+  const edition = useMemo(
+    () =>
+      data.markets.find(
+        (market) => market.type === 'Edition' && market.status === 'active'
+      ),
+    [data.markets]
+  ) as undefined | EditionLike
+
+  if (!reserveAuction && !ask && !edition) {
     return (
-      <div {...getStyles("cardAuctionPricing", className, { type: "unknown" })}>
-        <div {...getStyles("textSubdued")}>{getString("RESERVE_PRICE")}</div>
-        <div {...getStyles("pricingAmount")}>
-          {getString("NO_PRICING_PLACEHOLDER")}
+      <div {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}>
+        <div {...getStyles('textSubdued')}>{getString('RESERVE_PRICE')}</div>
+        <div {...getStyles('pricingAmount')}>
+          {getString('NO_PRICING_PLACEHOLDER')}
         </div>
-        <div {...getStyles("textSubdued")}>{getString("HIGHEST_BID")}</div>
-        <div {...getStyles("pricingAmount")}>
-          {getString("NO_PRICING_PLACEHOLDER")}
+        <div {...getStyles('textSubdued')}>{getString('HIGHEST_BID')}</div>
+        <div {...getStyles('pricingAmount')}>
+          {getString('NO_PRICING_PLACEHOLDER')}
         </div>
       </div>
-    );
+    )
   }
 
-  if (
-    pricing &&
-    showPerpetual &&
-    (!pricing.reserve || pricing.reserve?.finalizedAtTimestamp) &&
-    pricing.auctionType === AuctionType.PERPETUAL
-  ) {
-    let listPrice = null;
+  if (edition && edition.status === MARKET_INFO_STATUSES.ACTIVE) {
+    return (
+      <div {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}>
+        <span {...getStyles('textSubdued')}>{getString('EDITION_PRICE')}</span>
+        <PricingString pricing={edition.amount} showUSD={false} />
 
-    if (pricing.perpetual.ask?.pricing) {
-      const perpetualPricing = pricing.perpetual.ask?.pricing;
+        <span {...getStyles('textSubdued')}>{getString('NFTS_COLLECTED')}</span>
+        <span {...getStyles('pricingAmount')}>
+          {`${edition.totalSupply} / ${edition.editionSize}`}
+        </span>
+      </div>
+    )
+  }
+
+  if (ask && reserveAuction.status !== MARKET_INFO_STATUSES.ACTIVE) {
+    let listPrice = null
+
+    if (ask) {
       listPrice = (
-        <Fragment>
-          <span {...getStyles("textSubdued")}>{getString("LIST_PRICE")}</span>
-          <PricingString pricing={perpetualPricing} showUSD={false} />
-        </Fragment>
-      );
+        <>
+          <span {...getStyles('textSubdued')}>{getString('LIST_PRICE')}</span>
+          <PricingString pricing={ask.amount} showUSD={false} />
+        </>
+      )
     }
-    const highestBid = pricing.perpetual.highestBid;
-    if (!highestBid && pricing.reserve?.previousBids.length) {
-      const highestPreviousBid = pricing.reserve.previousBids[0];
+    const highestBid = undefined
+    if (
+      !highestBid &&
+      reserveAuction.status === MARKET_INFO_STATUSES.COMPLETE
+    ) {
       return (
         <div
-          {...getStyles("cardAuctionPricing", className, {
-            type: "reserve-pending",
+          {...getStyles('cardAuctionPricing', className, {
+            type: 'reserve-pending',
           })}
         >
-          <span {...getStyles("textSubdued")}>{getString("SOLD_FOR")}</span>
-          <span {...getStyles("pricingAmount")}>
-            <PricingString
-              pricing={highestPreviousBid.pricing}
-              showUSD={false}
-            />
+          <span {...getStyles('textSubdued')}>{getString('SOLD_FOR')}</span>
+          <span {...getStyles('pricingAmount')}>
+            <PricingString pricing={reserveAuction.amount} showUSD={false} />
           </span>
           {listPrice}
         </div>
-      );
+      )
     }
     return (
       <div
-        {...getStyles("cardAuctionPricing", className, { type: "perpetual" })}
+        {...getStyles('cardAuctionPricing', className, { type: 'perpetual' })}
       >
-        <span {...getStyles("textSubdued")}>{getString("HIGHEST_BID")}</span>
-        <span {...getStyles("pricingAmount")}>
+        <span {...getStyles('textSubdued')}>{getString('HIGHEST_BID')}</span>
+        <span {...getStyles('pricingAmount')}>
           {highestBid ? (
-            <PricingString showUSD={false} pricing={highestBid.pricing} />
+            <PricingString showUSD={false} pricing={highestBid} />
           ) : (
-            getString("NO_PRICING_PLACEHOLDER")
+            getString('NO_PRICING_PLACEHOLDER')
           )}
         </span>
         {listPrice}
       </div>
-    );
+    )
   }
-  if (pricing && pricing.reserve) {
-    if (
-      pricing.reserve?.current.reserveMet &&
-      !pricing.reserve?.current.likelyHasEnded
-    ) {
-      const highestBid = pricing.reserve?.current.highestBid;
+  if (reserveAuction) {
+    if (reserveAuction.status === 'active') {
+      const highestBid = reserveAuction.amount
       return (
         <div
-          {...getStyles("cardAuctionPricing", className, {
-            type: "reserve-active",
+          {...getStyles('cardAuctionPricing', className, {
+            type: 'reserve-active',
           })}
         >
-          <span {...getStyles("textSubdued")}>{getString("TOP_BID")}</span>
-          <span {...getStyles("pricingAmount")}>
+          <span {...getStyles('textSubdued')}>{getString('TOP_BID')}</span>
+          <span {...getStyles('pricingAmount')}>
             {highestBid && (
-              <PricingString pricing={highestBid?.pricing} showUSD={false} />
+              <PricingString pricing={highestBid} showUSD={false} />
             )}
           </span>
-          {pricing.reserve?.expectedEndTimestamp &&
-            isInFuture(pricing.reserve.expectedEndTimestamp) && (
-              <Fragment>
-                <span {...getStyles("textSubdued")}>
-                  {getString("ENDS_IN")}
+          {reserveAuction.endsAt.timestamp &&
+            isInFuture(reserveAuction.endsAt.timestamp) && (
+              <>
+                <span {...getStyles('textSubdued')}>
+                  {getString('ENDS_IN')}
                 </span>
-                <span {...getStyles("pricingAmount")}>
-                  <CountdownDisplay to={pricing.reserve.expectedEndTimestamp} />
+                <span {...getStyles('pricingAmount')}>
+                  <CountdownDisplay to={reserveAuction.endsAt.timestamp} />
                 </span>
-              </Fragment>
+              </>
             )}
         </div>
-      );
+      )
     }
 
-    if (pricing.reserve && pricing.reserve.current.likelyHasEnded) {
-      const highestBid =
-        pricing.reserve.currentBid || pricing.reserve.previousBids[0];
+    if (reserveAuction.status === MARKET_INFO_STATUSES.COMPLETE) {
       return (
         <div
-          {...getStyles("cardAuctionPricing", className, {
-            type: "reserve-finished",
+          {...getStyles('cardAuctionPricing', className, {
+            type: 'reserve-finished',
           })}
         >
-          <span {...getStyles("textSubdued")}>
-            {getString("AUCTION_SOLD_FOR")}
-          </span>
-          <span {...getStyles("pricingAmount")}>
-            <PricingString showUSD={false} pricing={highestBid.pricing} />
+          <span {...getStyles('textSubdued')}>{getString('SOLD_FOR')}</span>
+          <span {...getStyles('pricingAmount')}>
+            <PricingString showUSD={false} pricing={reserveAuction.amount} />
           </span>
         </div>
-      );
+      )
     }
-    if (pricing.reserve?.reservePrice) {
+    if (reserveAuction.status === MARKET_INFO_STATUSES.PENDING) {
       return (
         <div
-          {...getStyles("cardAuctionPricing", className, {
-            type: "reserve-pending",
+          {...getStyles('cardAuctionPricing', className, {
+            type: 'reserve-pending',
           })}
         >
-          <span {...getStyles("textSubdued")}>
-            {getString("RESERVE_PRICE")}
+          <span {...getStyles('textSubdued')}>
+            {getString('RESERVE_PRICE')}
           </span>
           <span>
-            <PricingString
-              showUSD={false}
-              pricing={pricing.reserve.reservePrice}
-            />
+            <PricingString showUSD={false} pricing={reserveAuction.amount} />
           </span>
         </div>
-      );
+      )
     }
   }
 
   return (
-    <div {...getStyles("cardAuctionPricing", className, { type: "unknown" })}>
-      <div {...getStyles("textSubdued")}>{getString("PRICING_LOADING")}</div>
-      <div {...getStyles("pricingAmount")}>{getString("PRICING_LOADING")}</div>
+    <div {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}>
+      <div {...getStyles('textSubdued')}>{getString('PRICING_LOADING')}</div>
+      <div {...getStyles('pricingAmount')}>{getString('PRICING_LOADING')}</div>
     </div>
-  );
-};
+  )
+}

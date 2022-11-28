@@ -7,7 +7,7 @@ import {
 
 export const Unknown: RendererConfig = {
   getRenderingPreference: (request: RenderRequest) => {
-    if (request.media.content?.type?.startsWith("text/")) {
+    if (request.media.content.type.startsWith("text/")) {
       return RenderingPreference.LOW;
     }
     return RenderingPreference.FALLBACK;
@@ -15,7 +15,7 @@ export const Unknown: RendererConfig = {
 
   render: ({ request, getStyles }: RenderComponentType) => (
     <div {...getStyles("mediaObjectMessage")}>
-      {request.media.content?.type || "unknown"}
+      {request.media.content.type || "unknown"}
     </div>
   ),
 };

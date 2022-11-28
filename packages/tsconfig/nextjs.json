@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleResolution": "node",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "paths": {
       "@/components/*": ["components/*"],
       "@/data/*": ["data/*"],

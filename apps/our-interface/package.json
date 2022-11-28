@@ -15,7 +15,6 @@
   "scripts": {
     "dev": "next dev",
     "pretty": "npx prettier --write ./src",
-    "lint": "next lint",
     "build": "next build",
     "start": "next start"
   },

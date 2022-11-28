@@ -27,9 +27,9 @@ export const MediaFull = ({ a11yIdPrefix, getContentData = defaultGetContentData
       };
       return (
         <MediaObject
-          isFullPage={true}
+          isFullPage
           a11yIdPrefix={a11yIdPrefix}
-          contentURI={data?.animationUrl ?? data?.imageUrl}
+          contentURI={data.animationUrl ?? data.imageUrl}
           metadata={metadata}
           // {...getContentData(data)}
         />

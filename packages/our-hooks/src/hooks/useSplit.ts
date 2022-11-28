@@ -1,28 +1,29 @@
 import { useContext } from 'react';
-import { OurFetchContext } from '../context/OurFetchContext';
 import useSWR from 'swr';
-import { SplitDetailsFragment } from 'src/graph-queries/ourz-graph-types';
 
-export type useSplitType = {
+import { OurFetchContext } from '../context/OurFetchContext';
+import { SplitDetailsFragment } from '../graph-queries/ourz-graph-types';
+
+export interface UseSplitType {
   splitLoaded: boolean;
   error?: string;
   data?: SplitDetailsFragment | (SplitDetailsFragment & { totalSupply: number });
-};
+}
 
-type OptionsType = {
+interface OptionsType {
   refreshInterval?: number;
   initialData?: any;
-};
+}
 
 /**
  * Fetches Split details from the Graph
  *
  * @param splitAddress addresses of the split(s)
  * @param options SWR flags
- * @returns useSplitType hook results include loading, error, and Split details.
+ * @returns UseSplitType hook results include loading, error, and Split details.
  */
-export function useSplit(splitAddress: string, options: OptionsType = {}): useSplitType {
-  const fetcher = useContext(OurFetchContext);
+export function useSplit(splitAddress: string, options: OptionsType = {}): UseSplitType {
+  const { fetcher } = useContext(OurFetchContext);
 
   const { data, error } = useSWR<SplitDetailsFragment>(
     splitAddress,
@@ -32,7 +33,7 @@ export function useSplit(splitAddress: string, options: OptionsType = {}): useSp
 
   return {
     splitLoaded: !!data,
-    error: error,
-    data: { ...data, ...options?.initialData },
+    error,
+    data: { ...data, ...options.initialData },
   };
 }

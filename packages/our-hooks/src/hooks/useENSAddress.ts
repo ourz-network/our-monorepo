@@ -10,9 +10,11 @@ import { OurFetchContext } from '../context/OurFetchContext';
  * @returns DomainResolvedPartFragment
  */
 export function useENSAddress(address?: string, options?: SWRConfiguration<any>) {
-  const fetcher = useContext(OurFetchContext);
+  const { fetcher } = useContext(OurFetchContext);
+
   return useSWR<string>(
     address ? ['loadENS', address.toLowerCase()] : null,
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     async (_, address: string) => fetcher.loadEnsName(address),
     options
   );

@@ -1,18 +1,18 @@
-import { useEdition, useEditionType } from "our-hooks";
-import { EditionDataContext } from "./EditionDataContext";
+import { useEdition, useEditionType } from 'our-hooks'
 
-export type EditionDataProviderProps = {
-  contract: string;
-  useBetaIndexer?: boolean;
-  refreshInterval?: number;
-  children: React.ReactNode;
+import { EditionDataContext } from './EditionDataContext'
+
+export interface EditionDataProviderProps {
+  contract: string
+  refreshInterval?: number
+  children: React.ReactNode
   initialData?:
     | {
-        edition?: useEditionType["data"];
-        totalSupply?: number;
+        edition?: useEditionType['data']
+        totalSupply?: number
       }
-    | any;
-};
+    | any
+}
 
 export const EditionDataProvider = ({
   children,
@@ -20,16 +20,17 @@ export const EditionDataProvider = ({
   refreshInterval,
   initialData,
 }: EditionDataProviderProps) => {
-  const { edition: editionInitial } = initialData || {};
+  const { edition: editionInitial } = initialData || {}
 
   const edition = useEdition(contract, {
     initialData: editionInitial,
-    refreshInterval: refreshInterval,
-  });
+    refreshInterval,
+  })
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <EditionDataContext.Provider value={{ edition }}>
       {children}
     </EditionDataContext.Provider>
-  );
-};
+  )
+}

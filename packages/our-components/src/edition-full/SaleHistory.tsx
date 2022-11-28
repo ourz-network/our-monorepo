@@ -1,8 +1,10 @@
 import { Fragment, useContext } from "react";
+
 import { EditionDataContext } from "../context/EditionDataContext";
 import { useMediaContext } from "../context/useMediaContext";
-import { InfoContainer } from "./InfoContainer";
 import type { StyleProps } from "../utils/StyleTypes";
+
+import { InfoContainer } from "./InfoContainer";
 
 // const dateFromTimestamp = (timestamp: string) => new Date(parseInt(timestamp, 10) * 1000);
 
@@ -26,7 +28,7 @@ export const SaleHistory = ({ showPerpetual = true, className }: SaleHistoryProp
   const getPastBids = () => {
     const { data } = edition;
     if (!data) {
-      return <Fragment />;
+      return <></>;
     }
     return <></>;
     // const currentBid = data.pricing.reserve?.currentBid ? [data.pricing.reserve?.currentBid] : [];

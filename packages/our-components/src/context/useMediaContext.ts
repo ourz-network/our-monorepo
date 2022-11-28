@@ -1,14 +1,17 @@
-import { useContext } from "react";
-import { css } from "@emotion/css";
-import type { Strings } from "../constants/strings";
-import { MediaContext, ThemeType } from "./MediaContext";
-import { camelCase } from "../utils/camelCase";
+/* eslint-disable no-nested-ternary */
+import { useContext } from 'react'
+import { css } from '@emotion/react'
+
+import type { Strings } from '../constants/strings'
+import { camelCase } from '../utils/camelCase'
+
+import { MediaContext, ThemeType } from './MediaContext'
 
 export function useMediaContext() {
-  const mediaContext = useContext(MediaContext);
+  const mediaContext = useContext(MediaContext)
 
   const getStyles = (
-    themeKey: keyof ThemeType["styles"],
+    themeKey: keyof ThemeType['styles'],
     className?: string,
     flags: any = {}
   ): any => {
@@ -16,42 +19,41 @@ export function useMediaContext() {
       throw new Error(
         `"${themeKey}" not found in [${Object.keys(
           mediaContext.style.styles
-        ).join(", ")}]`
-      );
+        ).join(', ')}]`
+      )
     }
 
     const styles = mediaContext.style.styles[themeKey](
       mediaContext.style.theme,
       flags
-    );
+    )
 
     const getUtilitySelectors = (flagsObject: any) => {
       if (Object.keys(flagsObject).length) {
         return Object.entries(flagsObject)
           .map((key) => {
-            const objectType = typeof key[1];
-            return objectType === "boolean" && key[1]
+            const objectType = typeof key[1]
+            return objectType === 'boolean' && key[1]
               ? `zora-${themeKey}--${key[0]}`
-              : objectType === "string"
+              : objectType === 'string'
               ? `zora-${themeKey}__${key[0]}--${camelCase(key[1] as string)}`
-              : "";
+              : ''
           })
-          .join(" ");
-      } else {
-        return "";
+          .join(' ')
       }
-    };
+      return ''
+    }
 
     return {
-      className: `${className ? `${className} ` : ""}zora-${themeKey}${
-        mediaContext.style.useDefaultStyles ? ` ${css(styles)}` : ""
-      } ${getUtilitySelectors(flags)}`,
-    };
-  };
+      className: `${className ? `${className} ` : ''} ${
+        mediaContext.style.useDefaultStyles ? ` ${css(styles)}` : ''
+      } zora-${themeKey} ${getUtilitySelectors(flags)}`,
+      // css: `${mediaContext.style.useDefaultStyles ? ` ${css(styles)}` : ''}`,
+    }
+  }
 
-  const getString = (stringName: keyof typeof Strings) => {
-    return mediaContext.strings[stringName];
-  };
+  const getString = (stringName: keyof typeof Strings) =>
+    mediaContext.strings[stringName]
 
-  return { ...mediaContext, getString, getStyles };
+  return { ...mediaContext, getString, getStyles }
 }

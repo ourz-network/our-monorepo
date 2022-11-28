@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import type { EditionDetailsFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
 
 import { EditionDataContext } from "../context/EditionDataContext";
 import {
@@ -6,9 +7,9 @@ import {
   VIEW_ETHERSCAN_URL_BASE_BY_NETWORK,
 } from "../constants/media-urls";
 import { useMediaContext } from "../context/useMediaContext";
-import { InfoContainer } from "./InfoContainer";
 import type { StyleProps } from "../utils/StyleTypes";
-import type { EditionDetailsFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
+
+import { InfoContainer } from "./InfoContainer";
 
 const ProofLink = ({
   href,
@@ -31,13 +32,13 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
   const { getString, getStyles, networkId } = useMediaContext();
   const linkStyles = getStyles("fullProofLink");
 
-  const getContent = (edition: EditionDetailsFragment) => {
+  const getContent = (edition: EditionDetailsFragment) => 
     // const infoURL = (data && "zoraNFT" in data && data?.zoraNFT?.contentURI) || data?.nft.metadataURI;
     // const infoUrlLabelText =
     //   infoURL?.includes("/ipfs/") || infoURL?.startsWith("ipfs://") ? "VIEW_IPFS" : "VIEW_METADATA";
 
-    return (
-      <React.Fragment>
+     (
+      <>
         <ProofLink
           styles={linkStyles}
           href={`${VIEW_ETHERSCAN_URL_BASE_BY_NETWORK[networkId]}${edition.id}`}
@@ -57,9 +58,9 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
             {getString("VIEW_ZORA")}
           </ProofLink>
         )}
-      </React.Fragment>
-    );
-  };
+      </>
+    )
+  ;
 
   return (
     <InfoContainer

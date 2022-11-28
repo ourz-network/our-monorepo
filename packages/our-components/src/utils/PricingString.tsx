@@ -1,36 +1,52 @@
-import type { PricingInfo } from "@zoralabs/nft-hooks";
-import { Fragment } from "react";
+/* eslint-disable react/require-default-props */
+import type { CurrencyValue } from '@zoralabs/nft-hooks'
+import { Fragment } from 'react'
 
-import { useMediaContext } from "../context/useMediaContext";
+import { useMediaContext } from '../context/useMediaContext'
 
 export const PricingString = ({
   pricing,
   showUSD = true,
 }: {
-  pricing: PricingInfo;
-  showUSD?: boolean;
+  pricing?: CurrencyValue
+  showUSD?: boolean
 }) => {
-  const { getStyles, style } = useMediaContext();
+  const { getStyles, style } = useMediaContext()
 
   const { format } = new Intl.NumberFormat(
-    typeof window === "undefined" ? "en-US" : navigator.language,
+    typeof window === 'undefined' ? 'en-US' : navigator.language,
     {
-      style: "decimal",
+      style: 'decimal',
       maximumFractionDigits: style.theme.maximumPricingDecimals,
     }
-  );
+  )
+
+  const { format: formatUSD } = new Intl.NumberFormat(
+    typeof window === 'undefined' ? 'en-US' : navigator.language,
+    {
+      style: 'decimal',
+      maximumFractionDigits: 2,
+    }
+  )
+
+  if (!pricing) {
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    return <></>
+  }
 
   return (
-    <Fragment>
-      <span {...getStyles("pricingAmount")}>
-        {format(parseFloat(pricing.prettyAmount))} {pricing.currency.symbol}
-      </span>
-      {showUSD && pricing.computedValue && (
-        <span {...getStyles("textSubdued")}>
-          {" "}
-          ${format(parseInt(pricing.computedValue?.inUSD, 10))}
+    <>
+      {!!pricing.amount.value && (
+        <span {...getStyles('pricingAmount')}>
+          {format(pricing.amount.value)} {pricing.symbol}
         </span>
       )}
-    </Fragment>
-  );
-};
+      {showUSD && !!pricing.usd.value && (
+        <span {...getStyles('textSubdued')}>
+          {' '}
+          ${formatUSD(pricing.usd.value)}
+        </span>
+      )}
+    </>
+  )
+}

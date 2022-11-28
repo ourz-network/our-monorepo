@@ -1,5 +1,6 @@
 import type { RecipientShortFragment } from "our-hooks/dist/graph-queries/ourz-graph-types";
 import React, { useContext } from "react";
+
 import { SplitDataContext } from "../context/SplitDataContext";
 import {
   SplitDataProvider,
@@ -7,6 +8,7 @@ import {
 } from "../context/SplitDataProvider";
 import { useMediaContext } from "../context/useMediaContext";
 import type { StyleProps } from "../utils/StyleTypes";
+
 import SplitPie from "./SplitPie";
 import SplitTable from "./SplitTable";
 
@@ -31,17 +33,15 @@ const SplitFullPage = ({
     }
 
     return (
-      <>
-        <div {...getStyles("fullPageDataGrid")}>
+      <div {...getStyles("fullPageDataGrid")}>
           <SplitPie
-            recipients={data?.recipients as RecipientShortFragment[]}
+            recipients={data.recipients as RecipientShortFragment[]}
             secondarySale={false}
           />
           <SplitTable
-            recipients={data?.recipients as RecipientShortFragment[]}
+            recipients={data.recipients as RecipientShortFragment[]}
           />
         </div>
-      </>
     );
   };
 

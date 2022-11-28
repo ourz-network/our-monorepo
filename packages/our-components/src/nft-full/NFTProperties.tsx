@@ -1,77 +1,68 @@
-import { Fragment, useContext } from "react";
-import { useMediaContext } from "../context/useMediaContext";
-import { useNFTMetadata } from "@zoralabs/nft-hooks";
-import { NFTDataContext } from "../context/NFTDataContext";
-import { InfoContainer } from "./InfoContainer";
-import type { StyleProps } from "../utils/StyleTypes";
+import { Fragment, useContext } from 'react'
 
-type NFTPropertiesProps = StyleProps;
+import { useMediaContext } from '../context/useMediaContext'
+import { NFTDataContext } from '../context/NFTDataContext'
+import type { StyleProps } from '../utils/StyleTypes'
+
+import { InfoContainer } from './InfoContainer'
+
+type NFTPropertiesProps = StyleProps
 
 export const NFTProperties = ({ className }: NFTPropertiesProps) => {
-  const {
-    nft: { data },
-  } = useContext(NFTDataContext);
-  const { getStyles } = useMediaContext();
-  const { metadata } = useNFTMetadata(data?.nft.metadataURI);
+  const { data } = useContext(NFTDataContext)
+  const { getStyles } = useMediaContext()
 
   const renderAttributes = (attributes: any) => {
     function formatAttributes(obj: any) {
       if (Array.isArray(obj)) {
-        return obj;
-      } else {
-        const array =
-          Object.keys(obj).length === 0 ? false : Object.entries(obj);
-        if (array !== false) {
-          return array.map((a) => ({
-            trait_type: a[0],
-            value: a[1],
-          }));
-        } else {
-          return [];
-        }
+        return obj
       }
+      const array = Object.keys(obj).length === 0 ? false : Object.entries(obj)
+      if (array !== false) {
+        return array.map((a) => ({
+          trait_type: a[0],
+          value: a[1],
+        }))
+      }
+      return []
     }
 
-    const formattedAttributes = formatAttributes(attributes);
+    const formattedAttributes = formatAttributes(attributes)
 
     if (!attributes || !formattedAttributes.length) {
-      return null;
+      return null
     }
     return (
-      <InfoContainer className={className} titleString="PROPERTIES_TITLE">
-        <div {...getStyles("propertiesGrid")}>
+      <InfoContainer className={className} titleString='PROPERTIES_TITLE'>
+        <div {...getStyles('propertiesGrid')}>
           {formattedAttributes.map((attribute: any, index: number) => {
+            const name = attribute?.name || attribute?.trait_type
+
             return (
               <div
-                {...getStyles("propertiesItem")}
-                key={`${data?.nft?.tokenId}${index}`}
+                {...getStyles('propertiesItem')}
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${data.nft.tokenId}${index}`}
               >
-                {attribute?.trait_type && (
-                  <span {...getStyles("propertiesLabel")}>
-                    {attribute?.trait_type}
-                  </span>
-                )}
+                {name && <span {...getStyles('propertiesLabel')}>{name}</span>}
                 {attribute?.value && <span>{attribute?.value}</span>}
               </div>
-            );
+            )
           })}
         </div>
       </InfoContainer>
-    );
-  };
+    )
+  }
 
   const getContent = () => {
-    if (data && metadata !== undefined && "attributes" in metadata) {
-      return renderAttributes(metadata?.attributes);
-    } else if (data && metadata !== undefined && "traits" in metadata) {
-      return renderAttributes(metadata?.traits);
-    } else if (data && metadata === undefined && "openseaInfo" in data) {
-      // @ts-ignore
-      return renderAttributes(data?.openseaInfo?.traits);
-    } else {
-      return <Fragment />;
+    if (data && data.metadata && 'attributes' in data.metadata) {
+      return renderAttributes(data.metadata.attributes)
     }
-  };
+    if (data && data.metadata && 'traits' in data.metadata) {
+      return renderAttributes((data.metadata as any).traits)
+    }
+    return <></>
+  }
 
-  return data ? getContent() : null;
-};
+  return data ? getContent() : null
+}

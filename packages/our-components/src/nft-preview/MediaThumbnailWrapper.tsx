@@ -1,14 +1,16 @@
-import { useContext } from "react";
-import type { StyleProps } from "../utils/StyleTypes";
+'use client'
 
-import { NFTDataContext } from "../context/NFTDataContext";
-import { useMediaContext } from "../context/useMediaContext";
+import { useContext } from 'react'
+
+import type { StyleProps } from '../utils/StyleTypes'
+import { NFTDataContext } from '../context/NFTDataContext'
+import { useMediaContext } from '../context/useMediaContext'
 
 type MediaThumbnailWrapperProps = {
-  children: React.ReactNode;
-  onClick?: (evt: React.MouseEvent<HTMLElement>) => void;
-  href?: string;
-} & StyleProps;
+  children: React.ReactNode
+  onClick?: (evt: React.MouseEvent<HTMLElement>) => void
+  href?: string
+} & StyleProps
 
 export const MediaThumbnailWrapper = ({
   children,
@@ -16,26 +18,30 @@ export const MediaThumbnailWrapper = ({
   href,
   className,
 }: MediaThumbnailWrapperProps) => {
-  const { getStyles } = useMediaContext();
+  const { getStyles } = useMediaContext()
 
-  const { nft } = useContext(NFTDataContext);
-  const auctionStatus = nft?.data?.pricing?.status;
+  const { data } = useContext(NFTDataContext)
 
-  const LinkComponent = href ? "a" : "button";
+  const markets = data.markets.filter(
+    (market) => market.status === 'active' || market.status === 'complete'
+  )
+  const lastMarket = markets.length ? markets[markets.length - 1] : null
+
+  const LinkComponent = href ? 'a' : 'button'
 
   return (
     <div
-      {...getStyles("cardOuter", className, {
+      {...getStyles('cardOuter', className, {
         hasClickEvent: !!onClick,
-        auctionStatus,
+        auctionStatus: lastMarket.status,
       })}
     >
       {(href || onClick) && (
-        <LinkComponent {...getStyles("cardLink")} href={href} onClick={onClick}>
+        <LinkComponent {...getStyles('cardLink')} href={href} onClick={onClick}>
           View NFT
         </LinkComponent>
       )}
       {children}
     </div>
-  );
-};
+  )
+}

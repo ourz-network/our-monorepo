@@ -1,7 +1,5 @@
 import React from "react";
 
-const Graphic = () => {
-  return <div></div>;
-};
+const Graphic = () => <div />;
 
 export default Graphic;
