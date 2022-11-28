@@ -1,5 +1,6 @@
 'use client'
 
+/** @jsxImportSource @emotion/react */
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useWeb3Wallet } from '@zoralabs/simple-wallet-provider'
@@ -158,7 +159,7 @@ const SettingsForm = ({
           {fields.map((field) => (
             <div
               key={field}
-              className={css`
+              css={css`
                 text-transform: none;
                 color: var(--colors-text);
               `}

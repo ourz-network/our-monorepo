@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext } from 'react'
 import type { EditionDetailsFragment } from 'our-hooks/dist/graph-queries/ourz-graph-types'
 

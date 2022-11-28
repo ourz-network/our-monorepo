@@ -13,6 +13,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@0xsplits/splits-sdk": "^2.3.0",
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@next/font": "latest",
@@ -20,6 +21,7 @@
     "@vercel/analytics": "latest",
     "@zoralabs/simple-wallet-provider": "^0.1.1",
     "@zoralabs/zdk": "^2.2.0",
+    "classnames": "^2.3.2",
     "degene-sais-quoi": "^0.0.11",
     "ethers": "^5.7.2",
     "mongodb": "^4.12.1",

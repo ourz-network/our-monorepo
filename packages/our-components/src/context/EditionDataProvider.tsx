@@ -1,3 +1,5 @@
+'use client'
+
 import { useEdition, useEditionType } from 'our-hooks'
 
 import { EditionDataContext } from './EditionDataContext'

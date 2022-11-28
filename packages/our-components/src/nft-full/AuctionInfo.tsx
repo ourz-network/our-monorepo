@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo, Fragment, useContext } from 'react'
 import {
   AuctionLike,
@@ -44,31 +46,31 @@ export const AuctionInfo = ({
 
   const reserveAuction = useMemo(
     () =>
-      data.markets.find(
+      data?.markets?.find(
         (market) =>
-          market.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
-          market.status !== MARKET_INFO_STATUSES.CANCELED
+          market?.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
+          market?.status !== MARKET_INFO_STATUSES.CANCELED
       ),
-    [data.markets]
+    [data?.markets]
   ) as undefined | AuctionLike
 
   const ask = useMemo(
     () =>
-      data.markets.find(
+      data?.markets?.find(
         (market) =>
-          market.type === MARKET_TYPES.FIXED_PRICE &&
-          market.status === MARKET_INFO_STATUSES.ACTIVE
+          market?.type === MARKET_TYPES.FIXED_PRICE &&
+          market?.status === MARKET_INFO_STATUSES.ACTIVE
       ),
-    [data.markets]
+    [data?.markets]
   )
 
-  if (!data.nft) {
+  if (!data?.nft) {
     return <></>
   }
 
   if (
     showPerpetual &&
-    ask.source === FIXED_PRICE_MARKET_SOURCES.ZNFT_PERPETUAL
+    ask?.source === FIXED_PRICE_MARKET_SOURCES.ZNFT_PERPETUAL
   ) {
     return (
       <>

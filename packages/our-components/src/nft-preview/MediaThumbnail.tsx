@@ -34,10 +34,10 @@ export const MediaThumbnail = ({
   }
 
   const { media, title } = getContent()
-  const hasCreator = data.nft.minted.address
+  const hasCreator = data.nft?.minted.address
   const address = hasCreator
-    ? data.nft.minted.address
-    : data.nft.owner.address
+    ? data.nft?.minted.address
+    : data.nft?.owner.address
   return (
     <div className={className}>
       <div {...getStyles('cardMediaWrapper')}>{media}</div>

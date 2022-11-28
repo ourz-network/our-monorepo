@@ -1,3 +1,5 @@
+'use client'
+
 import { useNFTContent } from '@zoralabs/nft-hooks'
 
 import { MediaLoader } from './MediaLoader'
@@ -10,13 +12,13 @@ import {
 
 export const Text: RendererConfig = {
   getRenderingPreference: (request: RenderRequest) => {
-    if (request.media.content.type === 'text/html') {
+    if (request.media.content?.type === 'text/html') {
       return RenderingPreference.INVALID
     }
-    if (request.media.content.type.startsWith('text/plain')) {
+    if (request.media.content?.type?.startsWith('text/plain')) {
       return RenderingPreference.PRIORITY
     }
-    if (request.media.content.type.startsWith('text/')) {
+    if (request.media.content?.type?.startsWith('text/')) {
       return RenderingPreference.LOW
     }
     return RenderingPreference.INVALID

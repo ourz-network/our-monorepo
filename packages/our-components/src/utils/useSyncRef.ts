@@ -1,3 +1,5 @@
+'use client'
+
 import { ForwardedRef, RefObject, useCallback } from 'react'
 
 /**

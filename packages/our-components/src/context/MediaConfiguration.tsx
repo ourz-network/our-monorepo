@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useContext } from 'react'
 import { NetworkIDs, NFTFetchConfiguration } from '@zoralabs/nft-hooks'
 import { merge } from 'merge-anything'
@@ -10,6 +12,7 @@ import type { RendererConfig } from '../content-components/RendererConfig'
 import { MediaRendererDefaults } from '../content-components'
 
 import { MediaContext, ThemeType } from './MediaContext'
+import EmotionRootStyleRegistry from './EmotionRootStyleRegistry'
 
 interface MediaContextConfigurationProps {
   /**
@@ -66,12 +69,14 @@ export const MediaConfiguration = ({
   }
 
   return (
-    <ThemeProvider defaultAccent={accent} defaultMode={mode}>
-      <MediaContext.Provider value={newContext}>
-        <NFTFetchConfiguration networkId={newNetworkId}>
-          {children}
-        </NFTFetchConfiguration>
-      </MediaContext.Provider>
-    </ThemeProvider>
+    <EmotionRootStyleRegistry>
+      <ThemeProvider defaultAccent={accent} defaultMode={mode}>
+        <MediaContext.Provider value={newContext}>
+          <NFTFetchConfiguration networkId={newNetworkId}>
+            {children}
+          </NFTFetchConfiguration>
+        </MediaContext.Provider>
+      </ThemeProvider>
+    </EmotionRootStyleRegistry>
   )
 }

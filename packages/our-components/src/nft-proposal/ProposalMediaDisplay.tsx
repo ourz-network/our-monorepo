@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext, useMemo } from 'react'
 import {
   AuctionLike,
@@ -26,12 +28,12 @@ export const ProposalMediaDisplay = ({
 
   const reserveAuction = useMemo(
     () =>
-      data.markets.find(
+      data?.markets?.find(
         (market) =>
-          market.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
-          market.status !== MARKET_INFO_STATUSES.CANCELED
+          market?.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
+          market?.status !== MARKET_INFO_STATUSES.CANCELED
       ),
-    [data.markets]
+    [data?.markets]
   ) as undefined | AuctionLike
 
   const { getStyles, getString } = useMediaContext()
@@ -45,7 +47,7 @@ export const ProposalMediaDisplay = ({
             {...(defaultGetContentData(data) as GetContentDataType)}
           />
         ),
-        title: data.metadata.name,
+        title: data.metadata?.name,
       }
     }
     return {
@@ -55,8 +57,10 @@ export const ProposalMediaDisplay = ({
   }
 
   const { media, title } = getContent()
-  const hasCreator = data.nft.minted.address
-  const address = hasCreator ? data.nft.minted.address : data.nft.owner.address
+  const hasCreator = data?.nft?.minted.address
+  const address = hasCreator
+    ? data.nft?.minted.address
+    : data?.nft?.owner?.address
   return (
     <div className={className}>
       <div {...getStyles('nftProposalMediaWrapper')}>{media}</div>
@@ -72,7 +76,7 @@ export const ProposalMediaDisplay = ({
             {address && <AddressView address={address} />}
           </div>
         </div>
-        {reserveAuction.createdBy && (
+        {reserveAuction?.createdBy && (
           <div {...getStyles('nftProposalLabelWrapper')}>
             <div {...getStyles('nftProposalLabel')}>
               {getString('PROPOSED_BY')}

@@ -13,10 +13,7 @@
   ],
   "private": false,
   "scripts": {
-    "dev": "next dev",
-    "pretty": "npx prettier --write ./src",
-    "build": "next build",
-    "start": "next start"
+    "pretty": "npx prettier --write ./src"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",

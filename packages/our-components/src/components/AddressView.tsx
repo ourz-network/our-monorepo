@@ -1,3 +1,5 @@
+'use client'
+
 import { useENSAddress } from 'our-hooks'
 
 import { useMediaContext } from '../context/useMediaContext'
@@ -17,7 +19,6 @@ export const AddressView = ({
 }: AddressViewProps) => {
   const { getStyles, style } = useMediaContext()
   const { theme } = style
-  // @ts-expect-error (address can be undefined but not typed correctly for now)
   const ens = useENSAddress(theme.useEnsResolution ? address : undefined)
   // const username = useZoraUsername(
   //   theme.useZoraUsernameResolution || ens.error ? address : undefined

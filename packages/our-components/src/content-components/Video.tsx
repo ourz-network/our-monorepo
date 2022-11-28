@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useSyncRef } from '../utils/useSyncRef'
@@ -180,10 +182,10 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
 
 export const Video: RendererConfig = {
   getRenderingPreference: (request: RenderRequest) => {
-    if (request.media.animation.type.startsWith('video/')) {
+    if (request.media.animation?.type?.startsWith('video/')) {
       return RenderingPreference.PRIORITY
     }
-    if (request.media.content.type.startsWith('video/')) {
+    if (request.media.content?.type?.startsWith('video/')) {
       return RenderingPreference.PRIORITY
     }
     return RenderingPreference.INVALID

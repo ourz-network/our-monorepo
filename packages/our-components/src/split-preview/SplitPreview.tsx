@@ -1,3 +1,5 @@
+'use client'
+
 import { useSplit } from 'our-hooks'
 import {
   Box,
@@ -20,20 +22,20 @@ const SplitPreview = ({
 
   return (
     <Box>
-        <Stack direction='vertical'>
-          {!splitLoaded ? (
-            <Spinner />
-          ) : (
-            <>
-              <IconSplit color={mode === 'dark' ? 'white' : 'black'} />
-              <Text>{data.nickname}</Text>
-              <Text>{`${data.recipients.length} Recipient${
-                data.recipients.length! > 1 ? `s` : ``
-              }`}</Text>
-            </>
-          )}
-        </Stack>
-      </Box>
+      <Stack direction='vertical'>
+        {!splitLoaded ? (
+          <Spinner />
+        ) : (
+          <>
+            <IconSplit color={mode === 'dark' ? 'white' : 'black'} />
+            <Text>{data.nickname}</Text>
+            <Text>{`${data?.recipients?.length} Recipient${
+              data?.recipients?.length! > 1 ? `s` : ``
+            }`}</Text>
+          </>
+        )}
+      </Stack>
+    </Box>
   )
 }
 

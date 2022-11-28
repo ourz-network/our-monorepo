@@ -30,12 +30,12 @@ export const mediaConfigurationStyles = {
         // eslint-disable-next-line default-case
         switch (type) {
           case 'reserve-active':
-            return css`
+            return `
               background: var(--colors-accent);
               color: var(--font-color);
             `
           case 'reserve-pending':
-            return css`
+            return `
               background: var(--colors-backgroundTertiary);
             `
           case 'unknown':
@@ -44,7 +44,7 @@ export const mediaConfigurationStyles = {
             return ``
         }
       }
-      return css`
+      return `
         display: grid;
         grid-auto-flow: column;
         grid-template-rows: auto auto;

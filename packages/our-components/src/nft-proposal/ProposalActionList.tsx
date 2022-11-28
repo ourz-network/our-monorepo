@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext, useMemo } from 'react'
 import {
   AuctionLike,
@@ -26,10 +28,10 @@ export const ProposalActionList = ({
 
   const reserveAuction = useMemo(
     () =>
-      data.markets.find(
+      data?.markets?.find(
         (market) =>
-          market.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
-          market.status !== MARKET_INFO_STATUSES.CANCELED
+          market?.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
+          market?.status !== MARKET_INFO_STATUSES.CANCELED
       ),
     [data.markets]
   ) as undefined | AuctionLike

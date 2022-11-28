@@ -52,7 +52,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-no-useless-fragment': 'warn',
     'react/require-default-props': 'warn',
-    // 'react/no-unknown-property': ['error', { ignore: ['css'] }],
+    'react/no-unknown-property': ['error', { ignore: ['css'] }],
     // Use function hoisting to improve code readability
     'no-use-before-define': [
       'error',

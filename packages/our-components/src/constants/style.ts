@@ -1,3 +1,5 @@
+'use client'
+
 import { css } from '@emotion/react'
 
 import {
@@ -12,7 +14,7 @@ import {
 } from './svg-icons'
 import { ThemeOptions, ThemeOptionsType } from './theme'
 
-const buttonCommonSize = (size: string) => `
+const buttonCommonSize = (size: string) => css`
   padding: ${size};
   width: ${size};
   height: ${size};
@@ -26,7 +28,7 @@ const buttonCommonSize = (size: string) => `
   margin: 0 10px;
 `
 
-const buttonReset = `
+const buttonReset = css`
   font: inherit;
   text-decoration: none;
   margin: 0;
@@ -35,7 +37,7 @@ const buttonReset = `
   display: inline-block;
 `
 
-const CENTER_FULL_CONTAINER = `
+const CENTER_FULL_CONTAINER = css`
   position: absolute;
   width: 100%;
   justify-content: center;
@@ -47,9 +49,9 @@ const CENTER_FULL_CONTAINER = `
 `
 
 function renderSVG(svg: string) {
-  return `background-image: url("data:image/svg+xml,${encodeURIComponent(
-    svg
-  )}");`
+  return css`
+    background-image: url('data:image/svg+xml,${encodeURIComponent(svg)}');
+  `
 }
 
 export const Style = {
@@ -119,13 +121,13 @@ export const Style = {
         // eslint-disable-next-line default-case
         switch (type) {
           case 'reserve-active':
-            return `
+            return css`
               background: #000;
               color: #fff;
             `
           case 'reserve-pending':
-            return `
-              background: #e6e6e6; 
+            return css`
+              background: #e6e6e6;
             `
           case 'unknown':
           case 'perpetual':

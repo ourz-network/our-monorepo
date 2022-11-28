@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment } from 'react'
 
 import { HTML } from './HTML'
@@ -16,7 +18,7 @@ export const Model: ModelRenderer = {
   renderingPage:
     'https://gateway.pinata.cloud/ipfs/QmVc3UHHL6dhjWuY4cryY3yoEu1HoX8KcFafq3K4ELbZEJ/model-viewer.html',
   getRenderingPreference: (request: RenderRequest) => {
-    if (request.media.content.type.startsWith('model/gltf')) {
+    if (request.media.content?.type?.startsWith('model/gltf')) {
       return request.renderingContext === 'FULL'
         ? RenderingPreference.PRIORITY
         : RenderingPreference.NORMAL

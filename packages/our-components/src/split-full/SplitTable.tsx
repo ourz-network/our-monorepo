@@ -1,3 +1,5 @@
+'use client'
+
 import { Box, Text } from 'degene-sais-quoi'
 import { useENSAddress } from 'our-hooks'
 import { useContext } from 'react'

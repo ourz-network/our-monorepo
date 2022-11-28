@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useState, Fragment } from 'react'
 
 export interface CountdownDisplayProps {

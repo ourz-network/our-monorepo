@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext } from 'react'
 import { NetworkIDs, Networks } from '@zoralabs/nft-hooks'
 

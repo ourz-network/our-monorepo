@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { OurFetchContext } from '../context/OurFetchContext';
 import { SplitDetailsFragment } from '../graph-queries/ourz-graph-types';
 
-export interface UseSplitType {
+export interface useSplitType {
   splitLoaded: boolean;
   error?: string;
   data?: SplitDetailsFragment | (SplitDetailsFragment & { totalSupply: number });
@@ -20,9 +20,9 @@ interface OptionsType {
  *
  * @param splitAddress addresses of the split(s)
  * @param options SWR flags
- * @returns UseSplitType hook results include loading, error, and Split details.
+ * @returns useSplitType hook results include loading, error, and Split details.
  */
-export function useSplit(splitAddress: string, options: OptionsType = {}): UseSplitType {
+export function useSplit(splitAddress: string, options: OptionsType = {}): useSplitType {
   const { fetcher } = useContext(OurFetchContext);
 
   const { data, error } = useSWR<SplitDetailsFragment>(

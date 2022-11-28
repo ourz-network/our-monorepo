@@ -1,4 +1,6 @@
-import type { ThemeType } from "../context/MediaContext";
+'use client'
+
+import type { ThemeType } from '../context/MediaContext'
 
 export enum RenderingPreference {
   INVALID = -1,
@@ -10,32 +12,32 @@ export enum RenderingPreference {
 }
 
 export interface MediaUriType {
-  uri: string;
-  type?: string;
+  uri: string
+  type?: string
 }
 
 export interface RenderRequest {
   media: {
     // from zora content uri
-    content?: MediaUriType;
-    image?: MediaUriType;
+    content?: MediaUriType
+    image?: MediaUriType
     // from metadata.animation_url
-    animation?: MediaUriType;
-  };
-  metadata: any;
-  renderingContext: "PREVIEW" | "FULL";
+    animation?: MediaUriType
+  }
+  metadata: any
+  renderingContext: 'PREVIEW' | 'FULL'
 }
 
 export interface RenderComponentType {
-  request: RenderRequest;
+  request: RenderRequest
   // TODO(iain): Fix types
-  getString: any;
-  getStyles: any;
-  theme: ThemeType["theme"];
-  a11yIdPrefix?: string;
+  getString: any
+  getStyles: any
+  theme: ThemeType['theme']
+  a11yIdPrefix?: string
 }
 
 export interface RendererConfig {
-  getRenderingPreference(request: RenderRequest): RenderingPreference;
-  render: React.FunctionComponent<RenderComponentType>;
+  getRenderingPreference(request: RenderRequest): RenderingPreference
+  render: React.FunctionComponent<RenderComponentType>
 }

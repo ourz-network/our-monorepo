@@ -1,28 +1,30 @@
-import { useMediaContext } from "../context/useMediaContext";
+'use client'
+
+import { useMediaContext } from '../context/useMediaContext'
 import {
   NFTDataProvider,
   NFTDataProviderProps,
-} from "../context/NFTDataProvider";
-import { useA11yIdPrefix } from "../utils/useA11yIdPrefix";
-import type { StyleProps } from "../utils/StyleTypes";
+} from '../context/NFTDataProvider'
+import { useA11yIdPrefix } from '../utils/useA11yIdPrefix'
+import type { StyleProps } from '../utils/StyleTypes'
 
-import { ProofAuthenticity } from "./ProofAuthenticity";
-import { MediaFull } from "./MediaFull";
-import { AuctionInfo } from "./AuctionInfo";
-import { BidHistory } from "./BidHistory";
-import { CreatorEquity } from "./CreatorEquity";
-import { MediaInfo } from "./MediaInfo";
-import { PlaceOfferButton } from "./PlaceOfferButton";
-import { NFTProperties } from "./NFTProperties";
-import { CollectionTag } from "./CollectionTag";
+import { ProofAuthenticity } from './ProofAuthenticity'
+import { MediaFull } from './MediaFull'
+import { AuctionInfo } from './AuctionInfo'
+import { BidHistory } from './BidHistory'
+import { CreatorEquity } from './CreatorEquity'
+import { MediaInfo } from './MediaInfo'
+import { PlaceOfferButton } from './PlaceOfferButton'
+import { NFTProperties } from './NFTProperties'
+import { CollectionTag } from './CollectionTag'
 
-type NFTFullPageProps = Omit<NFTDataProviderProps, "children"> & {
-  children?: React.ReactNode;
+type NFTFullPageProps = Omit<NFTDataProviderProps, 'children'> & {
+  children?: React.ReactNode
   config?: {
-    allowOffer?: boolean;
-    showPerpetual?: boolean;
-  };
-} & StyleProps;
+    allowOffer?: boolean
+    showPerpetual?: boolean
+  }
+} & StyleProps
 
 export const NFTFullPage = ({
   children,
@@ -30,20 +32,20 @@ export const NFTFullPage = ({
   className,
   ...wrapperProps
 }: NFTFullPageProps) => {
-  const a11yIdPrefix = useA11yIdPrefix("media");
-  const { getStyles, style } = useMediaContext();
-  const {allowOffer} = config;
-  const {showPerpetual} = config;
+  const a11yIdPrefix = useA11yIdPrefix('media')
+  const { getStyles, style } = useMediaContext()
+  const { allowOffer } = config
+  const { showPerpetual } = config
 
   const getChildren = () => {
     if (children) {
-      return children;
+      return children
     }
 
     return (
       <>
         <MediaFull a11yIdPrefix={a11yIdPrefix} />
-        <div {...getStyles("fullPageDataGrid")}>
+        <div {...getStyles('fullPageDataGrid')}>
           {style.theme.useCollectionTag && <CollectionTag />}
           <MediaInfo a11yIdPrefix={a11yIdPrefix} />
           <NFTProperties />
@@ -54,12 +56,12 @@ export const NFTFullPage = ({
           <CreatorEquity />
         </div>
       </>
-    );
-  };
+    )
+  }
 
   return (
     <NFTDataProvider {...wrapperProps}>
-      <div {...getStyles("fullPage", className)}>{getChildren()}</div>
+      <div {...getStyles('fullPage', className)}>{getChildren()}</div>
     </NFTDataProvider>
-  );
-};
+  )
+}

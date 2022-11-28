@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 
 import { MediaLoader, useMediaObjectProps } from './MediaLoader'
@@ -45,9 +47,9 @@ const HTMLRenderer = (requestProps: RenderComponentType) => {
 export const HTML: RendererConfig = {
   getRenderingPreference(request: RenderRequest) {
     if (
-      request.media.content.type.startsWith('text/html') ||
-      request.media.content.type.startsWith('application/pdf') ||
-      request.media.animation.type.startsWith('text/html')
+      request.media.content?.type?.startsWith('text/html') ||
+      request.media.content?.type?.startsWith('application/pdf') ||
+      request.media.animation?.type?.startsWith('text/html')
     ) {
       return request.renderingContext === 'FULL'
         ? RenderingPreference.PRIORITY

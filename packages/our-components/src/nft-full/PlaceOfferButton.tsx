@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext, useMemo } from 'react'
 
 import { ZORA_SITE_URL_BASE } from '../constants/media-urls'
@@ -11,7 +13,6 @@ type PlaceOfferButtonProps = {
 } & StyleProps
 
 export const PlaceOfferButton = ({
-  // @ts-expect-error TS6133
   allowOffer,
   className,
 }: PlaceOfferButtonProps) => {
@@ -19,8 +20,8 @@ export const PlaceOfferButton = ({
   const { getString, getStyles } = useMediaContext()
 
   const activeAsk = useMemo(() => {
-    const fixedPrice = data.markets.filter(
-      (market) => market.type === 'FixedPrice'
+    const fixedPrice = data?.markets?.filter(
+      (market) => market?.type === 'FixedPrice'
     )
     if (!fixedPrice || !fixedPrice.length) {
       return undefined
@@ -30,18 +31,18 @@ export const PlaceOfferButton = ({
       return lastFixedPrice
     }
     return undefined
-  }, [data.markets])
+  }, [data?.markets])
 
-  const activeAuction = data.markets.find(
-    (market) => market.type === 'Auction' && market.status === 'active'
+  const activeAuction = data?.markets?.find(
+    (market) => market?.type === 'Auction' && market?.status === 'active'
   )
 
   function getBidURLParts() {
     return [
       ZORA_SITE_URL_BASE,
       'collections',
-      data.nft.contract.address,
-      data.nft.tokenId,
+      data?.nft?.contract.address,
+      data?.nft?.tokenId,
       activeAuction ? 'auction/bid' : '',
     ]
   }
@@ -53,7 +54,7 @@ export const PlaceOfferButton = ({
     if (activeAsk) {
       return getString('BUY_NOW')
     }
-    if (data.nft.contract.knownContract === 'zora') {
+    if (data?.nft?.contract.knownContract === 'zora') {
       return getString('PLACE_OFFER')
     }
     return getString('VIEW_ZORA')

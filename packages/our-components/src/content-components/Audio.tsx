@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Fragment,
   MouseEventHandler,
@@ -217,10 +219,10 @@ export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
 export const Audio: RendererConfig = {
   getRenderingPreference(request: RenderRequest) {
     if (
-      request.media.content.type.startsWith('audio') ||
-      request.media.animation.type.startsWith('audio')
+      request?.media?.content?.type?.startsWith('audio') ??
+      request?.media?.animation?.type?.startsWith?.('audio')
     ) {
-      return request.renderingContext === 'FULL'
+      return request?.renderingContext === 'FULL'
         ? RenderingPreference.PRIORITY
         : RenderingPreference.LOW
     }

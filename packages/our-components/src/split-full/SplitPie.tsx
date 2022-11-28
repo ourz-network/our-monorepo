@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable react/prop-types */
 import {
   PieChart,
@@ -56,8 +58,8 @@ const SplitPie = ({
       payload,
       percent,
     } = props
-    const sin = Math.sin(-RADIAN * (minAngle!))
-    const cos = Math.cos(-RADIAN * (minAngle!))
+    const sin = Math.sin(-RADIAN * minAngle!)
+    const cos = Math.cos(-RADIAN * minAngle!)
     const sx = Number(cx) + (Number(outerRadius) + 10) * cos
     const sy = Number(cy) + (Number(outerRadius) + 10) * sin
     const mx = Number(cx) + (Number(outerRadius) + 30) * cos
@@ -89,8 +91,8 @@ const SplitPie = ({
         <Sector
           cx={cx as number}
           cy={cy as number}
-          startAngle={(startAngle!) - 2}
-          endAngle={(endAngle!) + 2}
+          startAngle={startAngle! - 2}
+          endAngle={endAngle! + 2}
           innerRadius={(outerRadius as number) + 5}
           outerRadius={(outerRadius as number) + 10}
           fill={fill!}

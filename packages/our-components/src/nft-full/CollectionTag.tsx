@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable @next/next/no-img-element */
 import { useContext } from 'react'
 import { css } from '@emotion/react'
@@ -30,7 +32,7 @@ export const CollectionTag = () => {
           <Orb />
         )}
       </div>
-      <span>{data.nft!.contract.name}</span>
+      <span>{data?.nft!.contract.name}</span>
     </a>
   )
 
@@ -43,7 +45,7 @@ export const CollectionTag = () => {
         flex-direction: row;
       `}
     >
-      {data.nft ? getContent() : '...'}
+      {data?.nft ? getContent() : '...'}
     </div>
   )
 }

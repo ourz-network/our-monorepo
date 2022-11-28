@@ -4,7 +4,6 @@ import merge from 'deepmerge';
 import useSWR, { SWRConfiguration } from 'swr';
 
 import { OurFetchContext } from '../context/OurFetchContext';
-import { NFTStrategy } from '../strategies/NFTStrategy';
 import { NFTObject } from '../types/NFTInterface';
 
 export interface useNFTType {

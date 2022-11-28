@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "prepack": "pnpm clean && tsc",
-    "lint": "eslint \"src/**/*.ts*\" --fix",
+    "lint": "eslint \"src/**/*.ts*\"",
     "build": "pnpm run prepack",
     "test": "TZ='EST' jest",
     "clean": "rimraf ./dist",
@@ -23,14 +23,16 @@
   },
   "peerDependencies": {
     "@emotion/cache": "^11.10.5",
-    "@emotion/react": "^11.5.0"
+    "@emotion/react": "^11.5.0",
+    "next": "canary"
   },
   "dependencies": {
+    "@emotion/css": "^11.10.5",
+    "@ourz/odk": "latest",
     "@types/react": "^18.0.25",
     "@zoralabs/nft-hooks": "latest",
     "degene-sais-quoi": "latest",
     "merge-anything": "^5.0.4",
-    "@ourz/odk": "latest",
     "our-hooks": "workspace:*",
     "react": "latest",
     "react-dom": "latest",

@@ -18,7 +18,7 @@ const Wallet = ({
 }: {
   ens: string
   subdomainOwnerAddress: string
-  galleryConfig: GalleryConfig
+  galleryConfig?: GalleryConfig
 }) => {
   const wallet = useWeb3Wallet()
   const { buttonAction, actionText } = useWalletButton()

@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext, useMemo } from 'react'
 import {
   AuctionLike,
@@ -53,21 +55,21 @@ export const BidHistory = ({
   const { getString, getStyles, style } = useMediaContext()
 
   const processedData = useMemo(() => {
-    if (!data.nft) {
+    if (!data?.nft) {
       return []
     }
     const bidEvents: MarketDataListType[] = []
-    if (data.nft.minted.address && data.nft.minted.at.timestamp) {
+    if (data.nft?.minted.address && data.nft?.minted.at.timestamp) {
       bidEvents.push({
         activityDescription: getString('BID_HISTORY_MINTED'),
-        actor: data.nft.minted.address,
-        createdAt: data.nft.minted.at.timestamp,
-        transactionHash: data.nft.minted.at.transactionHash || null,
+        actor: data.nft?.minted.address,
+        createdAt: data.nft?.minted.at.timestamp,
+        transactionHash: data.nft?.minted.at.transactionHash || null,
         pricing: undefined,
       })
     }
-    data.markets.forEach((market) => {
-      if (market.type === MARKET_TYPES.AUCTION) {
+    data?.markets?.forEach((market) => {
+      if (market?.type === MARKET_TYPES.AUCTION) {
         const typedAuction = market as AuctionLike
         if (typedAuction.canceledAt) {
           bidEvents.push({
@@ -97,44 +99,44 @@ export const BidHistory = ({
           })
         )
       }
-      if (market.type === MARKET_TYPES.FIXED_PRICE) {
-        if (market.side === FIXED_SIDE_TYPES.ASK) {
-          if (market.status === MARKET_INFO_STATUSES.ACTIVE) {
+      if (market?.type === MARKET_TYPES.FIXED_PRICE) {
+        if (market?.side === FIXED_SIDE_TYPES.ASK) {
+          if (market?.status === MARKET_INFO_STATUSES.ACTIVE) {
             bidEvents.push({
               activityDescription: getString('HISTORY_ASK_PRICE'),
-              createdAt: market.createdAt.timestamp,
-              actor: market.createdBy!,
-              transactionHash: market.createdAt.transactionHash || null,
-              pricing: market.amount,
+              createdAt: market?.createdAt.timestamp,
+              actor: market?.createdBy!,
+              transactionHash: market?.createdAt.transactionHash || null,
+              pricing: market?.amount,
             })
           }
-          if (market.status === MARKET_INFO_STATUSES.CANCELED) {
+          if (market?.status === MARKET_INFO_STATUSES.CANCELED) {
             bidEvents.push({
               activityDescription: getString('HISTORY_ASK_CANCELLED'),
               createdAt:
-                market.canceledAt.timestamp || market.createdAt.timestamp,
-              actor: market.createdBy!,
-              transactionHash: market.canceledAt.transactionHash || null,
-              pricing: market.amount,
+                market?.canceledAt.timestamp || market?.createdAt.timestamp,
+              actor: market?.createdBy!,
+              transactionHash: market?.canceledAt.transactionHash || null,
+              pricing: market?.amount,
             })
           }
-          if (market.status === MARKET_INFO_STATUSES.COMPLETE) {
+          if (market?.status === MARKET_INFO_STATUSES.COMPLETE) {
             bidEvents.push({
               activityDescription: getString('HISTORY_ASK_FILLED'),
-              createdAt: market.createdAt.timestamp,
-              actor: market.createdBy!,
-              transactionHash: market.createdAt.transactionHash || null,
-              pricing: market.amount,
+              createdAt: market?.createdAt.timestamp,
+              actor: market?.createdBy!,
+              transactionHash: market?.createdAt.transactionHash || null,
+              pricing: market?.amount,
             })
           }
         }
-        if (market.side === FIXED_SIDE_TYPES.OFFER) {
+        if (market?.side === FIXED_SIDE_TYPES.OFFER) {
           bidEvents.push({
             activityDescription: getString('HISTORY_OFFER_PRICE'),
-            createdAt: market.createdAt.timestamp,
-            actor: market.createdBy!,
-            transactionHash: market.createdAt.transactionHash || null,
-            pricing: market.amount,
+            createdAt: market?.createdAt.timestamp,
+            actor: market?.createdBy!,
+            transactionHash: market?.createdAt.transactionHash || null,
+            pricing: market?.amount,
           })
         }
       }
@@ -142,7 +144,7 @@ export const BidHistory = ({
 
     return bidEvents
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.markets])
+  }, [data?.markets])
 
   if (!processedData.length) {
     return <></>

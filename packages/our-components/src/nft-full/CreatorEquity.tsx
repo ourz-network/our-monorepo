@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useContext } from 'react'
 
 import { useMediaContext } from '../context/useMediaContext'
@@ -15,8 +17,8 @@ export const CreatorEquity = ({ className }: StyleProps) => {
     <>{Math.floor(bidSharePercentage)}%</>
   )
 
-  const activeAuction = data.markets.find(
-    (market) => market.status === 'active' && market.type === 'Auction'
+  const activeAuction = data?.markets?.find(
+    (market) => market?.status === 'active' && market?.type === 'Auction'
   )
 
   return (

@@ -1,3 +1,5 @@
+'use client'
+
 import type { NFTObject } from '@zoralabs/nft-hooks'
 import React, { Fragment, useContext } from 'react'
 
@@ -31,9 +33,9 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
   const linkStyles = getStyles('fullProofLink')
 
   const getContent = (nft: NFTObject) => {
-    const infoURL = data.nft.contentURI
+    const infoURL = data.nft?.contentURI
     const infoUrlLabelText =
-      infoURL.includes('/ipfs/') || infoURL.startsWith('ipfs://')
+      infoURL?.includes('/ipfs/') || infoURL?.startsWith('ipfs://')
         ? 'VIEW_IPFS'
         : 'VIEW_METADATA'
 
@@ -56,7 +58,7 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
         )}
         {data.nft &&
           (data.rawData['zora-indexer'] ||
-            data.nft.contract.knownContract === 'zora') && (
+            data.nft?.contract.knownContract === 'zora') && (
             <ProofLink
               styles={linkStyles}
               href={`${MEDIA_URL_BASE_BY_NETWORK[networkId]}collections/${

@@ -29,7 +29,7 @@ export function transformEvents(events: EventInfoFragment[]): NormalizedEvent[] 
       at: {
         timestamp: dateToISO(tokenEvent.transactionInfo.blockTimestamp),
         blockNumber: tokenEvent.transactionInfo.blockNumber,
-        transactionHash: tokenEvent.transactionInfo.transactionHash || undefined,
+        transactionHash: tokenEvent.transactionInfo.transactionHash ?? undefined,
       },
     };
 
@@ -125,6 +125,7 @@ export function transformEvents(events: EventInfoFragment[]): NormalizedEvent[] 
 
       eventsList.push({
         ...common,
+        // @ts-expect-error idk
         event,
         sender: tokenEvent.properties.address,
         marketAddress: tokenEvent.properties.collectionAddress,

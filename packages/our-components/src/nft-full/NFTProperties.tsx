@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext } from 'react'
 
 import { useMediaContext } from '../context/useMediaContext'
@@ -42,7 +44,7 @@ export const NFTProperties = ({ className }: NFTPropertiesProps) => {
               <div
                 {...getStyles('propertiesItem')}
                 // eslint-disable-next-line react/no-array-index-key
-                key={`${data.nft.tokenId}${index}`}
+                key={`${data.nft?.tokenId}${index}`}
               >
                 {name && <span {...getStyles('propertiesLabel')}>{name}</span>}
                 {attribute?.value && <span>{attribute?.value}</span>}

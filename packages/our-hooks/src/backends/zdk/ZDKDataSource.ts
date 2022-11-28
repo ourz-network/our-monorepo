@@ -273,7 +273,7 @@ export class ZDKDataSource implements ZDKDataInterface {
 
     if (query.query.activeMarkets) {
       const marketsList: ZDKMarketType[] = [];
-      query.query.activeMarkets.forEach((market) => {
+      query.query.activemarkets?.forEach((market) => {
         if (market === MarketType.AUCTION) {
           marketsList.push(ZDKMarketType.V2Auction);
         }

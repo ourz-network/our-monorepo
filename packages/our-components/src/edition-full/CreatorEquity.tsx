@@ -1,25 +1,29 @@
-import React, { useContext } from "react";
+'use client'
 
-import { useMediaContext } from "../context/useMediaContext";
-import { EditionDataContext } from "../context/EditionDataContext";
-import { AddressView } from "../components/AddressView";
-import type { StyleProps } from "../utils/StyleTypes";
+import React, { useContext } from 'react'
 
-import { InfoContainer } from "./InfoContainer";
+import { useMediaContext } from '../context/useMediaContext'
+import { EditionDataContext } from '../context/EditionDataContext'
+import { AddressView } from '../components/AddressView'
+import type { StyleProps } from '../utils/StyleTypes'
+
+import { InfoContainer } from './InfoContainer'
 
 export const CreatorEquity = ({ className }: StyleProps) => {
   const {
     edition: { data },
-  } = useContext(EditionDataContext);
-  const { getStyles, getString } = useMediaContext();
+  } = useContext(EditionDataContext)
+  const { getStyles, getString } = useMediaContext()
 
-  const getContent = (bidSharePercentage: number) => <>{Math.floor(bidSharePercentage)}%</>;
+  const getContent = (bidSharePercentage: number) => (
+    <>{Math.floor(bidSharePercentage)}%</>
+  )
 
   return (
     <>
       {data && (
-        <InfoContainer titleString="CREATOR_EQUITY" className={className}>
-          <div {...getStyles("fullInfoCreatorEquityContainer")}>
+        <InfoContainer titleString='CREATOR_EQUITY' className={className}>
+          <div {...getStyles('fullInfoCreatorEquityContainer')}>
             {getContent((data.royaltyBPS as unknown as number) / 100)}
           </div>
         </InfoContainer>
@@ -36,5 +40,5 @@ export const CreatorEquity = ({ className }: StyleProps) => {
         </InfoContainer>
       )} */}
     </>
-  );
-};
+  )
+}

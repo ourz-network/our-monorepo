@@ -38,7 +38,7 @@ export class GenericMediaData implements GenericMediaInterface {
    * @returns Promise<MediaContentType> Media content information or URL
    */
   fetchContent = async (url: string, contentType: string): Promise<MediaContentType> => {
-    if (contentType.startsWith('text/')) {
+    if (contentType?.startsWith('text/')) {
       try {
         const response = await new FetchWithTimeout(this.timeout).fetch(convertURIToHTTPS(url));
         return {

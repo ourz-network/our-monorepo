@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext } from 'react'
 
 import { NFTDataContext } from '../context/NFTDataContext'
@@ -14,13 +16,13 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
   const { data } = useContext(NFTDataContext)
 
   const getContent = () => {
-    if (data.metadata.raw) {
+    if (data?.metadata?.raw) {
       return {
         title: data.metadata.raw.name,
         description: data.metadata.raw.description,
       }
     }
-    if (data.metadata) {
+    if (data?.metadata) {
       return {
         title: data.metadata.name,
         description: data.metadata.description,
@@ -43,19 +45,19 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
         <></>
       ) : (
         <dl {...getStyles('fullCreatorOwnerSection')}>
-          {data.nft.minted.address && style.theme.showCreator && (
+          {data?.nft?.minted?.address && style.theme.showCreator && (
             <>
               <dt {...getStyles('fullLabel')}>{getString('CREATOR')}</dt>
               <dd {...getStyles('fullOwnerAddress')}>
-                <AddressView address={data.nft.minted.address} />
+                <AddressView address={data.nft?.minted.address} />
               </dd>
             </>
           )}
-          {data.nft.owner && style.theme.showOwner && (
+          {data?.nft?.owner && style.theme.showOwner && (
             <>
               <dt {...getStyles('fullLabel')}>{getString('OWNER')}</dt>
               <dd {...getStyles('fullOwnerAddress')}>
-                <AddressView address={data.nft.owner.address} />
+                <AddressView address={data.nft?.owner.address} />
               </dd>
             </>
           )}

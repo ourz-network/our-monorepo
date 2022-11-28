@@ -44,9 +44,9 @@ export const MediaObject = ({
             uri: contentURI,
             // TODO(iain): Clean up for catalog.works
             type:
-              metadata.mimeType ||
-              (metadata as any)?.body?.mimeType ||
-              mediaType.content.mimeType,
+              metadata?.mimeType ??
+              (metadata as any)?.body?.mimeType ??
+              mediaType?.content?.mimeType,
           }
         : undefined,
       image: metadata.imageUri
@@ -59,7 +59,10 @@ export const MediaObject = ({
       animation: metadata.contentUri
         ? {
             uri: metadata.contentUri,
-            type: mediaType.content.mimeType,
+            type:
+              metadata?.mimeType ??
+              (metadata as any)?.body?.mimeType ??
+              mediaType?.content?.mimeType,
           }
         : undefined,
     },
@@ -80,13 +83,15 @@ export const MediaObject = ({
   if (renderingInfo) {
     const RenderingComponent = renderingInfo.render
     return (
-      <RenderingComponent
-        a11yIdPrefix={a11yIdPrefix}
-        getStyles={getStyles}
-        getString={getString}
-        theme={style.theme}
-        request={request}
-      />
+      <>
+        <RenderingComponent
+          a11yIdPrefix={a11yIdPrefix}
+          getStyles={getStyles}
+          getString={getString}
+          theme={style.theme}
+          request={request}
+        />
+      </>
     )
   }
 

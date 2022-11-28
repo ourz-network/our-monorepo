@@ -25,7 +25,6 @@ type PricingComponentProps = {
 } & StyleProps
 
 export const PricingComponent = ({
-  // @ts-expect-error TS6133
   showPerpetual = true,
   className,
 }: PricingComponentProps) => {
@@ -35,31 +34,31 @@ export const PricingComponent = ({
 
   const reserveAuction = useMemo(
     () =>
-      data.markets.find(
+      data?.markets?.find(
         (market) =>
-          market.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
-          market.status !== MARKET_INFO_STATUSES.CANCELED
+          market?.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
+          market?.status !== MARKET_INFO_STATUSES.CANCELED
       ),
-    [data.markets]
+    [data?.markets]
   ) as undefined | AuctionLike
 
   const ask = useMemo(
     () =>
-      data.markets.find(
+      data?.markets?.find(
         (market) =>
-          market.type === MARKET_TYPES.FIXED_PRICE &&
-          market.side === FIXED_SIDE_TYPES.ASK &&
-          market.status === MARKET_INFO_STATUSES.ACTIVE
+          market?.type === MARKET_TYPES.FIXED_PRICE &&
+          market?.side === FIXED_SIDE_TYPES.ASK &&
+          market?.status === MARKET_INFO_STATUSES.ACTIVE
       ),
-    [data.markets]
+    [data?.markets]
   )
 
   const edition = useMemo(
     () =>
-      data.markets.find(
-        (market) => market.type === 'Edition' && market.status === 'active'
+      data?.markets?.find(
+        (market) => market?.type === 'Edition' && market?.status === 'active'
       ),
-    [data.markets]
+    [data?.markets]
   ) as undefined | EditionLike
 
   if (!reserveAuction && !ask && !edition) {
@@ -91,8 +90,8 @@ export const PricingComponent = ({
     )
   }
 
-  if (ask && reserveAuction.status !== MARKET_INFO_STATUSES.ACTIVE) {
-    let listPrice = null
+  if (ask && reserveAuction?.status !== MARKET_INFO_STATUSES.ACTIVE) {
+    let listPrice = <></>
 
     if (ask) {
       listPrice = (
@@ -105,7 +104,7 @@ export const PricingComponent = ({
     const highestBid = undefined
     if (
       !highestBid &&
-      reserveAuction.status === MARKET_INFO_STATUSES.COMPLETE
+      reserveAuction?.status === MARKET_INFO_STATUSES.COMPLETE
     ) {
       return (
         <div
@@ -152,7 +151,7 @@ export const PricingComponent = ({
               <PricingString pricing={highestBid} showUSD={false} />
             )}
           </span>
-          {reserveAuction.endsAt.timestamp &&
+          {reserveAuction.endsAt?.timestamp &&
             isInFuture(reserveAuction.endsAt.timestamp) && (
               <>
                 <span {...getStyles('textSubdued')}>

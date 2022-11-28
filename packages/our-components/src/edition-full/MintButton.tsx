@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment, useContext } from 'react'
 
 import { ZORA_SITE_URL_BASE } from '../constants/media-urls'

@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable react/require-default-props */
 import type { CurrencyValue } from '@zoralabs/nft-hooks'
 import { Fragment } from 'react'
@@ -38,13 +40,13 @@ export const PricingString = ({
     <>
       {!!pricing.amount.value && (
         <span {...getStyles('pricingAmount')}>
-          {format(pricing.amount.value)} {pricing.symbol}
+          {format(pricing?.amount?.value)} {pricing?.symbol}
         </span>
       )}
-      {showUSD && !!pricing.usd.value && (
+      {showUSD && !!pricing?.usd?.value && (
         <span {...getStyles('textSubdued')}>
           {' '}
-          ${formatUSD(pricing.usd.value)}
+          ${formatUSD(pricing?.usd?.value)}
         </span>
       )}
     </>

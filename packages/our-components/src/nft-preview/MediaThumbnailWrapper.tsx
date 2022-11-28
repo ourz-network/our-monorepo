@@ -22,26 +22,32 @@ export const MediaThumbnailWrapper = ({
 
   const { data } = useContext(NFTDataContext)
 
-  const markets = data.markets.filter(
-    (market) => market.status === 'active' || market.status === 'complete'
-  )
-  const lastMarket = markets.length ? markets[markets.length - 1] : null
+  if (data?.markets) {
+    const markets = data?.markets?.filter(
+      (market) => market?.status === 'active' || market?.status === 'complete'
+    )
+    const lastMarket = markets?.length ? markets[markets?.length - 1] : null
 
-  const LinkComponent = href ? 'a' : 'button'
+    const LinkComponent = href ? 'a' : 'button'
 
-  return (
-    <div
-      {...getStyles('cardOuter', className, {
-        hasClickEvent: !!onClick,
-        auctionStatus: lastMarket.status,
-      })}
-    >
-      {(href || onClick) && (
-        <LinkComponent {...getStyles('cardLink')} href={href} onClick={onClick}>
-          View NFT
-        </LinkComponent>
-      )}
-      {children}
-    </div>
-  )
+    return (
+      <div
+        {...getStyles('cardOuter', className, {
+          hasClickEvent: !!onClick,
+          auctionStatus: lastMarket?.status,
+        })}
+      >
+        {(href || onClick) && (
+          <LinkComponent
+            {...getStyles('cardLink')}
+            href={href}
+            onClick={onClick}
+          >
+            View NFT
+          </LinkComponent>
+        )}
+        {children}
+      </div>
+    )
+  }
 }

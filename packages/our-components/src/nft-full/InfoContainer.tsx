@@ -1,12 +1,14 @@
-import type { StyleProps } from "../utils/StyleTypes";
-import type { Strings } from "../constants/strings";
-import { useMediaContext } from "../context/useMediaContext";
+'use client'
+
+import type { StyleProps } from '../utils/StyleTypes'
+import type { Strings } from '../constants/strings'
+import { useMediaContext } from '../context/useMediaContext'
 
 export type InfoContainerProps = {
-  children: React.ReactNode;
-  titleString: keyof typeof Strings;
-  bottomPadding?: boolean;
-} & StyleProps;
+  children: React.ReactNode
+  titleString: keyof typeof Strings
+  bottomPadding?: boolean
+} & StyleProps
 
 export const InfoContainer = ({
   children,
@@ -14,12 +16,12 @@ export const InfoContainer = ({
   bottomPadding = true,
   className,
 }: InfoContainerProps) => {
-  const { getStyles, getString } = useMediaContext();
+  const { getStyles, getString } = useMediaContext()
 
   return (
-    <div {...getStyles("infoContainer", className, { bottomPadding })}>
-      <h4 {...getStyles("fullLabel")}>{getString(titleString)}</h4>
+    <div {...getStyles('infoContainer', className, { bottomPadding })}>
+      <h4 {...getStyles('fullLabel')}>{getString(titleString)}</h4>
       {children}
     </div>
-  );
-};
+  )
+}

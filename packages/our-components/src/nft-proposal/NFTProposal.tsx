@@ -1,33 +1,35 @@
-import { useMediaContext } from "../context/useMediaContext";
+'use client'
+
+import { useMediaContext } from '../context/useMediaContext'
 import {
   NFTDataProvider,
   NFTDataProviderProps,
-} from "../context/NFTDataProvider";
-import type { StyleProps } from "../utils/StyleTypes";
+} from '../context/NFTDataProvider'
+import type { StyleProps } from '../utils/StyleTypes'
 
-import { ProposalMediaDisplay } from "./ProposalMediaDisplay";
+import { ProposalMediaDisplay } from './ProposalMediaDisplay'
 import {
   ProposalActionList,
   ProposalActionListProps,
-} from "./ProposalActionList";
+} from './ProposalActionList'
 
-type NFTProposalProps = Omit<NFTDataProviderProps, "children"> & {
-  actionConfiguration?: ProposalActionListProps;
-} & StyleProps;
+type NFTProposalProps = Omit<NFTDataProviderProps, 'children'> & {
+  actionConfiguration?: ProposalActionListProps
+} & StyleProps
 
 export const NFTProposal = ({
   actionConfiguration,
   className,
   ...wrapperProps
 }: NFTProposalProps) => {
-  const { getStyles } = useMediaContext();
+  const { getStyles } = useMediaContext()
 
   return (
     <NFTDataProvider {...wrapperProps}>
-      <div {...getStyles("nftProposal", className)}>
+      <div {...getStyles('nftProposal', className)}>
         <ProposalMediaDisplay />
         <ProposalActionList {...actionConfiguration} />
       </div>
     </NFTDataProvider>
-  );
-};
+  )
+}

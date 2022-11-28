@@ -1,58 +1,62 @@
-import { Fragment, useContext } from "react";
+'use client'
 
-import { EditionDataContext } from "../context/EditionDataContext";
-import { AddressView } from "../components/AddressView";
-import { useMediaContext } from "../context/useMediaContext";
-import type { StyleProps } from "../utils/StyleTypes";
+import { Fragment, useContext } from 'react'
+
+import { EditionDataContext } from '../context/EditionDataContext'
+import { AddressView } from '../components/AddressView'
+import { useMediaContext } from '../context/useMediaContext'
+import type { StyleProps } from '../utils/StyleTypes'
 
 type MediaInfoProps = {
-  a11yIdPrefix?: string;
-} & StyleProps;
+  a11yIdPrefix?: string
+} & StyleProps
 
 export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
-  const { getStyles, getString, style } = useMediaContext();
+  const { getStyles, getString, style } = useMediaContext()
   const {
     edition: { data, error },
-  } = useContext(EditionDataContext);
+  } = useContext(EditionDataContext)
 
   const getContent = () => {
     if (data) {
       return {
         title: data.name,
         description: data.description,
-      };
+      }
     }
     if (error) {
       return {
-        title: "?",
-        description: "?",
-      };
+        title: '?',
+        description: '?',
+      }
     }
     return {
-      title: "...",
-      description: "...",
-    };
-  };
+      title: '...',
+      description: '...',
+    }
+  }
 
-  const { title, description } = getContent();
+  const { title, description } = getContent()
   return (
-    <div {...getStyles("fullItemInfo", className)}>
-      <h2 {...getStyles("fullTitle")}>{title}</h2>
-      <div id={`${a11yIdPrefix}description`} {...getStyles("fullDescription")}>
+    <div {...getStyles('fullItemInfo', className)}>
+      <h2 {...getStyles('fullTitle')}>{title}</h2>
+      <div id={`${a11yIdPrefix}description`} {...getStyles('fullDescription')}>
         {description}
       </div>
       {!style.theme.showCreator && !style.theme.showOwner ? (
         <></>
       ) : (
-        <dl {...getStyles("fullCreatorOwnerSection")}>
+        <dl {...getStyles('fullCreatorOwnerSection')}>
           {data.creator.id && style.theme.showCreator && (
             <>
-              <dt {...getStyles("fullLabel")}>{getString("CREATOR")}</dt>
-              <dd {...getStyles("fullOwnerAddress")}>{data ? <AddressView address={data.creator.id} /> : " "}</dd>
+              <dt {...getStyles('fullLabel')}>{getString('CREATOR')}</dt>
+              <dd {...getStyles('fullOwnerAddress')}>
+                {data ? <AddressView address={data.creator.id} /> : ' '}
+              </dd>
             </>
           )}
         </dl>
       )}
     </div>
-  );
-};
+  )
+}

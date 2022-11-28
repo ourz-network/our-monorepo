@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable @next/next/no-img-element */
 import { forwardRef } from 'react'
 
@@ -35,10 +37,10 @@ export const Image: RendererConfig = {
       }
       return RenderingPreference.NORMAL
     }
-    if (request.media.content.type.startsWith('image/')) {
+    if (request.media.content?.type?.startsWith('image/')) {
       return RenderingPreference.NORMAL
     }
-    if (request.media.content.type.startsWith('application/svg+xml')) {
+    if (request.media.content?.type?.startsWith('application/svg+xml')) {
       return RenderingPreference.NORMAL
     }
     return RenderingPreference.INVALID

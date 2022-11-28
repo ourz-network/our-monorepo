@@ -12,26 +12,22 @@ async function getOwnerAddress(subdomain: string) {
   return ensAddress
 }
 
-const Header = async ({
+export default async function Nav({
   ens,
   galleryConfig,
 }: {
   ens: string
-  galleryConfig: GalleryConfig
-}) => {
+  galleryConfig?: GalleryConfig
+}) {
   const subdomainOwnerAddress = await getOwnerAddress(ens)
 
   return (
     <header className='2xl:px-24'>
       <div className='flex justify-start w-1/3 text-left'>
-        <NavLink passHref href='/'>
-          Auctions
-        </NavLink>
+        <NavLink href='/'>Auctions</NavLink>
       </div>
       <div className='flex justify-center w-1/3 text-center'>
-        <NavLink passHref href='/collection'>
-          Collection
-        </NavLink>
+        <NavLink href='/collection'>Collection</NavLink>
       </div>
       <div className='flex justify-end w-1/3'>
         <Suspense fallback={<span>`LOADING...`</span>}>
@@ -47,5 +43,3 @@ const Header = async ({
     </header>
   )
 }
-
-export default Header

@@ -1,3 +1,5 @@
+'use client'
+
 import { useSplit, useSplitType } from 'our-hooks'
 
 import { SplitDataContext } from './SplitDataContext'

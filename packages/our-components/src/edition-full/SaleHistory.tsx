@@ -1,10 +1,12 @@
-import { Fragment, useContext } from "react";
+'use client'
 
-import { EditionDataContext } from "../context/EditionDataContext";
-import { useMediaContext } from "../context/useMediaContext";
-import type { StyleProps } from "../utils/StyleTypes";
+import { Fragment, useContext } from 'react'
 
-import { InfoContainer } from "./InfoContainer";
+import { EditionDataContext } from '../context/EditionDataContext'
+import { useMediaContext } from '../context/useMediaContext'
+import type { StyleProps } from '../utils/StyleTypes'
+
+import { InfoContainer } from './InfoContainer'
 
 // const dateFromTimestamp = (timestamp: string) => new Date(parseInt(timestamp, 10) * 1000);
 
@@ -18,19 +20,22 @@ import { InfoContainer } from "./InfoContainer";
 //   });
 
 type SaleHistoryProps = {
-  showPerpetual?: boolean;
-} & StyleProps;
+  showPerpetual?: boolean
+} & StyleProps
 
-export const SaleHistory = ({ showPerpetual = true, className }: SaleHistoryProps) => {
-  const { edition } = useContext(EditionDataContext);
-  const { getString, getStyles, style } = useMediaContext();
+export const SaleHistory = ({
+  showPerpetual = true,
+  className,
+}: SaleHistoryProps) => {
+  const { edition } = useContext(EditionDataContext)
+  const { getString, getStyles, style } = useMediaContext()
 
   const getPastBids = () => {
-    const { data } = edition;
+    const { data } = edition
     if (!data) {
-      return <></>;
+      return <></>
     }
-    return <></>;
+    return <></>
     // const currentBid = data.pricing.reserve?.currentBid ? [data.pricing.reserve?.currentBid] : [];
     // const eventsList = [
     //   ...(showPerpetual ? data.pricing.perpetual.bids : []),
@@ -80,7 +85,7 @@ export const SaleHistory = ({ showPerpetual = true, className }: SaleHistoryProp
     //   eventsList.push({
     //     activityDescription: getString("BID_HISTORY_MINTED"),
     //     pricing: <Fragment />,
-    //     actor: data.nft.creator || "",
+    //     actor: data.nft?.creator || "",
     //     createdAt: data.zoraNFT.createdAtTimestamp,
     //     transactionHash: null,
     //   });
@@ -141,11 +146,11 @@ export const SaleHistory = ({ showPerpetual = true, className }: SaleHistoryProp
     //       )}
     //     </li>
     //   ));
-  };
+  }
 
   return (
-    <InfoContainer titleString="NFT_HISTORY" className={className}>
-      <ol {...getStyles("fullPageHistoryList")}>{getPastBids()}</ol>
+    <InfoContainer titleString='NFT_HISTORY' className={className}>
+      <ol {...getStyles('fullPageHistoryList')}>{getPastBids()}</ol>
     </InfoContainer>
-  );
-};
+  )
+}

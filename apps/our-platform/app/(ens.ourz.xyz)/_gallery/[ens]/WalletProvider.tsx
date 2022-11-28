@@ -10,7 +10,7 @@ const WalletProvider = ({ children }: { children: React.ReactNode }) => (
     theme={{
       modalWrapper: css`
         margin: auto;
-      `,
+      ` as unknown as string,
       walletOption: css`
         color: #000 !important;
         position: relative;
@@ -21,7 +21,7 @@ const WalletProvider = ({ children }: { children: React.ReactNode }) => (
         &:last-child {
           margin-bottom: 0;
         }
-      `,
+      ` as unknown as string,
     }}
   >
     {children}

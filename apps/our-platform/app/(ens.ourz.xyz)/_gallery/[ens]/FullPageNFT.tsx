@@ -25,6 +25,7 @@ const FullPageNFT = ({
       // useBetaIndexer={true}
       contract={contract as string}
       id={id as string}
+      config={{ allowOffer: true }}
       // @ts-expect-error prop exists
       initialData={token}
     />
