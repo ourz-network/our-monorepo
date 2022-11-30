@@ -1,13 +1,15 @@
 'use client'
 
-import { Nav } from '@/components/Nav'
+// import { Nav } from '@/components/Nav'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Nav />
+      {/* <Nav /> */}
 
-      <main className=''>{children}</main>
+      <main>
+        <div>{children}</div>
+      </main>
     </>
   )
 }

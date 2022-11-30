@@ -10,6 +10,7 @@ import Footer from './Footer'
 import Header from './Nav'
 
 import { getGalleryConfig } from '@/lib/fetchers'
+import Script from 'next/script'
 
 export const revalidate = 10
 
@@ -40,6 +41,24 @@ export default async function RootLayout({
           </ClientProviders>
         </EmotionRootStyleRegistry>
       </body>
+      <Script
+        id='tailwind-theme'
+        strategy='afterInteractive'
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: `
+            try {
+              if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark')
+                document.documentElement.classList.add('--hello-world: #666')
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0B1120')
+              } else {
+                document.documentElement.classList.remove('dark')
+              }
+            } catch (_) {}
+          `,
+        }}
+      />
     </html>
   )
 }
