@@ -36,27 +36,58 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
 
   const { title, description } = getContent()
   return (
-    <div {...getStyles('fullItemInfo', className)}>
-      <h2 {...getStyles('fullTitle')}>{title}</h2>
-      <div id={`${a11yIdPrefix}description`} {...getStyles('fullDescription')}>
+    <div
+      className='fullItemInfo'
+      // {...getStyles('fullItemInfo', className)}
+    >
+      <h2
+        className='fullTitle'
+        // {...getStyles('fullTitle')}
+      >
+        {title}
+      </h2>
+      <div
+        className='fullDescription'
+        //  {...getStyles('fullDescription')}
+        id={`${a11yIdPrefix}description`}
+      >
         {description}
       </div>
       {!style.theme.showCreator && !style.theme.showOwner ? (
         <></>
       ) : (
-        <dl {...getStyles('fullCreatorOwnerSection')}>
+        <dl
+          className='fullCreatorOwnerSection'
+          // {...getStyles('fullCreatorOwnerSection')}
+        >
           {data?.nft?.minted?.address && style.theme.showCreator && (
             <>
-              <dt {...getStyles('fullLabel')}>{getString('CREATOR')}</dt>
-              <dd {...getStyles('fullOwnerAddress')}>
+              <dt
+                className='fullLabel'
+                //  {...getStyles('fullLabel')}
+              >
+                {getString('CREATOR')}
+              </dt>
+              <dd
+                className='fullOwnerAddress'
+                //  {...getStyles('fullOwnerAddress')}
+              >
                 <AddressView address={data.nft?.minted.address} />
               </dd>
             </>
           )}
           {data?.nft?.owner && style.theme.showOwner && (
             <>
-              <dt {...getStyles('fullLabel')}>{getString('OWNER')}</dt>
-              <dd {...getStyles('fullOwnerAddress')}>
+              <dt
+                className='fullLabel'
+                //  {...getStyles('fullLabel')}
+              >
+                {getString('OWNER')}
+              </dt>
+              <dd
+                className='fullOwnerAddress'
+                //  {...getStyles('fullOwnerAddress')}
+              >
                 <AddressView address={data.nft?.owner.address} />
               </dd>
             </>

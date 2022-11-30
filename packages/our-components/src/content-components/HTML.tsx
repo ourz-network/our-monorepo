@@ -13,8 +13,8 @@ import {
 const HTMLRenderer = (requestProps: RenderComponentType) => {
   const { getStyles, request, theme } = requestProps
   const { props, loading, error } = useMediaObjectProps({
-    uri: request.media.content.uri || request.media.animation.uri,
-    preferredIPFSGateway: theme.preferredIPFSGateway,
+    uri: request.media.content?.uri ?? request.media.animation?.uri,
+    preferredIPFSGateway: theme?.preferredIPFSGateway,
     ...requestProps,
   })
   const [windowHeight, setWindowHeight] = useState<number>(

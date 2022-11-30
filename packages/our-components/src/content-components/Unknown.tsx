@@ -16,7 +16,10 @@ export const Unknown: RendererConfig = {
   },
 
   render: ({ request, getStyles }: RenderComponentType) => (
-    <div {...getStyles('mediaObjectMessage')}>
+    <div
+      className='self-center'
+      // {...getStyles('mediaObjectMessage')}
+    >
       {request.media.content?.type || 'unknown'}
     </div>
   ),

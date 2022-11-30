@@ -12,8 +12,13 @@ import { NFTFullPage, FullComponents } from './nft-full'
 import { EditionFullPage, EditionComponents } from './edition-full'
 import { SplitFullPage, SplitComponents } from './split-full'
 import { SplitPreview } from './split-preview'
+import plugin from './plugin'
+import { NFTE } from './nfte'
+
+import '../globals.css'
 
 export {
+  plugin,
   // Constant list of all networks
   Networks,
   // Contextual wrapper component for media configuration
@@ -41,4 +46,5 @@ export {
   // Renderers and default array for configuration
   MediaRenderers,
   RendererConfigTypes,
+  NFTE,
 }

@@ -12,6 +12,14 @@
       ],
       "dependsOn": ["^build"]
     },
+    "build:app": {
+      "outputs": [".next/**", "api/**"],
+      "dependsOn": ["build"]
+    },
+    "start": {
+      "dependsOn": ["^build:app"],
+      "cache": false
+    },
     "test": {
       "outputs": ["coverage/**"],
       "dependsOn": []
@@ -21,6 +29,7 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["build"],
       "cache": false
     },
     "clean": {

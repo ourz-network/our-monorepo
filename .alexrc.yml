@@ -1,0 +1,4 @@
+allow:
+  - simple
+  - basically
+  - hooks

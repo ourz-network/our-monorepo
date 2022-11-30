@@ -45,15 +45,17 @@ export function useMediaObjectProps({
     error,
     props: {
       'aria-describedby': `${a11yIdPrefix}description`,
-      alt: request.metadata.name || request.metadata.description,
+      alt: request.metadata?.name || request.metadata?.description,
       onLoad: () => setLoading(false),
       // TODO(iain): Update Error
       onError: () => setError('Error loading'),
       src: uri ? getNormalizedURI(uri, { preferredIPFSGateway }) : uri,
-      ...getStyles('mediaObject', undefined, {
-        mediaLoaded: !loading,
-        isFullPage: request.renderingContext === 'FULL',
-      }),
+      className:
+        'block object-cover flex-shrink mx-auto my-0 w-full min-w-0 h-full transition-opacity duration-200 ease-in',
+      // ...getStyles('mediaObject', undefined, {
+      //   mediaLoaded: !loading,
+      //   isFullPage: request.renderingContext === 'FULL',
+      // }),
     },
   }
 }
@@ -75,14 +77,24 @@ export const MediaLoader = ({
   if (error) {
     return (
       <>
-        <span {...getStyles('mediaObjectMessage')}>Error loading content</span>
+        <span
+          className='self-center'
+          // {...getStyles('mediaObjectMessage')}
+        >
+          Error loading content
+        </span>
         {children}
       </>
     )
   }
   return (
     <>
-      <span {...getStyles('mediaLoader')}>Loading...</span>
+      <span // TODO
+        className={`justify-center items-center w-full pointer-events-none min-h-fit${''}`} // @container full page??
+        // {...getStyles('mediaLoader')}
+      >
+        Loading...
+      </span>
       {children}
     </>
   )

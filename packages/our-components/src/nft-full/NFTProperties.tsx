@@ -36,17 +36,28 @@ export const NFTProperties = ({ className }: NFTPropertiesProps) => {
     }
     return (
       <InfoContainer className={className} titleString='PROPERTIES_TITLE'>
-        <div {...getStyles('propertiesGrid')}>
+        <div
+          className='propertiesGrid'
+          // {...getStyles('propertiesGrid')}
+        >
           {formattedAttributes.map((attribute: any, index: number) => {
             const name = attribute?.name || attribute?.trait_type
 
             return (
               <div
-                {...getStyles('propertiesItem')}
+                className='propertiesItem'
+                // {...getStyles('propertiesItem')}
                 // eslint-disable-next-line react/no-array-index-key
-                key={`${data.nft?.tokenId}${index}`}
+                key={`${data?.nft?.tokenId}${index}`}
               >
-                {name && <span {...getStyles('propertiesLabel')}>{name}</span>}
+                {name && (
+                  <span
+                    className='propertiesLabel'
+                    // {...getStyles('propertiesLabel')}
+                  >
+                    {name}
+                  </span>
+                )}
                 {attribute?.value && <span>{attribute?.value}</span>}
               </div>
             )

@@ -59,24 +59,24 @@ export const BidHistory = ({
       return []
     }
     const bidEvents: MarketDataListType[] = []
-    if (data.nft?.minted.address && data.nft?.minted.at.timestamp) {
+    if (data.nft.minted.address && data.nft.minted.at?.timestamp) {
       bidEvents.push({
         activityDescription: getString('BID_HISTORY_MINTED'),
-        actor: data.nft?.minted.address,
-        createdAt: data.nft?.minted.at.timestamp,
-        transactionHash: data.nft?.minted.at.transactionHash || null,
+        actor: data.nft.minted.address,
+        createdAt: data.nft.minted.at.timestamp,
+        transactionHash: data.nft.minted.at.transactionHash ?? null,
         pricing: undefined,
       })
     }
-    data?.markets?.forEach((market) => {
-      if (market?.type === MARKET_TYPES.AUCTION) {
+    data.markets?.forEach((market) => {
+      if (market.type === MARKET_TYPES.AUCTION) {
         const typedAuction = market as AuctionLike
         if (typedAuction.canceledAt) {
           bidEvents.push({
             activityDescription: getString('BID_HISTORY_CANCELLED'),
             actor: typedAuction.createdBy!,
             createdAt: typedAuction.canceledAt.timestamp,
-            transactionHash: typedAuction.canceledAt.transactionHash || null,
+            transactionHash: typedAuction.canceledAt.transactionHash ?? null,
             pricing: undefined,
           })
         }
@@ -84,8 +84,8 @@ export const BidHistory = ({
           bidEvents.push({
             activityDescription: getString('AUCTION_SOLD_FOR'),
             actor: typedAuction.winner,
-            createdAt: typedAuction.finishedAt!.timestamp,
-            transactionHash: typedAuction.finishedAt.transactionHash || null,
+            createdAt: typedAuction.finishedAt.timestamp,
+            transactionHash: typedAuction.finishedAt.transactionHash ?? null,
             pricing: typedAuction.amount,
           })
         }
@@ -94,49 +94,49 @@ export const BidHistory = ({
             activityDescription: getString('BID_HISTORY_BID'),
             createdAt: bid.created.timestamp,
             actor: bid.creator,
-            transactionHash: bid.created.transactionHash || null,
+            transactionHash: bid.created.transactionHash ?? null,
             pricing: bid.amount,
           })
         )
       }
-      if (market?.type === MARKET_TYPES.FIXED_PRICE) {
-        if (market?.side === FIXED_SIDE_TYPES.ASK) {
-          if (market?.status === MARKET_INFO_STATUSES.ACTIVE) {
+      if (market.type === MARKET_TYPES.FIXED_PRICE) {
+        if (market.side === FIXED_SIDE_TYPES.ASK) {
+          if (market.status === MARKET_INFO_STATUSES.ACTIVE) {
             bidEvents.push({
               activityDescription: getString('HISTORY_ASK_PRICE'),
-              createdAt: market?.createdAt.timestamp,
-              actor: market?.createdBy!,
-              transactionHash: market?.createdAt.transactionHash || null,
-              pricing: market?.amount,
+              createdAt: market.createdAt.timestamp,
+              actor: market.createdBy!,
+              transactionHash: market.createdAt.transactionHash ?? null,
+              pricing: market.amount,
             })
           }
-          if (market?.status === MARKET_INFO_STATUSES.CANCELED) {
+          if (market.status === MARKET_INFO_STATUSES.CANCELED) {
             bidEvents.push({
               activityDescription: getString('HISTORY_ASK_CANCELLED'),
               createdAt:
-                market?.canceledAt.timestamp || market?.createdAt.timestamp,
-              actor: market?.createdBy!,
-              transactionHash: market?.canceledAt.transactionHash || null,
-              pricing: market?.amount,
+                market.canceledAt?.timestamp ?? market.createdAt.timestamp,
+              actor: market.createdBy!,
+              transactionHash: market.canceledAt?.transactionHash ?? null,
+              pricing: market.amount,
             })
           }
-          if (market?.status === MARKET_INFO_STATUSES.COMPLETE) {
+          if (market.status === MARKET_INFO_STATUSES.COMPLETE) {
             bidEvents.push({
               activityDescription: getString('HISTORY_ASK_FILLED'),
-              createdAt: market?.createdAt.timestamp,
-              actor: market?.createdBy!,
-              transactionHash: market?.createdAt.transactionHash || null,
-              pricing: market?.amount,
+              createdAt: market.createdAt.timestamp,
+              actor: market.createdBy!,
+              transactionHash: market.createdAt.transactionHash ?? null,
+              pricing: market.amount,
             })
           }
         }
-        if (market?.side === FIXED_SIDE_TYPES.OFFER) {
+        if (market.side === FIXED_SIDE_TYPES.OFFER) {
           bidEvents.push({
             activityDescription: getString('HISTORY_OFFER_PRICE'),
-            createdAt: market?.createdAt.timestamp,
-            actor: market?.createdBy!,
-            transactionHash: market?.createdAt.transactionHash || null,
-            pricing: market?.amount,
+            createdAt: market.createdAt.timestamp,
+            actor: market.createdBy!,
+            transactionHash: market.createdAt.transactionHash ?? null,
+            pricing: market.amount,
           })
         }
       }
@@ -158,21 +158,32 @@ export const BidHistory = ({
     )
     .map((bidItem) => (
       <li
-        {...getStyles('fullPageHistoryItem')}
+        className='fullPageHistoryItem'
+        // {...getStyles('fullPageHistoryItem')}
         key={`${bidItem.actor}-${bidItem.createdAt}`}
       >
-        <div {...getStyles('fullPageHistoryItemDescription')}>
-          <div {...getStyles('fullPageHistoryItemDescriptionCopy')}>
+        <div
+          className='fullPageHistoryItemDescription'
+          // {...getStyles('fullPageHistoryItemDescription')}
+        >
+          <div
+            className='fullPageHistoryItemDescriptionCopy'
+            // {...getStyles('fullPageHistoryItemDescriptionCopy')}
+          >
             <AddressView address={bidItem.actor} />
             &nbsp;
-            <span {...getStyles('pricingAmount')}>
+            <span
+              className='pricingAmount'
+              // {...getStyles('pricingAmount')}
+            >
               {bidItem.activityDescription}{' '}
               {bidItem.pricing && <PricingString pricing={bidItem.pricing} />}
             </span>
           </div>
           {bidItem.transactionHash && style.theme.showTxnLinks && (
             <a
-              {...getStyles('fullPageHistoryTxnLink')}
+              className='fullPageHistoryTxnLink'
+              // {...getStyles('fullPageHistoryTxnLink')}
               href={`https://etherscan.io/tx/${bidItem.transactionHash}`}
               target='_blank'
               rel='noreferrer'
@@ -182,10 +193,14 @@ export const BidHistory = ({
           )}
         </div>
         {bidItem.createdAt && (
-          <div {...getStyles('fullPageHistoryItemMeta')}>
+          <div
+            className='fullPageHistoryItemMeta'
+            // {...getStyles('fullPageHistoryItemMeta')}
+          >
             <time
+              className='fullPageHistoryItemDatestamp'
+              // {...getStyles('fullPageHistoryItemDatestamp')}
               dateTime={dateFromTimestamp(bidItem.createdAt).toISOString()}
-              {...getStyles('fullPageHistoryItemDatestamp')}
             >
               {formatDate(bidItem.createdAt)}
             </time>

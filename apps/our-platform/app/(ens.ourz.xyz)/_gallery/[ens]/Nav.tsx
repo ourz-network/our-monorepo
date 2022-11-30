@@ -5,7 +5,7 @@ import Wallet from './Wallet'
 import WalletProvider from './WalletProvider'
 
 import { GalleryConfig } from '@/types'
-import { getAddressFromENS } from '@/lib/ethers'
+import { getAddressFromENS } from '@/lib/ens'
 
 async function getOwnerAddress(subdomain: string) {
   const ensAddress = await getAddressFromENS(subdomain)

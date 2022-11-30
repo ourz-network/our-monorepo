@@ -35,7 +35,10 @@ export const CreatorEquity = ({ className }: StyleProps) => {
       activeAuction.raw.curatorFeePercentage &&
       activeAuction.raw.curatorFeePercentage > 0 ? (
         <InfoContainer titleString='CURATOR_FEE' className={className}>
-          <div {...getStyles('fullInfoCuratorFeeContainer')}>
+          <div
+            className='fullInfoCuratorFeeContainer'
+            // {...getStyles('fullInfoCuratorFeeContainer')}
+          >
             <span>
               {getContent(activeAuction.raw.curatorFeePercentage)}{' '}
               {getString('CURATOR_PROCEEDS_DESC')}

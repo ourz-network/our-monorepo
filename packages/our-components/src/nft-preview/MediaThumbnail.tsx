@@ -21,7 +21,7 @@ export const MediaThumbnail = ({
   const { getStyles, getString } = useMediaContext()
 
   const getContent = () => {
-    if (data.metadata) {
+    if (data?.metadata) {
       return {
         media: <MediaObject isFullPage={false} {...getContentData(data)} />,
         title: data.metadata.name,
@@ -34,17 +34,35 @@ export const MediaThumbnail = ({
   }
 
   const { media, title } = getContent()
-  const hasCreator = data.nft?.minted.address
+  const hasCreator = data?.nft?.minted.address
   const address = hasCreator
     ? data.nft?.minted.address
-    : data.nft?.owner.address
+    : data?.nft?.owner?.address
   return (
-    <div className={className}>
-      <div {...getStyles('cardMediaWrapper')}>{media}</div>
-      <div {...getStyles('cardItemInfo')}>
-        <h5 {...getStyles('cardTitle')}>{title}</h5>
+    <>
+      {/* <div className={className}> */}
+      <div
+        className='flex overflow-hidden relative justify-center w-full h-80 bg-white dark:bg-black'
+        // {...getStyles('cardMediaWrapper')}
+      >
+        {media}
+      </div>
+      <div
+        className='px-4 py-3'
+        // {...getStyles('cardItemInfo')}
+      >
+        <h5
+          className='m-0 w-full text-[color:var(--font-color)] whitespace-nowrap font-medium overflow-clip text-ellipsis'
+          // TODO
+          // {...getStyles('cardTitle')}
+        >
+          {title}
+        </h5>
         <div>
-          <span {...getStyles('textSubdued')}>
+          <span
+            className='font-normal opacity-50 text-[color:var(--colors-accentText)]'
+            // {...getStyles('textSubdued')}
+          >
             {hasCreator
               ? getString('CARD_CREATED_BY')
               : getString('CARD_OWNED_BY')}
@@ -52,6 +70,7 @@ export const MediaThumbnail = ({
           <span>{address && <AddressView address={address} />}</span>
         </div>
       </div>
-    </div>
+      {/* </div> */}
+    </>
   )
 }

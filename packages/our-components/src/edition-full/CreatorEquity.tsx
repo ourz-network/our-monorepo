@@ -23,7 +23,10 @@ export const CreatorEquity = ({ className }: StyleProps) => {
     <>
       {data && (
         <InfoContainer titleString='CREATOR_EQUITY' className={className}>
-          <div {...getStyles('fullInfoCreatorEquityContainer')}>
+          <div
+            className='fullInfoCreatorEquityContainer'
+            // {...getStyles('fullInfoCreatorEquityContainer')}
+          >
             {getContent((data.royaltyBPS as unknown as number) / 100)}
           </div>
         </InfoContainer>

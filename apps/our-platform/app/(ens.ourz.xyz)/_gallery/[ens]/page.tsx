@@ -3,7 +3,7 @@ import { ZDK } from '@zoralabs/zdk'
 import NFTList from './NFTList'
 
 import { getAllGalleryConfigs, getGalleryConfig } from '@/lib/fetchers'
-import { getAddressFromENS } from '@/lib/ethers'
+import { getAddressFromENS } from '@/lib/ens'
 import { GalleryConfig } from '@/types/_gallery'
 
 export const revalidate = 10

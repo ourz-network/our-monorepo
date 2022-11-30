@@ -4,7 +4,7 @@ import NFTList from '../NFTList'
 
 import { getGalleryConfig } from '@/lib/fetchers'
 import { GalleryConfig } from '@/types'
-import { getAddressFromENS } from '@/lib/ethers'
+import { getAddressFromENS } from '@/lib/ens'
 
 export default async function Home({ params }: { params: { ens: string } }) {
   const { ens } = params

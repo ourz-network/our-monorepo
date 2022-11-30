@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getAddressFromENS } from '../ethers'
+import { getAddressFromENS } from '../ens'
 import clientPromise from '../mongodb'
 
 import { GalleryConfig } from '@/types'
@@ -37,6 +37,7 @@ export async function getGalleryConfig(
   return res.status(500).json({ failed: true })
 }
 
+// ourz.xyz/api/gallery/subdomain
 export async function updateGalleryConfig(
   req: NextApiRequest,
   res: NextApiResponse

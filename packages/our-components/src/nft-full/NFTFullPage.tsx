@@ -20,7 +20,7 @@ import { CollectionTag } from './CollectionTag'
 
 type NFTFullPageProps = Omit<NFTDataProviderProps, 'children'> & {
   children?: React.ReactNode
-  config?: {
+  config: {
     allowOffer?: boolean
     showPerpetual?: boolean
   }
@@ -45,7 +45,10 @@ export const NFTFullPage = ({
     return (
       <>
         <MediaFull a11yIdPrefix={a11yIdPrefix} />
-        <div {...getStyles('fullPageDataGrid')}>
+        <div
+          className='fullPageDataGrid'
+          // {...getStyles('fullPageDataGrid')}
+        >
           {style.theme.useCollectionTag && <CollectionTag />}
           <MediaInfo a11yIdPrefix={a11yIdPrefix} />
           <NFTProperties />
@@ -61,7 +64,12 @@ export const NFTFullPage = ({
 
   return (
     <NFTDataProvider {...wrapperProps}>
-      <div {...getStyles('fullPage', className)}>{getChildren()}</div>
+      <div
+        className='fullPage'
+        // {...getStyles('fullPage', className)}
+      >
+        {getChildren()}
+      </div>
     </NFTDataProvider>
   )
 }

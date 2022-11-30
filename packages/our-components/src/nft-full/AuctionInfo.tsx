@@ -95,9 +95,13 @@ export const AuctionInfo = ({
             {showFindersFee && ask.raw.findersFeeBps && (
               <>
                 <div
-                  {...getStyles('fullInfoSpacer', undefined, { width: 15 })}
+                  className='fullInfoSpacer'
+                  // {...getStyles('fullInfoSpacer', undefined, { width: 15 })}
                 />
-                <div {...getStyles('fullLabel')}>
+                <div
+                  className='fullLabel'
+                  // {...getStyles('fullLabel')}
+                >
                   {getString('FINDERS_FEE')}
                 </div>
                 {`${Math.floor(parseInt(ask.raw.findersFeeBps, 10) / 100)}%`}
@@ -117,12 +121,23 @@ export const AuctionInfo = ({
   if (reserveAuction && reserveAuction.status === 'complete') {
     return (
       <AuctionInfoWrapper className={className} titleString='AUCTION_SOLD_FOR'>
-        <div {...getStyles('fullInfoAuctionPricing')}>
+        <div
+          className='fullInfoAuctionPricing'
+          // {...getStyles('fullInfoAuctionPricing')}
+        >
           <PricingString pricing={reserveAuction.amount} />
         </div>
-        <div {...getStyles('fullInfoSpacer', undefined, { width: 15 })} />
-        <div {...getStyles('fullLabel')}>{getString('WINNER')}</div>
-        <AddressView address={reserveAuction.currentBid.creator} />
+        <div
+          className='fullInfoSpacer'
+          // {...getStyles('fullInfoSpacer', undefined, { width: 15 })}
+        />
+        <div
+          className='fullLabel'
+          // {...getStyles('fullLabel')}
+        >
+          {getString('WINNER')}
+        </div>
+        <AddressView address={reserveAuction.currentBid?.creator} />
       </AuctionInfoWrapper>
     )
   }
@@ -131,18 +146,40 @@ export const AuctionInfo = ({
     return (
       <AuctionInfoWrapper titleString='AUCTION_ENDS'>
         {reserveAuction.endsAt && (
-          <div {...getStyles('pricingAmount')}>
+          <div
+            className='pricingAmount'
+            // {...getStyles('pricingAmount')}
+          >
             <CountdownDisplay to={reserveAuction.endsAt.timestamp} />
           </div>
         )}
-        <div {...getStyles('fullInfoSpacer')} />
-        <div {...getStyles('fullLabel')}>{getString('HIGHEST_BID')}</div>
-        <div {...getStyles('fullInfoAuctionPricing')}>
+        <div
+          className='fullInfoSpacer'
+          // {...getStyles('fullInfoSpacer')}
+        />
+        <div
+          className='fullLabel'
+          // {...getStyles('fullLabel')}
+        >
+          {getString('HIGHEST_BID')}
+        </div>
+        <div
+          className='fullInfoAuctionPricing'
+          // {...getStyles('fullInfoAuctionPricing')}
+        >
           <PricingString pricing={reserveAuction.amount} />
         </div>
-        <div {...getStyles('fullInfoSpacer')} />
-        <div {...getStyles('fullLabel')}>{getString('BIDDER')}</div>
-        <AddressView address={reserveAuction.currentBid.creator} />
+        <div
+          className='fullInfoSpacer'
+          // {...getStyles('fullInfoSpacer')}
+        />
+        <div
+          className='fullLabel'
+          // {...getStyles('fullLabel')}
+        >
+          {getString('BIDDER')}
+        </div>
+        <AddressView address={reserveAuction.currentBid?.creator} />
       </AuctionInfoWrapper>
     )
   }
@@ -155,15 +192,27 @@ export const AuctionInfo = ({
     <AuctionInfoWrapper
       titleString={reserveAuction ? 'RESERVE_PRICE' : 'LIST_PRICE'}
     >
-      <div {...getStyles('pricingAmount')}>
+      <div
+        className='pricingAmount'
+        // {...getStyles('pricingAmount')}
+      >
         {reserveAuction && (
           <>
-            <div {...getStyles('fullInfoAuctionPricing')}>
+            <div
+              className='fullInfoAuctionPricing'
+              // {...getStyles('fullInfoAuctionPricing')}
+            >
               <PricingString pricing={reserveAuction.amount} />
             </div>
             <div>
-              <div {...getStyles('fullInfoSpacer')} />
-              <div {...getStyles('fullLabel')}>
+              <div
+                className='fullInfoSpacer'
+                // {...getStyles('fullInfoSpacer')}
+              />
+              <div
+                className='fullLabel'
+                // {...getStyles('fullLabel')}
+              >
                 {getString('AUCTION_PENDING_DURATION')}
               </div>
               <DurationDisplay duration={reserveAuction.duration} />

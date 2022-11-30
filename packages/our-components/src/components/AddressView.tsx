@@ -6,7 +6,7 @@ import { useMediaContext } from '../context/useMediaContext'
 import type { StyleProps } from '../utils/StyleTypes'
 
 type AddressViewProps = {
-  address: string
+  address?: string
   showChars?: number
 } & StyleProps
 
@@ -24,14 +24,14 @@ export const AddressView = ({
   //   theme.useZoraUsernameResolution || ens.error ? address : undefined
   // )
 
-  const addressFirst = address.slice(0, showChars + PREFIX_ADDRESS.length)
-  const addressLast = address.slice(address.length - showChars)
+  const addressFirst = address?.slice(0, showChars + PREFIX_ADDRESS.length)
+  const addressLast = address?.slice(address.length - showChars)
 
   if (ens.data) {
     const zoraLink = ens.data
     return (
       <a
-        {...getStyles('addressLink', className)}
+        className={`m-0 text-base no-underline text-[color:var(--colors-accentText)] ${className}`}
         href={`https://zora.co/${zoraLink}`}
         target='_blank'
         rel='noreferrer'
@@ -69,7 +69,7 @@ export const AddressView = ({
 
   return (
     <a
-      {...getStyles('addressLink', className)}
+      className={`m-0 text-base no-underline text-[color:var(--colors-accentText)] ${className}`}
       href={`https://etherscan.io/address/${address}`}
       target='_blank'
       rel='noreferrer'

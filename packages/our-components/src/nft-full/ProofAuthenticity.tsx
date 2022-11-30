@@ -16,13 +16,13 @@ import { InfoContainer } from './InfoContainer'
 const ProofLink = ({
   href,
   children,
-  styles,
-}: {
+}: // styles,
+{
   href?: string
   children: string
-  styles: any
+  // styles: any
 }) => (
-  <a {...styles} href={href} target='_blank' rel='noreferrer'>
+  <a className='fullProofLink' href={href} target='_blank' rel='noreferrer'>
     {children}
   </a>
 )
@@ -33,7 +33,7 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
   const linkStyles = getStyles('fullProofLink')
 
   const getContent = (nft: NFTObject) => {
-    const infoURL = data.nft?.contentURI
+    const infoURL = data?.nft?.contentURI
     const infoUrlLabelText =
       infoURL?.includes('/ipfs/') || infoURL?.startsWith('ipfs://')
         ? 'VIEW_IPFS'
@@ -46,21 +46,17 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
     return (
       <>
         <ProofLink
-          styles={linkStyles}
           href={`${VIEW_ETHERSCAN_URL_BASE_BY_NETWORK[networkId]}${nft.nft.contract.address}?a=${nft.nft.tokenId}`}
         >
           {getString('ETHERSCAN_TXN')}
         </ProofLink>
         {infoURL && (
-          <ProofLink styles={linkStyles} href={infoURL}>
-            {getString(infoUrlLabelText)}
-          </ProofLink>
+          <ProofLink href={infoURL}>{getString(infoUrlLabelText)}</ProofLink>
         )}
-        {data.nft &&
+        {data?.nft &&
           (data.rawData['zora-indexer'] ||
-            data.nft?.contract.knownContract === 'zora') && (
+            data.nft.contract.knownContract === 'zora') && (
             <ProofLink
-              styles={linkStyles}
               href={`${MEDIA_URL_BASE_BY_NETWORK[networkId]}collections/${
                 nft.nft!.contract.address
               }/${nft.nft!.tokenId}`}
@@ -78,7 +74,10 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
       bottomPadding={false}
       className={className}
     >
-      <div {...getStyles('fullInfoProofAuthenticityContainer')}>
+      <div
+        className='fullInfoProofAuthenticityContainer'
+        // {...getStyles('fullInfoProofAuthenticityContainer')}
+      >
         {data && getContent(data)}
       </div>
     </InfoContainer>

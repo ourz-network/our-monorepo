@@ -33,10 +33,10 @@ export const ProposalActionList = ({
           market?.source === AUCTION_SOURCE_TYPES.ZORA_RESERVE_V2 &&
           market?.status !== MARKET_INFO_STATUSES.CANCELED
       ),
-    [data.markets]
+    [data?.markets]
   ) as undefined | AuctionLike
 
-  const raw = reserveAuction.raw as ReserveAuctionPartialFragment
+  const raw = reserveAuction?.raw as ReserveAuctionPartialFragment
 
   console.log('reserveAuction', reserveAuction)
 
@@ -86,7 +86,7 @@ export const ProposalActionList = ({
           {getString('RESERVE_PRICE')}
         </div>
         <div {...getStyles('fullOwnerAddress')}>
-          {reserveAuction.amount !== undefined && (
+          {reserveAuction?.amount !== undefined && (
             <PricingString pricing={reserveAuction.amount} showUSD={false} />
           )}
         </div>
@@ -97,7 +97,7 @@ export const ProposalActionList = ({
           {getString('PROPOSAL_CURATOR_SHARE')}
         </div>
         <div {...getStyles('fullOwnerAddress')}>
-          {reserveAuction.amount && raw.curatorFeePercentage}%
+          {reserveAuction?.amount && raw.curatorFeePercentage}%
         </div>
       </div>
       {getActions()}

@@ -18,8 +18,8 @@ import { MintButton } from './MintButton'
 import { CollectionTag } from './CollectionTag'
 
 type EditionFullPageProps = Omit<EditionDataProviderProps, 'children'> & {
-  children?: React.ReactNode
-  config?: {
+  children: React.ReactNode | undefined
+  config: {
     allowOffer?: boolean
     showPerpetual?: boolean
   }
@@ -44,7 +44,10 @@ export const EditionFullPage = ({
     return (
       <>
         <MediaFull a11yIdPrefix={a11yIdPrefix} />
-        <div {...getStyles('fullPageDataGrid')}>
+        <div
+          className='fullPageDataGrid'
+          // {...getStyles('fullPageDataGrid')}
+        >
           {style.theme.useCollectionTag && <CollectionTag />}
           <MediaInfo a11yIdPrefix={a11yIdPrefix} />
           <MintButton allowOffer={allowOffer} />
@@ -59,7 +62,12 @@ export const EditionFullPage = ({
 
   return (
     <EditionDataProvider {...wrapperProps}>
-      <div {...getStyles('fullPage', className)}>{getChildren()}</div>
+      <div
+        className='fullPage'
+        // {...getStyles('fullPage', className)}
+      >
+        {getChildren()}
+      </div>
     </EditionDataProvider>
   )
 }

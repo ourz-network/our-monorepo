@@ -37,10 +37,10 @@ const SplitFullPage = ({
     return (
       <div {...getStyles('fullPageDataGrid')}>
         <SplitPie
-          recipients={data.recipients as RecipientShortFragment[]}
+          recipients={data?.recipients as RecipientShortFragment[]}
           secondarySale={false}
         />
-        <SplitTable recipients={data.recipients as RecipientShortFragment[]} />
+        <SplitTable recipients={data?.recipients as RecipientShortFragment[]} />
       </div>
     )
   }

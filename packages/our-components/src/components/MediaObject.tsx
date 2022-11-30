@@ -32,7 +32,7 @@ export const MediaObject = ({
   a11yIdPrefix,
   isFullPage = false,
 }: MediaObjectProps) => {
-  const mediaType = useNFTContent(contentURI ?? metadata.contentUri)
+  const mediaType = useNFTContent(contentURI ?? metadata?.contentUri)
   const [renderingInfo, setRenderingInfo] = useState<RendererConfig>()
   const { getStyles, getString, renderers, style } = useMediaContext()
 
@@ -49,16 +49,16 @@ export const MediaObject = ({
               mediaType?.content?.mimeType,
           }
         : undefined,
-      image: metadata.imageUri
+      image: metadata?.imageUri
         ? {
-            uri: metadata.imageUri,
+            uri: metadata?.imageUri,
             type: 'image/',
           }
         : undefined,
-      // from metadata.animation_url
-      animation: metadata.contentUri
+      // from metadata?.animation_url
+      animation: metadata?.contentUri
         ? {
-            uri: metadata.contentUri,
+            uri: metadata?.contentUri,
             type:
               metadata?.mimeType ??
               (metadata as any)?.body?.mimeType ??

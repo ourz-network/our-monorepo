@@ -1,13 +1,14 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": ["src"],
-  "exclude": ["src/stories", "node_modules", "tests/**"],
+  "exclude": ["stories", "node_modules", "tests/**"],
   "compilerOptions": {
     "strict": false,
     "outDir": "./dist",
     "target": "es2018",
     "module": "commonjs",
     "moduleResolution": "node",
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     // "preserveConstEnums": true,
     // "forceConsistentCasingInFileNames": true,
@@ -16,7 +17,7 @@
     // "declaration": true,
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    // "strictNullChecks": true,
+    "strictNullChecks": true,
     "baseUrl": "."
     // "noImplicitAny": true,
     // "strictFunctionTypes": true,

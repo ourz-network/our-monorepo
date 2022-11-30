@@ -15,12 +15,16 @@ export const CollectionTag = () => {
 
   const getContent = () => (
     <a
-      {...getStyles('colectionTagWrapper')}
-      href={`https://zora.co/collections/${data.nft!.contract.address}`}
+      className='colectionTagWrapper'
+      // {...getStyles('colectionTagWrapper')}
+      href={`https://zora.co/collections/${data?.nft!.contract.address}`}
       target='_blank'
       rel='noreferrer'
     >
-      <div {...getStyles('collectionTagIcon')}>
+      <div
+        className='collectionTagIcon'
+        // {...getStyles('collectionTagIcon')}
+      >
         {data &&
         'OpenSea' in data.rawData &&
         data.rawData.OpenSea.asset_contract.image_url ? (
@@ -38,12 +42,13 @@ export const CollectionTag = () => {
 
   return (
     <div
+      className='flex relative'
       // eslint-disable-next-line react/no-unknown-property
-      css={css`
-        position: relative;
-        display: flex;
-        flex-direction: row;
-      `}
+      // css={css`
+      //   position: relative;
+      //   display: flex;
+      //   flex-direction: row;
+      // `}
     >
       {data?.nft ? getContent() : '...'}
     </div>

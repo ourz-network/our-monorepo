@@ -50,7 +50,7 @@ export function transformMarkets(markets: MarketResponseFragmentItem[]) {
   };
 
   const marketResponse: MarketModule[] = [];
-  markets?.forEach((market) => {
+  markets.forEach((market) => {
     if (market.marketType === ZDKMarketType.V1Ask && market.properties?.__typename === 'V1Ask') {
       marketResponse.push({
         type: MARKET_TYPES.FIXED_PRICE,

@@ -16,13 +16,13 @@ import { InfoContainer } from './InfoContainer'
 const ProofLink = ({
   href,
   children,
-  styles,
-}: {
+}: // styles,
+{
   href?: string
   children: string
-  styles: any
+  // styles: any
 }) => (
-  <a {...styles} href={href} target='_blank' rel='noreferrer'>
+  <a className='fullProofLink' href={href} target='_blank' rel='noreferrer'>
     {children}
   </a>
 )
@@ -41,7 +41,7 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
 
     <>
       <ProofLink
-        styles={linkStyles}
+        // styles={linkStyles}
         href={`${VIEW_ETHERSCAN_URL_BASE_BY_NETWORK[networkId]}${edition.id}`}
       >
         {getString('ETHERSCAN_TXN')}
@@ -53,7 +53,7 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
         )} */}
       {data && (
         <ProofLink
-          styles={linkStyles}
+          // styles={linkStyles}
           href={`${MEDIA_URL_BASE_BY_NETWORK[networkId]}${edition.creator}`}
         >
           {getString('VIEW_ZORA')}
@@ -67,7 +67,10 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
       bottomPadding={false}
       className={className}
     >
-      <div {...getStyles('fullInfoProofAuthenticityContainer')}>
+      <div
+        className='fullInfoProofAuthenticityContainer'
+        // {...getStyles('fullInfoProofAuthenticityContainer')}
+      >
         {data && getContent(data)}
       </div>
     </InfoContainer>

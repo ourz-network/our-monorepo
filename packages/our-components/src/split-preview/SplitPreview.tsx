@@ -28,10 +28,12 @@ const SplitPreview = ({
         ) : (
           <>
             <IconSplit color={mode === 'dark' ? 'white' : 'black'} />
-            <Text>{data.nickname}</Text>
-            <Text>{`${data?.recipients?.length} Recipient${
-              data?.recipients?.length! > 1 ? `s` : ``
-            }`}</Text>
+            <Text>{data?.nickname}</Text>
+            {data?.recipients && (
+              <Text>{`${data.recipients.length} Recipient${
+                data.recipients.length > 1 ? `s` : ``
+              }`}</Text>
+            )}
           </>
         )}
       </Stack>

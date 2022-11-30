@@ -7,9 +7,12 @@
     "apps/*"
   ],
   "scripts": {
-    "full-turbo": "pnpm lint && pnpm build",
+    "full-turbo": "pnpm build:app",
+    "build:app": "turbo run build:app",
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel --continue",
+    "dev": "turbo run dev",
+    "dev:og": "turbo run dev --parallel --continue",
+    "start": "pnpm lint && pnpm full-turbo && turbo run start",
     "clean": "turbo run clean",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,html,css}\"",
     "lint": "turbo run lint && pnpm lint:language",
@@ -18,11 +21,14 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "alex": "^11.0.0",
+    "alex": "latest",
     "husky": "^8.0.0",
     "lint-staged": "^13.0.4",
     "prettier": "latest",
     "turbo": "latest"
+  },
+  "dependencies": {
+    "rimraf": "^3.0.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,html,css}": [
@@ -38,8 +44,5 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@7.13.4",
-  "dependencies": {
-    "rimraf": "^3.0.2"
-  }
+  "packageManager": "pnpm@7.13.4"
 }

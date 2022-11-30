@@ -150,7 +150,12 @@ export const SaleHistory = ({
 
   return (
     <InfoContainer titleString='NFT_HISTORY' className={className}>
-      <ol {...getStyles('fullPageHistoryList')}>{getPastBids()}</ol>
+      <ol
+        className='fullPageHistoryList'
+        // {...getStyles('fullPageHistoryList')}
+      >
+        {getPastBids()}
+      </ol>
     </InfoContainer>
   )
 }

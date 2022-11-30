@@ -25,7 +25,7 @@ export const Text: RendererConfig = {
   },
   render: ({ request, getStyles }: RenderComponentType) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const media = useNFTContent(request.media.content.uri)
+    const media = useNFTContent(request.media.content?.uri)
 
     return (
       <MediaLoader
@@ -33,7 +33,10 @@ export const Text: RendererConfig = {
         loading={!media.content}
         error={media.error}
       >
-        <div {...getStyles('mediaContentText')}>
+        <div
+          className='p-5 text-left whitespace-pre'
+          // {...getStyles('mediaContentText')}
+        >
           {media.content && 'text' in media.content ? media.content.text : ''}
         </div>
       </MediaLoader>

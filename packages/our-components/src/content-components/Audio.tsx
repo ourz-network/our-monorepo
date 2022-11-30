@@ -24,7 +24,7 @@ import {
 interface FakeWaveformCanvasProps {
   audioRef: any
   uri: string
-  audioColors: {
+  audioColors?: {
     progressColor: string
     waveformColor: string
   }
@@ -39,7 +39,7 @@ const FakeWaveformCanvas = ({
   const [width, setWidth] = useState<undefined | number>()
   const updateWidth = useCallback(() => {
     const newWidth =
-      canvasRef.current.parentElement.getBoundingClientRect().width
+      canvasRef.current?.parentElement?.getBoundingClientRect().width
     if (newWidth && newWidth !== width) {
       setWidth(newWidth)
     }
@@ -91,7 +91,7 @@ const FakeWaveformCanvas = ({
   const height = 200
   const updateCanvasLines = useCallback(() => {
     if (canvasRef.current && width && audioRef.current) {
-      const context = canvasRef.current.getContext('2d')
+      const context = canvasRef.current?.getContext('2d')
       if (!context) {
         return
       }
@@ -110,9 +110,9 @@ const FakeWaveformCanvas = ({
           audioRef.current.currentTime / audioRef.current.duration >
           i / width
         ) {
-          context.fillStyle = audioColors.progressColor
+          context.fillStyle = audioColors?.progressColor ?? '#000'
         } else {
-          context.fillStyle = audioColors.waveformColor
+          context.fillStyle = audioColors?.waveformColor ?? '#000'
         }
         context.fillRect(i, (height - lineHeight) / 2, 2, lineHeight)
       }
@@ -127,13 +127,13 @@ const FakeWaveformCanvas = ({
 
 export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
   ({ request, getStyles, a11yIdPrefix, theme }, ref) => {
-    const uri = request.media.content.uri || request.media.animation.uri
+    const uri = request.media.content?.uri ?? request.media.animation?.uri
     const { props, loading, error } = useMediaObjectProps({
       uri,
       request,
       a11yIdPrefix,
       getStyles,
-      preferredIPFSGateway: theme.preferredIPFSGateway,
+      preferredIPFSGateway: theme?.preferredIPFSGateway,
     })
 
     const audioRef = useRef<HTMLAudioElement>(null)
@@ -173,24 +173,34 @@ export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
 
     return (
       <MediaLoader getStyles={getStyles} loading={loading} error={error}>
-        <div ref={wrapper} {...getStyles('mediaAudioWrapper')}>
+        <div
+          //  @ts-expect-error idk
+          ref={wrapper}
+          className='flex flex-col justify-center items-center mt-10 w-full'
+          // {...getStyles('mediaAudioWrapper')}
+        >
           {!loading && (
             <>
               <button
                 type='button'
                 aria-live='polite'
                 aria-pressed={!!playing}
+                // @ts-expect-error idk
                 onClick={togglePlay}
                 title={playingText}
-                {...getStyles('mediaPlayButton', undefined, { playing })}
+                className={`z-10 ${/** TODO */ ''}`}
+                // {...getStyles('mediaPlayButton', undefined, { playing })}
               >
                 {playingText}
               </button>
-              <div {...getStyles('mediaAudioWaveform')}>
+              <div
+                className='w-full cursor-pointer'
+                // {...getStyles('mediaAudioWaveform')}
+              >
                 <FakeWaveformCanvas
                   uri={uri || ''}
                   audioRef={audioRef}
-                  audioColors={theme.audioColors}
+                  audioColors={theme?.audioColors}
                 />
               </div>
             </>

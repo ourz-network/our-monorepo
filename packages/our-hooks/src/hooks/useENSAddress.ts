@@ -9,7 +9,7 @@ import { OurFetchContext } from '../context/OurFetchContext';
  * @param address string address to fetch ens domain
  * @returns DomainResolvedPartFragment
  */
-export function useENSAddress(address?: string, options?: SWRConfiguration<any>) {
+export function useENSAddress(address?: string, options?: SWRConfiguration) {
   const { fetcher } = useContext(OurFetchContext);
 
   return useSWR<string>(

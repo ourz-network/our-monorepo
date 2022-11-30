@@ -1,14 +1,23 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+// const path = require('path')
+// const ourPlugin = require('our-components/plugin')
+// const ourPlugin = require('../../packages/our-components/src/plugin/index.js')
 
 module.exports = {
   // purge: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: 'class', // 'false' or 'media'/'class'
-  content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './lib/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: {
+    relative: true,
+    files: [
+      './app/**/*.{js,ts,jsx,tsx}',
+      './pages/**/*.{js,ts,jsx,tsx}',
+      './components/**/*.{js,ts,jsx,tsx}',
+      './lib/**/*.{js,ts,jsx,tsx}',
+      '../../packages/our-components/dist/**/*.js',
+      // './node_modules/our-components/**/*.js',
+      // path.join(require.resolve('our-components'), '**/*.js'),
+    ],
+  },
   darkMode: 'media',
   theme: {
     container: {
@@ -175,5 +184,7 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
+    // require('our-components/dist/plugin'),
+    // ourPlugin,
   ],
 }

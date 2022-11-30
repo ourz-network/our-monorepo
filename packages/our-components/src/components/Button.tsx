@@ -20,12 +20,14 @@ export const Button = ({
 }: ButtonProps) => {
   const { getStyles } = useMediaContext()
   const ButtonComponent = href ? 'a' : 'button'
+  const classStr = primary ? `bg-[#333] font-[#fff]` : `bg-[#eee] font-[#000]`
   return (
     <ButtonComponent
       onClick={onClick}
       href={href}
       target={href ? '_blank' : undefined}
-      {...getStyles('button', className, { primary })}
+      className={`p-3 rounded-md transition-transform duration-100 ease-in-out active:scale-95 ${classStr} ${className}`}
+      // {...getStyles('button', className, { primary })}
     >
       {children}
     </ButtonComponent>

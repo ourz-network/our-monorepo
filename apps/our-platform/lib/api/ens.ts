@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getAddressFromENS } from '../ethers'
+import { getAddressFromENS } from '../ens'
 
 // ourz.xyz/api/gallery/subdomain/address
 export async function getGalleryOwnerAddress(

@@ -25,8 +25,8 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
     const controlAriaId = useA11yIdPrefix('video-renderer')
     const uri =
       request.renderingContext === 'FULL'
-        ? request.media.animation.uri || request.media.content.uri
-        : request.media.content.uri || request.media.animation.uri
+        ? request.media.content?.uri ?? request.media.animation?.uri
+        : request.media.animation?.uri ?? request.media.content?.uri
 
     const {
       props: mediaProps,
@@ -37,7 +37,7 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
       request,
       a11yIdPrefix,
       getStyles,
-      preferredIPFSGateway: theme.preferredIPFSGateway,
+      preferredIPFSGateway: theme?.preferredIPFSGateway,
     })
 
     useSyncRef(video, ref)
@@ -81,7 +81,7 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
     }, [video])
 
     const onCanPlay = useCallback(() => {
-      setIsPlaying(!video.current.paused)
+      setIsPlaying(!video.current?.paused)
     }, [])
 
     const toggleMute = useCallback(() => {
@@ -120,16 +120,18 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
             aria-label={getString('VIDEO_CONTROLS_LABEL')}
             id={controlAriaId}
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            tabIndex='0'
+            tabIndex={0}
             // @ts-expect-error Blur is kinda invalid but okay to be unsafe here.
             onMouseOut={(evt) => evt.target.blur()}
-            {...getStyles('mediaVideoControls', undefined, {
-              isFullPage: request.renderingContext === 'FULL',
-            })}
+            className='hidden z-10' // TODO
+            // {...getStyles('mediaVideoControls', undefined, {
+            //   isFullPage: request.renderingContext === 'FULL',
+            // })}
           >
             <button
               type='button'
-              {...getStyles('mediaFullscreenButton')}
+              className='mediaFullscreenButton'
+              // {...getStyles('mediaFullscreenButton')}
               aria-pressed={!!isFullScreen}
               onClick={openFullscreen}
               title={getString('VIDEO_CONTROLS_FULLSCREEN')}
@@ -138,9 +140,10 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
             </button>
             <button
               type='button'
-              {...getStyles('mediaPlayButton', undefined, {
-                playing: isPlaying,
-              })}
+              className='mediaPlayButton'
+              // {...getStyles('mediaPlayButton', undefined, {
+              //   playing: isPlaying,
+              // })}
               aria-live='polite'
               aria-pressed={!isPlaying}
               onClick={togglePlay}
@@ -150,7 +153,8 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
             </button>
             <button
               type='button'
-              {...getStyles('mediaMuteButton', undefined, { muted: isMuted })}
+              className='videoMuteButton'
+              // {...getStyles('mediaMuteButton', undefined, { muted: isMuted })}
               onClick={toggleMute}
               aria-pressed={!isMuted}
             >

@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@assemblyscript/loader": "^0.19.17",
-    "@graphprotocol/graph-ts": "^0.22.1",
+    "@graphprotocol/graph-ts": "^0.25.0",
     "assemblyscript": "^0.19.17",
     "assemblyscript-json": "^1.1.0"
   },
@@ -25,7 +25,7 @@
     "@types/react": "^18.0.24",
     "eslint-config-custom": "workspace:*",
     "mustache": "^4.2.0",
-    "prettier": "^2.4.1",
+    "prettier": "latest",
     "tsconfig": "workspace:*"
   }
 }

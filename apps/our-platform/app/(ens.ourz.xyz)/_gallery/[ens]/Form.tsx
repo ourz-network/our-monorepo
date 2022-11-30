@@ -159,6 +159,7 @@ const SettingsForm = ({
           {fields.map((field) => (
             <div
               key={field}
+              // @ts-expect-error css
               css={css`
                 text-transform: none;
                 color: var(--colors-text);
@@ -171,16 +172,6 @@ const SettingsForm = ({
                 flexDirection='column'
                 padding='5'
               >
-                {/* {inputFields[`${field}`].type === "color" && (
-                  <label>
-                    {`${inputFields[`${field}`].label}`}
-                    <ColorPicker
-                      name={`${field}`}
-                      currentValue={galleryConfig[`${field}`]}
-                      updateColor={updateColor}
-                    />
-                  </label>
-                )} */}
                 {inputFields[`${field}`].type === 'text' && (
                   <Input
                     label={`${inputFields[`${field}`].label}`}

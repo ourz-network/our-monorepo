@@ -69,14 +69,14 @@ export const MediaConfiguration = ({
   }
 
   return (
-    <EmotionRootStyleRegistry>
-      <ThemeProvider defaultAccent={accent} defaultMode={mode}>
-        <MediaContext.Provider value={newContext}>
-          <NFTFetchConfiguration networkId={newNetworkId}>
-            {children}
-          </NFTFetchConfiguration>
-        </MediaContext.Provider>
-      </ThemeProvider>
-    </EmotionRootStyleRegistry>
+    // {/*<EmotionRootStyleRegistry>*/}
+    <ThemeProvider defaultAccent={accent} defaultMode={mode}>
+      <MediaContext.Provider value={newContext}>
+        <NFTFetchConfiguration networkId={newNetworkId}>
+          {children}
+        </NFTFetchConfiguration>
+      </MediaContext.Provider>
+      {/* </EmotionRootStyleRegistry> */}
+    </ThemeProvider>
   )
 }

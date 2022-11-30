@@ -38,19 +38,42 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
 
   const { title, description } = getContent()
   return (
-    <div {...getStyles('fullItemInfo', className)}>
-      <h2 {...getStyles('fullTitle')}>{title}</h2>
-      <div id={`${a11yIdPrefix}description`} {...getStyles('fullDescription')}>
+    <div
+      className='fullItemInfo'
+      // {...getStyles('fullItemInfo', className)}
+    >
+      <h2
+        className='fullTitle'
+        // {...getStyles('fullTitle')}
+      >
+        {title}
+      </h2>
+      <div
+        id={`${a11yIdPrefix}description`}
+        className='fullDescription'
+        // {...getStyles('fullDescription')}
+      >
         {description}
       </div>
       {!style.theme.showCreator && !style.theme.showOwner ? (
         <></>
       ) : (
-        <dl {...getStyles('fullCreatorOwnerSection')}>
-          {data.creator.id && style.theme.showCreator && (
+        <dl
+          className='fullCreatorOwnerSection'
+          // {...getStyles('fullCreatorOwnerSection')}
+        >
+          {data?.creator.id && style.theme.showCreator && (
             <>
-              <dt {...getStyles('fullLabel')}>{getString('CREATOR')}</dt>
-              <dd {...getStyles('fullOwnerAddress')}>
+              <dt
+                className='fullLabel'
+                // {...getStyles('fullLabel')}
+              >
+                {getString('CREATOR')}
+              </dt>
+              <dd
+                className='fullOwnerAddress'
+                // {...getStyles('fullOwnerAddress')}
+              >
                 {data ? <AddressView address={data.creator.id} /> : ' '}
               </dd>
             </>

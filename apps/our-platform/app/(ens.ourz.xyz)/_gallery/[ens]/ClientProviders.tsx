@@ -4,8 +4,8 @@ import { MediaConfiguration } from 'our-components'
 
 import { ThemeProvider } from './degene-sais-quoi'
 
-import GlobalStyles from '@/styles/GlobalStyles'
-import { mediaConfigurationStyles } from '@/styles/theme'
+import GlobalStyles from '@/styles/_gallery/GlobalStyles'
+import { mediaConfigurationStyles } from '@/styles/_gallery/theme'
 import { GalleryConfig } from '@/types'
 
 const ClientProviders = ({

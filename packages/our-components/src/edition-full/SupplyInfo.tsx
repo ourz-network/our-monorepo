@@ -37,7 +37,7 @@ export const SupplyInfo = ({
 
   if (
     (data as EditionDetailsFragment & { totalSupply: number }).totalSupply &&
-    data.editionSize
+    data?.editionSize
   ) {
     return (
       <SupplyInfoWrapper titleString='EDITION_SUPPLY'>

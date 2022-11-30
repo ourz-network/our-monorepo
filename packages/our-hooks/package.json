@@ -53,12 +53,11 @@
     "fetch-mock-jest": "^1.5.1",
     "graphql-tools": "^8.3.10",
     "jest": "^29.2.2",
-    "jest-presets": "workspace:*",
     "jest-serial-runner": "^1.2.0",
-    "prettier": "^2.5.1",
+    "prettier": "latest",
     "ts-jest": "^29.0.3",
     "tsconfig": "workspace:*",
-    "typescript": "^4.5.5"
+    "typescript": "latest"
   },
   "directories": {
     "test": "tests"

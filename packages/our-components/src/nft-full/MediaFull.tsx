@@ -34,11 +34,32 @@ export const MediaFull = ({
       )
     }
     if (!data && error) {
-      return <div {...getStyles('mediaLoader')}>error fetching...</div>
+      return (
+        <div
+          className='mediaLoader'
+          // {...getStyles('mediaLoader')}
+        >
+          error fetching...
+        </div>
+      )
     }
-    return <div {...getStyles('mediaLoader')}>loading...</div>
+    return (
+      <div
+        className='mediaLoader'
+        // {...getStyles('mediaLoader')}
+      >
+        loading...
+      </div>
+    )
   }
 
   const media = getContent()
-  return <div {...getStyles('fullMediaWrapper', className)}>{media}</div>
+  return (
+    <div
+      className='fullMediaWrapper'
+      // {...getStyles('fullMediaWrapper', className)}
+    >
+      {media}
+    </div>
+  )
 }

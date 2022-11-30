@@ -16,8 +16,9 @@ export const CollectionTag = () => {
 
   const getContent = () => (
     <a
-      {...getStyles('colectionTagWrapper')}
-      href={`https://zora.co/collections/${data.id}`}
+      className='colectionTagWrapper'
+      // {...getStyles('colectionTagWrapper')}
+      href={`https://zora.co/collections/${data?.id}`}
       target='_blank'
       rel='noreferrer'
     >
@@ -31,11 +32,12 @@ export const CollectionTag = () => {
   return (
     <div
       // eslint-disable-next-line react/no-unknown-property
-      css={css`
-        position: relative;
-        display: flex;
-        flex-direction: row;
-      `}
+      // css={css`
+      //   position: relative;
+      //   display: flex;
+      //   flex-direction: row;
+      // `}
+      className='flex relative'
     >
       {data ? getContent() : '...'}
     </div>

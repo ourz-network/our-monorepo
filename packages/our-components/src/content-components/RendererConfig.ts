@@ -21,7 +21,7 @@ export interface RenderRequest {
     // from zora content uri
     content?: MediaUriType
     image?: MediaUriType
-    // from metadata.animation_url
+    // from metadata?.animation_url
     animation?: MediaUriType
   }
   metadata: any
@@ -31,9 +31,9 @@ export interface RenderRequest {
 export interface RenderComponentType {
   request: RenderRequest
   // TODO(iain): Fix types
-  getString: any
-  getStyles: any
-  theme: ThemeType['theme']
+  getString: any | null
+  getStyles: any | null
+  theme: ThemeType['theme'] | null
   a11yIdPrefix?: string
 }
 

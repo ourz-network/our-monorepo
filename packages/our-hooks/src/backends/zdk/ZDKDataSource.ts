@@ -230,7 +230,7 @@ export class ZDKDataSource implements ZDKDataInterface {
     return transformNFTZDK(token, object);
   }
 
-  loadNFTs = async (nfts: readonly NFTIdentifier[]) => await this.nftDataLoader.loadMany(nfts);
+  loadNFTs = async (nfts: readonly NFTIdentifier[]) => this.nftDataLoader.loadMany(nfts);
 
   fetchNFTs = async (mediaIds: readonly NFTIdentifier[]) => {
     const response = await this.zdk.tokens({
@@ -273,7 +273,7 @@ export class ZDKDataSource implements ZDKDataInterface {
 
     if (query.query.activeMarkets) {
       const marketsList: ZDKMarketType[] = [];
-      query.query.activemarkets?.forEach((market) => {
+      query.query.activeMarkets.forEach((market) => {
         if (market === MarketType.AUCTION) {
           marketsList.push(ZDKMarketType.V2Auction);
         }
