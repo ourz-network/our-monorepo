@@ -74,14 +74,13 @@ export const GET_EDITION_METADATA = gql`
 `
 
 export const getMetadataForEditions = async (editionAddresses: string[]) => {
-  const editions: any[] = []
+  let editions: any[] = []
 
   const promises = editionAddresses.map(async (address) => {
     const token = await request(ZORA_API, GET_EDITION_METADATA, {
       collectionAddress: address,
     })
-
-    return { ...token.token }
+    if (token?.token) return { ...token.token }
   })
 
   await Promise.allSettled(promises).then((results) =>
@@ -92,6 +91,8 @@ export const getMetadataForEditions = async (editionAddresses: string[]) => {
     })
   )
 
+  editions = editions.filter((value) => value !== undefined)
+
   const formatUrl = (url: string) =>
     url.replace(
       'https://api.zora.co/media/ETHEREUM-MAINNET',
@@ -101,7 +102,7 @@ export const getMetadataForEditions = async (editionAddresses: string[]) => {
   editions.forEach((edition, i) => {
     // if (i % 2 === 0) console.log({ ...edition?.token?.image })
     try {
-      editions[i].token.metadata = JSON.parse(editions[i].token.metadata)
+      editions[i].token.metadata = JSON.parse?.(editions[i]?.token?.metadata)
     } catch (error) {
       // console.log(error)
     }

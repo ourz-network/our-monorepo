@@ -158,22 +158,22 @@ export const BidHistory = ({
     )
     .map((bidItem) => (
       <li
-        className='fullPageHistoryItem'
+        className='mt-4 flex flex-col font-light font-[family:var(--body-font)]'
         // {...getStyles('fullPageHistoryItem')}
         key={`${bidItem.actor}-${bidItem.createdAt}`}
       >
         <div
-          className='fullPageHistoryItemDescription'
+          className='flex justify-between'
           // {...getStyles('fullPageHistoryItemDescription')}
         >
           <div
-            className='fullPageHistoryItemDescriptionCopy'
+            className='flex flex-wrap'
             // {...getStyles('fullPageHistoryItemDescriptionCopy')}
           >
             <AddressView address={bidItem.actor} />
             &nbsp;
             <span
-              className='pricingAmount'
+              className='font-[family:var(--body-font)] font-normal'
               // {...getStyles('pricingAmount')}
             >
               {bidItem.activityDescription}{' '}
@@ -182,7 +182,7 @@ export const BidHistory = ({
           </div>
           {bidItem.transactionHash && style.theme.showTxnLinks && (
             <a
-              className='fullPageHistoryTxnLink'
+              className='font-[size:0] relative block hover:after:opacity-100 after:rounded after:p-1 after:opacity-80 after:top-[2px] after:z-10 after:right-0 after:transition-opacity after:duration-300 after:ease-in after:w-3 after:h-3 after:absolute'
               // {...getStyles('fullPageHistoryTxnLink')}
               href={`https://etherscan.io/tx/${bidItem.transactionHash}`}
               target='_blank'
@@ -194,11 +194,11 @@ export const BidHistory = ({
         </div>
         {bidItem.createdAt && (
           <div
-            className='fullPageHistoryItemMeta'
+            className='relative'
             // {...getStyles('fullPageHistoryItemMeta')}
           >
             <time
-              className='fullPageHistoryItemDatestamp'
+              className='text-xs pt-[2px] opacity-50'
               // {...getStyles('fullPageHistoryItemDatestamp')}
               dateTime={dateFromTimestamp(bidItem.createdAt).toISOString()}
             >
@@ -211,7 +211,12 @@ export const BidHistory = ({
 
   return (
     <InfoContainer titleString='NFT_HISTORY' className={className}>
-      <ol {...getStyles('fullPageHistoryList')}>{pastBids}</ol>
+      <ol
+        className='p-0 m-0'
+        // {...getStyles('fullPageHistoryList')}
+      >
+        {pastBids}
+      </ol>
     </InfoContainer>
   )
 }

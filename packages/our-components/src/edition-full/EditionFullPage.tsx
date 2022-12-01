@@ -45,7 +45,7 @@ export const EditionFullPage = ({
       <>
         <MediaFull a11yIdPrefix={a11yIdPrefix} />
         <div
-          className='fullPageDataGrid'
+          className='grid gap-5'
           // {...getStyles('fullPageDataGrid')}
         >
           {style.theme.useCollectionTag && <CollectionTag />}
@@ -63,7 +63,7 @@ export const EditionFullPage = ({
   return (
     <EditionDataProvider {...wrapperProps}>
       <div
-        className='fullPage'
+        className='@container font-[family:var(--body-font)] font-normal'
         // {...getStyles('fullPage', className)}
       >
         {getChildren()}

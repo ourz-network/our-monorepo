@@ -63,13 +63,32 @@ export const PricingComponent = ({
 
   if (!reserveAuction && !ask && !edition) {
     return (
-      <div {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}>
-        <div {...getStyles('textSubdued')}>{getString('RESERVE_PRICE')}</div>
-        <div {...getStyles('pricingAmount')}>
+      <div
+        className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px]'
+        // {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}
+      >
+        <div
+          className='opacity-50'
+          // {...getStyles('textSubdued')}
+        >
+          {getString('RESERVE_PRICE')}
+        </div>
+        <div
+          className='font-[family:var(--body-font)] font-normal'
+          // {...getStyles('pricingAmount')}
+        >
           {getString('NO_PRICING_PLACEHOLDER')}
         </div>
-        <div {...getStyles('textSubdued')}>{getString('HIGHEST_BID')}</div>
-        <div {...getStyles('pricingAmount')}>
+        <div
+          className='opacity-50'
+          // {...getStyles('textSubdued')}
+        >
+          {getString('HIGHEST_BID')}
+        </div>
+        <div
+          className='font-[family:var(--body-font)] font-normal'
+          // {...getStyles('pricingAmount')}
+        >
           {getString('NO_PRICING_PLACEHOLDER')}
         </div>
       </div>
@@ -78,12 +97,28 @@ export const PricingComponent = ({
 
   if (edition && edition.status === MARKET_INFO_STATUSES.ACTIVE) {
     return (
-      <div {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}>
-        <span {...getStyles('textSubdued')}>{getString('EDITION_PRICE')}</span>
+      <div
+        className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px]'
+        {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}
+      >
+        <span
+          className='opacity-50'
+          // {...getStyles('textSubdued')}>
+        >
+          {getString('EDITION_PRICE')}
+        </span>
         <PricingString pricing={edition.amount} showUSD={false} />
 
-        <span {...getStyles('textSubdued')}>{getString('NFTS_COLLECTED')}</span>
-        <span {...getStyles('pricingAmount')}>
+        <span
+          className='opacity-50'
+          //  {...getStyles('textSubdued')}>
+        >
+          {getString('NFTS_COLLECTED')}
+        </span>
+        <span
+          className='font-[family:var(--body-font)] font-normal'
+          // {...getStyles('pricingAmount')}
+        >
           {`${edition.totalSupply} / ${edition.editionSize}`}
         </span>
       </div>
@@ -96,7 +131,12 @@ export const PricingComponent = ({
     if (ask) {
       listPrice = (
         <>
-          <span {...getStyles('textSubdued')}>{getString('LIST_PRICE')}</span>
+          <span
+            className='opacity-50'
+            //  {...getStyles('textSubdued')}>
+          >
+            {getString('LIST_PRICE')}
+          </span>
           <PricingString pricing={ask.amount} showUSD={false} />
         </>
       )
@@ -108,12 +148,21 @@ export const PricingComponent = ({
     ) {
       return (
         <div
+          className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px]'
           {...getStyles('cardAuctionPricing', className, {
             type: 'reserve-pending',
           })}
         >
-          <span {...getStyles('textSubdued')}>{getString('SOLD_FOR')}</span>
-          <span {...getStyles('pricingAmount')}>
+          <span
+            className='opacity-50'
+            //  {...getStyles('textSubdued')}>
+          >
+            {getString('SOLD_FOR')}
+          </span>
+          <span
+            className='font-[family:var(--body-font)] font-normal'
+            // {...getStyles('pricingAmount')}
+          >
             <PricingString pricing={reserveAuction.amount} showUSD={false} />
           </span>
           {listPrice}
@@ -122,10 +171,19 @@ export const PricingComponent = ({
     }
     return (
       <div
+        className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px]'
         {...getStyles('cardAuctionPricing', className, { type: 'perpetual' })}
       >
-        <span {...getStyles('textSubdued')}>{getString('HIGHEST_BID')}</span>
-        <span {...getStyles('pricingAmount')}>
+        <span
+          className='opacity-50'
+          // {...getStyles('textSubdued')}>
+        >
+          {getString('HIGHEST_BID')}
+        </span>
+        <span
+          className='font-[family:var(--body-font)] font-normal'
+          // {...getStyles('pricingAmount')}
+        >
           {highestBid ? (
             <PricingString showUSD={false} pricing={highestBid} />
           ) : (
@@ -141,12 +199,21 @@ export const PricingComponent = ({
       const highestBid = reserveAuction.amount
       return (
         <div
+          className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px] bg-black text-white'
           {...getStyles('cardAuctionPricing', className, {
             type: 'reserve-active',
           })}
         >
-          <span {...getStyles('textSubdued')}>{getString('TOP_BID')}</span>
-          <span {...getStyles('pricingAmount')}>
+          <span
+            className='opacity-50'
+            //  {...getStyles('textSubdued')}>
+          >
+            {getString('TOP_BID')}
+          </span>
+          <span
+            className='font-[family:var(--body-font)] font-normal'
+            // {...getStyles('pricingAmount')}
+          >
             {highestBid && (
               <PricingString pricing={highestBid} showUSD={false} />
             )}
@@ -154,10 +221,16 @@ export const PricingComponent = ({
           {reserveAuction.endsAt?.timestamp &&
             isInFuture(reserveAuction.endsAt.timestamp) && (
               <>
-                <span {...getStyles('textSubdued')}>
+                <span
+                  className='opacity-50'
+                  //  {...getStyles('textSubdued')}>
+                >
                   {getString('ENDS_IN')}
                 </span>
-                <span {...getStyles('pricingAmount')}>
+                <span
+                  className='font-[family:var(--body-font)] font-normal'
+                  // {...getStyles('pricingAmount')}
+                >
                   <CountdownDisplay to={reserveAuction.endsAt.timestamp} />
                 </span>
               </>
@@ -169,12 +242,21 @@ export const PricingComponent = ({
     if (reserveAuction.status === MARKET_INFO_STATUSES.COMPLETE) {
       return (
         <div
+          className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px]'
           {...getStyles('cardAuctionPricing', className, {
             type: 'reserve-finished',
           })}
         >
-          <span {...getStyles('textSubdued')}>{getString('SOLD_FOR')}</span>
-          <span {...getStyles('pricingAmount')}>
+          <span
+            className='opacity-50'
+            //  {...getStyles('textSubdued')}>
+          >
+            {getString('SOLD_FOR')}
+          </span>
+          <span
+            className='font-[family:var(--body-font)] font-normal'
+            // {...getStyles('pricingAmount')}
+          >
             <PricingString showUSD={false} pricing={reserveAuction.amount} />
           </span>
         </div>
@@ -183,11 +265,15 @@ export const PricingComponent = ({
     if (reserveAuction.status === MARKET_INFO_STATUSES.PENDING) {
       return (
         <div
+          className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px] bg-[color:var(--colors-accent)]'
           {...getStyles('cardAuctionPricing', className, {
             type: 'reserve-pending',
           })}
         >
-          <span {...getStyles('textSubdued')}>
+          <span
+            className='opacity-50'
+            //  {...getStyles('textSubdued')}>
+          >
             {getString('RESERVE_PRICE')}
           </span>
           <span>
@@ -199,9 +285,22 @@ export const PricingComponent = ({
   }
 
   return (
-    <div {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}>
-      <div {...getStyles('textSubdued')}>{getString('PRICING_LOADING')}</div>
-      <div {...getStyles('pricingAmount')}>{getString('PRICING_LOADING')}</div>
+    <div
+      className='grid grid-flow-col grid-rows-2 grid-[auto-columns:1fr] py-3 px-4 border-t-[2px]'
+      {...getStyles('cardAuctionPricing', className, { type: 'unknown' })}
+    >
+      <div
+        className='opacity-50'
+        //  {...getStyles('textSubdued')}>
+      >
+        {getString('PRICING_LOADING')}
+      </div>
+      <div
+        className='font-[family:var(--body-font)] font-normal'
+        // {...getStyles('pricingAmount')}
+      >
+        {getString('PRICING_LOADING')}
+      </div>
     </div>
   )
 }

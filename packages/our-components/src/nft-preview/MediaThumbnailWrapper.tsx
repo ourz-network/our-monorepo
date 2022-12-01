@@ -32,7 +32,7 @@ export const MediaThumbnailWrapper = ({
 
     return (
       <div
-        className='overflow-hidden relative m-4 w-80 max-w-xs border-[3px] border-solid border-[color:var(--colors-accent)] transition-transform duration-100 ease-in-out active:scale-95'
+        className='@container overflow-hidden relative m-4 w-80 max-w-xs border-[3px] border-solid border-[color:var(--colors-accent)] transition-transform duration-100 ease-in-out active:scale-95'
         // {...getStyles('cardOuter', className, {
         //   hasClickEvent: !!onClick,
         //   auctionStatus: lastMarket?.status,

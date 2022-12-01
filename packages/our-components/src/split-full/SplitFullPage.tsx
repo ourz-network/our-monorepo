@@ -35,7 +35,10 @@ const SplitFullPage = ({
     }
 
     return (
-      <div {...getStyles('fullPageDataGrid')}>
+      <div
+        className='grid gap-5'
+        // {...getStyles('fullPageDataGrid')}
+      >
         <SplitPie
           recipients={data?.recipients as RecipientShortFragment[]}
           secondarySale={false}
@@ -47,7 +50,12 @@ const SplitFullPage = ({
 
   return (
     <SplitDataProvider {...wrapperProps}>
-      <div {...getStyles('fullPage', className)}>{getChildren()}</div>
+      <div
+        className='@container font-[family:var(--body-font)] font-normal'
+        //  {...getStyles('fullPage', className)}
+      >
+        {getChildren()}
+      </div>
     </SplitDataProvider>
   )
 }

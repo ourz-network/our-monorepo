@@ -19,20 +19,19 @@ const GET_1000_WATERFALL_IDS_QUERY = gql`
 `
 const GET_1000_LIQUID_SPLIT_IDS_QUERY = gql`
   query GetAllLiquidSplits($skipNum: Int!) {
-    waterfallModules(first: 1000, skip: $skipNum) {
+    liquidSplits(first: 1000, skip: $skipNum) {
       id
     }
   }
 `
 
-export const getAllSplits = async () => {
+export const getAllSplits = async (): Promise<string[]> => {
   const allSplits = []
 
   let moreRemaining = true
   let i = 0
 
   while (moreRemaining) {
-    // console.log(`fetching splits from #${i * 1000}-#${i * 1000 + 1000}`)
     // eslint-disable-next-line no-await-in-loop
     const { splits } = await request(
       SPLITS_SUBGRAPH,
@@ -47,23 +46,21 @@ export const getAllSplits = async () => {
     if (splits.length < 1000) {
       moreRemaining = false
     }
-    // console.log(`received ${splits.length} splits`)
 
     // eslint-disable-next-line no-plusplus
     i++
   }
-  // console.log(`no more splits`)
-  return allSplits
+
+  return allSplits.map((split: { id: string }) => split.id)
 }
 
 export const getAllWaterfalls = async () => {
   const allWaterfalls = []
 
   let moreRemaining = true
-  let i = 1
+  let i = 0
 
   while (moreRemaining) {
-    // console.log(`fetching waterfalls up to #${i * 1000}`)
     // eslint-disable-next-line no-await-in-loop
     const { waterfallModules } = await request(
       SPLITS_SUBGRAPH,
@@ -78,23 +75,21 @@ export const getAllWaterfalls = async () => {
     if (waterfallModules.length < 1000) {
       moreRemaining = false
     }
-    // console.log(`received ${waterfallModules.length} waterfalls`)
 
     // eslint-disable-next-line no-plusplus
     i++
   }
-  // console.log(`no more waterfalls`)
-  return allWaterfalls
+  // console.log({ allWaterfalls })
+  return allWaterfalls.map((waterfall: { id: string }) => waterfall.id)
 }
 
 export const getAllLiquidSplits = async () => {
   const allLiquidSplits = []
 
   let moreRemaining = true
-  let i = 1
+  let i = 0
 
   while (moreRemaining) {
-    // console.log(`fetching liquidSplits up to #${i * 1000}`)
     // eslint-disable-next-line no-await-in-loop
     const { liquidSplits } = await request(
       SPLITS_SUBGRAPH,
@@ -109,11 +104,24 @@ export const getAllLiquidSplits = async () => {
     if (liquidSplits.length < 1000) {
       moreRemaining = false
     }
-    // console.log(`received ${liquidSplits.length} liquidSplits`)
 
     // eslint-disable-next-line no-plusplus
     i++
   }
-  // console.log(`no more liquidSplits`)
-  return allLiquidSplits
+
+  return allLiquidSplits.map((liquidSplit: { id: string }) => liquidSplit.id)
+}
+
+export const getEverySplit = async () => {
+  const allSplits = await getAllSplits()
+  const allWaterfalls = await getAllWaterfalls()
+  const allLiquidSplits = await getAllLiquidSplits()
+  // console.log(allSplits.length, allWaterfalls.length, allLiquidSplits.length)
+
+  return [
+    //
+    ...allSplits,
+    ...allWaterfalls,
+    ...allLiquidSplits,
+  ]
 }

@@ -9,6 +9,7 @@ import {
 
 export const Unknown: RendererConfig = {
   getRenderingPreference: (request: RenderRequest) => {
+    console.log(request.media.content)
     if (request.media.content?.type?.startsWith('text/')) {
       return RenderingPreference.LOW
     }

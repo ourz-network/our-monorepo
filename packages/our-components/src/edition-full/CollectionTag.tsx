@@ -16,16 +16,18 @@ export const CollectionTag = () => {
 
   const getContent = () => (
     <a
-      className='colectionTagWrapper'
+      className='border-[2px] border-solid border-[color:var(--colors-accent)] border-[radius:200px] transition-transform duration-100 ease-in-out p-[5px] flex items-center text-[decoration:none] cursor-pointer active:scale-95 font-[family:var(--hero-font)] font-medium'
       // {...getStyles('colectionTagWrapper')}
       href={`https://zora.co/collections/${data?.id}`}
       target='_blank'
       rel='noreferrer'
     >
-      <div {...getStyles('collectionTagIcon')}>
+      <div
+      // {...getStyles('collectionTagIcon')}
+      >
         <Orb />
       </div>
-      <span>Zora</span>
+      <span className='my-0 mx-[10px]'>Zora</span>
     </a>
   )
 

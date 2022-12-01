@@ -28,7 +28,12 @@ export const MediaThumbnail = ({
       }
     }
     return {
-      media: <div {...getStyles('mediaLoader')} />,
+      media: (
+        <div
+          className={`justify-center items-center w-full pointer-events-none min-h-fit${''}`}
+          // {...getStyles('mediaLoader')}
+        />
+      ),
       title: '...',
     }
   }
@@ -42,13 +47,13 @@ export const MediaThumbnail = ({
     <>
       {/* <div className={className}> */}
       <div
-        className='flex overflow-hidden relative justify-center w-full h-80 bg-white dark:bg-black'
+        className='flex overflow-hidden relative justify-center items-center m-0 w-full h-80 bg-white'
         // {...getStyles('cardMediaWrapper')}
       >
         {media}
       </div>
       <div
-        className='px-4 py-3'
+        className='px-4 py-3 border-t-[3px] border-solid border-[color:var(--colors-accent)]'
         // {...getStyles('cardItemInfo')}
       >
         <h5

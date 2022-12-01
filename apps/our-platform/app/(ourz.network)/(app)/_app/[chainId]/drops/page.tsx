@@ -13,22 +13,15 @@ import request, { gql } from 'graphql-request'
 
 import { NFTPreview } from '@/components/NFTPreview'
 import { getAllSplits } from '@/lib/splitsSubgraph'
-import { getAllZoraDropIDsWithSplitRecipients } from '@/lib/zoraSubgraph'
+import { getEverySplitDropMeta } from '@/lib/zoraSubgraph'
 import { getMetadataForEditions } from '@/lib/zoraAPI'
 import { Suspense } from 'react'
+// import { MessonryGrid } from 'messonry'
+import Link from 'next/link'
 
-export default async function AppHomePage() {
-  const allSplits = await getAllSplits()
-  const drops = await getAllZoraDropIDsWithSplitRecipients(
-    allSplits.map((split: { id: string }) => split.id)
-  )
-  // console.log({ drops })
-  const dropIDs = drops.map((drop: { id: string }) => drop.id)
-
-  const editions = await getMetadataForEditions(dropIDs)
-  // console.log(JSON.stringify(editions))
-  const API_ENDPOINT = 'https://api.zora.co/graphql'
-  const zdk = new ZDK({ endpoint: API_ENDPOINT }) // Defaults to Ethereum Mainnet
+export default async function DropsPage() {
+  const editions = await getEverySplitDropMeta()
+  console.log({ editions })
 
   // const collections = await zdk.collections({
   //   where: {
@@ -93,45 +86,42 @@ export default async function AppHomePage() {
 
   return (
     <>
-      <p>Hello</p>
+      {/*  eslint-disable-next-line arrow-body-style */}
       {editions.map((edition, i) => {
-        // console.log({ ...edition.metadata })
-        // console.log('')
+        // console.log(edition.token)
         return (
-          <div key={edition?.token?.collectionAddress}>
-            {/* <p>
-              {i}
+          <div
+            key={edition?.token?.collectionAddress}
+            className='flex flex-col items-center mx-auto text-center w-fit'
+          >
+            <p>
+              {/* {i} */}
               {edition?.token?.tokenContract?.name}
             </p>
-            <p>
-              {edition?.token?.tokenContract?.description ??
-                edition?.token?.description}
-            </p>
-            <p>{edition?.content?.mimeType}</p> */}
-            <Suspense fallback={<>Loading...</>}>
-              <NFTPreview
-                contentURI={edition?.token?.content?.url}
-                metadata={edition?.token?.metadata}
-                a11yIdPrefix={undefined}
-              />
+            {/* <p> */}
+            {/* {edition?.token?.tokenContract?.description ??
+               edition?.token?.description} */}
+            {/* </p> */}
+            {/* <p>{edition?.content?.mimeType}</p>  */}
+            <Suspense fallback={<></>}>
+              <Link
+                href={`/drops/${edition?.token?.collectionAddress}`}
+                prefetch={false}
+              >
+                <NFTPreview
+                  contentURI={edition?.token?.content?.url}
+                  metadata={edition?.token?.metadata}
+                  a11yIdPrefix={undefined}
+                />
+              </Link>
             </Suspense>
           </div>
         )
       })}
-      {/* {tokens.map((token) => {
-        if (token.token?.tokenId)
-          // console.log(JSON.stringify(token.token?.metadata))
-          return (
-            <div key={token.token.tokenId}>
-              <NFTPreview
-                contentURI={token.token.content?.url}
-                metadata={token.token.metadata}
-                a11yIdPrefix={undefined}
-              />
-            </div>
-          )
-        return <p>hi</p>
-      })} */}
+      {/* <MessonryGrid
+        items={editions}
+        options={{ useNextImage: true, nextImageConfig: {} }}
+      /> */}
     </>
   )
 }

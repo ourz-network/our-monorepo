@@ -39,11 +39,11 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
   const { title, description } = getContent()
   return (
     <div
-      className='fullItemInfo'
+      className=''
       // {...getStyles('fullItemInfo', className)}
     >
       <h2
-        className='fullTitle'
+        className='mx-0 my-5 text-3xl'
         // {...getStyles('fullTitle')}
       >
         {title}
@@ -59,13 +59,13 @@ export const MediaInfo = ({ a11yIdPrefix, className }: MediaInfoProps) => {
         <></>
       ) : (
         <dl
-          className='fullCreatorOwnerSection'
+          className='grid grid-flow-col grid-rows-2 auto-cols-fr p-5 border-[3px] border-solid border-[color:var(--colors-accent)] rounded mt-5'
           // {...getStyles('fullCreatorOwnerSection')}
         >
           {data?.creator.id && style.theme.showCreator && (
             <>
               <dt
-                className='fullLabel'
+                className='mb-1 text-sm uppercase opacity-50'
                 // {...getStyles('fullLabel')}
               >
                 {getString('CREATOR')}

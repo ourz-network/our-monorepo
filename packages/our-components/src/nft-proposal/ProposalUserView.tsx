@@ -30,7 +30,12 @@ export const ProposalUserView = ({
       <span>
         <AddressView address={address} />
         {username.username?.name && (
-          <span {...getStyles('textSubdued')}>{username.username.name}</span>
+          <span
+            className='opacity-50'
+            //  {...getStyles('textSubdued')}
+          >
+            {username.username.name}
+          </span>
         )}
       </span>
     </div>

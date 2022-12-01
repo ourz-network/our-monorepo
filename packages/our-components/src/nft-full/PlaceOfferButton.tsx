@@ -68,7 +68,7 @@ export const PlaceOfferButton = ({
 
   return (
     <div
-      className='fullPlaceOfferButton'
+      className=''
       // {...getStyles('fullPlaceOfferButton', className)}
     >
       <Button primary href={bidURL}>

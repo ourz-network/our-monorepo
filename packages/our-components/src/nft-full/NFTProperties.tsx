@@ -16,10 +16,14 @@ export const NFTProperties = ({ className }: NFTPropertiesProps) => {
 
   const renderAttributes = (attributes: any) => {
     function formatAttributes(obj: any) {
-      if (Array.isArray(obj)) {
+      if (Array?.isArray(obj)) {
         return obj
       }
-      const array = Object.keys(obj).length === 0 ? false : Object.entries(obj)
+      if (!obj) {
+        return []
+      }
+      const array =
+        Object?.keys(obj)?.length === 0 ? false : Object.entries(obj)
       if (array !== false) {
         return array.map((a) => ({
           trait_type: a[0],
@@ -28,7 +32,6 @@ export const NFTProperties = ({ className }: NFTPropertiesProps) => {
       }
       return []
     }
-
     const formattedAttributes = formatAttributes(attributes)
 
     if (!attributes || !formattedAttributes.length) {

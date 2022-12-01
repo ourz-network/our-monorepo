@@ -51,7 +51,12 @@ export const ProposalMediaDisplay = ({
       }
     }
     return {
-      media: <div {...getStyles('mediaLoader')} />,
+      media: (
+        <div
+          className={`justify-center items-center w-full pointer-events-none min-h-fit${''}`}
+          // {...getStyles('mediaLoader')}
+        />
+      ),
       title: '...',
     }
   }

@@ -12,6 +12,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    require('@tailwindcss/container-queries'),
     // plugin(function ({ addBase }) {
     //   addBase(require('./globals.css'))
     // }),

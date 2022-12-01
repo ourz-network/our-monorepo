@@ -184,6 +184,7 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/container-queries'),
     // require('our-components/dist/plugin'),
     // ourPlugin,
   ],

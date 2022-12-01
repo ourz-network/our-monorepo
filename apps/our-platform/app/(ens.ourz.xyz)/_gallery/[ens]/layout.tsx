@@ -49,11 +49,10 @@ export default async function RootLayout({
           __html: `
             try {
               if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark')
-                document.documentElement.classList.add('--hello-world: #666')
-                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0B1120')
+                document?.documentElement?.classList?.add('dark')
+                document?.documentElement?.classList?.add('--hello-world: #666')
               } else {
-                document.documentElement.classList.remove('dark')
+                document?.documentElement?.classList?.remove('dark')
               }
             } catch (_) {}
           `,

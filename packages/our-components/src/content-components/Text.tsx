@@ -34,7 +34,7 @@ export const Text: RendererConfig = {
         error={media.error}
       >
         <div
-          className='p-5 text-left whitespace-pre'
+          className='p-5 m-auto w-min max-w-prose text-left whitespace-pre h-min text-ellipsis'
           // {...getStyles('mediaContentText')}
         >
           {media.content && 'text' in media.content ? media.content.text : ''}

@@ -20,11 +20,12 @@ export const InfoContainer = ({
 
   return (
     <div
-      className='infoContainer'
+      className={`border-[3px] border-solid border-[color:var(--colors-accent)] rounded relative pt-5 px-5 ${
+        bottomPadding ? 'pb-5' : ''}`}
       // {...getStyles('infoContainer', className, { bottomPadding })}
     >
       <h4
-        className='fullLabel'
+        className='mb-1 text-sm uppercase opacity-50'
         // {...getStyles('fullLabel')}
       >
         {getString(titleString)}

@@ -47,7 +47,7 @@ export const MediaFull = ({
     if (error) {
       return (
         <div
-          className='mediaLoader'
+          className={`justify-center items-center w-full pointer-events-none min-h-fit${''}`}
           // {...getStyles('mediaLoader')}
         >
           error fetching...
@@ -56,7 +56,7 @@ export const MediaFull = ({
     }
     return (
       <div
-        className='mediaLoader'
+        className={`justify-center items-center w-full pointer-events-none min-h-fit${''}`}
         // {...getStyles('mediaLoader')}
       >
         loading...
@@ -67,7 +67,7 @@ export const MediaFull = ({
   const media = getContent()
   return (
     <div
-      className='fullMediaWrapper'
+      className='m-[5%] relative'
       // {...getStyles('fullMediaWrapper', className)}
     >
       {media}

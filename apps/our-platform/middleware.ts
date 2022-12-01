@@ -32,20 +32,48 @@ export default function middleware(req: NextRequest) {
     process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
       ? hostname.replace(`.ourz.xyz`, '').replace(`.ourz.network`, '')
       : hostname.replace(`.localhost:3000`, '')
-
+  // console.log({ hostname, path, currentHost })
   // rewrites for app pages
-  if (currentHost === 'app') {
-    return NextResponse.rewrite(new URL(`/app${path}`, req.url))
+  if (
+    currentHost === 'app' &&
+    (hostname.includes('ourz.network') || hostname.includes('localhost:3000'))
+  ) {
+    switch (path) {
+      case '/':
+        console.log(0)
+        return NextResponse.rewrite(new URL(`/_app/1/drops${path}`, req.url))
+
+      default:
+        console.log(1)
+        return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
+    }
   }
 
-  // rewrite root application to `/home` folder
-  if (hostname === 'localhost:3000' || hostname === 'ourz.network') {
-    url.pathname = `/_home${url.pathname}`
-    return NextResponse.rewrite(new URL(`/home/${path}`, req.url))
-  }
+  switch (hostname) {
+    // rewrite root application to `/home` folder
+    case 'ourz.xyz':
+      console.log(2)
+    // fallthrough
+    case 'ourz.network':
+      console.log(3)
+      url.pathname = `/_home${url.pathname}`
+      return NextResponse.rewrite(new URL(`/_home${path}`, req.url))
 
-  // rewrite everything else to `/_sites/[site] dynamic route
-  return NextResponse.rewrite(
-    new URL(`/_gallery/${currentHost}${path}`, req.url)
-  )
+    case 'app.localhost:3000':
+      console.log(4)
+      if (!path || path === '/') {
+        console.log(5)
+        url.pathname = `/_app/drops${url.pathname}`
+        return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
+      }
+      console.log(6)
+      url.pathname = `/_app${url.pathname}`
+      return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
+    default:
+      console.log(7)
+      // rewrite everything else to `/_sites/[site] dynamic route
+      return NextResponse.rewrite(
+        new URL(`/_gallery/${currentHost}${path}`, req.url)
+      )
+  }
 }

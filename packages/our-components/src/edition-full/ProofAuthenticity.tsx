@@ -22,7 +22,12 @@ const ProofLink = ({
   children: string
   // styles: any
 }) => (
-  <a className='fullProofLink' href={href} target='_blank' rel='noreferrer'>
+  <a
+    className='block text-[decoration:none] text-[color:var(--colors-primary)] p-5 my-0 -mx-5 border-t-[3px] border-solid border-[color:var(--colors-accent)] hover:bg-[color:var(--colors-accent)] after:w-3 after:h-3 after:opacity-50 after:right-[20px] after:absolute'
+    href={href}
+    target='_blank'
+    rel='noreferrer'
+  >
     {children}
   </a>
 )

@@ -2,3 +2,7 @@ allow:
   - simple
   - basically
   - hooks
+  - add
+  - special
+  - master
+  - angry

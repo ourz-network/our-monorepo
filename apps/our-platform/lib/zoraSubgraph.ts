@@ -1,5 +1,13 @@
 import request, { gql } from 'graphql-request'
 
+import {
+  getAllLiquidSplits,
+  getAllSplits,
+  getAllWaterfalls,
+  getEverySplit,
+} from './splitsSubgraph'
+import { getMetadataForEditions } from './zoraAPI'
+
 const ZORA_SUBGRAPH =
   'https://api.thegraph.com/subgraphs/name/iainnash/zora-editions-mainnet'
 
@@ -49,6 +57,7 @@ const ERC721_DROP_FRAGMENT = gql`
 export const GET_ZORA_DROPS_WITH_SPLITS_IDS = gql`
   query GetZoraDropsWithSplits($splitAddresses: [Bytes!]!) {
     contractConfigs(where: { fundsRecipient_in: $splitAddresses }) {
+      fundsRecipient
       drop {
         id
       }
@@ -59,6 +68,7 @@ export const GET_ZORA_DROPS_WITH_SPLITS_IDS = gql`
 export const GET_ZORA_DROPS_WITH_SPLITS_METADATA = gql`
   query GetZoraDropsWithSplits($splitAddresses: [Bytes!]!) {
     contractConfigs(where: { fundsRecipient_in: $splitAddresses }) {
+      fundsRecipient
       drop {
         id
         rendererAddress
@@ -84,9 +94,7 @@ export const GET_ZORA_DROPS_WITH_SPLITS_FULL = gql`
   ${ERC721_DROP_FRAGMENT}
 `
 
-export const getAllZoraDropIDsWithSplitRecipients = async (
-  splitAddresses: string[]
-) => {
+export const getAllZoraSplitDropIDs = async (splitAddresses: string[]) => {
   const { contractConfigs } = await request(
     ZORA_SUBGRAPH,
     GET_ZORA_DROPS_WITH_SPLITS_IDS,
@@ -95,16 +103,17 @@ export const getAllZoraDropIDsWithSplitRecipients = async (
     }
   )
 
-  const drops = contractConfigs.map((contractConfig: { drop: any }) => ({
-    ...contractConfig.drop,
-  }))
+  const drops = contractConfigs.map(
+    (contractConfig: { fundsRecipient: string; drop: any }) => ({
+      ...contractConfig.drop,
+      splitId: contractConfig.fundsRecipient,
+    })
+  )
 
   return drops
 }
 
-export const getAllZoraDropsMetadataWithSplitRecipients = async (
-  splitAddresses: string[]
-) => {
+export const getAllZoraSplitDropsMeta = async (splitAddresses: string[]) => {
   const { contractConfigs } = await request(
     ZORA_SUBGRAPH,
     GET_ZORA_DROPS_WITH_SPLITS_METADATA,
@@ -113,16 +122,17 @@ export const getAllZoraDropsMetadataWithSplitRecipients = async (
     }
   )
 
-  const drops = contractConfigs.map((contractConfig: { drop: any }) => ({
-    ...contractConfig.drop,
-  }))
+  const drops = contractConfigs.map(
+    (contractConfig: { fundsRecipient: string; drop: any }) => ({
+      ...contractConfig.drop,
+      splitId: contractConfig.fundsRecipient,
+    })
+  )
 
   return drops
 }
 
-export const getAllZoraDropsFullWithSplitRecipients = async (
-  splitAddresses: string[]
-) => {
+export const getAllZoraSplitDropsFull = async (splitAddresses: string[]) => {
   const { contractConfigs } = await request(
     ZORA_SUBGRAPH,
     GET_ZORA_DROPS_WITH_SPLITS_FULL,
@@ -136,4 +146,25 @@ export const getAllZoraDropsFullWithSplitRecipients = async (
   }))
 
   return drops
+}
+
+export const getEverySplitDropMeta = async () => {
+  const everySplit = await getEverySplit()
+  const everySplitDrop = await getAllZoraSplitDropIDs(everySplit)
+  const splitDropsMeta = await getMetadataForEditions(
+    everySplitDrop.map((drop: { id: string }) => drop.id)
+  )
+
+  return splitDropsMeta
+}
+
+export const getEveryZoraSplit = async () => {
+  const everySplit = await getEverySplit()
+
+  const drops = await getAllZoraSplitDropIDs(everySplit)
+
+  const zoraSplits: string[] = drops.map(
+    (drop: { splitId: string }) => drop.splitId
+  )
+  return zoraSplits
 }

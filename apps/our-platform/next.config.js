@@ -50,6 +50,7 @@ const nextConfig = {
   },
   experimental: {
     appDir: true,
+    // optimizeCss: true,
     // allowMiddlewareResponseBody: true,
     // serverComponentsExternalPackages: ["mongodb"],
   },

@@ -39,12 +39,18 @@ export const PricingString = ({
   return (
     <>
       {!!pricing.amount.value && (
-        <span {...getStyles('pricingAmount')}>
+        <span
+          className='first-of-type:pr-3 font-[family:var(--body-font)] font-normal'
+          // {...getStyles('pricingAmount')}
+        >
           {format(pricing?.amount?.value)} {pricing?.symbol}
         </span>
       )}
       {showUSD && !!pricing?.usd?.value && (
-        <span {...getStyles('textSubdued')}>
+        <span
+          className='opacity-50'
+          // {...getStyles('textSubdued')}
+        >
           {' '}
           ${formatUSD(pricing?.usd?.value)}
         </span>

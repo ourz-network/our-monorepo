@@ -1,7 +1,18 @@
 'use client'
 
 import React, { useContext } from 'react'
-import { NetworkIDs, NFTFetchConfiguration } from '@zoralabs/nft-hooks'
+import {
+  NetworkIDs,
+  Networks,
+  NFTFetchConfiguration,
+  Strategies,
+} from '@zoralabs/nft-hooks'
+// import {
+//   NetworkIDs,
+//   Networks,
+//   OurFetchConfiguration as NFTFetchConfiguration,
+//   Strategies,
+// } from 'our-hooks'
 import { merge } from 'merge-anything'
 import { ThemeProvider } from 'degene-sais-quoi'
 import type { Accent, Mode } from 'degene-sais-quoi/dist/types/tokens'
@@ -67,7 +78,9 @@ export const MediaConfiguration = ({
     renderers,
     networkId: newNetworkId,
   }
-
+  // const zdkStrategy = new Strategies.ZDKFetchStrategy(
+  //   networkId ?? Networks.MAINNET
+  // )
   return (
     // {/*<EmotionRootStyleRegistry>*/}
     <ThemeProvider defaultAccent={accent} defaultMode={mode}>

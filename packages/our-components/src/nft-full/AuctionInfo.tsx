@@ -95,11 +95,11 @@ export const AuctionInfo = ({
             {showFindersFee && ask.raw.findersFeeBps && (
               <>
                 <div
-                  className='fullInfoSpacer'
+                  className='h-4'
                   // {...getStyles('fullInfoSpacer', undefined, { width: 15 })}
                 />
                 <div
-                  className='fullLabel'
+                  className='mb-1 text-sm uppercase opacity-50'
                   // {...getStyles('fullLabel')}
                 >
                   {getString('FINDERS_FEE')}
@@ -122,17 +122,17 @@ export const AuctionInfo = ({
     return (
       <AuctionInfoWrapper className={className} titleString='AUCTION_SOLD_FOR'>
         <div
-          className='fullInfoAuctionPricing'
+          className='flex'
           // {...getStyles('fullInfoAuctionPricing')}
         >
           <PricingString pricing={reserveAuction.amount} />
         </div>
         <div
-          className='fullInfoSpacer'
+          className='h-4'
           // {...getStyles('fullInfoSpacer', undefined, { width: 15 })}
         />
         <div
-          className='fullLabel'
+          className='mb-1 text-sm uppercase opacity-50'
           // {...getStyles('fullLabel')}
         >
           {getString('WINNER')}
@@ -147,34 +147,34 @@ export const AuctionInfo = ({
       <AuctionInfoWrapper titleString='AUCTION_ENDS'>
         {reserveAuction.endsAt && (
           <div
-            className='pricingAmount'
+            className='font-[family:var(--body-font)] font-normal'
             // {...getStyles('pricingAmount')}
           >
             <CountdownDisplay to={reserveAuction.endsAt.timestamp} />
           </div>
         )}
         <div
-          className='fullInfoSpacer'
+          className='h-4'
           // {...getStyles('fullInfoSpacer')}
         />
         <div
-          className='fullLabel'
+          className='mb-1 text-sm uppercase opacity-50'
           // {...getStyles('fullLabel')}
         >
           {getString('HIGHEST_BID')}
         </div>
         <div
-          className='fullInfoAuctionPricing'
+          className='flex'
           // {...getStyles('fullInfoAuctionPricing')}
         >
           <PricingString pricing={reserveAuction.amount} />
         </div>
         <div
-          className='fullInfoSpacer'
+          className='h-4'
           // {...getStyles('fullInfoSpacer')}
         />
         <div
-          className='fullLabel'
+          className='mb-1 text-sm uppercase opacity-50'
           // {...getStyles('fullLabel')}
         >
           {getString('BIDDER')}
@@ -193,24 +193,24 @@ export const AuctionInfo = ({
       titleString={reserveAuction ? 'RESERVE_PRICE' : 'LIST_PRICE'}
     >
       <div
-        className='pricingAmount'
+        className='font-[family:var(--body-font)] font-normal'
         // {...getStyles('pricingAmount')}
       >
         {reserveAuction && (
           <>
             <div
-              className='fullInfoAuctionPricing'
+              className='flex'
               // {...getStyles('fullInfoAuctionPricing')}
             >
               <PricingString pricing={reserveAuction.amount} />
             </div>
             <div>
               <div
-                className='fullInfoSpacer'
+                className='h-4'
                 // {...getStyles('fullInfoSpacer')}
               />
               <div
-                className='fullLabel'
+                className='mb-1 text-sm uppercase opacity-50'
                 // {...getStyles('fullLabel')}
               >
                 {getString('AUCTION_PENDING_DURATION')}
