@@ -1,9 +1,10 @@
-import { ERC721Drop__factory } from '../constants/typechain'
-import { EditionSalesConfig } from '../models/edition'
-import { MAX_UINT64 } from 'constants/numbers'
+'use client'
+
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable consistent-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BigNumber, errors, logger } from 'ethers'
 import type { ContractTransaction } from 'ethers'
-import { SubgraphERC721Drop } from 'models/subgraph'
 import React, {
   ReactNode,
   useCallback,
@@ -14,6 +15,11 @@ import React, {
 } from 'react'
 import { AllowListEntry } from 'utils/merkle-proof'
 import { useSigner } from 'wagmi'
+
+import { MAX_UINT64 } from '@/constants/numbers'
+import { SubgraphERC721Drop } from '@/models/subgraph'
+import { EditionSalesConfig } from '@/models/edition'
+import { ERC721Drop__factory } from '@/constants/typechain'
 
 export interface ERC721DropProviderState
   extends Omit<
@@ -93,7 +99,10 @@ function ERC721DropContractProvider({
   })
 
   const drop = useMemo(
-    () => (signer ? new ERC721Drop__factory(signer).attach(collection.address) : null),
+    () =>
+      signer
+        ? new ERC721Drop__factory(signer).attach(collection.address)
+        : null,
     [signer, collection.address]
   )
 
@@ -101,7 +110,10 @@ function ERC721DropContractProvider({
     async (address: string) => {
       const code = await signer?.provider?.getCode(address)
       if ((code?.length || 0) <= 2) {
-        logger.throwError('Request is on the wrong network', errors.NETWORK_ERROR)
+        logger.throwError(
+          'Request is on the wrong network',
+          errors.NETWORK_ERROR
+        )
       }
     },
     [signer]
@@ -131,7 +143,9 @@ function ERC721DropContractProvider({
         BigNumber.from(allowlistEntry.price),
         allowlistEntry.proof.map((e) => `0x${e}`),
         {
-          value: BigNumber.from(allowlistEntry.price).mul(BigNumber.from(quantity)),
+          value: BigNumber.from(allowlistEntry.price).mul(
+            BigNumber.from(quantity)
+          ),
         }
       )
       return tx
@@ -260,7 +274,8 @@ function ERC721DropContractProvider({
     return (
       (await drop.mintedPerAddress(address)).totalMints.lt(
         state.salesConfig.maxSalePurchasePerAddress
-      ) && BigNumber.from(state.totalMinted).lt(BigNumber.from(collection.maxSupply))
+      ) &&
+      BigNumber.from(state.totalMinted).lt(BigNumber.from(collection.maxSupply))
     )
   }
 
@@ -301,7 +316,7 @@ function ERC721DropContractProvider({
   const isAdmin = useCallback(
     async (address: string | undefined) => {
       if (!drop || !address || !signer?.getAddress) return false
-      return await drop.isAdmin(address)
+      return drop.isAdmin(address)
     },
     [drop, signer]
   )

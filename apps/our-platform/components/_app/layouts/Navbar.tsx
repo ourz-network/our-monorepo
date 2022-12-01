@@ -1,4 +1,5 @@
-// import { Navbar, Text, Button, Link, Container, Row } from '@nextui-org/react'
+'use client'
+
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 
 export function Navbar() {

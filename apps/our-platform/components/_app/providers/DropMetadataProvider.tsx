@@ -1,8 +1,10 @@
+'use client'
+
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable no-nested-ternary */
+
 // import {DropMetadataRenderer__factory} from '@zoralabs/nft-drop-contracts/dist/typechain/DropMetadataRenderer'
-import { DropMetadataRenderer__factory } from '../constants/typechain'
 import type { ContractTransaction } from 'ethers'
-import { SubgraphERC721Drop } from 'models/subgraph'
-import { transformIPFSURL } from 'providers/IPFSProvider'
 import React, {
   ReactNode,
   useCallback,
@@ -14,6 +16,10 @@ import React, {
 import useSWR from 'swr'
 import { cleanDescription } from 'utils/edition'
 import { useProvider, useSigner } from 'wagmi'
+
+import { transformIPFSURL } from '@/components/_app/providers/IPFSProvider'
+import { SubgraphERC721Drop } from '@/models/subgraph'
+import { DropMetadataRenderer__factory } from '@/constants/typechain'
 
 export interface MetadataDetails {
   name?: string
@@ -33,9 +39,10 @@ export interface DropMetadataProviderState {
   ) => Promise<ContractTransaction | undefined>
 }
 
-export const DropMetadataContext = React.createContext<DropMetadataProviderState>(
-  {} as DropMetadataProviderState
-)
+export const DropMetadataContext =
+  React.createContext<DropMetadataProviderState>(
+    {} as DropMetadataProviderState
+  )
 
 function DropMetadataContractProvider({
   collection,
@@ -53,8 +60,13 @@ function DropMetadataContractProvider({
     () =>
       provider && metadataRendererAddress
         ? signer
-          ? new DropMetadataRenderer__factory(signer).attach(metadataRendererAddress)
-          : DropMetadataRenderer__factory.connect(metadataRendererAddress, provider)
+          ? new DropMetadataRenderer__factory(signer).attach(
+              metadataRendererAddress
+            )
+          : DropMetadataRenderer__factory.connect(
+              metadataRendererAddress,
+              provider
+            )
         : null,
     [provider, signer, metadataRendererAddress]
   )
@@ -78,13 +90,12 @@ function DropMetadataContractProvider({
         if (!collection.address || !metadataRenderer) {
           throw 'No collection or metadataRenderer'
         }
-        const { base, contractURI } = await metadataRenderer.metadataBaseByContract(
-          collection.address
-        )
+        const { base, contractURI } =
+          await metadataRenderer.metadataBaseByContract(collection.address)
         setMetadata((prevState) => ({
           ...prevState,
           metadataURIBase: base,
-          contractURI: contractURI,
+          contractURI,
         }))
       } catch (e) {
         console.log({ e })
@@ -114,6 +125,7 @@ function DropMetadataContractProvider({
         contractURI: newContractUri,
       }))
 
+      // eslint-disable-next-line consistent-return
       return tx
     },
     [signer, metadataRenderer, collection.address]

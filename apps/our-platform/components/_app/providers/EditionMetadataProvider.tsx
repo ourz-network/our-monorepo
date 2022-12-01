@@ -1,7 +1,10 @@
+'use client'
+
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable consistent-return */
+
 // import {EditionMetadataRenderer__factory} from '@zoralabs/nft-drop-contracts/dist/typechain/EditionMetadataRenderer'
-import { EditionMetadataRenderer__factory } from '../constants/typechain'
 import type { ContractTransaction } from 'ethers'
-import { SubgraphERC721Drop } from 'models/subgraph'
 import React, {
   ReactNode,
   useCallback,
@@ -12,6 +15,9 @@ import React, {
 } from 'react'
 import { cleanDescription } from 'utils/edition'
 import { useSigner } from 'wagmi'
+
+import { SubgraphERC721Drop } from '@/models/subgraph'
+import { EditionMetadataRenderer__factory } from '@/constants/typechain'
 
 // import {EditionMetadataRenderer__factory} from '@zoralabs/nft-drop-contracts/dist/typechain/EditionMetadataRenderer'
 
@@ -24,16 +30,19 @@ interface MetadataDetails {
 export interface EditionMetadataProviderState {
   loading: boolean
   metadataDetails?: MetadataDetails
-  updateDescription: (description: string) => Promise<ContractTransaction | undefined>
+  updateDescription: (
+    description: string
+  ) => Promise<ContractTransaction | undefined>
   updateMediaURIs: (
     imageURI: string,
     animationURI: string
   ) => Promise<ContractTransaction | undefined>
 }
 
-export const EditionMetadataContext = React.createContext<EditionMetadataProviderState>(
-  {} as EditionMetadataProviderState
-)
+export const EditionMetadataContext =
+  React.createContext<EditionMetadataProviderState>(
+    {} as EditionMetadataProviderState
+  )
 
 function EditionMetadataContractProvider({
   collection,
@@ -52,7 +61,9 @@ function EditionMetadataContractProvider({
   const metadataRenderer = useMemo(
     () =>
       signer
-        ? new EditionMetadataRenderer__factory(signer).attach(metadataRendererAddress)
+        ? new EditionMetadataRenderer__factory(signer).attach(
+            metadataRendererAddress
+          )
         : null,
     [signer, metadataRendererAddress]
   )
@@ -111,8 +122,8 @@ function EditionMetadataContractProvider({
 
       setMetadataDetails({
         ...metadataDetails,
-        imageURI: imageURI,
-        animationURI: animationURI,
+        imageURI,
+        animationURI,
       } as MetadataDetails)
 
       return tx
@@ -136,4 +147,5 @@ function EditionMetadataContractProvider({
 
 export default EditionMetadataContractProvider
 
-export const useEditionMetadataContract = () => useContext(EditionMetadataContext)
+export const useEditionMetadataContract = () =>
+  useContext(EditionMetadataContext)

@@ -11,7 +11,7 @@ import {
 } from '@zoralabs/zdk/dist/queries/queries-sdk'
 import request, { gql } from 'graphql-request'
 
-import { NFTPreview } from '@/components/NFTPreview'
+import { NFTPreview } from '@/components/_app/nfts/NFTPreview'
 import { getAllSplits } from '@/lib/splitsSubgraph'
 import { getEverySplitDropMeta } from '@/lib/zoraSubgraph'
 import { getMetadataForEditions } from '@/lib/zoraAPI'

@@ -20,13 +20,14 @@ export const transformIPFSURL = (url: string) => {
       .replace(
         'ipfs://',
         `${
-          process.env.NEXT_PUBLIC_IPFS_GATEWAY ??
+          process.env?.NEXT_PUBLIC_IPFS_GATEWAY ??
           ('https://zora-prod.mypinata.cloud' as string)
         }/ipfs/`
       )
       .replace(/"/g, '') // Some test data contains wrapping strings
   }
   try {
+    // eslint-disable-next-line no-new
     new URL(url)
   } catch (e: any) {
     return '/assets/image/fallback.svg'

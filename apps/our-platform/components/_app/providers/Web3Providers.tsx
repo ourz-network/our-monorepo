@@ -6,22 +6,16 @@ import {
   RainbowKitProvider,
   lightTheme,
 } from '@rainbow-me/rainbowkit'
-import {
-  defaultChains,
-  configureChains,
-  createClient,
-  WagmiConfig,
-} from 'wagmi'
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 const { chains, provider } = configureChains(
+  [chain.mainnet],
   [
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    defaultChains.find(
-      (chain) => chain.id.toString() === process.env.NEXT_PUBLIC_CHAIN_ID
-    )!,
-  ],
-  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID })]
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ?? '' }),
+    publicProvider(),
+  ]
 )
 
 const { connectors } = getDefaultWallets({

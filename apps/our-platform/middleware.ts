@@ -59,18 +59,19 @@ export default function middleware(req: NextRequest) {
       url.pathname = `/_home${url.pathname}`
       return NextResponse.rewrite(new URL(`/_home${path}`, req.url))
 
-    case 'app.localhost:3000':
-      console.log(4)
+    case 'localhost:3000':
       if (!path || path === '/') {
+        console.log(4)
+        url.pathname = `/_app/1/drops${url.pathname}`
+        // console.log(url.pathname, { path }, req)
+        return NextResponse.rewrite(new URL(`/_app/1/drops${path}`, req.url))
+      } else {
         console.log(5)
-        url.pathname = `/_app/drops${url.pathname}`
+        url.pathname = `/_app/1${url.pathname}`
         return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
       }
-      console.log(6)
-      url.pathname = `/_app${url.pathname}`
-      return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
     default:
-      console.log(7)
+      console.log(6)
       // rewrite everything else to `/_sites/[site] dynamic route
       return NextResponse.rewrite(
         new URL(`/_gallery/${currentHost}${path}`, req.url)

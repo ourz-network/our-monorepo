@@ -1,12 +1,9 @@
 import request, { gql } from 'graphql-request'
 
-import {
-  getAllLiquidSplits,
-  getAllSplits,
-  getAllWaterfalls,
-  getEverySplit,
-} from './splitsSubgraph'
+import { getEverySplit } from './splitsSubgraph'
 import { getMetadataForEditions } from './zoraAPI'
+
+import { SubgraphERC721Drop } from '@/models/subgraph'
 
 const ZORA_SUBGRAPH =
   'https://api.thegraph.com/subgraphs/name/iainnash/zora-editions-mainnet'
@@ -54,6 +51,16 @@ const ERC721_DROP_FRAGMENT = gql`
   }
 `
 
+export const GET_COLLECTIONS_QUERY = gql`
+  query GetCollection($collectionAddresses: [String]!) {
+    erc721Drops(where: { address_in: $collectionAddresses }) {
+      ...ERC721Fields
+    }
+  }
+
+  ${ERC721_DROP_FRAGMENT}
+`
+
 export const GET_ZORA_DROPS_WITH_SPLITS_IDS = gql`
   query GetZoraDropsWithSplits($splitAddresses: [Bytes!]!) {
     contractConfigs(where: { fundsRecipient_in: $splitAddresses }) {
@@ -93,6 +100,16 @@ export const GET_ZORA_DROPS_WITH_SPLITS_FULL = gql`
   }
   ${ERC721_DROP_FRAGMENT}
 `
+
+export const getCollectionsMeta = async (
+  collectionAddresses: string[]
+): Promise<SubgraphERC721Drop[]> => {
+  const { erc721Drops } = await request(ZORA_SUBGRAPH, GET_COLLECTIONS_QUERY, {
+    collectionAddresses,
+  })
+
+  return erc721Drops
+}
 
 export const getAllZoraSplitDropIDs = async (splitAddresses: string[]) => {
   const { contractConfigs } = await request(
@@ -141,9 +158,12 @@ export const getAllZoraSplitDropsFull = async (splitAddresses: string[]) => {
     }
   )
 
-  const drops = contractConfigs.map((contractConfig: { drop: any }) => ({
-    ...contractConfig.drop,
-  }))
+  const drops = contractConfigs.map(
+    (contractConfig: { fundsRecipient: string; drop: any }) => ({
+      ...contractConfig.drop,
+      splitId: contractConfig.fundsRecipient,
+    })
+  )
 
   return drops
 }
