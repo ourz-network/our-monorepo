@@ -51,6 +51,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-no-useless-fragment': 'warn',
+    'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     'react/no-unknown-property': ['error', { ignore: ['css'] }],
     // Use function hoisting to improve code readability
@@ -65,7 +66,6 @@ module.exports = {
       { functions: false, classes: true, variables: true, typedefs: true },
     ],
     '@typescript-eslint/no-unused-vars': 'warn',
-    '@typescript-eslint/no-unnecessary-condition': 'warn',
   },
   overrides: [
     // use default exports in next's app dir

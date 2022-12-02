@@ -83,18 +83,18 @@ export const MediaLoader = ({
         >
           Error loading content
         </span>
-        {children}
+        {/* {children} */}
       </>
     )
   }
   return (
     <>
-      <span // TODO
-        className={`justify-center items-center w-full pointer-events-none min-h-fit${''}`} // @container full page??
+      {/* <span // TODO
+        className={`justify-center items-center w-full pointer-events-none min-h-fit ${''}`} // @container full page??
         // {...getStyles('mediaLoader')}
       >
         Loading...
-      </span>
+      </span> */}
       {children}
     </>
   )

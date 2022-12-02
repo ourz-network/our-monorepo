@@ -24,8 +24,8 @@ export default function RootLayout({
           __html: `
           try {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-              document.documentElement.setAttribute("style", "--hello-world: #666;")
-              document?.documentElement?.classList?.add('dark')
+              // document.documentElement.setAttribute("style", "--hello-world: #666;")
+              // document?.documentElement?.classList?.add('dark')
             } else {
               document?.documentElement?.classList?.remove('dark')
             }

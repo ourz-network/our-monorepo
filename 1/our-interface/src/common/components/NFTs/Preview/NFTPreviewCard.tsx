@@ -20,7 +20,8 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
           : `/nft/${post?.tokenId as string}`
       }
       passHref
-      legacyBehavior>
+      legacyBehavior
+    >
       <div className="relative bg-opacity-0 cursor-pointer h-preview w-preview max-w-preview">
         {post.mimeType.startsWith("video") && (
           <video muted autoPlay={false} controls playsInline>
@@ -34,8 +35,9 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
             fill
             sizes="100vw"
             style={{
-              objectFit: "cover"
-            }} />
+              objectFit: "cover",
+            }}
+          />
         )}
       </div>
     </Link>
@@ -53,7 +55,9 @@ const NFTPreviewCard = ({ post }: { post: NFTCard }): JSX.Element => {
       ) : (
         <div className="self-end text-xs italic text-dark-primary">
           by:{` `}
-          <Link href={`/profile/${post.creator}`} legacyBehavior>{toTrimmedAddress(post.creator)}</Link>
+          <Link href={`/profile/${post.creator}`} legacyBehavior>
+            {toTrimmedAddress(post.creator)}
+          </Link>
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { getGalleryOwnerAddress } from '@/lib/api/ens'
-import { HttpMethod } from '@/types'
+import { HttpMethod } from '@/lib/types'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 

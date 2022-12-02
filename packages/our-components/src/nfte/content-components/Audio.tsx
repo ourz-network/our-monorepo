@@ -176,7 +176,6 @@ export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
 
     return (
       <MediaLoader loading={loading} error={error}>
-        {/* @ts-expect-error idk */}
         <div ref={wrapper}>
           {!loading && (
             <>

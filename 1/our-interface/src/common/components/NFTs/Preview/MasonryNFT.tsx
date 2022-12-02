@@ -110,7 +110,8 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
               query: { tokenId },
             }}
             passHref
-            legacyBehavior>
+            legacyBehavior
+          >
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <video
@@ -149,7 +150,8 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
               query: { tokenId },
             }}
             passHref
-            legacyBehavior>
+            legacyBehavior
+          >
             <div className="object-cover relative w-full h-full bg-transparent">
               {post.contentURI && (
                 <Image
@@ -163,8 +165,9 @@ const MasonryNFT = ({ post }: { post: NFTCard }): JSX.Element => {
                   fill
                   sizes="100vw"
                   style={{
-                    objectFit: "contain"
-                  }} />
+                    objectFit: "contain",
+                  }}
+                />
               )}
             </div>
           </Link>

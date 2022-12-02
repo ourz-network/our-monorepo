@@ -23,7 +23,7 @@ export class FetchWithTimeout {
   }
 
   async fetch(url: string, options: any = {}) {
-    const {controller} = this;
+    const { controller } = this;
     const response = await fetch(url, {
       ...options,
       signal: this.controller.signal,

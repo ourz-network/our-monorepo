@@ -1,5 +1,5 @@
 import { NetworkIDs, NFTObject } from '../index';
-import { ZDKDataSource , ZDKOptions } from '../backends/zdk/ZDKDataSource';
+import { ZDKDataSource, ZDKOptions } from '../backends/zdk/ZDKDataSource';
 import { NFTQuery, NFTQueryResult } from '../types/NFTQuery';
 
 import { NFTStrategy } from './NFTStrategy';

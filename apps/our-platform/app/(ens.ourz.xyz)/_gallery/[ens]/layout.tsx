@@ -3,14 +3,14 @@ import '@/styles/_gallery/reset.css'
 import '@/styles/_gallery/globals.css'
 import '@/styles/_gallery/degene-sais-quoi.css'
 
-import EmotionRootStyleRegistry from './EmotionRootStyleRegistry'
-import ClientProviders from './ClientProviders'
-import { Box } from './degene-sais-quoi'
-import Footer from './Footer'
-import Header from './Nav'
-
-import { getGalleryConfig } from '@/lib/fetchers'
 import Script from 'next/script'
+
+import EmotionRootStyleRegistry from '@/components/_gallery/EmotionRootStyleRegistry'
+import ClientProviders from '@/components/_gallery/ClientProviders'
+import { Box } from '@/components/_gallery/degene-sais-quoi'
+import Footer from '@/components/_gallery/Footer'
+import Header from '@/components/_gallery/Nav'
+import { getGalleryConfig } from '@/lib/fetchers'
 
 export const revalidate = 10
 

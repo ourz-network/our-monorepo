@@ -7,24 +7,28 @@
     "apps/*"
   ],
   "scripts": {
-    "full-turbo": "pnpm build:app",
-    "build:app": "turbo run build:app --no-daemon",
-    "build": "turbo run build",
-    "dev": "turbo run dev",
     "dev:og": "turbo run dev --parallel --continue",
-    "start": "pnpm lint && pnpm build:app && turbo run start",
-    "clean": "turbo run clean",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,html,css}\"",
-    "lint": "turbo run lint && pnpm lint:language",
-    "lint:language": "alex .",
+    "dev": "turbo run dev",
+    "dev:ui": "turbo run dev:ui:css dev:ui:sb",
+    "build:ui": "turbo run build:ui",
+    "build:sb": "turbo run build:sb",
+    "build:app": "turbo run build:app",
+    "start": "turbo run start",
     "test": "turbo run test",
+    "lint": "turbo run lint --continue",
+    "lint:language": "alex .",
+    "full-turbo": "pnpm run lint && turbo run build:app",
+    "clean": "turbo run clean",
     "prepare": "husky install"
   },
   "devDependencies": {
     "alex": "latest",
+    "autoprefixer": "^10.4.13",
+    "concurrently": "^7.6.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.0.4",
     "prettier": "latest",
+    "tailwindcss": "^3.2.4",
     "turbo": "latest"
   },
   "dependencies": {

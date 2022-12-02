@@ -1,0 +1,178 @@
+nft {
+  "data": {
+    "rawData": {
+      "APIIndexer": {
+        "__typename": "Token",
+        "tokenId": "1",
+        "tokenContract": {
+          "name": "DOOM",
+          "network": "ETHEREUM",
+          "description": null,
+          "collectionAddress": "0x92d21dc7a37727ac8589160f4a896de65310d2f2",
+          "symbol": "DOOMGEN",
+          "chain": 1
+        },
+        "mintInfo": {
+          "price": {
+            "__typename": "PriceAtTime",
+            "blockNumber": 15992066,
+            "chainTokenPrice": {
+              "decimal": 0.12,
+              "raw": "120000000000000000"
+            },
+            "nativePrice": {
+              "decimal": 0.12,
+              "raw": "120000000000000000",
+              "currency": {
+                "address": "0x0000000000000000000000000000000000000000",
+                "decimals": 18,
+                "name": "ETH"
+              }
+            },
+            "usdcPrice": {
+              "decimal": 144.352895406971,
+              "raw": "144352895406970978304"
+            }
+          },
+          "originatorAddress": "0x10ec976c862a0e48c932fb53b5c542b5cbb13cf1",
+          "toAddress": "0x10ec976c862a0e48c932fb53b5c542b5cbb13cf1",
+          "mintContext": {
+            "__typename": "TransactionInfo",
+            "blockNumber": 15992066,
+            "blockTimestamp": "2022-11-17T20:15:59+00:00",
+            "transactionHash": "0x9a894b0d02a671e06e96bf5f5828e754323ae0eb301f394c0a760bc39d0a6597",
+            "logIndex": 310
+          }
+        },
+        "collectionAddress": "0x92d21dc7a37727ac8589160f4a896de65310d2f2",
+        "lastRefreshTime": "2022-11-17T20:22:26.173000+00:00",
+        "owner": "0x10ec976c862a0e48c932fb53b5c542b5cbb13cf1",
+        "name": "DOOM 1/3",
+        "description": "We are the youth of the doom generation.\nFeaturing Vanillatine. Original music by P3T3 Rango + CAS. Directed by LOSINGMYEGO.",
+        "image": {
+          "size": "5091102",
+          "url": "ipfs://bafybeibhhxcl5tzy3mv5xzmuxpanxhp5aq2gdkvrh6mdxeqzvdkw7h2yge",
+          "mimeType": "image/png",
+          "mediaEncoding": {
+            "__typename": "ImageEncodingTypes",
+            "original": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/original",
+            "large": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/large",
+            "poster": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/poster",
+            "thumbnail": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/thumbnail"
+          }
+        },
+        "content": {
+          "size": "433737266",
+          "url": "ipfs://bafybeihgcnmkz5haylhcxyv3uew75ypjgjdpxp2xqkfgaqobq4fjkptj6m",
+          "mimeType": "video/mp4",
+          "mediaEncoding": {
+            "__typename": "VideoEncodingTypes",
+            "original": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/original",
+            "large": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/large",
+            "poster": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/poster",
+            "preview": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/preview",
+            "thumbnail": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/thumbnail"
+          }
+        },
+        "metadata": {
+          "name": "DOOM 1/3",
+          "description": "We are the youth of the doom generation.\nFeaturing Vanillatine. Original music by P3T3 Rango + CAS. Directed by LOSINGMYEGO.",
+          "image": "ipfs://bafybeibhhxcl5tzy3mv5xzmuxpanxhp5aq2gdkvrh6mdxeqzvdkw7h2yge",
+          "animation_url": "ipfs://bafybeihgcnmkz5haylhcxyv3uew75ypjgjdpxp2xqkfgaqobq4fjkptj6m",
+          "properties": {
+            "number": 1,
+            "name": "DOOM"
+          }
+        },
+        "tokenUrl": "data:application/json;base64,eyJuYW1lIjogIkRPT00gMS8zIiwgImRlc2NyaXB0aW9uIjogIldlIGFyZSB0aGUgeW91dGggb2YgdGhlIGRvb20gZ2VuZXJhdGlvbi5cbkZlYXR1cmluZyBWYW5pbGxhdGluZS4gT3JpZ2luYWwgbXVzaWMgYnkgUDNUMyBSYW5nbyArIENBUy4gRGlyZWN0ZWQgYnkgTE9TSU5HTVlFR08uIiwgImltYWdlIjogImlwZnM6Ly9iYWZ5YmVpYmhoeGNsNXR6eTNtdjV4em11eHBhbnhocDVhcTJnZGt2cmg2bWR4ZXF6dmRrdzdoMnlnZSIsICJhbmltYXRpb25fdXJsIjogImlwZnM6Ly9iYWZ5YmVpaGdjbm1rejVoYXlsaGN4eXYzdWV3NzV5cGpnamRweHAyeHFrZmdhcW9icTRmamtwdGo2bSIsICJwcm9wZXJ0aWVzIjogeyJudW1iZXIiOiAxLCAibmFtZSI6ICJET09NIn19",
+        "tokenUrlMimeType": "video/mp4",
+        "attributes": [
+          {
+            "traitType": "name",
+            "value": "DOOM",
+            "displayType": null
+          }
+        ]
+      }
+    },
+    "nft": {
+      "tokenId": "1",
+      "tokenUrlMimeType": "video/mp4",
+      "contract": {
+        "address": "0x92d21dc7a37727ac8589160f4a896de65310d2f2",
+        "name": "DOOM",
+        "symbol": "DOOMGEN"
+      },
+      "minted": {
+        "address": "0x10ec976c862a0e48c932fb53b5c542b5cbb13cf1",
+        "at": {
+          "timestamp": "2022-11-17T20:15:59.000Z",
+          "blockNumber": 15992066,
+          "transactionHash": "0x9a894b0d02a671e06e96bf5f5828e754323ae0eb301f394c0a760bc39d0a6597"
+        }
+      },
+      "owner": {
+        "address": "0x10ec976c862a0e48c932fb53b5c542b5cbb13cf1"
+      },
+      "metadataURI": "data:application/json;base64,eyJuYW1lIjogIkRPT00gMS8zIiwgImRlc2NyaXB0aW9uIjogIldlIGFyZSB0aGUgeW91dGggb2YgdGhlIGRvb20gZ2VuZXJhdGlvbi5cbkZlYXR1cmluZyBWYW5pbGxhdGluZS4gT3JpZ2luYWwgbXVzaWMgYnkgUDNUMyBSYW5nbyArIENBUy4gRGlyZWN0ZWQgYnkgTE9TSU5HTVlFR08uIiwgImltYWdlIjogImlwZnM6Ly9iYWZ5YmVpYmhoeGNsNXR6eTNtdjV4em11eHBhbnhocDVhcTJnZGt2cmg2bWR4ZXF6dmRrdzdoMnlnZSIsICJhbmltYXRpb25fdXJsIjogImlwZnM6Ly9iYWZ5YmVpaGdjbm1rejVoYXlsaGN4eXYzdWV3NzV5cGpnamRweHAyeHFrZmdhcW9icTRmamtwdGo2bSIsICJwcm9wZXJ0aWVzIjogeyJudW1iZXIiOiAxLCAibmFtZSI6ICJET09NIn19",
+      "contentURI": "ipfs://bafybeihgcnmkz5haylhcxyv3uew75ypjgjdpxp2xqkfgaqobq4fjkptj6m"
+    },
+    "markets": [],
+    "metadata": {
+      "name": "DOOM 1/3",
+      "description": "We are the youth of the doom generation.\nFeaturing Vanillatine. Original music by P3T3 Rango + CAS. Directed by LOSINGMYEGO.",
+      "contentUri": "ipfs://bafybeihgcnmkz5haylhcxyv3uew75ypjgjdpxp2xqkfgaqobq4fjkptj6m",
+      "imageUri": "ipfs://bafybeibhhxcl5tzy3mv5xzmuxpanxhp5aq2gdkvrh6mdxeqzvdkw7h2yge",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "DOOM"
+        }
+      ],
+      "raw": {
+        "name": "DOOM 1/3",
+        "description": "We are the youth of the doom generation.\nFeaturing Vanillatine. Original music by P3T3 Rango + CAS. Directed by LOSINGMYEGO.",
+        "image": "ipfs://bafybeibhhxcl5tzy3mv5xzmuxpanxhp5aq2gdkvrh6mdxeqzvdkw7h2yge",
+        "animation_url": "ipfs://bafybeihgcnmkz5haylhcxyv3uew75ypjgjdpxp2xqkfgaqobq4fjkptj6m",
+        "properties": {
+          "number": 1,
+          "name": "DOOM"
+        }
+      }
+    },
+    "media": {
+      "source": "zora",
+      "mimeType": "image/png",
+      "thumbnail": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/thumbnail"
+      },
+      "large": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/large"
+      },
+      "poster": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/image/poster"
+      },
+      "image": {
+        "mime": "image/png",
+        "uri": "ipfs://bafybeibhhxcl5tzy3mv5xzmuxpanxhp5aq2gdkvrh6mdxeqzvdkw7h2yge"
+      }
+    },
+    "content": {
+      "source": "zora",
+      "mimeType": "video/mp4",
+      "original": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/original"
+      },
+      "large": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/large"
+      },
+      "poster": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/poster"
+      },
+      "thumbnail": {
+        "uri": "https://api.zora.co/media/ETHEREUM-MAINNET/0x92d21dc7a37727ac8589160f4a896de65310d2f2/1/content/thumbnail"
+      }
+    }
+  },
+  "currencyLoaded": false
+}

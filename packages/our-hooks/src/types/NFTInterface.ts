@@ -1,5 +1,5 @@
 // import { EventInfoFragment } from '@zoralabs/zdk/dist/queries/queries-sdk';
-import { NFTQuery, NFTQueryResult } from "./NFTQuery";
+import { NFTQuery, NFTQueryResult } from './NFTQuery';
 
 export enum KNOWN_CONTRACTS {
   ZORA = 'zora',

@@ -2,7 +2,10 @@ import { NetworkIDs } from '../constants/networks';
 import { NFTObject } from '../types/NFTInterface';
 import { NFTQuery, NFTQueryResult } from '../types/NFTQuery';
 
-interface FetchInfo { contract: string; id: string }
+interface FetchInfo {
+  contract: string;
+  id: string;
+}
 
 export abstract class NFTStrategy {
   public networkId: string;

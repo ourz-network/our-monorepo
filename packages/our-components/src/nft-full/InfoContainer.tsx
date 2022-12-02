@@ -21,7 +21,8 @@ export const InfoContainer = ({
   return (
     <div
       className={`border-[3px] border-solid border-[color:var(--colors-accent)] rounded relative pt-5 px-5 ${
-        bottomPadding ? 'pb-5' : ''}`}
+        bottomPadding ? 'pb-5' : ''
+      }`}
       // {...getStyles('infoContainer', className, { bottomPadding })}
     >
       <h4

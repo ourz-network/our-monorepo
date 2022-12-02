@@ -5,7 +5,7 @@ import { Global, css } from '@emotion/react'
 import { media } from './mixins'
 import { returnBreakpoint } from './breakpoints'
 
-import { GalleryConfig } from '@/types/_gallery'
+import { GalleryConfig } from '@/lib/types/_gallery'
 
 const GlobalStyles = ({
   galleryConfig,

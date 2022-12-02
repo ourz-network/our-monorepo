@@ -1,5 +1,5 @@
 import { getGalleryConfig, updateGalleryConfig } from '@/lib/api'
-import { HttpMethod } from '@/types'
+import { HttpMethod } from '@/lib/types'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 

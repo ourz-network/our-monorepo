@@ -3,7 +3,7 @@ import request, { gql } from 'graphql-request'
 import { getEverySplit } from './splitsSubgraph'
 import { getEditionMediaInfo, MediaInfo } from './zdk'
 
-import { SubgraphERC721Drop } from '@/models/subgraph'
+import { SubgraphERC721Drop } from '@/lib/models/subgraph'
 
 const ZORA_SUBGRAPH =
   'https://api.thegraph.com/subgraphs/name/iainnash/zora-editions-mainnet'

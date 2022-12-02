@@ -1,9 +1,9 @@
 import {
   DROPS_METADATA_RENDERER,
   EDITIONS_METADATA_RENDERER,
-} from '@/constants/addresses'
-import { useDropMetadataContract } from '@/components/_dapp/providers/DropMetadataProvider'
-import { useEditionMetadataContract } from '@/components/_dapp/providers/EditionMetadataProvider'
+} from '@/lib/constants/addresses'
+import { useDropMetadataContract } from '@/components/providers/DropMetadataProvider'
+import { useEditionMetadataContract } from '@/components/providers/EditionMetadataProvider'
 
 export const useCollectionMetadata = (metadataRendererAddress: string) => {
   const drop = useDropMetadataContract()

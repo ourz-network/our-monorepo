@@ -1,10 +1,9 @@
 import { ZDK } from '@zoralabs/zdk'
 
-import NFTList from './NFTList'
-
+import NFTList from '@/components/_gallery/NFTList'
 import { getAllGalleryConfigs, getGalleryConfig } from '@/lib/fetchers'
 import { getAddressFromENS } from '@/lib/ens'
-import { GalleryConfig } from '@/types/_gallery'
+import { GalleryConfig } from '@/lib/types/_gallery'
 
 export const revalidate = 10
 //   dynamic = 'error',

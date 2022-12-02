@@ -23,8 +23,7 @@ export function extractPrice(e: EventInfoFragment) {
   if (
     e.properties.__typename === 'V2AuctionEvent' &&
     (e.properties.properties.__typename === 'V2AuctionBidEventProperties' ||
-      e.properties.properties.__typename ===
-        'V2AuctionReservePriceUpdatedEventProperties' ||
+      e.properties.properties.__typename === 'V2AuctionReservePriceUpdatedEventProperties' ||
       e.properties.properties.__typename === 'V2AuctionCreatedEventProperties')
   ) {
     const p = e.properties.properties;

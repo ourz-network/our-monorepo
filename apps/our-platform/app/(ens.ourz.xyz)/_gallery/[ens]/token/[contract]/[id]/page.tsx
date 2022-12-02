@@ -1,6 +1,6 @@
 import { ZDK } from '@zoralabs/zdk'
 
-import FullPageNFT from '../../../FullPageNFT'
+import FullPageNFT from '@/components/_gallery/FullPageNFT'
 
 export default async function Page({
   params,

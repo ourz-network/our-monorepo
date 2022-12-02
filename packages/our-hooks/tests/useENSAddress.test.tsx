@@ -10,9 +10,7 @@ describe('useENSAddress', () => {
 
   it('loads an ens correctly on mainnet', async () => {
     const NetworkWrapper = ({ children }: any) => (
-      <OurFetchConfiguration networkId={Networks.MAINNET}>
-        {children}
-      </OurFetchConfiguration>
+      <OurFetchConfiguration networkId={Networks.MAINNET}>{children}</OurFetchConfiguration>
     );
     const { waitFor, result } = renderHook(
       () => useENSAddress('0x11CDfCb54576D5990219c426BF2c630115a2012a'),
@@ -26,9 +24,7 @@ describe('useENSAddress', () => {
 
   it('loads an ens batch correctly', async () => {
     const NetworkWrapper = ({ children }: any) => (
-      <OurFetchConfiguration networkId={Networks.MAINNET}>
-        {children}
-      </OurFetchConfiguration>
+      <OurFetchConfiguration networkId={Networks.MAINNET}>{children}</OurFetchConfiguration>
     );
 
     const { waitFor, result } = renderHook(

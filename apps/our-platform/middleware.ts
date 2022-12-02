@@ -63,14 +63,20 @@ export default function middleware(req: NextRequest) {
       if (!path || path === '/') {
         console.log(4)
         url.pathname = `/_dapp/1/drops${url.pathname}`
-        // console.log(url.pathname, { path }, req)
         return NextResponse.rewrite(new URL(`/_dapp/1/drops${path}`, req.url))
-      } else {
-        console.log(5)
-        url.pathname = `/_dapp/1${url.pathname}`
-        return NextResponse.rewrite(new URL(`/_dapp/1${path}`, req.url))
       }
+      console.log(5)
+      url.pathname = `/_dapp/1${url.pathname}`
+      return NextResponse.rewrite(new URL(`/_dapp/1${path}`, req.url))
+
     default:
+      // console.log(
+      //   url.pathname,
+      //   req.url,
+      //   { path },
+      //   'newUrl:',
+      //   new URL(`/_dapp/1/drops${path}`, req.url)
+      // )
       console.log(6)
       // rewrite everything else to `/_sites/[site] dynamic route
       return NextResponse.rewrite(

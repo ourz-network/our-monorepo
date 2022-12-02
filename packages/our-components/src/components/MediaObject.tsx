@@ -21,13 +21,25 @@ interface MetadataIsh {
 
 interface MediaObjectProps {
   contentURI?: string
+  contentMimeType?: string
+  previewURI?: string
+  previewMimeType?: string
+  fullSizeSources?: string[]
+  previewSources?: string[]
+  metadata?: any
+  contract?: any
+  tokenId?: any
   a11yIdPrefix?: string
-  metadata?: MetadataIsh
   isFullPage?: boolean
 }
 
 export const MediaObject = ({
   contentURI,
+  contentMimeType,
+  previewURI,
+  previewMimeType,
+  fullSizeSources,
+  previewSources,
   metadata,
   a11yIdPrefix,
   isFullPage = false,
@@ -35,26 +47,34 @@ export const MediaObject = ({
   const mediaType = useNFTContent(contentURI ?? metadata?.contentUri)
   const [renderingInfo, setRenderingInfo] = useState<RendererConfig>()
   const { getStyles, getString, renderers, style } = useMediaContext()
-
+  console.log({
+    contentURI,
+    contentMimeType,
+    previewURI,
+    previewMimeType,
+    fullSizeSources,
+    previewSources,
+  })
   const request: RenderRequest = {
     media: {
       // from zora content uri
-      content: contentURI
-        ? {
-            uri: contentURI,
-            // TODO(iain): Clean up for catalog.works
-            type:
-              metadata?.mimeType ??
-              (metadata as any)?.body?.mimeType ??
-              mediaType?.content?.mimeType,
-          }
-        : undefined,
-      image: metadata?.imageUri
-        ? {
-            uri: metadata?.imageUri,
-            type: 'image/',
-          }
-        : undefined,
+      content: {
+        uri: contentURI!,
+        sources: fullSizeSources,
+        // TODO(iain): Clean up for catalog.works
+        type:
+          contentMimeType ??
+          metadata?.mimeType ??
+          (metadata as any)?.body?.mimeType ??
+          mediaType?.content?.mimeType,
+      },
+      image: {
+        sources: previewSources,
+        uri: !contentMimeType?.startsWith('audio')
+          ? previewURI ?? contentURI!
+          : previewURI!,
+        type: previewMimeType,
+      },
       // from metadata?.animation_url
       animation: metadata?.contentUri
         ? {
@@ -70,7 +90,16 @@ export const MediaObject = ({
     renderingContext: isFullPage ? 'FULL' : 'PREVIEW',
   }
 
+  console.log('request', JSON.stringify(request, null, 2))
   useEffect(() => {
+    console.log(
+      renderers.map((renderer) => {
+        return {
+          mimeType: renderer.render.toString(),
+          priority: renderer.getRenderingPreference(request),
+        }
+      })
+    )
     const sortedRenderers = renderers.sort((a, b) =>
       a.getRenderingPreference(request) > b.getRenderingPreference(request)
         ? -1
@@ -83,15 +112,13 @@ export const MediaObject = ({
   if (renderingInfo) {
     const RenderingComponent = renderingInfo.render
     return (
-      <>
-        <RenderingComponent
+      <RenderingComponent
           a11yIdPrefix={a11yIdPrefix}
           getStyles={getStyles}
           getString={getString}
           theme={style.theme}
           request={request}
         />
-      </>
     )
   }
 

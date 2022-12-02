@@ -14,12 +14,14 @@ export enum RenderingPreference {
 export interface MediaUriType {
   uri: string
   type?: string
+  sources?: string[]
 }
 
 export interface RenderRequest {
   media: {
     // from zora content uri
     content?: MediaUriType
+
     image?: MediaUriType
     // from metadata?.animation_url
     animation?: MediaUriType

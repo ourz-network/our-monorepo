@@ -40,7 +40,7 @@ export const MediaFull = ({
           a11yIdPrefix={a11yIdPrefix}
           contentURI={data.animationUrl ?? data.imageUrl}
           metadata={metadata}
-          // {...getContentData(data)}
+          {...getContentData(data)}
         />
       )
     }

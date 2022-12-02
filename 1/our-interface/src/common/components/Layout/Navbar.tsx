@@ -74,7 +74,6 @@ const Navbar = (): JSX.Element => {
                     />
                   </div> */}
                   <Link href="/" passHref className="px-2">
-
                     <p className="text-2xl lg:font-semibold tracking-2-wide font-hero text-dark-primary hover:text-ourange-500">
                       {/* "text-2xl font-bold leading-3 tracking-widest uppercase" */}
                       OURZ
@@ -84,7 +83,6 @@ const Navbar = (): JSX.Element => {
                       src=""
                       alt="OURZ-V2"
                     /> */}
-
                   </Link>
                   <a
                     href="#"

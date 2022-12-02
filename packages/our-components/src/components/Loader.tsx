@@ -1,1 +1,1 @@
-export const Loader = () => <div />;
+export const Loader = () => <div />

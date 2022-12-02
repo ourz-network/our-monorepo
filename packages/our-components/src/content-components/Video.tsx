@@ -187,9 +187,13 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
 export const Video: RendererConfig = {
   getRenderingPreference: (request: RenderRequest) => {
     if (request.media.animation?.type?.startsWith('video/')) {
+      if (request.renderingContext !== 'FULL')
+        return RenderingPreference.FALLBACK
       return RenderingPreference.PRIORITY
     }
     if (request.media.content?.type?.startsWith('video/')) {
+      if (request.renderingContext !== 'FULL')
+        return RenderingPreference.FALLBACK
       return RenderingPreference.PRIORITY
     }
     return RenderingPreference.INVALID

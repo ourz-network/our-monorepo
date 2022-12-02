@@ -31,8 +31,9 @@ const ProfileHeader = ({
             className="rounded-full"
             style={{
               maxWidth: "100%",
-              height: "auto"
-            }} />
+              height: "auto",
+            }}
+          />
         </a>
       </div>
       <p className="text-xs text-dark-primary">

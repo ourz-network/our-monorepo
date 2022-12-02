@@ -7,10 +7,10 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        "hero": ["'Playfair Display'", "serif"],
+        hero: ["'Playfair Display'", "serif"],
       },
       letterSpacing: {
-        '2-wide': '0.2em'
+        "2-wide": "0.2em",
       },
       backgroundImage: (theme) => ({
         zorb: "url('./ourZorb.png')",
@@ -38,7 +38,7 @@ module.exports = {
         "12ch": "12ch",
         "500px": "500px",
         "800px": "800px",
-        'sidebar': '400px',
+        sidebar: "400px",
         preview: "330px",
       },
       maxHeight: {
@@ -63,7 +63,7 @@ module.exports = {
         xxs: "10rem",
         preview: "330px",
         nfte: "490px",
-        'sidebar': '248px'
+        sidebar: "248px",
       },
       minHeight: {
         "1/4": "25%",
@@ -121,6 +121,6 @@ module.exports = {
   variants: {
     extend: {},
   },
-  
+
   plugins: [require("@tailwindcss/forms")],
 };

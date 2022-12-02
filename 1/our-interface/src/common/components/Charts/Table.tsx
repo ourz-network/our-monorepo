@@ -31,7 +31,9 @@ const Table = ({ recipients }: { recipients: Recipient[] }): JSX.Element => (
               </td>
               <td className="text-center border text-dark-primary border-dark-border">
                 <p className="cursor-pointer hover:underline">
-                  <Link href={`/profile/${split.user.id}`} legacyBehavior>{split.name}</Link>
+                  <Link href={`/profile/${split.user.id}`} legacyBehavior>
+                    {split.name}
+                  </Link>
                 </p>
 
                 {/* <p className="text-xs italic cursor-pointer hover:underline">

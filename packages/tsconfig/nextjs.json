@@ -17,15 +17,10 @@
     "jsx": "react-jsx",
     "paths": {
       "@/components/*": ["components/*"],
-      "@/constants/*": ["constants/*"],
       "@/hooks/*": ["hooks/*"],
       "@/lib/*": ["lib/*"],
-      "@/models/*": ["models/*"],
       "@/public/*": ["public/*"],
-      "@/styles/*": ["styles/*"],
-      "@/types/*": ["types/*"],
-      "@/types": ["types/index"],
-      "@/utils/*": ["utils/*"]
+      "@/styles/*": ["styles/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

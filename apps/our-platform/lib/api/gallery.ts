@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getAddressFromENS } from '../ens'
 import clientPromise from '../mongodb'
 
-import { GalleryConfig } from '@/types'
+import { GalleryConfig } from '@/lib/types'
 
 const getCollection = async () => {
   const client = await clientPromise

@@ -101,12 +101,12 @@ export enum Erc20Transfer_OrderBy {
   Contract = 'contract',
   Id = 'id',
   Split = 'split',
-  TransactionHash = 'transactionHash'
+  TransactionHash = 'transactionHash',
 }
 
 export enum OrderDirection {
   Asc = 'asc',
-  Desc = 'desc'
+  Desc = 'desc',
 }
 
 export interface Query {
@@ -127,18 +127,15 @@ export interface Query {
   users: User[];
 }
 
-
 export interface Query_MetaArgs {
   block?: InputMaybe<Block_Height>;
 }
-
 
 export interface QueryErc20TransferArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface QueryErc20TransfersArgs {
   block?: InputMaybe<Block_Height>;
@@ -150,13 +147,11 @@ export interface QueryErc20TransfersArgs {
   where?: InputMaybe<Erc20Transfer_Filter>;
 }
 
-
 export interface QueryRecipientArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface QueryRecipientsArgs {
   block?: InputMaybe<Block_Height>;
@@ -168,20 +163,17 @@ export interface QueryRecipientsArgs {
   where?: InputMaybe<Recipient_Filter>;
 }
 
-
 export interface QuerySplitArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
 
-
 export interface QuerySplitEditionArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface QuerySplitEditionsArgs {
   block?: InputMaybe<Block_Height>;
@@ -193,13 +185,11 @@ export interface QuerySplitEditionsArgs {
   where?: InputMaybe<SplitEdition_Filter>;
 }
 
-
 export interface QuerySplitZnftArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface QuerySplitZnfTsArgs {
   block?: InputMaybe<Block_Height>;
@@ -211,7 +201,6 @@ export interface QuerySplitZnfTsArgs {
   where?: InputMaybe<SplitZnft_Filter>;
 }
 
-
 export interface QuerySplitsArgs {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
@@ -222,13 +211,11 @@ export interface QuerySplitsArgs {
   where?: InputMaybe<Split_Filter>;
 }
 
-
 export interface QueryUserArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface QueryUsersArgs {
   block?: InputMaybe<Block_Height>;
@@ -382,7 +369,7 @@ export enum Recipient_OrderBy {
   Role = 'role',
   Shares = 'shares',
   Split = 'split',
-  User = 'user'
+  User = 'user',
 }
 
 export interface Split {
@@ -415,7 +402,6 @@ export interface Split {
   transactionHash: Scalars['String'];
 }
 
-
 export interface SplitErc20TransfersArgs {
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Erc20Transfer_OrderBy>;
@@ -423,7 +409,6 @@ export interface SplitErc20TransfersArgs {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<Erc20Transfer_Filter>;
 }
-
 
 export interface SplitCreationsArgs {
   first?: InputMaybe<Scalars['Int']>;
@@ -433,7 +418,6 @@ export interface SplitCreationsArgs {
   where?: InputMaybe<SplitZnft_Filter>;
 }
 
-
 export interface SplitEditionsArgs {
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<SplitEdition_OrderBy>;
@@ -442,7 +426,6 @@ export interface SplitEditionsArgs {
   where?: InputMaybe<SplitEdition_Filter>;
 }
 
-
 export interface SplitOwnersArgs {
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<User_OrderBy>;
@@ -450,7 +433,6 @@ export interface SplitOwnersArgs {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<User_Filter>;
 }
-
 
 export interface SplitRecipientsArgs {
   first?: InputMaybe<Scalars['Int']>;
@@ -602,7 +584,7 @@ export enum SplitEdition_OrderBy {
   ImageUrl = 'imageUrl',
   Name = 'name',
   RoyaltyBps = 'royaltyBPS',
-  Symbol = 'symbol'
+  Symbol = 'symbol',
 }
 
 export interface SplitZnft {
@@ -657,7 +639,7 @@ export interface SplitZnft_Filter {
 export enum SplitZnft_OrderBy {
   Creator = 'creator',
   Id = 'id',
-  TransactionHash = 'transactionHash'
+  TransactionHash = 'transactionHash',
 }
 
 export interface Split_Filter {
@@ -762,7 +744,7 @@ export enum Split_OrderBy {
   Nickname = 'nickname',
   Owners = 'owners',
   Recipients = 'recipients',
-  TransactionHash = 'transactionHash'
+  TransactionHash = 'transactionHash',
 }
 
 export interface Subscription {
@@ -783,18 +765,15 @@ export interface Subscription {
   users: User[];
 }
 
-
 export interface Subscription_MetaArgs {
   block?: InputMaybe<Block_Height>;
 }
-
 
 export interface SubscriptionErc20TransferArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface SubscriptionErc20TransfersArgs {
   block?: InputMaybe<Block_Height>;
@@ -806,13 +785,11 @@ export interface SubscriptionErc20TransfersArgs {
   where?: InputMaybe<Erc20Transfer_Filter>;
 }
 
-
 export interface SubscriptionRecipientArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface SubscriptionRecipientsArgs {
   block?: InputMaybe<Block_Height>;
@@ -824,20 +801,17 @@ export interface SubscriptionRecipientsArgs {
   where?: InputMaybe<Recipient_Filter>;
 }
 
-
 export interface SubscriptionSplitArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
 
-
 export interface SubscriptionSplitEditionArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface SubscriptionSplitEditionsArgs {
   block?: InputMaybe<Block_Height>;
@@ -849,13 +823,11 @@ export interface SubscriptionSplitEditionsArgs {
   where?: InputMaybe<SplitEdition_Filter>;
 }
 
-
 export interface SubscriptionSplitZnftArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface SubscriptionSplitZnfTsArgs {
   block?: InputMaybe<Block_Height>;
@@ -867,7 +839,6 @@ export interface SubscriptionSplitZnfTsArgs {
   where?: InputMaybe<SplitZnft_Filter>;
 }
 
-
 export interface SubscriptionSplitsArgs {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
@@ -878,13 +849,11 @@ export interface SubscriptionSplitsArgs {
   where?: InputMaybe<Split_Filter>;
 }
 
-
 export interface SubscriptionUserArgs {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
 }
-
 
 export interface SubscriptionUsersArgs {
   block?: InputMaybe<Block_Height>;
@@ -910,7 +879,6 @@ export interface User {
   recipientInfo: Recipient[];
 }
 
-
 export interface UserCreatedSplitsArgs {
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Split_OrderBy>;
@@ -919,7 +887,6 @@ export interface UserCreatedSplitsArgs {
   where?: InputMaybe<Split_Filter>;
 }
 
-
 export interface UserOwnedSplitsArgs {
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Split_OrderBy>;
@@ -927,7 +894,6 @@ export interface UserOwnedSplitsArgs {
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<Split_Filter>;
 }
-
 
 export interface UserRecipientInfoArgs {
   first?: InputMaybe<Scalars['Int']>;
@@ -961,7 +927,7 @@ export enum User_OrderBy {
   CreatedSplits = 'createdSplits',
   Id = 'id',
   OwnedSplits = 'ownedSplits',
-  RecipientInfo = 'recipientInfo'
+  RecipientInfo = 'recipientInfo',
 }
 
 export interface _Block_ {
@@ -992,50 +958,399 @@ export enum _SubgraphErrorPolicy_ {
   /** Data will be returned even if the subgraph has indexing errors */
   Allow = 'allow',
   /** If the subgraph has indexing errors, data will be omitted. The default. */
-  Deny = 'deny'
+  Deny = 'deny',
 }
 
-export interface ZnftShortFragment { __typename?: 'SplitZNFT', id: string, creator: { __typename?: 'Split', id: string } }
+export interface ZnftShortFragment {
+  __typename?: 'SplitZNFT';
+  id: string;
+  creator: { __typename?: 'Split'; id: string };
+}
 
-export interface ZnftDetailsFragment { __typename?: 'SplitZNFT', id: string, transactionHash: string, creator: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] } }
+export interface ZnftDetailsFragment {
+  __typename?: 'SplitZNFT';
+  id: string;
+  transactionHash: string;
+  creator: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    owners: { __typename?: 'User'; id: string }[];
+    creator: { __typename?: 'User'; id: string };
+    recipients: { __typename?: 'Recipient'; id: string }[];
+    creations: { __typename?: 'SplitZNFT'; id: string }[];
+    editions: { __typename?: 'SplitEdition'; id: string }[];
+  };
+}
 
-export interface EditionShortFragment { __typename?: 'SplitEdition', id: string, name: string, symbol: string, description: string, imageUrl: string, animationUrl: string, editionSize: any, creator: { __typename?: 'Split', id: string } }
+export interface EditionShortFragment {
+  __typename?: 'SplitEdition';
+  id: string;
+  name: string;
+  symbol: string;
+  description: string;
+  imageUrl: string;
+  animationUrl: string;
+  editionSize: any;
+  creator: { __typename?: 'Split'; id: string };
+}
 
-export interface EditionDetailsFragment { __typename?: 'SplitEdition', id: string, name: string, symbol: string, description: string, imageUrl: string, animationUrl: string, editionSize: any, royaltyBPS: any, creator: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] } }
+export interface EditionDetailsFragment {
+  __typename?: 'SplitEdition';
+  id: string;
+  name: string;
+  symbol: string;
+  description: string;
+  imageUrl: string;
+  animationUrl: string;
+  editionSize: any;
+  royaltyBPS: any;
+  creator: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    owners: { __typename?: 'User'; id: string }[];
+    creator: { __typename?: 'User'; id: string };
+    recipients: { __typename?: 'Recipient'; id: string }[];
+    creations: { __typename?: 'SplitZNFT'; id: string }[];
+    editions: { __typename?: 'SplitEdition'; id: string }[];
+  };
+}
 
-export interface TransferShortFragment { __typename?: 'ERC20Transfer', id: string, contract: string, amount: any }
+export interface TransferShortFragment {
+  __typename?: 'ERC20Transfer';
+  id: string;
+  contract: string;
+  amount: any;
+}
 
-export interface TransferDetailsFragment { __typename?: 'ERC20Transfer', id: string, transactionHash: string, contract: string, amount: any, split: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] } }
+export interface TransferDetailsFragment {
+  __typename?: 'ERC20Transfer';
+  id: string;
+  transactionHash: string;
+  contract: string;
+  amount: any;
+  split: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    owners: { __typename?: 'User'; id: string }[];
+    creator: { __typename?: 'User'; id: string };
+    recipients: { __typename?: 'Recipient'; id: string }[];
+    creations: { __typename?: 'SplitZNFT'; id: string }[];
+    editions: { __typename?: 'SplitEdition'; id: string }[];
+  };
+}
 
-export interface UserShortFragment { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string }[], ownedSplits: { __typename?: 'Split', id: string }[], recipientInfo: { __typename?: 'Recipient', id: string }[] }
+export interface UserShortFragment {
+  __typename?: 'User';
+  id: string;
+  claimedETH: any;
+  createdSplits: { __typename?: 'Split'; id: string }[];
+  ownedSplits: { __typename?: 'Split'; id: string }[];
+  recipientInfo: { __typename?: 'Recipient'; id: string }[];
+}
 
-export interface UserDetailsFragment { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] }[], ownedSplits: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] }[], recipientInfo: { __typename?: 'Recipient', id: string, name: string, role: string, shares: string, allocation: string, claimableETH: any, claimedETH: any, user: { __typename?: 'User', id: string }, split: { __typename?: 'Split', id: string } }[] }
+export interface UserDetailsFragment {
+  __typename?: 'User';
+  id: string;
+  claimedETH: any;
+  createdSplits: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    owners: { __typename?: 'User'; id: string }[];
+    creator: { __typename?: 'User'; id: string };
+    recipients: { __typename?: 'Recipient'; id: string }[];
+    creations: { __typename?: 'SplitZNFT'; id: string }[];
+    editions: { __typename?: 'SplitEdition'; id: string }[];
+  }[];
+  ownedSplits: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    owners: { __typename?: 'User'; id: string }[];
+    creator: { __typename?: 'User'; id: string };
+    recipients: { __typename?: 'Recipient'; id: string }[];
+    creations: { __typename?: 'SplitZNFT'; id: string }[];
+    editions: { __typename?: 'SplitEdition'; id: string }[];
+  }[];
+  recipientInfo: {
+    __typename?: 'Recipient';
+    id: string;
+    name: string;
+    role: string;
+    shares: string;
+    allocation: string;
+    claimableETH: any;
+    claimedETH: any;
+    user: { __typename?: 'User'; id: string };
+    split: { __typename?: 'Split'; id: string };
+  }[];
+}
 
-export interface RecipientShortFragment { __typename?: 'Recipient', id: string, name: string, role: string, shares: string, allocation: string, claimableETH: any, claimedETH: any, user: { __typename?: 'User', id: string }, split: { __typename?: 'Split', id: string } }
+export interface RecipientShortFragment {
+  __typename?: 'Recipient';
+  id: string;
+  name: string;
+  role: string;
+  shares: string;
+  allocation: string;
+  claimableETH: any;
+  claimedETH: any;
+  user: { __typename?: 'User'; id: string };
+  split: { __typename?: 'Split'; id: string };
+}
 
-export interface RecipientDetailsFragment { __typename?: 'Recipient', id: string, name: string, role: string, shares: string, allocation: string, claimableETH: any, claimedETH: any, user: { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string }[], ownedSplits: { __typename?: 'Split', id: string }[], recipientInfo: { __typename?: 'Recipient', id: string }[] }, split: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] } }
+export interface RecipientDetailsFragment {
+  __typename?: 'Recipient';
+  id: string;
+  name: string;
+  role: string;
+  shares: string;
+  allocation: string;
+  claimableETH: any;
+  claimedETH: any;
+  user: {
+    __typename?: 'User';
+    id: string;
+    claimedETH: any;
+    createdSplits: { __typename?: 'Split'; id: string }[];
+    ownedSplits: { __typename?: 'Split'; id: string }[];
+    recipientInfo: { __typename?: 'Recipient'; id: string }[];
+  };
+  split: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    owners: { __typename?: 'User'; id: string }[];
+    creator: { __typename?: 'User'; id: string };
+    recipients: { __typename?: 'Recipient'; id: string }[];
+    creations: { __typename?: 'SplitZNFT'; id: string }[];
+    editions: { __typename?: 'SplitEdition'; id: string }[];
+  };
+}
 
-export interface SplitShortFragment { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] }
+export interface SplitShortFragment {
+  __typename?: 'Split';
+  id: string;
+  nickname: string;
+  ETH: any;
+  needsIncremented: boolean;
+  owners: { __typename?: 'User'; id: string }[];
+  creator: { __typename?: 'User'; id: string };
+  recipients: { __typename?: 'Recipient'; id: string }[];
+  creations: { __typename?: 'SplitZNFT'; id: string }[];
+  editions: { __typename?: 'SplitEdition'; id: string }[];
+}
 
-export interface SplitDetailsFragment { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, transactionHash: string, createdAtTimestamp: any, createdAtBlockNumber: any, owners: { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string }[], ownedSplits: { __typename?: 'Split', id: string }[], recipientInfo: { __typename?: 'Recipient', id: string }[] }[], creator: { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string }[], ownedSplits: { __typename?: 'Split', id: string }[], recipientInfo: { __typename?: 'Recipient', id: string }[] }, recipients: { __typename?: 'Recipient', id: string, name: string, role: string, shares: string, allocation: string, claimableETH: any, claimedETH: any, user: { __typename?: 'User', id: string }, split: { __typename?: 'Split', id: string } }[], creations: { __typename?: 'SplitZNFT', id: string, creator: { __typename?: 'Split', id: string } }[], editions: { __typename?: 'SplitEdition', id: string, name: string, symbol: string, description: string, imageUrl: string, animationUrl: string, editionSize: any, creator: { __typename?: 'Split', id: string } }[], ERC20Transfers: { __typename?: 'ERC20Transfer', id: string, contract: string, amount: any }[] }
+export interface SplitDetailsFragment {
+  __typename?: 'Split';
+  id: string;
+  nickname: string;
+  ETH: any;
+  needsIncremented: boolean;
+  transactionHash: string;
+  createdAtTimestamp: any;
+  createdAtBlockNumber: any;
+  owners: {
+    __typename?: 'User';
+    id: string;
+    claimedETH: any;
+    createdSplits: { __typename?: 'Split'; id: string }[];
+    ownedSplits: { __typename?: 'Split'; id: string }[];
+    recipientInfo: { __typename?: 'Recipient'; id: string }[];
+  }[];
+  creator: {
+    __typename?: 'User';
+    id: string;
+    claimedETH: any;
+    createdSplits: { __typename?: 'Split'; id: string }[];
+    ownedSplits: { __typename?: 'Split'; id: string }[];
+    recipientInfo: { __typename?: 'Recipient'; id: string }[];
+  };
+  recipients: {
+    __typename?: 'Recipient';
+    id: string;
+    name: string;
+    role: string;
+    shares: string;
+    allocation: string;
+    claimableETH: any;
+    claimedETH: any;
+    user: { __typename?: 'User'; id: string };
+    split: { __typename?: 'Split'; id: string };
+  }[];
+  creations: {
+    __typename?: 'SplitZNFT';
+    id: string;
+    creator: { __typename?: 'Split'; id: string };
+  }[];
+  editions: {
+    __typename?: 'SplitEdition';
+    id: string;
+    name: string;
+    symbol: string;
+    description: string;
+    imageUrl: string;
+    animationUrl: string;
+    editionSize: any;
+    creator: { __typename?: 'Split'; id: string };
+  }[];
+  ERC20Transfers: { __typename?: 'ERC20Transfer'; id: string; contract: string; amount: any }[];
+}
 
 export type GetSplitsByAddressesQueryVariables = Exact<{
   addresses?: InputMaybe<Scalars['ID'][] | Scalars['ID']>;
 }>;
 
-
-export interface GetSplitsByAddressesQuery { __typename?: 'Query', splits: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, transactionHash: string, createdAtTimestamp: any, createdAtBlockNumber: any, owners: { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string }[], ownedSplits: { __typename?: 'Split', id: string }[], recipientInfo: { __typename?: 'Recipient', id: string }[] }[], creator: { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string }[], ownedSplits: { __typename?: 'Split', id: string }[], recipientInfo: { __typename?: 'Recipient', id: string }[] }, recipients: { __typename?: 'Recipient', id: string, name: string, role: string, shares: string, allocation: string, claimableETH: any, claimedETH: any, user: { __typename?: 'User', id: string }, split: { __typename?: 'Split', id: string } }[], creations: { __typename?: 'SplitZNFT', id: string, creator: { __typename?: 'Split', id: string } }[], editions: { __typename?: 'SplitEdition', id: string, name: string, symbol: string, description: string, imageUrl: string, animationUrl: string, editionSize: any, creator: { __typename?: 'Split', id: string } }[], ERC20Transfers: { __typename?: 'ERC20Transfer', id: string, contract: string, amount: any }[] }[] }
+export interface GetSplitsByAddressesQuery {
+  __typename?: 'Query';
+  splits: {
+    __typename?: 'Split';
+    id: string;
+    nickname: string;
+    ETH: any;
+    needsIncremented: boolean;
+    transactionHash: string;
+    createdAtTimestamp: any;
+    createdAtBlockNumber: any;
+    owners: {
+      __typename?: 'User';
+      id: string;
+      claimedETH: any;
+      createdSplits: { __typename?: 'Split'; id: string }[];
+      ownedSplits: { __typename?: 'Split'; id: string }[];
+      recipientInfo: { __typename?: 'Recipient'; id: string }[];
+    }[];
+    creator: {
+      __typename?: 'User';
+      id: string;
+      claimedETH: any;
+      createdSplits: { __typename?: 'Split'; id: string }[];
+      ownedSplits: { __typename?: 'Split'; id: string }[];
+      recipientInfo: { __typename?: 'Recipient'; id: string }[];
+    };
+    recipients: {
+      __typename?: 'Recipient';
+      id: string;
+      name: string;
+      role: string;
+      shares: string;
+      allocation: string;
+      claimableETH: any;
+      claimedETH: any;
+      user: { __typename?: 'User'; id: string };
+      split: { __typename?: 'Split'; id: string };
+    }[];
+    creations: {
+      __typename?: 'SplitZNFT';
+      id: string;
+      creator: { __typename?: 'Split'; id: string };
+    }[];
+    editions: {
+      __typename?: 'SplitEdition';
+      id: string;
+      name: string;
+      symbol: string;
+      description: string;
+      imageUrl: string;
+      animationUrl: string;
+      editionSize: any;
+      creator: { __typename?: 'Split'; id: string };
+    }[];
+    ERC20Transfers: { __typename?: 'ERC20Transfer'; id: string; contract: string; amount: any }[];
+  }[];
+}
 
 export type GetSplitsByUsersQueryVariables = Exact<{
   addresses?: InputMaybe<Scalars['ID'][] | Scalars['ID']>;
 }>;
 
-
-export interface GetSplitsByUsersQuery { __typename?: 'Query', users: { __typename?: 'User', id: string, claimedETH: any, createdSplits: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] }[], ownedSplits: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] }[], recipientInfo: { __typename?: 'Recipient', id: string, name: string, role: string, shares: string, allocation: string, claimableETH: any, claimedETH: any, user: { __typename?: 'User', id: string }, split: { __typename?: 'Split', id: string } }[] }[] }
+export interface GetSplitsByUsersQuery {
+  __typename?: 'Query';
+  users: {
+    __typename?: 'User';
+    id: string;
+    claimedETH: any;
+    createdSplits: {
+      __typename?: 'Split';
+      id: string;
+      nickname: string;
+      ETH: any;
+      needsIncremented: boolean;
+      owners: { __typename?: 'User'; id: string }[];
+      creator: { __typename?: 'User'; id: string };
+      recipients: { __typename?: 'Recipient'; id: string }[];
+      creations: { __typename?: 'SplitZNFT'; id: string }[];
+      editions: { __typename?: 'SplitEdition'; id: string }[];
+    }[];
+    ownedSplits: {
+      __typename?: 'Split';
+      id: string;
+      nickname: string;
+      ETH: any;
+      needsIncremented: boolean;
+      owners: { __typename?: 'User'; id: string }[];
+      creator: { __typename?: 'User'; id: string };
+      recipients: { __typename?: 'Recipient'; id: string }[];
+      creations: { __typename?: 'SplitZNFT'; id: string }[];
+      editions: { __typename?: 'SplitEdition'; id: string }[];
+    }[];
+    recipientInfo: {
+      __typename?: 'Recipient';
+      id: string;
+      name: string;
+      role: string;
+      shares: string;
+      allocation: string;
+      claimableETH: any;
+      claimedETH: any;
+      user: { __typename?: 'User'; id: string };
+      split: { __typename?: 'Split'; id: string };
+    }[];
+  }[];
+}
 
 export type GetEditionsByAddressesQueryVariables = Exact<{
   addresses?: InputMaybe<Scalars['ID'][] | Scalars['ID']>;
 }>;
 
-
-export interface GetEditionsByAddressesQuery { __typename?: 'Query', splitEditions: { __typename?: 'SplitEdition', id: string, name: string, symbol: string, description: string, imageUrl: string, animationUrl: string, editionSize: any, royaltyBPS: any, creator: { __typename?: 'Split', id: string, nickname: string, ETH: any, needsIncremented: boolean, owners: { __typename?: 'User', id: string }[], creator: { __typename?: 'User', id: string }, recipients: { __typename?: 'Recipient', id: string }[], creations: { __typename?: 'SplitZNFT', id: string }[], editions: { __typename?: 'SplitEdition', id: string }[] } }[] }
+export interface GetEditionsByAddressesQuery {
+  __typename?: 'Query';
+  splitEditions: {
+    __typename?: 'SplitEdition';
+    id: string;
+    name: string;
+    symbol: string;
+    description: string;
+    imageUrl: string;
+    animationUrl: string;
+    editionSize: any;
+    royaltyBPS: any;
+    creator: {
+      __typename?: 'Split';
+      id: string;
+      nickname: string;
+      ETH: any;
+      needsIncremented: boolean;
+      owners: { __typename?: 'User'; id: string }[];
+      creator: { __typename?: 'User'; id: string };
+      recipients: { __typename?: 'Recipient'; id: string }[];
+      creations: { __typename?: 'SplitZNFT'; id: string }[];
+      editions: { __typename?: 'SplitEdition'; id: string }[];
+    };
+  }[];
+}

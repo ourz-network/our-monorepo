@@ -5,7 +5,7 @@
 // import { BigNumber } from 'ethers'
 import { getAddress } from '@ethersproject/address'
 
-import { imageHost, imageHostAppend } from '@/lib/constants'
+import { imageHost, imageHostAppend } from './constants/constants'
 
 export const ipfsImage = (url) =>
   url && url.indexOf('ipfs://') > -1

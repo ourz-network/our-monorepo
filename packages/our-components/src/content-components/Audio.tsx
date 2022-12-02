@@ -127,7 +127,10 @@ const FakeWaveformCanvas = ({
 
 export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
   ({ request, getStyles, a11yIdPrefix, theme }, ref) => {
-    const uri = request.media.content?.uri ?? request.media.animation?.uri
+    const [sources, setSources] = useState([
+      ...(request?.media?.content?.sources ?? []),
+    ])
+    const uri = sources[0] // request.media.content?.uri ?? request.media.animation?.uri
     const { props, loading, error } = useMediaObjectProps({
       uri,
       request,
@@ -174,7 +177,6 @@ export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
     return (
       <MediaLoader getStyles={getStyles} loading={loading} error={error}>
         <div
-          //  @ts-expect-error idk
           ref={wrapper}
           className='flex flex-col justify-center items-center mt-10 w-full'
           // {...getStyles('mediaAudioWrapper')}

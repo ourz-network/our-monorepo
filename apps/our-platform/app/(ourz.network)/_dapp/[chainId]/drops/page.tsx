@@ -3,11 +3,11 @@ import { MessonryGrid } from 'messonry'
 import Link from 'next/link'
 
 import { getEverySplitCollectionWithMediaInfo } from '@/lib/zoraSubgraph'
-import { NFTPreview } from '@/components/_dapp/nfts/NFTPreview'
+import { NFTPreview } from '@/components/nfts/NFTPreview'
 
-export async function generateStaticParams() {
-  return [{ chainId: '1' }]
-}
+// export async function generateStaticParams() {
+//   return [{ chainId: '1' }]
+// }
 
 export default async function DropsPage({
   params,
@@ -17,7 +17,7 @@ export default async function DropsPage({
   const collections = await getEverySplitCollectionWithMediaInfo()
 
   return (
-    <>
+    <div className='grid grid-cols-2 grid-flow-row lg:grid-cols-4 grid-auto-rows'>
       {/*  eslint-disable-next-line arrow-body-style */}
       {collections.map((collection, i) => {
         const posterUrl = collection.mediaInfo?.image?.mediaEncoding?.poster
@@ -35,17 +35,19 @@ export default async function DropsPage({
             key={collection.address}
             className='flex flex-col items-center mx-auto text-center w-fit'
           >
-            <p>{collection.name}</p>
+            {/* <p>{collection.name}</p> */}
 
             <Suspense fallback={<></>}>
               <Link href={`/drops/${collection.address}`} prefetch={false}>
                 <NFTPreview
                   contentURI={
                     posterUrl ??
-                    metadata?.contractURI ??
-                    metadata?.animationURI ??
-                    metadata?.imageURI
+                    metadata.contractURI ??
+                    metadata.animationURI ??
+                    metadata.imageURI
                   }
+                  contract={collection.address}
+                  id='1'
                   metadata={metadata}
                   a11yIdPrefix=''
                 />
@@ -58,6 +60,6 @@ export default async function DropsPage({
         items={editions}
         options={{ useNextImage: true, nextImageConfig: {} }}
       /> */}
-    </>
+    </div>
   )
 }

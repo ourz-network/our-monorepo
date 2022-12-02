@@ -1,3 +1,3 @@
-import SplitPreview from "./SplitPreview";
+import SplitPreview from './SplitPreview'
 
-export { SplitPreview };
+export { SplitPreview }

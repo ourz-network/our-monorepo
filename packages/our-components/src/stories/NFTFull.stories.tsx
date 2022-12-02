@@ -30,10 +30,15 @@ Image.args = {
 
 export const Video = Template.bind({})
 Video.args = {
-  id: '2411',
+  id: '1',
+  contract: '0x92d21dc7a37727ac8589160f4a896de65310d2f2',
   config: { allowOffer: false },
-  contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
 }
+// Video.args = {
+//   id: '2411',
+//   config: { allowOffer: false },
+//   contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+// }
 
 export const GIF = Template.bind({})
 GIF.args = {
@@ -44,10 +49,15 @@ GIF.args = {
 
 export const Audio = Template.bind({})
 Audio.args = {
-  id: '3092',
+  id: '1',
   config: { allowOffer: false },
-  contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+  contract: '0xb6fa203230ab041dc7433c315871cf551f776070',
 }
+// Audio.args = {
+//   id: '3092',
+//   config: { allowOffer: false },
+//   contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+// }
 
 export const Text = Template.bind({})
 Text.args = {
@@ -74,7 +84,7 @@ export const VideoCustom = Template.bind({})
 VideoCustom.args = {
   id: '1',
   config: { allowOffer: false },
-  contract: '0x9edb1d313cfeb24a71cd3619ede76b41f7909c20',
+  contract: '0x9De3512D6997Bb37ED084f4F030D4E7d3CF86501',
 }
 
 export const NonZoraImage = Template.bind({})

@@ -1,27 +1,27 @@
 export const breakpoints = [
   {
-    viewport: "mobile",
+    viewport: 'mobile',
     width: 420,
   },
   {
-    viewport: "tablet",
+    viewport: 'tablet',
     width: 768,
   },
   {
-    viewport: "laptop",
+    viewport: 'laptop',
     width: 1280,
   },
   {
-    viewport: "desktop",
+    viewport: 'desktop',
     width: 1440,
   },
   {
-    viewport: "xl",
+    viewport: 'xl',
     width: 1921,
   },
-];
+]
 
 export const returnBreakpoint = (breakpointName: string) => {
-  const bp = breakpoints.find((array) => array.viewport === breakpointName);
-  return bp === undefined ? 0 : `${bp.width}px`;
-};
+  const bp = breakpoints.find((array) => array.viewport === breakpointName)
+  return bp === undefined ? 0 : `${bp.width}px`
+}

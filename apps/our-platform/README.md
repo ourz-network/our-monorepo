@@ -25,7 +25,7 @@
 
 ## Introduction
 
-Multi-tenant applications serve multiple customers across different subdomains/custom domains with a single unified codebase. 
+Multi-tenant applications serve multiple customers across different subdomains/custom domains with a single unified codebase.
 
 For example, our demo is a multi-tenant application:
 
@@ -60,7 +60,7 @@ Vercel customers like [Hashnode](https://vercel.com/customers/hashnode), [Super]
 
 ### 1. Content creation platforms
 
-These are content-heavy platforms (blogs) with simple, standardized page layouts and route structure. 
+These are content-heavy platforms (blogs) with simple, standardized page layouts and route structure.
 
 > “With Vercel, we spend less time managing our infrastructure and more time delivering value to our users.” — Sandeep Panda, Co-founder, Hashnode
 
@@ -70,7 +70,7 @@ These are content-heavy platforms (blogs) with simple, standardized page layouts
 
 ### 2. Website & e-commerce store builders
 
-No-code site builders with customizable pages. 
+No-code site builders with customizable pages.
 
 By using Next.js and Vercel, [Super](https://super.so/) has fast, globally distributed websites with a no-code editor (Notion). Their customers get all the benefits of Next.js (like [Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)) without touching any code.
 
@@ -82,7 +82,7 @@ By using Next.js and Vercel, [Super](https://super.so/) has fast, globally distr
 
 Multi-tenant authentication, login, and access controls.
 
-With Vercel and Next.js, platforms like [Instatus](https://instatus.com) are able to create status pages that are *10x faster* than competitors.
+With Vercel and Next.js, platforms like [Instatus](https://instatus.com) are able to create status pages that are _10x faster_ than competitors.
 
 1. [Instatus](https://instatus.com/)
 2. [Cal.com](https://cal.com/)
@@ -110,7 +110,6 @@ We also have another [example](https://github.com/vercel/examples/tree/main/solu
 - **Is it wise to be using the `/_sites/[site]` path to serve all static pages/website? Wouldn't that lead to a significant amount of load on a single Next.js server?**
 
   The beauty about a serverless setup is you won’t have to worry about load since each request invokes a separate serverless function, and once it’s cached, you don’t invoke the server anymore (the page is served directly from the Vercel edge). Read more about the [Vercel Edge Network](https://vercel.com/docs/concepts/edge-network/overview) and [how caching works](https://vercel.com/docs/concepts/edge-network/caching).
-
 
 ## Contributing
 

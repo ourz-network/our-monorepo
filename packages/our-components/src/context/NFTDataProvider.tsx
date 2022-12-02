@@ -22,6 +22,9 @@ export const NFTDataProvider = ({
 }: NFTDataProviderProps) => {
   const nft = useNFT(contract, id, options, marketOptions)
 
+  console.log('nft', JSON.stringify(nft, null, 2))
+  // console.log({ nft })
+
   return (
     <NFTDataContext.Provider value={nft}>{children}</NFTDataContext.Provider>
   )

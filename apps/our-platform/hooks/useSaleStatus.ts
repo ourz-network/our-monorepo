@@ -1,6 +1,6 @@
 import { HashZero } from '@ethersproject/constants'
 
-import { ERC721DropProviderState } from '@/components/_dapp/providers/ERC721DropProvider'
+import { ERC721DropProviderState } from '@/components/providers/ERC721DropProvider'
 
 export function useSaleStatus({
   collection,

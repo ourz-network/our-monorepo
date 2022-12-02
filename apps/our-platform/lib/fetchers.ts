@@ -2,7 +2,7 @@ import { cache } from 'react'
 
 import clientPromise from './mongodb'
 
-import type { GalleryConfig } from '@/types'
+import type { GalleryConfig } from '@/lib/types'
 
 const getCollection = async () => {
   const client = await clientPromise

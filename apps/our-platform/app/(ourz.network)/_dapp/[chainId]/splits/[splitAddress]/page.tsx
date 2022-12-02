@@ -1,5 +1,6 @@
-import { getEveryZoraSplit } from '@/lib/zoraSubgraph'
 import { SplitsClient } from '@0xsplits/splits-sdk'
+
+import { getEveryZoraSplit } from '@/lib/zoraSubgraph'
 
 export async function generateStaticParams() {
   const zoraSplits = await getEveryZoraSplit()
@@ -21,8 +22,6 @@ export default async function SplitOverview({
   const split = await client.getSplitMetadata({ splitId: params.splitAddress })
 
   return (
-    <>
-      <div className='border border-red-500'>{JSON.stringify(split)}</div>
-    </>
+    <div className='border border-red-500'>{JSON.stringify(split)}</div>
   )
 }

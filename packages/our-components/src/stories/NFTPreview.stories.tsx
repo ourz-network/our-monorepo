@@ -16,9 +16,13 @@ Image.args = {
 
 export const Video = Template.bind({})
 Video.args = {
-  id: '2411',
-  contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+  id: '1',
+  contract: '0x9De3512D6997Bb37ED084f4F030D4E7d3CF86501',
 }
+// Video.args = {
+//   id: '2411',
+//   contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+// }
 
 export const GIF = Template.bind({})
 GIF.args = {
@@ -28,9 +32,13 @@ GIF.args = {
 
 export const Audio = Template.bind({})
 Audio.args = {
-  id: '2563',
-  contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+  id: '1',
+  contract: '0xb6fa203230ab041dc7433c315871cf551f776070',
 }
+// Audio.args = {
+//   id: '2563',
+//   contract: '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7',
+// }
 
 export const Text = Template.bind({})
 Text.args = {

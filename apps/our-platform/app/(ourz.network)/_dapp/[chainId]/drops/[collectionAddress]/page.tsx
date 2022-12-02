@@ -1,4 +1,4 @@
-import { Collection } from '@/components/_dapp/collection/Collection'
+import { Collection } from '@/components/collection/Collection'
 import {
   getCollectionWithMediaInfo,
   getEverySplitCollectionWithMediaInfo,

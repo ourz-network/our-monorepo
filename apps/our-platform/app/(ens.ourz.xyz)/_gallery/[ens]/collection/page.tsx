@@ -1,9 +1,8 @@
 import { ZDK } from '@zoralabs/zdk'
 
-import NFTList from '../NFTList'
-
+import NFTList from '@/components/_gallery/NFTList'
 import { getAllGalleryConfigs, getGalleryConfig } from '@/lib/fetchers'
-import { GalleryConfig } from '@/types'
+import { GalleryConfig } from '@/lib/types'
 import { getAddressFromENS } from '@/lib/ens'
 
 export const revalidate = 10

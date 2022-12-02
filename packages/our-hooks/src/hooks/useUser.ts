@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import useSWR from 'swr';
 
 import { OurFetchContext } from '../context/OurFetchContext';
-import { UserDetailsFragment } from "../graph-queries/ourz-graph-types";
+import { UserDetailsFragment } from '../graph-queries/ourz-graph-types';
 
 export interface useUserType {
   userLoaded: boolean;
