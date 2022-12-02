@@ -65,6 +65,7 @@ module.exports = {
       { functions: false, classes: true, variables: true, typedefs: true },
     ],
     '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-unnecessary-condition': 'warn',
   },
   overrides: [
     // use default exports in next's app dir

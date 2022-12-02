@@ -44,7 +44,6 @@ export async function updateGalleryConfig(
 ): Promise<void | NextApiResponse<GalleryConfig[] | (GalleryConfig | null)>> {
   const { subdomain } = req.query
   const { galleryConfig, signedMessage } = JSON.parse(req.body)
-  console.log({ galleryConfig, signedMessage })
 
   if (!subdomain || !galleryConfig || !signedMessage) {
     res.status(403).json({ failed: true })
@@ -62,7 +61,6 @@ export async function updateGalleryConfig(
 
   const subdomainAddress = await getAddressFromENS(subdomain)
 
-  console.log({ subdomainAddress, signerAddress })
   if (signerAddress !== subdomainAddress) {
     res.status(403).json(`Failed. Signer does not own ${subdomain}.eth`)
   }

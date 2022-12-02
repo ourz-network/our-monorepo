@@ -2,9 +2,17 @@ import { ZDK } from '@zoralabs/zdk'
 
 import NFTList from '../NFTList'
 
-import { getGalleryConfig } from '@/lib/fetchers'
+import { getAllGalleryConfigs, getGalleryConfig } from '@/lib/fetchers'
 import { GalleryConfig } from '@/types'
 import { getAddressFromENS } from '@/lib/ens'
+
+export const revalidate = 10
+
+export async function generateStaticParams() {
+  const configs = await getAllGalleryConfigs()
+  const allPaths = configs.map((config) => ({ ens: config.subdomain }))
+  return allPaths
+}
 
 export default async function Home({ params }: { params: { ens: string } }) {
   const { ens } = params

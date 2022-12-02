@@ -2,17 +2,17 @@ import {
   DROPS_METADATA_RENDERER,
   EDITIONS_METADATA_RENDERER,
 } from '@/constants/addresses'
-import { useDropMetadataContract } from '@/components/_app/providers/DropMetadataProvider'
-import { useEditionMetadataContract } from '@/components/_app/providers/EditionMetadataProvider'
+import { useDropMetadataContract } from '@/components/_dapp/providers/DropMetadataProvider'
+import { useEditionMetadataContract } from '@/components/_dapp/providers/EditionMetadataProvider'
 
 export const useCollectionMetadata = (metadataRendererAddress: string) => {
   const drop = useDropMetadataContract()
   const edition = useEditionMetadataContract()
   if (DROPS_METADATA_RENDERER.includes(metadataRendererAddress)) {
     return drop
-  } else if (EDITIONS_METADATA_RENDERER.includes(metadataRendererAddress)) {
-    return edition
-  } else {
+  }
+  if (EDITIONS_METADATA_RENDERER.includes(metadataRendererAddress)) {
     return edition
   }
+  return edition
 }

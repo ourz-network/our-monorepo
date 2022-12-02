@@ -4,9 +4,14 @@
   "extends": "./base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "declaration": true,
     "jsxImportSource": "@emotion/react",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
-    "target": "es6"
+    "target": "es6",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
   }
 }

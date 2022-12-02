@@ -2,7 +2,8 @@ import { ZDKChain, ZDKNetwork } from '@zoralabs/zdk'
 import { Network } from 'alchemy-sdk'
 
 export const NETWORK_NAME =
-  { 1: '', 4: 'Rinkeby', 5: 'Goerli' }[process.env.NEXT_PUBLIC_CHAIN_ID || 1] || ''
+  { 1: '', 4: 'Rinkeby', 5: 'Goerli' }[process.env.NEXT_PUBLIC_CHAIN_ID || 1] ||
+  ''
 
 export const NETWORKS = {
   1: Network.ETH_MAINNET,
@@ -45,11 +46,11 @@ export const DROPS_METADATA_RENDERER =
     5: ['0xb2aa32a3231cf47412214b38a000baeebfa66b9b'],
   }[process.env.NEXT_PUBLIC_CHAIN_ID || 1] || ''
 
-export const SUPER_ADMINS = [
-  '0x4492eCACB5da5D933af0e55eEDad4383BF8D2dB5', // kolber main
-  '0x83eFc260Da533B0B03d88b2F00d59785277c4e71', // kolber rinkeby
-  '0x24e5B063fBfa23A168148d102A239C139Ad83cC7', // joe main
-  '0x256e018101dEDC1b386C8719FC8BF56c733dFa28', // joe rinkeby
-  '0xf7B2C2eb58A5F801119dF7e9bF9f9b66C62bB011', // lil
-  '0x85a58D1A453A5E658Bba7A2b5cCA3fA64A5E20B1', // lenz hotwallet
-]
+// export const SUPER_ADMINS = [
+//   '0x4492eCACB5da5D933af0e55eEDad4383BF8D2dB5', // kolber main
+//   '0x83eFc260Da533B0B03d88b2F00d59785277c4e71', // kolber rinkeby
+//   '0x24e5B063fBfa23A168148d102A239C139Ad83cC7', // joe main
+//   '0x256e018101dEDC1b386C8719FC8BF56c733dFa28', // joe rinkeby
+//   '0xf7B2C2eb58A5F801119dF7e9bF9f9b66C62bB011', // lil
+//   '0x85a58D1A453A5E658Bba7A2b5cCA3fA64A5E20B1', // lenz hotwallet
+// ]

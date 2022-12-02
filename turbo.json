@@ -3,7 +3,8 @@
   "globalEnv": [
     "MONGODB_URI",
     "NODE_ENV",
-    "ALCHEMY_KEY_SERVER",
+    "ALCHEMY_KEY",
+    "ZORA_API_KEY",
     "VERCEL",
     "NEXT_PUBLIC_CHAIN_ID",
     "NEXT_PUBLIC_ALCHEMY_ID",

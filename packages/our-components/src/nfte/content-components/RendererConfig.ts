@@ -10,7 +10,7 @@ export enum RenderingPreference {
 }
 
 export interface MediaUriType {
-  uri: string
+  uri?: string
   type?: string
 }
 

@@ -1,158 +1,79 @@
 {
-  "token": {
-    "__typename": "TokenWithFullMarketHistory",
-    "token": {
-      "__typename": "Token",
-      "tokenId": "1",
-      "tokenContract": {
-        "name": "nap time",
-        "network": "ETHEREUM",
-        "description": null,
-        "collectionAddress": "0x6c2b29d31ec82ac77575a0d26357ce75323da033",
-        "symbol": "NAPTIME",
-        "chain": 1
-      },
-      "mintInfo": {
-        "price": {
-          "__typename": "PriceAtTime",
-          "blockNumber": 16077483,
-          "chainTokenPrice": {
-            "decimal": 0.01,
-            "raw": "10000000000000000"
-          },
-          "nativePrice": {
-            "decimal": 0.01,
-            "raw": "10000000000000000",
-            "currency": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "decimals": 18,
-              "name": "ETH"
-            }
-          },
-          "usdcPrice": {
-            "decimal": 12.073065501280087,
-            "raw": "12073065501280088064"
-          }
-        },
-        "originatorAddress": "0xd714d0582b2b15c86f53a2fe877abef986222599",
-        "toAddress": "0xd714d0582b2b15c86f53a2fe877abef986222599",
-        "mintContext": {
-          "__typename": "TransactionInfo",
-          "blockNumber": 16077483,
-          "blockTimestamp": "2022-11-29T18: 37: 47+00: 00",
-          "transactionHash": "0x257878af5bdd8bbf21f195367773df8f56e1eddda3d736c86d9d226b3049e109",
-          "logIndex": 204
-        }
-      },
-      "collectionAddress": "0x6c2b29d31ec82ac77575a0d26357ce75323da033",
-      "lastRefreshTime": "2022-11-29T18: 40: 18.486000+00: 00",
-      "owner": "0xd714d0582b2b15c86f53a2fe877abef986222599",
-      "name": "nap time 1",
-      "description": "The music video for the first single from my debut EP. Incredibly proud of my friends for helping me put this together.\n\nThank you Katherine for driving around the bay with me and filming the times\nSean for sitting down with me and whittling down to the core feeling\nPhoebe for the beautiful and endearing animation magic\nand Kaleb for popping out the colors and making it feel like a dream\n\nWaking up from a nap, and wanting to stay there forever. ",
-      "image": {
-        "size": "914787",
-        "url": "ipfs: //bafkreifjsf267f7gtaqzpy4uut626b3mege7oajkxbmae6nxxz5owazgmy",
-        "mimeType": "image/png",
-        "mediaEncoding": {
-          "__typename": "ImageEncodingTypes",
-          "original": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/image/original",
-          "large": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/image/large",
-          "poster": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/image/poster",
-          "thumbnail": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/image/thumbnail"
-        }
-      },
-      "content": {
-        "size": "239637914",
-        "url": "ipfs: //bafybeialhqvt53ibthg4migcs4frlp2chplu2gluj343stbdoxvod35ulm",
-        "mimeType": "video/mp4",
-        "mediaEncoding": {
-          "__typename": "VideoEncodingTypes",
-          "original": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/content/original",
-          "large": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/content/large",
-          "poster": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/content/poster",
-          "preview": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/content/preview",
-          "thumbnail": "https: //api.zora.co/media/ETHEREUM-MAINNET/0x6c2b29d31ec82ac77575a0d26357ce75323da033/1/content/thumbnail"
-        }
-      },
-      "metadata": {
-        "name": "nap time 1",
-        "description": "The music video for the first single from my debut EP. Incredibly proud of my friends for helping me put this together.\n\nThank you Katherine for driving around the bay with me and filming the times\nSean for sitting down with me and whittling down to the core feeling\nPhoebe for the beautiful and endearing animation magic\nand Kaleb for popping out the colors and making it feel like a dream\n\nWaking up from a nap, and wanting to stay there forever. ",
-        "image": "ipfs: //bafkreifjsf267f7gtaqzpy4uut626b3mege7oajkxbmae6nxxz5owazgmy",
-        "animation_url": "ipfs: //bafybeialhqvt53ibthg4migcs4frlp2chplu2gluj343stbdoxvod35ulm",
-        "properties": {
-          "number": 1,
-          "name": "nap time"
-        }
-      },
-      "tokenUrl": "data: application/json;base64,eyJuYW1lIjogIm5hcCB0aW1lIDEiLCAiZGVzY3JpcHRpb24iOiAiVGhlIG11c2ljIHZpZGVvIGZvciB0aGUgZmlyc3Qgc2luZ2xlIGZyb20gbXkgZGVidXQgRVAuIEluY3JlZGlibHkgcHJvdWQgb2YgbXkgZnJpZW5kcyBmb3IgaGVscGluZyBtZSBwdXQgdGhpcyB0b2dldGhlci5cblxuVGhhbmsgeW91IEthdGhlcmluZSBmb3IgZHJpdmluZyBhcm91bmQgdGhlIGJheSB3aXRoIG1lIGFuZCBmaWxtaW5nIHRoZSB0aW1lc1xuU2VhbiBmb3Igc2l0dGluZyBkb3duIHdpdGggbWUgYW5kIHdoaXR0bGluZyBkb3duIHRvIHRoZSBjb3JlIGZlZWxpbmdcblBob2ViZSBmb3IgdGhlIGJlYXV0aWZ1bCBhbmQgZW5kZWFyaW5nIGFuaW1hdGlvbiBtYWdpY1xuYW5kIEthbGViIGZvciBwb3BwaW5nIG91dCB0aGUgY29sb3JzIGFuZCBtYWtpbmcgaXQgZmVlbCBsaWtlIGEgZHJlYW1cblxuV2FraW5nIHVwIGZyb20gYSBuYXAsIGFuZCB3YW50aW5nIHRvIHN0YXkgdGhlcmUgZm9yZXZlci4gIiwgImltYWdlIjogImlwZnM6Ly9iYWZrcmVpZmpzZjI2N2Y3Z3RhcXpweTR1dXQ2MjZiM21lZ2U3b2Fqa3hibWFlNm54eHo1b3dhemdteSIsICJhbmltYXRpb25fdXJsIjogImlwZnM6Ly9iYWZ5YmVpYWxocXZ0NTNpYnRoZzRtaWdjczRmcmxwMmNocGx1MmdsdWozNDNzdGJkb3h2b2QzNXVsbSIsICJwcm9wZXJ0aWVzIjogeyJudW1iZXIiOiAxLCAibmFtZSI6ICJuYXAgdGltZSJ9fQ==",
-      "tokenUrlMimeType": "video/mp4",
-      "attributes": [
-        {
-          "traitType": "name",
-          "value": "nap time",
-          "displayType": null
-        }
-      ]
-    },
-    "sales": [],
-    "events": [
-      {
-        "transactionInfo": {
-          "blockNumber": 16077483,
-          "blockTimestamp": "2022-11-29T18: 37: 47+00: 00",
-          "transactionHash": "0x257878af5bdd8bbf21f195367773df8f56e1eddda3d736c86d9d226b3049e109",
-          "logIndex": 204
-        },
-        "eventType": "TRANSFER_EVENT",
-        "collectionAddress": "0x6c2b29d31ec82ac77575a0d26357ce75323da033",
-        "tokenId": "1",
-        "properties": {
-          "__typename": "TransferEvent",
-          "fromAddress": "0x0000000000000000000000000000000000000000",
-          "toAddress": "0xd714d0582b2b15c86f53a2fe877abef986222599",
-          "collectionAddress": "0x6c2b29d31ec82ac77575a0d26357ce75323da033",
-          "tokenId": "1"
-        }
-      },
-      {
-        "transactionInfo": {
-          "blockNumber": 16077483,
-          "blockTimestamp": "2022-11-29T18: 37: 47+00: 00",
-          "transactionHash": "0x257878af5bdd8bbf21f195367773df8f56e1eddda3d736c86d9d226b3049e109",
-          "logIndex": 204
-        },
-        "eventType": "MINT_EVENT",
-        "collectionAddress": "0x6c2b29d31ec82ac77575a0d26357ce75323da033",
-        "tokenId": "1",
-        "properties": {
-          "__typename": "MintEvent",
-          "tokenId": "1",
-          "collectionAddress": "0x6c2b29d31ec82ac77575a0d26357ce75323da033",
-          "originatorAddress": "0xd714d0582b2b15c86f53a2fe877abef986222599",
-          "toAddress": "0xd714d0582b2b15c86f53a2fe877abef986222599",
-          "price": {
-            "blockNumber": 16077483,
-            "chainTokenPrice": {
-              "decimal": 0.01,
-              "raw": "10000000000000000"
-            },
-            "nativePrice": {
-              "decimal": 0.01,
-              "raw": "10000000000000000",
-              "currency": {
-                "address": "0x0000000000000000000000000000000000000000",
-                "decimals": 18,
-                "name": "ETH"
-              }
-            },
-            "usdcPrice": {
-              "decimal": 12.073065501280087,
-              "raw": "12073065501280088064"
-            }
-          }
-        }
+  "id": "0x54dab8d172b408a14fdb7991ebe243c27c7ef702",
+  "created": {
+    "id": "0x9eadab85aa70c0c27fa41fd33f65b2425e3d4f6e0d60e6bd217138525896dced",
+    "block": "15455110",
+    "timestamp": "1662066358"
+  },
+  "creator": "0xe52f21be65c282acd46e2f2be456d0daa6491c6a",
+  "address": "0x54dab8d172b408a14fdb7991ebe243c27c7ef702",
+  "name": "Forming V1 Live Performance",
+  "symbol": "FORMINGV1LIVEPERFORMANCE",
+  "contractConfig": {
+    "id": "config-0x54dab8d172b408a14fdb7991ebe243c27c7ef702",
+    "metadataRenderer": "0xd167b7a408c65306d5a2abead63986540110b28b",
+    "editionSize": "18446744073709551615",
+    "royaltyBPS": 1100,
+    "fundsRecipient": "0x7d3ea1d056a883548f48429447d5695232e7213b"
+  },
+  "editionMetadata": {
+    "imageURI": "ipfs://bafybeihtheiybwzioqqoqhwfgggojyd7hq6b5wuka4rcbcbf64hetjx6se",
+    "contractURI": "",
+    "description": "Thank you Lexicon Devils for letting me perform a live set for Forming V1!\\n\\n\\n\\n25% goes back to Lexicon Devils to support more shows!\\n\\n18.75% goes to Jackintheway.eth for helping film!\\n\\n\\n\\n\\nPowered by 0xSplits",
+    "animationURI": "ipfs://bafybeifshmu4hmcemzcktggsz7mqmof27e6rua6yo2ipjbcjjeoqoryorm"
+  },
+  "dropMetadata": null,
+  "salesConfig": {
+    "id": "0x9eadab85aa70c0c27fa41fd33f65b2425e3d4f6e0d60e6bd217138525896dced",
+    "publicSalePrice": "5000000000000000",
+    "maxSalePurchasePerAddress": "4294967295",
+    "publicSaleStart": "1662066353",
+    "publicSaleEnd": "18446744073709551615",
+    "presaleStart": "0",
+    "presaleEnd": "0",
+    "presaleMerkleRoot": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "sales": [
+    { "priceTotal": "15000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "15000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" },
+    { "priceTotal": "5000000000000000" }
+  ],
+  "totalMinted": "16",
+  "maxSupply": "18446744073709551615",
+  "mediaInfo": {
+    "image": {
+      "size": "5474503",
+      "url": "ipfs://bafybeihtheiybwzioqqoqhwfgggojyd7hq6b5wuka4rcbcbf64hetjx6se?id=1",
+      "mimeType": "image/png",
+      "mediaEncoding": {
+        "__typename": "ImageEncodingTypes",
+        "original": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/image/original",
+        "large": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/image/large",
+        "poster": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/image/poster",
+        "thumbnail": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/image/thumbnail"
       }
-    ],
-    "markets": []
+    },
+    "content": {
+      "size": "97970501",
+      "url": "ipfs://bafybeifshmu4hmcemzcktggsz7mqmof27e6rua6yo2ipjbcjjeoqoryorm?id=1",
+      "mimeType": "video/mp4",
+      "mediaEncoding": {
+        "__typename": "VideoEncodingTypes",
+        "original": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/content/original",
+        "large": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/content/large",
+        "poster": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/content/poster",
+        "preview": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/content/preview",
+        "thumbnail": "https://api.zora.co/media/ETHEREUM-MAINNET/0x54dab8d172b408a14fdb7991ebe243c27c7ef702/1/content/thumbnail"
+      }
+    }
   }
 }

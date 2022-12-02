@@ -16,8 +16,7 @@ export const getAllGalleryConfigs: () => Promise<GalleryConfig[]> = cache(
     const allGalleries: GalleryConfig[] = []
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     cursor.forEach((galleryConfig) => {
-      // console.log(galleryConfig);
-      allGalleries.push(galleryConfig as unknown as GalleryConfig)
+      allGalleries.push({ ...(galleryConfig as unknown as GalleryConfig) })
     })
 
     return allGalleries

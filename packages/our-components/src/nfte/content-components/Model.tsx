@@ -35,7 +35,7 @@ export const Model: ModelRenderer = {
     const params = new URLSearchParams()
     params.append('src', mediaURI)
     if (props.request.media.image) {
-      params.append('poster', props.request.media.image.uri)
+      params.append('poster', props.request.media.image.uri ?? '')
     }
     const newProps = { ...props }
     newProps.request.media.content = {

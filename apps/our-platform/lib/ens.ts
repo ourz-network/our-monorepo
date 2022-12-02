@@ -1,7 +1,7 @@
 import { getDefaultProvider } from 'ethers'
 
 const provider = getDefaultProvider('homestead', {
-  alchemy: process.env.ALCHEMY_KEY_SERVER,
+  alchemy: process.env.ALCHEMY_KEY,
 })
 
 export const getENSFromAddress = async (address: string) => {

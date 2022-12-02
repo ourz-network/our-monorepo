@@ -79,7 +79,6 @@ export const getAllWaterfalls = async () => {
     // eslint-disable-next-line no-plusplus
     i++
   }
-  // console.log({ allWaterfalls })
   return allWaterfalls.map((waterfall: { id: string }) => waterfall.id)
 }
 
@@ -116,7 +115,6 @@ export const getEverySplit = async () => {
   const allSplits = await getAllSplits()
   const allWaterfalls = await getAllWaterfalls()
   const allLiquidSplits = await getAllLiquidSplits()
-  // console.log(allSplits.length, allWaterfalls.length, allLiquidSplits.length)
 
   return [
     //

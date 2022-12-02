@@ -1,12 +1,30 @@
 import request, { gql } from 'graphql-request'
 
 import { getEverySplit } from './splitsSubgraph'
-import { getMetadataForEditions } from './zoraAPI'
+import { getEditionMediaInfo, MediaInfo } from './zdk'
 
 import { SubgraphERC721Drop } from '@/models/subgraph'
 
 const ZORA_SUBGRAPH =
   'https://api.thegraph.com/subgraphs/name/iainnash/zora-editions-mainnet'
+
+// export interface SplitDropShort extends Pick<SubgraphERC721Drop, 'id'> {
+//   splitId: string
+// }
+
+export interface CollectionWithMediaInfo extends SubgraphERC721Drop {
+  mediaInfo?: MediaInfo
+}
+// export interface SplitDropMeta
+//   extends Pick<
+//     SubgraphERC721Drop,
+//     'id' & 'rendererAddress' & 'editionMetadata'
+//   > {
+//   splitId: string
+// }
+// export interface SplitDropFull extends SubgraphERC721Drop {
+//   splitId: string
+// }
 
 const ERC721_DROP_FRAGMENT = gql`
   fragment ERC721Fields on ERC721Drop {
@@ -32,6 +50,12 @@ const ERC721_DROP_FRAGMENT = gql`
       contractURI
       description
       animationURI
+    }
+    dropMetadata {
+      base
+      extension
+      freezeAt
+      contractURI
     }
     salesConfig {
       id
@@ -61,12 +85,12 @@ export const GET_COLLECTIONS_QUERY = gql`
   ${ERC721_DROP_FRAGMENT}
 `
 
-export const GET_ZORA_DROPS_WITH_SPLITS_IDS = gql`
+export const GET_SPLITS_COLLECTIONS = gql`
   query GetZoraDropsWithSplits($splitAddresses: [Bytes!]!) {
     contractConfigs(where: { fundsRecipient_in: $splitAddresses }) {
       fundsRecipient
       drop {
-        id
+        ...ERC721Fields
       }
     }
   }
@@ -90,18 +114,8 @@ export const GET_ZORA_DROPS_WITH_SPLITS_METADATA = gql`
   }
   ${ERC721_DROP_FRAGMENT}
 `
-export const GET_ZORA_DROPS_WITH_SPLITS_FULL = gql`
-  query GetZoraDropsWithSplits($splitAddresses: [Bytes!]!) {
-    contractConfigs(where: { fundsRecipient_in: $splitAddresses }) {
-      drop {
-        ...ERC721Fields
-      }
-    }
-  }
-  ${ERC721_DROP_FRAGMENT}
-`
 
-export const getCollectionsMeta = async (
+export const getCollections = async (
   collectionAddresses: string[]
 ): Promise<SubgraphERC721Drop[]> => {
   const { erc721Drops } = await request(ZORA_SUBGRAPH, GET_COLLECTIONS_QUERY, {
@@ -111,80 +125,123 @@ export const getCollectionsMeta = async (
   return erc721Drops
 }
 
-export const getAllZoraSplitDropIDs = async (splitAddresses: string[]) => {
+export const getSplitCollections = async (
+  splitAddresses: string[]
+): Promise<CollectionWithMediaInfo[]> => {
   const { contractConfigs } = await request(
     ZORA_SUBGRAPH,
-    GET_ZORA_DROPS_WITH_SPLITS_IDS,
+    GET_SPLITS_COLLECTIONS,
     {
       splitAddresses,
     }
   )
 
-  const drops = contractConfigs.map(
+  const drops: CollectionWithMediaInfo[] = contractConfigs.map(
     (contractConfig: { fundsRecipient: string; drop: any }) => ({
       ...contractConfig.drop,
-      splitId: contractConfig.fundsRecipient,
+      // splitId: contractConfig.fundsRecipient,
     })
   )
 
   return drops
 }
 
-export const getAllZoraSplitDropsMeta = async (splitAddresses: string[]) => {
-  const { contractConfigs } = await request(
-    ZORA_SUBGRAPH,
-    GET_ZORA_DROPS_WITH_SPLITS_METADATA,
-    {
-      splitAddresses,
-    }
-  )
+// export const getCollectionsMeta = async (
+//   splitAddresses: string[]
+// ): Promise<SplitDropMeta[]> => {
+//   const { contractConfigs } = await request(
+//     ZORA_SUBGRAPH,
+//     GET_ZORA_DROPS_WITH_SPLITS_METADATA,
+//     {
+//       splitAddresses,
+//     }
+//   )
 
-  const drops = contractConfigs.map(
-    (contractConfig: { fundsRecipient: string; drop: any }) => ({
-      ...contractConfig.drop,
-      splitId: contractConfig.fundsRecipient,
-    })
-  )
+//   const drops = contractConfigs.map(
+//     (contractConfig: { fundsRecipient: string; drop: any }) => ({
+//       ...contractConfig.drop,
+//       splitId: contractConfig.fundsRecipient,
+//     })
+//   )
 
-  return drops
+//   return drops
+// }
+
+// export const getAllZoraSplitDropsFull = async (
+//   splitAddresses: string[]
+// ): Promise<SplitDropFull[]> => {
+//   const { contractConfigs } = await request(
+//     ZORA_SUBGRAPH,
+//     GET_COLLECTIONS_QUERY,
+//     {
+//       splitAddresses,
+//     }
+//   )
+
+//   const drops = contractConfigs.map(
+//     (contractConfig: { fundsRecipient: string; drop: any }) => ({
+//       ...contractConfig.drop,
+//       splitId: contractConfig.fundsRecipient,
+//     })
+//   )
+
+//   return drops
+// }
+
+export const getCollectionWithMediaInfo = async (
+  collectionAddress: string
+): Promise<CollectionWithMediaInfo> => {
+  const collections = await getCollections([collectionAddress])
+  const mediaInfo = await getEditionMediaInfo(collectionAddress)
+  const collection = {
+    ...collections[0],
+    ...mediaInfo,
+  }
+
+  return collection
 }
 
-export const getAllZoraSplitDropsFull = async (splitAddresses: string[]) => {
-  const { contractConfigs } = await request(
-    ZORA_SUBGRAPH,
-    GET_ZORA_DROPS_WITH_SPLITS_FULL,
-    {
-      splitAddresses,
-    }
-  )
-
-  const drops = contractConfigs.map(
-    (contractConfig: { fundsRecipient: string; drop: any }) => ({
-      ...contractConfig.drop,
-      splitId: contractConfig.fundsRecipient,
-    })
-  )
-
-  return drops
-}
-
-export const getEverySplitDropMeta = async () => {
+export const getEverySplitCollectionWithMediaInfo = async () => {
+  const splitCollections: CollectionWithMediaInfo[] = []
   const everySplit = await getEverySplit()
-  const everySplitDrop = await getAllZoraSplitDropIDs(everySplit)
-  const splitDropsMeta = await getMetadataForEditions(
-    everySplitDrop.map((drop: { id: string }) => drop.id)
+  const everySplitCollection = await getSplitCollections(everySplit)
+
+  // eslint-disable-next-line consistent-return
+  const promises = everySplitCollection.map(async (collection) => {
+    const res = await getEditionMediaInfo(collection.address)
+    if (res?.mediaInfo) {
+      const { mediaInfo } = res
+      return mediaInfo
+    }
+  })
+
+  await Promise.allSettled(promises).then((results) =>
+    results.forEach((res, i) => {
+      if (res.status === 'fulfilled') {
+        if (res.value !== undefined) {
+          splitCollections.push({
+            ...everySplitCollection[i],
+            mediaInfo: { ...res.value },
+          })
+        }
+      } else {
+        // splitCollections.push({
+        //   ...everySplitCollection[i],
+        // })
+      }
+    })
   )
 
-  return splitDropsMeta
+  return splitCollections
 }
 
 export const getEveryZoraSplit = async () => {
   const everySplit = await getEverySplit()
 
-  const drops = await getAllZoraSplitDropIDs(everySplit)
+  const drops = await getSplitCollections(everySplit)
 
   const zoraSplits: string[] = drops.map(
-    (drop: { splitId: string }) => drop.splitId
+    (drop) => drop.contractConfig.fundsRecipient
   )
   return zoraSplits
 }

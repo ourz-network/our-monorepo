@@ -7,6 +7,8 @@ import { getAddressFromENS } from '@/lib/ens'
 import { GalleryConfig } from '@/types/_gallery'
 
 export const revalidate = 10
+//   dynamic = 'error',
+// dynamicParams = true
 
 export async function generateStaticParams() {
   const configs = await getAllGalleryConfigs()
@@ -43,7 +45,7 @@ export default async function Page({ params }: { params: { ens: string } }) {
     includeFullDetails: false,
     includeMarkets: false,
   })
-  // console.log({ ...mintedTokens.mints.nodes })
+
   const results = [...mintedTokens.mints.nodes, ...curatedTokens.tokens.nodes]
 
   const tokenMap = new Map<string, any>()

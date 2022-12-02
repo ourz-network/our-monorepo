@@ -41,11 +41,11 @@ export default function middleware(req: NextRequest) {
     switch (path) {
       case '/':
         console.log(0)
-        return NextResponse.rewrite(new URL(`/_app/1/drops${path}`, req.url))
+        return NextResponse.rewrite(new URL(`/_dapp/1/drops${path}`, req.url))
 
       default:
         console.log(1)
-        return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
+        return NextResponse.rewrite(new URL(`/_dapp/1${path}`, req.url))
     }
   }
 
@@ -62,13 +62,13 @@ export default function middleware(req: NextRequest) {
     case 'localhost:3000':
       if (!path || path === '/') {
         console.log(4)
-        url.pathname = `/_app/1/drops${url.pathname}`
+        url.pathname = `/_dapp/1/drops${url.pathname}`
         // console.log(url.pathname, { path }, req)
-        return NextResponse.rewrite(new URL(`/_app/1/drops${path}`, req.url))
+        return NextResponse.rewrite(new URL(`/_dapp/1/drops${path}`, req.url))
       } else {
         console.log(5)
-        url.pathname = `/_app/1${url.pathname}`
-        return NextResponse.rewrite(new URL(`/_app/1${path}`, req.url))
+        url.pathname = `/_dapp/1${url.pathname}`
+        return NextResponse.rewrite(new URL(`/_dapp/1${path}`, req.url))
       }
     default:
       console.log(6)
