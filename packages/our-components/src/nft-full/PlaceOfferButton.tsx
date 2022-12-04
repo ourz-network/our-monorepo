@@ -1,5 +1,3 @@
-'use client'
-
 import { Fragment, useContext, useMemo } from 'react'
 
 import { ZORA_SITE_URL_BASE } from '../constants/media-urls'
@@ -13,6 +11,7 @@ type PlaceOfferButtonProps = {
 } & StyleProps
 
 export const PlaceOfferButton = ({
+  // @ts-ignore TS6133
   allowOffer,
   className,
 }: PlaceOfferButtonProps) => {

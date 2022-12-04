@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Fragment,
   MouseEventHandler,
@@ -21,7 +19,7 @@ import {
   RenderRequest,
 } from './RendererConfig'
 
-interface FakeWaveformCanvasProps {
+type FakeWaveformCanvasProps = {
   audioRef: any
   uri: string
   audioColors?: {
@@ -177,6 +175,7 @@ export const AudioRenderer = forwardRef<HTMLAudioElement, RenderComponentType>(
     return (
       <MediaLoader getStyles={getStyles} loading={loading} error={error}>
         <div
+          // @ts-ignore
           ref={wrapper}
           className='flex flex-col justify-center items-center mt-10 w-full'
           // {...getStyles('mediaAudioWrapper')}
@@ -235,7 +234,7 @@ export const Audio: RendererConfig = {
       request?.media?.animation?.type?.startsWith?.('audio')
     ) {
       return request?.renderingContext === 'FULL'
-        ? RenderingPreference.PRIORITY
+        ? RenderingPreference.PREFERRED
         : RenderingPreference.LOW
     }
     return RenderingPreference.INVALID

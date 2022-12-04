@@ -1,5 +1,3 @@
-'use client'
-
 /* eslint-disable @next/next/no-img-element */
 import { forwardRef, useState } from 'react'
 
@@ -38,7 +36,7 @@ export const ImageRenderer = forwardRef<HTMLImageElement, RenderComponentType>(
 )
 export const Image: RendererConfig = {
   getRenderingPreference: (request: RenderRequest) => {
-    if (request.media.image?.uri) {
+    if (request.media.image) {
       // Make low priority only if full screen, move to normal priority if preview
       if (request.renderingContext === 'FULL' && request.media.animation) {
         return RenderingPreference.LOW

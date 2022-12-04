@@ -1,12 +1,10 @@
-'use client'
-
-import { useENSAddress } from 'our-hooks'
+import { useENSAddress } from '@zoralabs/nft-hooks'
 
 import { useMediaContext } from '../context/useMediaContext'
 import type { StyleProps } from '../utils/StyleTypes'
 
 type AddressViewProps = {
-  address?: string
+  address: string
   showChars?: number
 } & StyleProps
 
@@ -19,24 +17,23 @@ export const AddressView = ({
 }: AddressViewProps) => {
   const { getStyles, style } = useMediaContext()
   const { theme } = style
+
   const ens = useENSAddress(theme.useEnsResolution ? address : undefined)
-  // const username = useZoraUsername(
-  //   theme.useZoraUsernameResolution || ens.error ? address : undefined
-  // )
 
   const addressFirst = address?.slice(0, showChars + PREFIX_ADDRESS.length)
   const addressLast = address?.slice(address.length - showChars)
 
-  if (ens.data) {
-    const zoraLink = ens.data
+  if (ens.data?.name) {
+    const zoraLink = ens.data.name
     return (
       <a
+        {...getStyles('addressLink', className)}
         className={`m-0 text-base no-underline text-[color:var(--colors-accentText)] ${className}`}
         href={`https://zora.co/${zoraLink}`}
         target='_blank'
         rel='noreferrer'
       >
-        <span>{ens.data}</span>
+        <span>{ens.data.name}</span>
       </a>
     )
   }
@@ -63,13 +60,14 @@ export const AddressView = ({
   // }
 
   // Ens loading
-  if (theme.useEnsResolution && !ens.error && !ens.data) {
-    return <span>...</span>
-  }
+  // if (theme.useEnsResolution && !ens.error && !ens.data) {
+  //   return <span>...</span>
+  // }
 
   return (
     <a
       className={`m-0 text-base no-underline text-[color:var(--colors-accentText)] ${className}`}
+      // {...getStyles("addressLink", className)}
       href={`https://etherscan.io/address/${address}`}
       target='_blank'
       rel='noreferrer'

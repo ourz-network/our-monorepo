@@ -24,8 +24,8 @@ const ClientProviders = ({
       <MediaConfiguration
         networkId='1'
         style={mediaConfigurationStyles}
-        mode={galleryConfig?.mode ?? 'dark'}
-        accent={galleryConfig?.accent ?? 'orange'}
+        // mode={galleryConfig?.mode ?? 'dark'}
+        // accent={galleryConfig?.accent ?? 'orange'}
       >
         {children}
       </MediaConfiguration>

@@ -1,8 +1,6 @@
-'use client'
-
 import { useCallback, useEffect, useState, Fragment } from 'react'
 
-export interface CountdownDisplayProps {
+export type CountdownDisplayProps = {
   from?: number | string
   to: number | string
 }
@@ -104,7 +102,6 @@ export const CountdownDisplay = (props: CountdownDisplayProps) => {
     return () => {
       clearInterval(checkTimeout)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!timeLeft) {

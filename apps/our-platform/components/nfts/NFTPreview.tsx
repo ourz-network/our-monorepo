@@ -1,20 +1,19 @@
 'use client'
 
-import { MediaObject, NFTE, NFTPreview as NFTPreviewZ } from 'our-components'
-import { MetadataIsh } from 'our-components/dist/nfte/MediaObject'
+import { NFTPreview as NFTPreviewZ } from 'our-components'
 
 interface Props {
   contentURI: string
   a11yIdPrefix: string
-  metadata: MetadataIsh
+  metadata: any
   contract: string
   id: string
 }
-export function NFTPreview({ contract, id }: Props) {
+
+export function NFTPreview({ contract, id, ...props }: Props) {
   return (
     <div className='object-cover relative w-full max-w-md h-full bg-transparent'>
-      {/* @ts-ignore */}
-      <NFTPreviewZ contract={contract} id={id} />
+      <NFTPreviewZ contract={contract} {...props} id={id} />
     </div>
   )
 }

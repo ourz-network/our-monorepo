@@ -4,6 +4,8 @@ import { getEverySplit } from './splitsSubgraph'
 import { getEditionMediaInfo, MediaInfo } from './zdk'
 
 import { SubgraphERC721Drop } from '@/lib/models/subgraph'
+import { getTokenInfo } from 'app/(ens.ourz.xyz)/_gallery/[ens]/token/[contract]/[id]/page'
+import { NFTObject } from '@zoralabs/nft-hooks'
 
 const ZORA_SUBGRAPH =
   'https://api.thegraph.com/subgraphs/name/iainnash/zora-editions-mainnet'
@@ -14,6 +16,7 @@ const ZORA_SUBGRAPH =
 
 export interface CollectionWithMediaInfo extends SubgraphERC721Drop {
   mediaInfo?: MediaInfo
+  firstToken?: any
 }
 // export interface SplitDropMeta
 //   extends Pick<
@@ -193,9 +196,13 @@ export const getCollectionWithMediaInfo = async (
 ): Promise<CollectionWithMediaInfo> => {
   const collections = await getCollections([collectionAddress])
   const mediaInfo = await getEditionMediaInfo(collectionAddress)
+
+  const tokenInfo = await getTokenInfo(collectionAddress, '1')
+
   const collection = {
     ...collections[0],
     ...mediaInfo,
+    firstToken: { ...tokenInfo },
   }
 
   return collection

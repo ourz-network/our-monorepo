@@ -1,6 +1,6 @@
 import { ZDK } from '@zoralabs/zdk'
 
-import NFTList from '@/components/_gallery/NFTList'
+import NFTList, { GalleryNFT } from '@/components/_gallery/NFTList'
 import { getAllGalleryConfigs, getGalleryConfig } from '@/lib/fetchers'
 import { GalleryConfig } from '@/lib/types'
 import { getAddressFromENS } from '@/lib/ens'
@@ -35,7 +35,7 @@ export default async function Home({ params }: { params: { ens: string } }) {
     includeSalesHistory: false,
   })
 
-  const tokens = ownedTokens.tokens.nodes.map((item) => {
+  const tokens: GalleryNFT[] = ownedTokens.tokens.nodes.map((item) => {
     const token = {
       ...item,
       tokenId: item.token.tokenId,

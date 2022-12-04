@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useState } from 'react'
 
 import type { RenderRequest } from './RendererConfig'
@@ -89,12 +87,12 @@ export const MediaLoader = ({
   }
   return (
     <>
-      {/* <span // TODO
+      <span // TODO
         className={`justify-center items-center w-full pointer-events-none min-h-fit ${''}`} // @container full page??
         // {...getStyles('mediaLoader')}
       >
         Loading...
-      </span> */}
+      </span>
       {children}
     </>
   )

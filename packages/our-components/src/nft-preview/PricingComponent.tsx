@@ -1,5 +1,3 @@
-'use client'
-
 import { Fragment, useContext, useMemo } from 'react'
 import {
   AUCTION_SOURCE_TYPES,

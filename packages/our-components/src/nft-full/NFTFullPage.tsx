@@ -1,4 +1,4 @@
-'use client'
+import { NFTObject, useNFTMetadataType, useNFTType } from '@zoralabs/nft-hooks'
 
 import { useMediaContext } from '../context/useMediaContext'
 import {
@@ -24,18 +24,22 @@ type NFTFullPageProps = Omit<NFTDataProviderProps, 'children'> & {
     allowOffer?: boolean
     showPerpetual?: boolean
   }
+  initialData?: {
+    nft: NFTObject
+  }
 } & StyleProps
 
 export const NFTFullPage = ({
   children,
   config,
   className,
+  // initialData,
   ...wrapperProps
 }: NFTFullPageProps) => {
   const a11yIdPrefix = useA11yIdPrefix('media')
   const { getStyles, style } = useMediaContext()
-  const { allowOffer } = config
-  const { showPerpetual } = config
+  const allowOffer = config?.allowOffer
+  const showPerpetual = config?.showPerpetual
 
   const getChildren = () => {
     if (children) {

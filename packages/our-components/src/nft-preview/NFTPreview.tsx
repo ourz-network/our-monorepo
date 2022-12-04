@@ -1,7 +1,4 @@
-'use client'
-
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/require-default-props */
+import { NFTObject, useNFTMetadataType, useNFTType } from '@zoralabs/nft-hooks'
 
 import {
   NFTDataProvider,
@@ -19,6 +16,9 @@ export type NFTPreviewProps = {
   children?: React.ReactNode
   showBids?: boolean
   showPerpetual?: boolean
+  initialData?: {
+    nft: NFTObject
+  }
 } & Omit<NFTDataProviderProps, 'children'> &
   StyleProps
 

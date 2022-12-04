@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect, useState } from 'react'
 
 import { MediaLoader, useMediaObjectProps } from './MediaLoader'
@@ -52,7 +50,7 @@ export const HTML: RendererConfig = {
       request.media.animation?.type?.startsWith('text/html')
     ) {
       return request.renderingContext === 'FULL'
-        ? RenderingPreference.PRIORITY
+        ? RenderingPreference.PREFERRED
         : RenderingPreference.INVALID
     }
     return RenderingPreference.INVALID

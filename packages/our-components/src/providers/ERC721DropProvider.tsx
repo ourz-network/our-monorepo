@@ -1,5 +1,3 @@
-'use client'
-
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */

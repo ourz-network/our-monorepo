@@ -1,8 +1,8 @@
-import type { FetchMockSandbox } from 'fetch-mock'
-import crossFetch from 'cross-fetch'
+import type { FetchMockSandbox } from 'fetch-mock';
+import crossFetch from 'cross-fetch';
 
-jest.mock('cross-fetch', () => require('fetch-mock-jest').sandbox())
+jest.mock('cross-fetch', () => require('fetch-mock-jest').sandbox());
 
-const fetchMock = crossFetch as FetchMockSandbox
+const fetchMock = crossFetch as FetchMockSandbox;
 
-export default fetchMock
+export default fetchMock;

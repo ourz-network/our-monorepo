@@ -1,5 +1,3 @@
-'use client'
-
 import type { NFTObject } from '@zoralabs/nft-hooks'
 import React, { Fragment, useContext } from 'react'
 
@@ -16,13 +14,14 @@ import { InfoContainer } from './InfoContainer'
 const ProofLink = ({
   href,
   children,
-}: // styles,
-{
+  styles,
+}: {
   href?: string
   children: string
-  // styles: any
+  styles: any
 }) => (
   <a
+    {...styles}
     className='block text-[decoration:none] text-[color:var(--colors-primary)] p-5 my-0 -mx-5 border-t-[3px] border-solid border-[color:var(--colors-accent)] hover:bg-[color:var(--colors-accent)] after:w-3 after:h-3 after:opacity-50 after:right-[20px] after:absolute'
     href={href}
     target='_blank'
@@ -51,17 +50,21 @@ export const ProofAuthenticity = ({ className }: StyleProps) => {
     return (
       <>
         <ProofLink
+          styles={linkStyles}
           href={`${VIEW_ETHERSCAN_URL_BASE_BY_NETWORK[networkId]}${nft.nft.contract.address}?a=${nft.nft.tokenId}`}
         >
           {getString('ETHERSCAN_TXN')}
         </ProofLink>
         {infoURL && (
-          <ProofLink href={infoURL}>{getString(infoUrlLabelText)}</ProofLink>
+          <ProofLink styles={linkStyles} href={infoURL}>
+            {getString(infoUrlLabelText)}
+          </ProofLink>
         )}
         {data?.nft &&
           (data.rawData['zora-indexer'] ||
             data.nft.contract.knownContract === 'zora') && (
             <ProofLink
+              styles={linkStyles}
               href={`${MEDIA_URL_BASE_BY_NETWORK[networkId]}collections/${
                 nft.nft!.contract.address
               }/${nft.nft!.tokenId}`}

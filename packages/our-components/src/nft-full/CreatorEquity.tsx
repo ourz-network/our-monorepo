@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useContext } from 'react'
 
 import { useMediaContext } from '../context/useMediaContext'

@@ -1,6 +1,4 @@
-'use client'
-
-import { css } from '@emotion/react'
+// import { css } from '@emotion/react'
 
 import {
   SVG_FULLSCREEN,
@@ -14,7 +12,9 @@ import {
 } from './svg-icons'
 import { ThemeOptions, ThemeOptionsType } from './theme'
 
-const buttonCommonSize = (size: string) => css`
+const buttonCommonSize = (size: string) =>
+  // css`
+  `
   padding: ${size};
   width: ${size};
   height: ${size};
@@ -28,7 +28,7 @@ const buttonCommonSize = (size: string) => css`
   margin: 0 10px;
 `
 
-const buttonReset = css`
+const buttonReset = `
   font: inherit;
   text-decoration: none;
   margin: 0;
@@ -37,7 +37,7 @@ const buttonReset = css`
   display: inline-block;
 `
 
-const CENTER_FULL_CONTAINER = css`
+const CENTER_FULL_CONTAINER = `
   position: absolute;
   width: 100%;
   justify-content: center;
@@ -49,7 +49,7 @@ const CENTER_FULL_CONTAINER = css`
 `
 
 function renderSVG(svg: string) {
-  return css`
+  return `
     background-image: url('data:image/svg+xml,${encodeURIComponent(svg)}');
   `
 }
@@ -58,13 +58,17 @@ export const Style = {
   theme: ThemeOptions,
   useDefaultStyles: true,
   styles: {
-    auctionHouseList: (_: ThemeOptionsType) => css`
+    auctionHouseList: (_: ThemeOptionsType) =>
+      // css`
+      `
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
     `,
     // Styles for preview card
-    cardOuter: (theme: ThemeOptionsType, { hasClickEvent }: any) => css`
+    cardOuter: (theme: ThemeOptionsType, { hasClickEvent }: any) =>
+      // css`
+      `
       background: ${theme.previewCard.background};
       overflow: hidden;
       border-radius: ${theme.defaultBorderRadius}px;
@@ -75,15 +79,19 @@ export const Style = {
       ${theme.bodyFont}
       transition: transform 0.1s ease-in-out;
       position: relative;
-      ${hasClickEvent
-        ? `
+      ${
+        hasClickEvent
+          ? `
         &:active {
           transform: scale(0.98);
         }
       `
-        : ''}
+          : ''
+      }
     `,
-    cardLink: (_: ThemeOptionsType) => css`
+    cardLink: (_: ThemeOptionsType) =>
+      // css`
+      `
       ${buttonReset}
       color: transparent;
       background: transparent;
@@ -92,11 +100,15 @@ export const Style = {
       position: absolute;
       z-index: 1;
     `,
-    cardHeader: (theme: ThemeOptionsType) => css`
+    cardHeader: (theme: ThemeOptionsType) =>
+      // css`
+      `
       padding: ${theme.textBlockPadding};
       ${theme.titleFont}
     `,
-    cardMediaWrapper: (theme: ThemeOptionsType) => css`
+    cardMediaWrapper: (theme: ThemeOptionsType) =>
+      // css`
+      `
       width: ${theme.previewCard.width};
       height: ${theme.previewCard.height};
       display: flex;
@@ -104,7 +116,9 @@ export const Style = {
       position: relative;
       justify-content: center;
     `,
-    cardItemInfo: (theme: ThemeOptionsType) => css`
+    cardItemInfo: (theme: ThemeOptionsType) =>
+      // css`
+      `
       padding: ${theme.textBlockPadding};
       border-top: ${theme.borderStyle};
     `,
@@ -121,12 +135,12 @@ export const Style = {
         // eslint-disable-next-line default-case
         switch (type) {
           case 'reserve-active':
-            return css`
+            return `
               background: #000;
               color: #fff;
             `
           case 'reserve-pending':
-            return css`
+            return `
               background: #e6e6e6;
             `
           case 'unknown':
@@ -134,17 +148,20 @@ export const Style = {
             return ``
         }
       }
-      return css`
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-rows: auto auto;
-        grid-auto-columns: 1fr;
-        padding: ${theme.textBlockPadding};
-        border-top: ${theme.borderStyle};
-        ${getActiveStyle()};
+      return `
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-rows: auto auto;
+      grid-auto-columns: 1fr;
+      padding: ${theme.textBlockPadding};
+      border-top: ${theme.borderStyle};
+      ${getActiveStyle()};
       `
+      // css`
     },
-    cardTitle: (theme: ThemeOptionsType) => css`
+    cardTitle: (theme: ThemeOptionsType) =>
+      // css`
+      `
       font-size: inherit;
       margin: 0;
       max-width: calc(${theme.previewCard.width} - 30px);
@@ -155,30 +172,38 @@ export const Style = {
     `,
     // Styles for full-page view
     fullPage: (theme: ThemeOptionsType) => theme.bodyFont,
-    fullMediaWrapper: (_: ThemeOptionsType) => css`
+    fullMediaWrapper: (_: ThemeOptionsType) =>
+      // css`
+      `
       margin: 5%;
       position: relative;
     `,
-    fullItemInfo: (_: ThemeOptionsType) => css``,
-    fullTitle: (theme: ThemeOptionsType) => css`
+    fullItemInfo: (_: ThemeOptionsType) => ``, // css``,
+    fullTitle: (theme: ThemeOptionsType) =>
+      // css`
+      `
       font-weight: inherit;
       font-size: 30px;
       margin: ${theme.spacingUnit} 0;
     `,
-    fullDescription: (theme: ThemeOptionsType) => css`
+    fullDescription: (theme: ThemeOptionsType) =>
+      // css`
+      `
       white-space: pre-wrap;
       font-size: ${theme.fontSizeFull}px;
       margin: 10px 0;
     `,
     fullOwnerAddress: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         font-size: ${theme.fontSizeFull}px;
         margin: 0;
       `,
       theme.titleFont,
     ],
     fullLabel: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         margin: 0 0 5px;
         text-transform: uppercase;
         font-size: 14px;
@@ -186,12 +211,15 @@ export const Style = {
       `,
       theme.bodyFont,
     ],
-    fullPageHistoryList: () => css`
+    fullPageHistoryList: () =>
+      // css`
+      `
       padding: 0;
       margin: 0;
     `,
     fullPageHistoryItem: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         margin-top: 15px;
         display: flex;
         flex-direction: column;
@@ -200,20 +228,28 @@ export const Style = {
       theme.bodyFont,
     ],
     // CSS Class for restyling and targeting
-    fullPageHistoryItemDescription: () => css`
+    fullPageHistoryItemDescription: () =>
+      // css`
+      `
       display: flex;
       flex-direction: row;
       justify-content: space-between;
     `,
-    fullPageHistoryItemDescriptionCopy: () => css`
+    fullPageHistoryItemDescriptionCopy: () =>
+      // css`
+      `
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
     `,
-    fullPageHistoryItemMeta: () => css`
+    fullPageHistoryItemMeta: () =>
+      // css`
+      `
       position: relative;
     `,
-    fullPageHistoryTxnLink: () => css`
+    fullPageHistoryTxnLink: () =>
+      // css`
+      `
       font-size: 0;
       position: relative;
       display: block;
@@ -240,7 +276,9 @@ export const Style = {
         ${renderSVG(SVG_NEXT_ICON)}
       }
     `,
-    nftProposalMediaWrapper: (theme: ThemeOptionsType) => css`
+    nftProposalMediaWrapper: (theme: ThemeOptionsType) =>
+      // css`
+      `
       border-radius: 4px;
       display: flex;
       height: ${theme.nftProposalCard.mediaHeight};
@@ -249,7 +287,9 @@ export const Style = {
       position: relative;
       width: ${theme.nftProposalCard.mediaWidth};
     `,
-    nftProposalInfoLayout: (theme: ThemeOptionsType) => css`
+    nftProposalInfoLayout: (theme: ThemeOptionsType) =>
+      // css`
+      `
       flex-grow: 1;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -267,17 +307,21 @@ export const Style = {
         border-right-width: 1px;
       }
     `,
-    nftProposalActionList: (_: ThemeOptionsType) => css`
+    nftProposalActionList: (_: ThemeOptionsType) =>
+      // css`
+      `
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
       gap: 10px;
       padding: 5px 0;
     `,
-    nftProposalLabelWrapper: (_: ThemeOptionsType) => css``,
-    nftProposalUserView: (_: ThemeOptionsType) => css``,
+    nftProposalLabelWrapper: (_: ThemeOptionsType) => ``, // css``,
+    nftProposalUserView: (_: ThemeOptionsType) => ``, // css``,
+
     nftProposalLabel: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         text-transform: uppercase;
         font-size: 12px;
         margin-bottom: 10px;
@@ -286,29 +330,37 @@ export const Style = {
       theme.bodyFont,
     ],
     fullPageHistoryItemDatestamp: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         font-size: 12px;
         padding-top: 2px;
         opacity: 0.5;
       `,
       theme.bodyFont,
     ],
-    fullPageDataGrid: (theme: ThemeOptionsType) => css`
+    fullPageDataGrid: (theme: ThemeOptionsType) =>
+      // css`
+      `
       display: grid;
       grid-gap: ${theme.spacingUnit};
     `,
     infoContainer: (theme: ThemeOptionsType, { bottomPadding }: any) =>
-      css`
+      // css`
+      `
         border: ${theme.borderStyle};
         border-radius: ${theme.defaultBorderRadius}px;
         padding: ${theme.spacingUnit} ${theme.spacingUnit}
           ${bottomPadding ? theme.spacingUnit : 0};
         position: relative;
       `,
-    fullInfoSpacer: (_: any, { height = 15 }: { height: number }) => css`
+    fullInfoSpacer: (_: any, { height = 15 }: { height: number }) =>
+      // css`
+      `
       height: ${height}px;
     `,
-    fullInfoAuctionPricing: (theme: ThemeOptionsType) => css`
+    fullInfoAuctionPricing: (theme: ThemeOptionsType) =>
+      // css`
+      `
       display: flex;
       flex-direction: row;
       span:first-of-type {
@@ -316,25 +368,33 @@ export const Style = {
       }
     `,
     fullInfoAuctionWrapper: () => ``,
-    fullPlaceOfferButton: (_: any) => css``,
-    fullInfoCreatorEquityContainer: (_: any) => css``,
-    fullInfoCuratorFeeContainer: (_: any) => css`
+    fullPlaceOfferButton: (_: any) => ``, // css``,
+    fullInfoCreatorEquityContainer: (_: any) => ``, // css``,
+    fullInfoCuratorFeeContainer: (_: any) =>
+      // css`
+      `
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
     `,
-    fullInfoProofAuthenticityContainer: (theme: ThemeOptionsType) => css`
+    fullInfoProofAuthenticityContainer: (theme: ThemeOptionsType) =>
+      // css`
+      `
       margin-top: ${theme.spacingUnit};
     `,
-    fullProofLink: (theme: ThemeOptionsType) => css`
+    fullProofLink: (theme: ThemeOptionsType) =>
+      // css`
+      `
       display: block;
       text-decoration: none;
+      /* color: ${theme.linkColor}; */
       color: var(--colors-textPrimary);
       padding: ${theme.spacingUnit};
       margin: 0 -${theme.spacingUnit};
       border-top: ${theme.borderStyle};
 
       :hover {
+        /* background-color: #f2f2f2; */
         background-color: var(--colors-accent);
       }
       :after {
@@ -343,12 +403,15 @@ export const Style = {
         height: 14px;
         opacity: 0.5;
         ${renderSVG(SVG_NEXT_ICON)}
+        /* color: #eee; */
         color: var(--colors-textPrimary);
         right: ${theme.spacingUnit};
         position: absolute;
       }
     `,
-    fullCreatorOwnerSection: (theme: ThemeOptionsType) => css`
+    fullCreatorOwnerSection: (theme: ThemeOptionsType) =>
+      // css`
+      `
       display: grid;
       grid-auto-flow: column;
       grid-template-rows: auto auto;
@@ -359,7 +422,9 @@ export const Style = {
       margin: ${theme.spacingUnit} 0 0;
     `,
     // Properties Component
-    propertiesGrid: (theme: ThemeOptionsType) => css`
+    propertiesGrid: (theme: ThemeOptionsType) =>
+      // css`
+      `
       display: grid;
       grid-auto-flow: row;
       grid-template-columns: auto auto;
@@ -367,7 +432,9 @@ export const Style = {
       grid-gap: calc(${theme.spacingUnit} / 2);
       text-align: center;
     `,
-    propertiesItem: (theme: ThemeOptionsType) => css`
+    propertiesItem: (theme: ThemeOptionsType) =>
+      // css`
+      `
       border: ${theme.borderStyle};
       border-radius: ${theme.defaultBorderRadius}px;
       padding: ${theme.spacingUnit} calc(${theme.spacingUnit} / 4);
@@ -378,7 +445,8 @@ export const Style = {
       line-height: 1;
     `,
     propertiesLabel: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         margin: 0 0 5px;
         text-transform: capitalize;
         font-size: 14px;
@@ -388,7 +456,8 @@ export const Style = {
     ],
     // Collection Tag
     colectionTagWrapper: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         border: ${theme.borderStyle};
         border-radius: 200px;
         transition: transform 0.1s ease-in-out;
@@ -408,7 +477,9 @@ export const Style = {
       `,
       theme.titleFont,
     ],
-    collectionTagIcon: (theme: ThemeOptionsType) => css`
+    collectionTagIcon: (theme: ThemeOptionsType) =>
+      // css`
+      `
       border-radius: 1500px;
       display: block;
       width: 32px;
@@ -429,14 +500,18 @@ export const Style = {
       }
     `,
     // Generic styles
-    button: (theme: ThemeOptionsType, { primary }: any) => css`
+    button: (theme: ThemeOptionsType, { primary }: any) =>
+      // css`
+      `
       ${buttonReset}
-      background: ${primary
-        ? theme.buttonColor.primaryBackground
-        : theme.buttonColor.background};
-      color: ${primary
-        ? theme.buttonColor.primaryText
-        : theme.buttonColor.text};
+      background: ${
+        primary
+          ? theme.buttonColor.primaryBackground
+          : theme.buttonColor.background
+      };
+      color: ${
+        primary ? theme.buttonColor.primaryText : theme.buttonColor.text
+      };
       border-radius: ${theme.defaultBorderRadius}px;
       padding: 11px;
       transition: transform 0.1s ease-in-out;
@@ -445,33 +520,41 @@ export const Style = {
       }
     `,
     textSubdued: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         opacity: 0.5;
       `,
       theme.bodyFont,
     ],
     pricingAmount: (theme: ThemeOptionsType) => theme.bodyFont,
     addressLink: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         text-decoration: none;
         color: ${theme.linkColor};
       `,
       theme.titleFont,
     ],
-    nftProposal: (theme: ThemeOptionsType) => css`
+    nftProposal: (theme: ThemeOptionsType) =>
+      // css`
+      `
       border: ${theme.borderStyle};
       border-radius: ${theme.defaultBorderRadius}px;
       display: flex;
       padding: ${theme.spacingUnit};
     `,
-    nftProposalActions: () => css`
+    nftProposalActions: () =>
+      // css`
+      `
       grid-area: 1 / 2 / span 1 / span 2;
       text-align: right;
     `,
     nftProposalActionButton: (
       theme: ThemeOptionsType,
       { action }: { action: 'approve' | 'deny' }
-    ) => css`
+    ) =>
+      // css`
+      `
       border-radius: 1000px;
       background-color: ${theme.buttonColor.background};
       background-repeat: no-repeat;
@@ -487,7 +570,9 @@ export const Style = {
       ${action === 'approve' && renderSVG(SVG_AUCTION_APPROVE)}
       ${action === 'deny' && renderSVG(SVG_AUCTION_DENY)}
     `,
-    nftProposalAcceptedPill: (theme: ThemeOptionsType) => css`
+    nftProposalAcceptedPill: (theme: ThemeOptionsType) =>
+      // css`
+      `
       color: #009165;
       background: rgba(64, 193, 154, 0.2);
       padding: 5px 10px;
@@ -496,13 +581,17 @@ export const Style = {
 
       ${theme.bodyFont}
     `,
-    nftProposalTitle: (theme: ThemeOptionsType) => css`
+    nftProposalTitle: (theme: ThemeOptionsType) =>
+      // css`
+      `
       font-size: 40px;
       grid-column: 1 / 3;
 
       ${theme.titleFont}
     `,
-    mediaLoader: (_: ThemeOptionsType, { mediaLoaded, isFullPage }: any) => css`
+    mediaLoader: (_: ThemeOptionsType, { mediaLoaded, isFullPage }: any) =>
+      // css`
+      `
       pointer-events: none;
       ${isFullPage ? 'min-height: 40vh;' : ''}
       width: 100%;
@@ -511,16 +600,20 @@ export const Style = {
       opacity: ${mediaLoaded ? '0' : '1'};
       transition: 0.2s ease-out opacity;
       ${CENTER_FULL_CONTAINER}
-      ${isFullPage && !mediaLoaded
-        ? `
+      ${
+        isFullPage && !mediaLoaded
+          ? `
       &:after {
         content: " ";
         ${isFullPage ? 'height: 30vh' : ''}
       }
       `
-        : ''}
+          : ''
+      }
     `,
-    mediaObject: (_: ThemeOptionsType, { mediaLoaded, isFullPage }: any) => css`
+    mediaObject: (_: ThemeOptionsType, { mediaLoaded, isFullPage }: any) =>
+      // css`
+      `
       opacity: ${mediaLoaded ? '1' : '0'};
       transition: 0.2s ease-in opacity;
       ${isFullPage ? 'max-height: 70vh;' : 'height: 100%;'}
@@ -531,7 +624,9 @@ export const Style = {
       min-width: 0px;
       object-fit: cover;
     `,
-    mediaAudioWrapper: (_: ThemeOptionsType) => css`
+    mediaAudioWrapper: (_: ThemeOptionsType) =>
+      // css`
+      `
       margin-top: 40px;
       display: flex;
       justify-content: center;
@@ -539,15 +634,20 @@ export const Style = {
       flex-direction: column;
       width: 100%;
     `,
-    mediaAudioWaveform: (_: ThemeOptionsType) => css`
+    mediaAudioWaveform: (_: ThemeOptionsType) =>
+      // css`
+      `
       width: 100%;
       cursor: pointer;
     `,
-    mediaObjectMessage: (_: ThemeOptionsType) => css`
+    mediaObjectMessage: (_: ThemeOptionsType) =>
+      // css`
+      `
       align-self: center;
     `,
     mediaContentText: (theme: ThemeOptionsType) => [
-      css`
+      // css`
+      `
         white-space: pre;
         text-align: left;
         padding: ${theme.spacingUnit};
@@ -555,17 +655,22 @@ export const Style = {
       `,
       theme.mediaContentFont,
     ],
-    mediaPlayButton: (_: ThemeOptionsType, { playing }: any) => css`
+    mediaPlayButton: (_: ThemeOptionsType, { playing }: any) =>
+      // css`
+      `
       ${buttonCommonSize('32px')}
       background-image: url("data:image/svg+xml,${encodeURIComponent(
         playing ? SVG_PAUSE : SVG_PLAY_ARROW
       )}");
       z-index: 8;
     `,
-    mediaVideoControls: (_: ThemeOptionsType, { isFullPage }: any) => css`
+    mediaVideoControls: (_: ThemeOptionsType, { isFullPage }: any) =>
+      // css`
+      `
       ${CENTER_FULL_CONTAINER}
-      ${isFullPage
-        ? `
+      ${
+        isFullPage
+          ? `
         z-index: 1; /* todo: iain remove need for line */
         opacity: 0;
         &:hover,
@@ -576,14 +681,19 @@ export const Style = {
         transition: opacity 0.6s ease-in-out;
         transition-delay: 0 0.3s;
       `
-        : 'display: none;'}
+          : 'display: none;'
+      }
     `,
-    mediaFullscreenButton: (theme: ThemeOptionsType) => css`
+    mediaFullscreenButton: (theme: ThemeOptionsType) =>
+      // css`
+      `
       ${buttonCommonSize(theme.spacingUnit)}
       background-color: #000;
       ${renderSVG(SVG_FULLSCREEN)}
     `,
-    mediaMuteButton: (theme: ThemeOptionsType, { muted }: any) => css`
+    mediaMuteButton: (theme: ThemeOptionsType, { muted }: any) =>
+      // css`
+      `
       ${buttonCommonSize(theme.spacingUnit)}
       background-color: #000;
       background-image: url('data:image/svg+xml,${encodeURIComponent(

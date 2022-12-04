@@ -1,5 +1,3 @@
-'use client'
-
 import { Fragment, useContext } from 'react'
 
 import { useMediaContext } from '../context/useMediaContext'
@@ -73,8 +71,7 @@ export const NFTProperties = ({ className }: NFTPropertiesProps) => {
   const getContent = () => {
     if (data && data.metadata && 'attributes' in data.metadata) {
       return renderAttributes(data.metadata.attributes)
-    }
-    if (data && data.metadata && 'traits' in data.metadata) {
+    } else if (data && data.metadata && 'traits' in data.metadata) {
       return renderAttributes((data.metadata as any).traits)
     }
     return <></>

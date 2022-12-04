@@ -1,8 +1,6 @@
-'use client'
+// import { css } from '@emotion/react'
 
-import { css } from '@emotion/react'
-
-interface OrbProps {
+type OrbProps = {
   size?: number | string
 }
 

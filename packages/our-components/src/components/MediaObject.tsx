@@ -1,6 +1,4 @@
-'use client'
-
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useMemo } from 'react'
 import { useNFTContent } from '@zoralabs/nft-hooks'
 
 import { useMediaContext } from '../context/useMediaContext'
@@ -9,7 +7,7 @@ import type {
   RenderRequest,
 } from '../content-components/RendererConfig'
 
-interface MetadataIsh {
+type MetadataIsh = {
   mimeType: string
   name: string
   description: string
@@ -19,34 +17,36 @@ interface MetadataIsh {
   imageUri?: string
 }
 
-interface MediaObjectProps {
+type MediaObjectProps = {
   contentURI?: string
+  a11yIdPrefix?: string
+  metadata?: MetadataIsh
+  contract?: string
+  tokenId?: string
+  isFullPage?: boolean
   contentMimeType?: string
   previewURI?: string
   previewMimeType?: string
   fullSizeSources?: string[]
   previewSources?: string[]
-  metadata?: any
-  contract?: any
-  tokenId?: any
-  a11yIdPrefix?: string
-  isFullPage?: boolean
 }
 
 export const MediaObject = ({
   contentURI,
+  metadata,
+  a11yIdPrefix,
+  contract,
+  tokenId,
+  isFullPage = false,
   contentMimeType,
   previewURI,
   previewMimeType,
   fullSizeSources,
   previewSources,
-  metadata,
-  a11yIdPrefix,
-  isFullPage = false,
 }: MediaObjectProps) => {
   const mediaType = useNFTContent(contentURI ?? metadata?.contentUri)
-  const [renderingInfo, setRenderingInfo] = useState<RendererConfig>()
-  const { getStyles, getString, renderers, style } = useMediaContext()
+  const { getStyles, getString, renderers, style, networkId } =
+    useMediaContext()
   console.log({
     contentURI,
     contentMimeType,
@@ -87,38 +87,33 @@ export const MediaObject = ({
         : undefined,
     },
     metadata,
+    contract,
+    tokenId,
+    networkId,
     renderingContext: isFullPage ? 'FULL' : 'PREVIEW',
   }
 
-  console.log('request', JSON.stringify(request, null, 2))
-  useEffect(() => {
-    console.log(
-      renderers.map((renderer) => {
-        return {
-          mimeType: renderer.render.toString(),
-          priority: renderer.getRenderingPreference(request),
-        }
-      })
-    )
+  console.log('metadata', JSON.stringify(metadata, null, 2))
+  // console.log('request', JSON.stringify(request, null, 2))
+  const renderingInfo = useMemo(() => {
     const sortedRenderers = renderers.sort((a, b) =>
       a.getRenderingPreference(request) > b.getRenderingPreference(request)
         ? -1
         : 1
     )
-    setRenderingInfo(sortedRenderers[0])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return sortedRenderers[0]
   }, [renderers, metadata, contentURI, mediaType.content])
 
   if (renderingInfo) {
     const RenderingComponent = renderingInfo.render
     return (
       <RenderingComponent
-          a11yIdPrefix={a11yIdPrefix}
-          getStyles={getStyles}
-          getString={getString}
-          theme={style.theme}
-          request={request}
-        />
+        a11yIdPrefix={a11yIdPrefix}
+        getStyles={getStyles}
+        getString={getString}
+        theme={style.theme}
+        request={request}
+      />
     )
   }
 

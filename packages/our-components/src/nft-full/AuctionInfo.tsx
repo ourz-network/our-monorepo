@@ -1,5 +1,3 @@
-'use client'
-
 import { useMemo, Fragment, useContext } from 'react'
 import {
   AuctionLike,
@@ -118,7 +116,11 @@ export const AuctionInfo = ({
     )
   }
 
-  if (reserveAuction && reserveAuction.status === 'complete') {
+  if (
+    reserveAuction &&
+    reserveAuction.status === 'complete' &&
+    reserveAuction.currentBid?.creator
+  ) {
     return (
       <AuctionInfoWrapper className={className} titleString='AUCTION_SOLD_FOR'>
         <div
@@ -137,12 +139,16 @@ export const AuctionInfo = ({
         >
           {getString('WINNER')}
         </div>
-        <AddressView address={reserveAuction.currentBid?.creator} />
+        <AddressView address={reserveAuction.currentBid.creator} />
       </AuctionInfoWrapper>
     )
   }
 
-  if (reserveAuction && reserveAuction.status === 'active') {
+  if (
+    reserveAuction &&
+    reserveAuction.status === 'active' &&
+    reserveAuction.currentBid?.creator
+  ) {
     return (
       <AuctionInfoWrapper titleString='AUCTION_ENDS'>
         {reserveAuction.endsAt && (
@@ -179,7 +185,7 @@ export const AuctionInfo = ({
         >
           {getString('BIDDER')}
         </div>
-        <AddressView address={reserveAuction.currentBid?.creator} />
+        <AddressView address={reserveAuction.currentBid.creator} />
       </AuctionInfoWrapper>
     )
   }

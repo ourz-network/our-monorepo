@@ -1,15 +1,16 @@
 'use client'
 
+import { NFTObject } from '@zoralabs/nft-hooks'
 import { NFTFullPage } from 'our-components'
 
 const FullPageNFT = ({
   contract,
   id,
-  token,
+  nft,
 }: {
   contract: string
   id: string
-  token: any
+  nft: NFTObject
 }) => (
   <div
     style={{
@@ -23,11 +24,10 @@ const FullPageNFT = ({
   >
     <NFTFullPage
       // useBetaIndexer={true}
-      contract={contract as string}
-      id={id as string}
+      contract={contract}
+      id={id}
       config={{ allowOffer: true }}
-      // @ts-expect-error prop exists
-      initialData={token}
+      initialData={{ nft }}
     />
   </div>
 )

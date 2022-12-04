@@ -1,8 +1,6 @@
 'use client'
 
-/* eslint-disable no-nested-ternary */
 import { useContext } from 'react'
-import { css } from '@emotion/css'
 
 import type { Strings } from '../constants/strings'
 import { camelCase } from '../utils/camelCase'
@@ -48,7 +46,7 @@ export function useMediaContext() {
 
     return {
       className: `${className ? `${className} ` : ''}zora-${themeKey}${
-        mediaContext.style.useDefaultStyles ? ` ${css(styles)}` : ''
+        mediaContext.style.useDefaultStyles ? ` ` /* ${css(styles)}` */ : ''
       } ${getUtilitySelectors(flags)}`,
     }
   }

@@ -23,33 +23,49 @@ export function CollectionInner({
   collection: CollectionWithMediaInfo
   username?: string
 }) {
+  // console.log(collection.firstToken)
   const mimeType =
     collection.mediaInfo?.content?.mimeType ??
-    collection.mediaInfo?.image?.mimeType
+    collection.mediaInfo?.image?.mimeType ??
+    collection.editionMetadata.animationURI
+      ? 'video/'
+      : 'image/'
+  // console.log({ mimeType })
 
   const collectionContext = useERC721DropContract()
   const { metadataDetails } = useCollectionMetadata(
     collectionContext.contractConfig.metadataRenderer
   )
+  console.log({ collectionContext, metadataDetails })
 
-  const srcs = mimeType?.startsWith('video')
-    ? [
-        // @ts-expect-error types
-        collection?.mediaInfo?.content?.mediaEncoding?.large,
-        collection?.mediaInfo?.content?.mediaEncoding?.original,
-      ]
-    : [
-        // @ts-expect-error types
-        collection?.mediaInfo?.content?.mediaEncoding?.large,
-        collection?.mediaInfo?.content?.mediaEncoding?.original,
-        collection?.mediaInfo?.image?.mediaEncoding?.large,
-        collection?.mediaInfo?.image?.mediaEncoding?.original,
-      ]
+  const srcs = (
+    mimeType?.startsWith('video')
+      ? [
+          // @ts-expect-error types
+          collection?.mediaInfo?.content?.mediaEncoding?.large,
+          collection?.mediaInfo?.content?.mediaEncoding?.original,
+          collection?.editionMetadata?.animationURI,
+          collection?.editionMetadata?.contractURI,
+          collection?.editionMetadata?.imageURI,
+          // collection?.firstToken?.,
+        ]
+      : [
+          // @ts-expect-error types
+          collection?.mediaInfo?.content?.mediaEncoding?.large,
+          collection?.mediaInfo?.content?.mediaEncoding?.original,
+          collection?.mediaInfo?.image?.mediaEncoding?.large,
+          collection?.mediaInfo?.image?.mediaEncoding?.original,
+          collection?.editionMetadata?.imageURI,
+          collection?.editionMetadata?.contractURI,
+        ]
+  )
+    .filter((src) => src !== undefined)
+    .filter((src) => src !== '')
 
   const [showIPFS, setShowIPFS] = useState(true)
-  const [sources, setSources] = useState(
-    srcs.filter((src) => src !== null || src !== undefined)
-  )
+  const [sources, setSources] = useState(srcs)
+
+  console.log({ srcs }, JSON.stringify(collection?.mediaInfo))
 
   const handleSourceError = () => {
     console.log('couldnt load that one')
@@ -76,8 +92,7 @@ export function CollectionInner({
             {sources.length > 1 ? (
               <video
                 className={`object-contain p-2 w-full h-full lg:p-12 ${
-                  showIPFS ? 'hidden' : ''
-                }`}
+                  showIPFS ? 'hidden' : ''}`}
                 // className={heroImage}
                 src={sources[0]}
                 // autoPlay
@@ -116,8 +131,7 @@ export function CollectionInner({
             {sources.length > 1 ? (
               <img
                 className={`object-contain p-2 w-full h-full lg:p-12 ${
-                  showIPFS ? 'hidden' : ''
-                }`}
+                  showIPFS ? 'hidden' : ''}`}
                 // className={heroImage}
                 src={sources[0]}
                 onError={() => handleSourceError()}

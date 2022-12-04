@@ -1,5 +1,3 @@
-'use client'
-
 import { Fragment } from 'react'
 
 import { HTML } from './HTML'
@@ -20,7 +18,7 @@ export const Model: ModelRenderer = {
   getRenderingPreference: (request: RenderRequest) => {
     if (request.media.content?.type?.startsWith('model/gltf')) {
       return request.renderingContext === 'FULL'
-        ? RenderingPreference.PRIORITY
+        ? RenderingPreference.PREFERRED
         : RenderingPreference.NORMAL
     }
     return RenderingPreference.INVALID

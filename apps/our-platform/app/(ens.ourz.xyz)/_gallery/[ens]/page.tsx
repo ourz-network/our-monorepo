@@ -1,6 +1,6 @@
 import { ZDK } from '@zoralabs/zdk'
 
-import NFTList from '@/components/_gallery/NFTList'
+import NFTList, { GalleryNFT } from '@/components/_gallery/NFTList'
 import { getAllGalleryConfigs, getGalleryConfig } from '@/lib/fetchers'
 import { getAddressFromENS } from '@/lib/ens'
 import { GalleryConfig } from '@/lib/types/_gallery'
@@ -74,7 +74,7 @@ export default async function Page({ params }: { params: { ens: string } }) {
   })
 
   // back to array
-  const tokens: any[] = []
+  const tokens: GalleryNFT[] = []
   tokenMap.forEach((value) => tokens.push(value))
 
   return (

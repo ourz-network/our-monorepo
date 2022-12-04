@@ -19,7 +19,7 @@ export default async function DropsPage({
   return (
     <div className='grid grid-cols-2 grid-flow-row lg:grid-cols-4 grid-auto-rows'>
       {/*  eslint-disable-next-line arrow-body-style */}
-      {collections.map((collection, i) => {
+      {collections.slice(0, 1).map((collection, i) => {
         const posterUrl = collection.mediaInfo?.image?.mediaEncoding?.poster
         const metadata = {
           ...collection.editionMetadata,

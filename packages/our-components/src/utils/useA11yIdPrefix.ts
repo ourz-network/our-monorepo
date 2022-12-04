@@ -1,9 +1,6 @@
-'use client'
+import { useState } from "react";
 
-import { useState } from 'react'
-
-let idCounter = 0
+let idCounter = 0;
 
 export const useA11yIdPrefix = (text: string) =>
-  // eslint-disable-next-line no-plusplus
-  useState(() => `zora-a11y-${idCounter++}-${text}`)[0]
+  useState(() => `zora-a11y-${idCounter++}-${text}`)[0];

@@ -1,5 +1,3 @@
-'use client'
-
 import { useNFTContent } from '@zoralabs/nft-hooks'
 
 import { MediaLoader } from './MediaLoader'

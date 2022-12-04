@@ -1,5 +1,3 @@
-'use client'
-
 import { useMediaContext } from '../context/useMediaContext'
 import {
   NFTDataProvider,

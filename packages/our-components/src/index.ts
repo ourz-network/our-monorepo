@@ -9,11 +9,11 @@ import { MediaObject } from './components/MediaObject'
 import { NFTDataContext } from './context/NFTDataContext'
 import { NFTPreview, PreviewComponents } from './nft-preview'
 import { NFTFullPage, FullComponents } from './nft-full'
-import { EditionFullPage, EditionComponents } from './edition-full'
-import { SplitFullPage, SplitComponents } from './split-full'
-import { SplitPreview } from './split-preview'
+// import { EditionFullPage, EditionComponents } from './edition-full'
+// import { SplitFullPage, SplitComponents } from './split-full'
+// import { SplitPreview } from './split-preview'
+// import { NFTE } from './nfte'
 import plugin from './plugin'
-import { NFTE } from './nfte'
 
 import '../globals.css'
 
@@ -31,13 +31,13 @@ export {
   NFTFullPage,
   FullComponents,
   // NFT-Editions
-  EditionFullPage,
-  EditionComponents,
+  // EditionFullPage,
+  // EditionComponents,
   // Splits
   // SplitDashboard
-  SplitFullPage,
-  SplitComponents,
-  SplitPreview,
+  // SplitFullPage,
+  // SplitComponents,
+  // SplitPreview,
   // Generic data wrapper
   NFTDataProvider,
   // Data context for fetching NFT info with custom components
@@ -46,5 +46,5 @@ export {
   // Renderers and default array for configuration
   MediaRenderers,
   RendererConfigTypes,
-  NFTE,
+  // NFTE,
 }

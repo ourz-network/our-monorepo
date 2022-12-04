@@ -1,8 +1,6 @@
-'use client'
-
 /* eslint-disable @next/next/no-img-element */
 import { useContext } from 'react'
-import { css } from '@emotion/react'
+// import { css } from '@emotion/react'
 
 import { useMediaContext } from '../context/useMediaContext'
 import { NFTDataContext } from '../context/NFTDataContext'
@@ -25,16 +23,18 @@ export const CollectionTag = () => {
         className='my-0 mx-[10px]'
         // {...getStyles('collectionTagIcon')}
       >
-        {data &&
-        'OpenSea' in data.rawData &&
-        data.rawData.OpenSea.asset_contract.image_url ? (
-          <img
-            src={data.rawData.OpenSea.asset_contract.image_url}
-            alt={data.rawData.OpenSea.asset_contract.name}
-          />
-        ) : (
-          <Orb />
-        )}
+        {
+          /* @ts-ignore */ data &&
+          'OpenSea' in data.rawData &&
+          data.rawData.OpenSea.asset_contract.image_url ? (
+            <img
+              src={data.rawData.OpenSea.asset_contract.image_url}
+              alt={data.rawData.OpenSea.asset_contract.name}
+            />
+          ) : (
+            <Orb />
+          )
+        }
       </div>
       <span>{data?.nft!.contract.name}</span>
     </a>

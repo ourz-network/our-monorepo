@@ -1,11 +1,4 @@
-'use client'
-
-import { useContext, useMemo } from 'react'
-import {
-  AuctionLike,
-  AUCTION_SOURCE_TYPES,
-  MARKET_INFO_STATUSES,
-} from '@zoralabs/nft-hooks/dist/types'
+import { useContext } from 'react'
 
 import { AddressView } from '../components/AddressView'
 import { MediaObject } from '../components/MediaObject'
@@ -16,8 +9,13 @@ import {
   defaultGetContentData,
   GetContentDataType,
 } from '../utils/getContentDataOptions'
+import { useMemo } from 'react'
+import {
+  AuctionLike,
+  AUCTION_SOURCE_TYPES,
+  MARKET_INFO_STATUSES,
+} from '@zoralabs/nft-hooks/dist/types'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type ProposalMediaDisplayProps = {} & StyleProps
 
 /** @deprecated */
@@ -62,9 +60,9 @@ export const ProposalMediaDisplay = ({
   }
 
   const { media, title } = getContent()
-  const hasCreator = data?.nft?.minted.address
+  const hasCreator = data?.nft?.minted?.address
   const address = hasCreator
-    ? data.nft?.minted.address
+    ? data?.nft?.minted?.address
     : data?.nft?.owner?.address
   return (
     <div className={className}>
@@ -87,7 +85,7 @@ export const ProposalMediaDisplay = ({
               {getString('PROPOSED_BY')}
             </div>
             <div {...getStyles('fullOwnerAddress')}>
-              {address && <AddressView address={reserveAuction.createdBy} />}
+              {address && <AddressView address={reserveAuction?.createdBy} />}
             </div>
           </div>
         )}

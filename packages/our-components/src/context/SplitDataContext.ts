@@ -1,18 +1,19 @@
-'use client'
+//
 
-import { createContext } from 'react'
-import type { useSplitType } from 'our-hooks'
+// import { createContext } from 'react'
 
-export interface SplitDataContext {
-  split: useSplitType
-}
+// export interface SplitDataContext {
+//   split: useSplitType
+// }
 
-const DEFAULT_OBJECT = {
-  loading: true,
-  error: undefined,
-}
+// const DEFAULT_OBJECT = {
+//   loading: true,
+//   error: undefined,
+// }
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SplitDataContext = createContext<SplitDataContext>({
-  split: { ...DEFAULT_OBJECT, splitLoaded: false },
-})
+// // eslint-disable-next-line @typescript-eslint/no-redeclare
+// export const SplitDataContext = createContext<SplitDataContext>({
+//   split: { ...DEFAULT_OBJECT, splitLoaded: false },
+// })
+
+export {}

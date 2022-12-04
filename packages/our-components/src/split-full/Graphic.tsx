@@ -1,5 +1,7 @@
-import React from 'react'
+// import React from 'react'
 
-const Graphic = () => <div />
+// const Graphic = () => <div />
 
-export default Graphic
+// export default Graphic
+
+export {}

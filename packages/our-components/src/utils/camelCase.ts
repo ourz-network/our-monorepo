@@ -8,7 +8,7 @@ export const capitalize = (word: string) =>
 
 export const camelCase = (text: string) => {
   if (text !== 'unknown') {
-    const regex = /[^a-z0-9]|\s+|\r?\n|\r/gim
+    const regex = /[^a-z0-9]|\s+|\r?\n|\r/gmi
 
     return text
       .split(regex)

@@ -1,5 +1,3 @@
-'use client'
-
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useSyncRef } from '../utils/useSyncRef'
@@ -25,7 +23,9 @@ export const VideoRenderer = forwardRef<HTMLVideoElement, RenderComponentType>(
     const controlAriaId = useA11yIdPrefix('video-renderer')
     const uri =
       request.renderingContext === 'FULL'
-        ? request.media.content?.uri ?? request.media.animation?.uri
+        ? // ? request.media.animation?.uri || request.media.content?.uri
+          // : request.media.content?.uri || request.media.animation?.uri;
+          request.media.content?.uri ?? request.media.animation?.uri
         : request.media.animation?.uri ?? request.media.content?.uri
 
     const {
@@ -189,12 +189,12 @@ export const Video: RendererConfig = {
     if (request.media.animation?.type?.startsWith('video/')) {
       if (request.renderingContext !== 'FULL')
         return RenderingPreference.FALLBACK
-      return RenderingPreference.PRIORITY
+      return RenderingPreference.PREFERRED
     }
     if (request.media.content?.type?.startsWith('video/')) {
       if (request.renderingContext !== 'FULL')
         return RenderingPreference.FALLBACK
-      return RenderingPreference.PRIORITY
+      return RenderingPreference.PREFERRED
     }
     return RenderingPreference.INVALID
   },

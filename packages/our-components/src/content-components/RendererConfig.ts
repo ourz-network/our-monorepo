@@ -1,5 +1,3 @@
-'use client'
-
 import type { ThemeType } from '../context/MediaContext'
 
 export enum RenderingPreference {
@@ -11,13 +9,13 @@ export enum RenderingPreference {
   PRIORITY = 4,
 }
 
-export interface MediaUriType {
+export type MediaUriType = {
   uri: string
   type?: string
   sources?: string[]
 }
 
-export interface RenderRequest {
+export type RenderRequest = {
   media: {
     // from zora content uri
     content?: MediaUriType
@@ -28,9 +26,12 @@ export interface RenderRequest {
   }
   metadata: any
   renderingContext: 'PREVIEW' | 'FULL'
+  contract?: string
+  tokenId?: string
+  networkId?: string
 }
 
-export interface RenderComponentType {
+export type RenderComponentType = {
   request: RenderRequest
   // TODO(iain): Fix types
   getString: any | null
@@ -39,7 +40,7 @@ export interface RenderComponentType {
   a11yIdPrefix?: string
 }
 
-export interface RendererConfig {
+export type RendererConfig = {
   getRenderingPreference(request: RenderRequest): RenderingPreference
   render: React.FunctionComponent<RenderComponentType>
 }

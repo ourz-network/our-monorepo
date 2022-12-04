@@ -22,5 +22,7 @@ export default async function DropCollection({
 }) {
   const collection = await getCollectionWithMediaInfo(params.collectionAddress)
 
+  // console.log('collection', JSON.stringify(collection, null, 2))
+
   return <Collection collection={collection} />
 }

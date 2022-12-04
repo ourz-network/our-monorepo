@@ -1,12 +1,25 @@
-import { NFTPreview, NFTPreviewProps } from '../nft-preview/NFTPreview'
-import { Story, Meta } from '@storybook/react'
+import { NFTPreview, NFTPreviewProps } from "../nft-preview/NFTPreview";
+import { Story, Meta } from "@storybook/react";
+import { MediaConfiguration } from "../context/MediaConfiguration";
+import { Networks } from "@zoralabs/nft-hooks";
+import { Strategies } from "@zoralabs/nft-hooks";
 
 export default {
-  title: 'Renderer/NFTPreview',
+  title: "Renderer/NFTPreview",
   component: NFTPreview,
-} as Meta
+} as Meta;
 
-const Template: Story<NFTPreviewProps> = (args) => <NFTPreview {...args} />
+const strategy = new Strategies.ZDKFetchStrategy(Networks.MAINNET);
+
+const Template: Story<NFTPreviewProps> = (args) => (
+  <MediaConfiguration
+    networkId={(args as any).testnet ? Networks.RINKEBY : Networks.MAINNET}
+    strategy={strategy}
+  >
+    <NFTPreview {...args} />
+  </MediaConfiguration>
+);
+
 
 export const Image = Template.bind({})
 Image.args = {

@@ -1,5 +1,7 @@
-import React from 'react'
+// import React from 'react'
 
-const Data = () => <div />
+// const Data = () => <div />
 
-export default Data
+// export default Data
+
+export {}

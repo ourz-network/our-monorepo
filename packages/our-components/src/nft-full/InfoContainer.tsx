@@ -1,5 +1,3 @@
-'use client'
-
 import type { StyleProps } from '../utils/StyleTypes'
 import type { Strings } from '../constants/strings'
 import { useMediaContext } from '../context/useMediaContext'

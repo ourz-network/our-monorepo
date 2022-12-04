@@ -49,7 +49,6 @@
     "next": "latest",
     "nft.storage": "latest",
     "our-components": "workspace:*",
-    "our-hooks": "workspace:*",
     "react": "latest",
     "react-dom": "latest",
     "server-only": "^0.0.1",

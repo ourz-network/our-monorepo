@@ -1,5 +1,3 @@
-'use client'
-
 import { Fragment, useContext, useMemo } from 'react'
 import {
   AuctionLike,
@@ -48,6 +46,7 @@ interface MarketDataListType {
 }
 
 export const BidHistory = ({
+  // @ts-ignore TS6196
   showPerpetual = true,
   className,
 }: BidHistoryProps) => {
@@ -59,7 +58,7 @@ export const BidHistory = ({
       return []
     }
     const bidEvents: MarketDataListType[] = []
-    if (data.nft.minted.address && data.nft.minted.at?.timestamp) {
+    if (data.nft?.minted?.address && data.nft.minted.at?.timestamp) {
       bidEvents.push({
         activityDescription: getString('BID_HISTORY_MINTED'),
         actor: data.nft.minted.address,

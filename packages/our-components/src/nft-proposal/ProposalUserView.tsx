@@ -1,5 +1,3 @@
-'use client'
-
 import { useZoraUsername } from '@zoralabs/nft-hooks'
 
 import type { StyleProps } from '../utils/StyleTypes'

@@ -1,5 +1,12 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": ["src"],
-  "exclude": ["src/stories", "node_modules", "tests/**"]
+  "exclude": ["src/stories", "node_modules", "tests/**"],
+  "compilerOptions": {
+    "strict": false,
+    "outDir": "./dist",
+    "importsNotUsedAsValues": "remove",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
 }

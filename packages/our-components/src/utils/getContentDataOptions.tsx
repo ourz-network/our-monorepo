@@ -1,5 +1,4 @@
 import type { NFTObject } from '@zoralabs/nft-hooks'
-import { EditionDetailsFragment } from 'our-hooks/dist/graph-queries/ourz-graph-types'
 
 export const defaultGetContentData = (nft: NFTObject) => {
   const contentMimeType =
@@ -62,7 +61,7 @@ export const defaultGetContentData = (nft: NFTObject) => {
 }
 
 export interface GetContentDataType {
-  getContentData?: (nft: NFTObject | EditionDetailsFragment) => {
+  getContentData?: (nft: NFTObject) => {
     contentURI?: string
     contentMimeType?: string
     previewURI?: string
@@ -72,3 +71,25 @@ export interface GetContentDataType {
     tokenId?: any
   }
 }
+
+// import type { NFTObject } from "@zoralabs/nft-hooks/dist";
+
+// export const defaultGetContentData = (nft: NFTObject) => {
+//   return {
+//     contentURI: (nft.media?.content?.uri ||
+//       nft.media?.image?.uri ||
+//       nft.nft?.contentURI) as string,
+//     metadata: nft.metadata,
+//     contract: nft.nft?.contract?.address,
+//     tokenId: nft.nft?.tokenId,
+//   };
+// };
+
+// export type GetContentDataType = {
+//   getContentData?: (nft: NFTObject) => {
+//     contentURI?: string;
+//     metadata?: any;
+//     contract?: any;
+//     tokenId?: any;
+//   };
+// };

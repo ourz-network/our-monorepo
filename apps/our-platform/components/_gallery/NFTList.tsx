@@ -2,8 +2,16 @@
 
 import { NFTPreview } from 'our-components'
 import { useRouter } from 'next/navigation'
+import { NFTObject } from '@zoralabs/nft-hooks'
 
-const NFTList = ({ tokens }: { tokens: any[] }) => {
+export type GalleryNFT = NFTObject & {
+  tokenId: string
+  contractAddress: string
+  minter: string
+  owner: string
+}
+
+const NFTList = ({ tokens }: { tokens: GalleryNFT[] }) => {
   const router = useRouter()
 
   return (
