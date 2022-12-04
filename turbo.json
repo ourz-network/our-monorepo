@@ -26,10 +26,13 @@
       "cache": false
     },
     "dev:ui:css": {
-      "dependsOn": ["build:ui"]
+      "dependsOn": ["build:ui"],
+      "cache": false
     },
     "dev:ui:sb": {
-      "dependsOn": ["build:sb"]
+      "dependsOn": ["build:sb"],
+
+      "cache": false
     },
     "test": {
       "outputs": ["coverage/**"],
@@ -55,7 +58,8 @@
     },
 
     "build:sb": {
-      "outputs": [".storybook/**"],
+      "outputs": ["storybook-static/**"],
+      "inputs": ["src/stories/**", ".storybook/**"],
       "dependsOn": ["build:ui"]
     },
     "start": {

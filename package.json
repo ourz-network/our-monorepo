@@ -9,7 +9,7 @@
   "scripts": {
     "dev:og": "turbo run dev --parallel --continue",
     "dev": "turbo run dev",
-    "dev:ui": "turbo run dev:ui:css dev:ui:sb",
+    "dev:ui": "turbo run dev:ui:css dev:ui:sb --continue",
     "build:ui": "turbo run build:ui",
     "build:sb": "turbo run build:sb",
     "build:app": "turbo run build:app",
