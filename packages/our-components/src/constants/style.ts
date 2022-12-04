@@ -12,30 +12,35 @@ import {
 } from './svg-icons'
 import { ThemeOptions, ThemeOptionsType } from './theme'
 
-const buttonCommonSize = (size: string) =>
-  // css`
-  `
-  padding: ${size};
-  width: ${size};
-  height: ${size};
-  background: #eee;
-  border: 0;
-  border-radius: 200px;
-  color: transparent;
-  cursor: pointer;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin: 0 10px;
-`
+const buttonCommonSize = (size?: string) =>
+  `p-3 rounded-md transition-transform duration-100 ease-in-out active:scale-95 mx-2.5`
 
-const buttonReset = `
-  font: inherit;
-  text-decoration: none;
-  margin: 0;
-  border: 0;
-  cursor: pointer;
-  display: inline-block;
-`
+// css`
+//   padding: ${size};
+//   width: ${size};
+//   height: ${size};
+//   background: #eee;
+//   border: 0;
+//   border-radius: 200px;
+//   color: transparent;
+//   cursor: pointer;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   margin: 0 10px;
+// `
+
+const x = 1
+
+const buttonReset = `p-0 font-[inherit] cursor-pointer border-0`
+
+// `
+//   font: inherit;
+//   text-decoration: none;
+//   margin: 0;
+//   border: 0;
+//   cursor: pointer;
+//   display: inline-block;
+// `
 
 const CENTER_FULL_CONTAINER = `
   position: absolute;
